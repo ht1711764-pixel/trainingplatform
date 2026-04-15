@@ -1,0 +1,32 @@
+{
+  "brandName": "LUXCY",
+  "aboutCompanyContent": "Premium Task Ecosystem",
+  "usdtWalletAddress": "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf",
+  "minBalanceForOrder": 10,
+  "styles": {
+    "body": {
+      "backgroundType": "gradient",
+      "backgroundColor": "#0a0f1a",
+      "backgroundImage": null,
+      "gradient": "linear-gradient(135deg, #0a0f1a 0%, #0f1622 100%)",
+      "animation": "none"
+    },
+    "icon": {
+      "color": "#ffd796",
+      "size": "28px",
+      "hoverEffect": "scale",
+      "hoverColor": "#ffffff",
+      "shadow": "0 4px 12px rgba(0,0,0,0.3)"
+    },
+    "card": {
+      "backgroundColor": "rgba(255,255,255,0.03)",
+      "borderColor": "rgba(255,215,150,0.1)",
+      "borderRadius": "24px"
+    },
+    "button": {
+      "gradient": "linear-gradient(135deg, #ffd796, #ffb347)",
+      "hoverGradient": "linear-gradient(135deg, #ffb347, #ffd796)",
+      "borderRadius": "40px"
+    }
+  }
+}

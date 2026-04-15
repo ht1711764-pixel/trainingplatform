@@ -1,0 +1,10 @@
+{
+  "name": "LUXCY Platform",
+  "short_name": "LUXCY",
+  "description": "Task Platform",
+  "start_url": "/customer.html",
+  "display": "standalone",
+  "theme_color": "#d4af37",
+  "background_color": "#0b0e12",
+  "icons": []
+}

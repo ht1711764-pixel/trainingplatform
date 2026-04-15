@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "username": "admin",
+    "passwordHash": "$2b$10$sHBNL9ZZpqSuBEJ9d.8ij.Rvyucb05cnsWLftaIBTeyLTnHF81F7S",
+    "role": "admin",
+    "createdAt": "2026-04-09T09:27:31.029Z"
+  },
+  {
+    "id": 1001,
+    "username": "demo_user",
+    "email": "demo@example.com",
+    "phone": "+1234567890",
+    "passwordHash": "$2b$10$Z1Le9MUIiYs6Nrjy9gpFWe6reKq.xSVeFlL/840RGoGg9LaFAv/fK",
+    "withdrawalPasswordHash": "$2b$10$Y6jJCkxbFtUpbOAKT1b4n.A33wM3Z9/UtYffWkWGEqRH1PfjiRZM2",
+    "balance": 23,
+    "invitationCode": "DEMO123",
+    "superior": null,
+    "referralEarnings": 0,
+    "regTime": "2026-04-09T09:27:31.030Z",
+    "tasks": {
+      "completed": 0,
+      "total": 40
+    },
+    "disabled": false,
+    "walletAddress": null,
+    "creditScore": 100
+  }
+]

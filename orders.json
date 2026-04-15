@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1001,
+    "name": "Desk lamp LED adjustable",
+    "imagePath": null,
+    "price": 14.9,
+    "status": "active",
+    "createdAt": "2026-04-09"
+  },
+  {
+    "id": 1002,
+    "name": "Protective smartphone case",
+    "imagePath": null,
+    "price": 23.4,
+    "status": "active",
+    "createdAt": "2026-04-09"
+  },
+  {
+    "id": 1003,
+    "name": "Mechanical keyboard RGB",
+    "imagePath": null,
+    "price": 38.9,
+    "status": "active",
+    "createdAt": "2026-04-09"
+  }
+]
