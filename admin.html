@@ -251,9 +251,6 @@
     let notificationAudio = null;
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
-    
-    function initNotificationSound() { try { notificationAudio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3'); notificationAudio.volume = 0.4; } catch(e) {} }
-    function playNotificationSound() { if (soundEnabled && notificationAudio) { notificationAudio.currentTime = 0; notificationAudio.play().catch(e => {}); } }
     function getVIPLevel(balance) { if (balance >= 1500) return 4; if (balance >= 500) return 3; if (balance >= 100) return 2; return 1; }
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
