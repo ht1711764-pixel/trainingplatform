@@ -4,333 +4,581 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY | Luxury Travel & Earnings Platform</title>
+    <!-- Font Awesome + Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 + Icons (lightweight, responsive) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #0a0c10; min-height: 100vh; overflow-x: hidden; }
-        .app-container { 
-            width: 100%; min-height: 100vh; background: linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
-            overflow-y: auto; overflow-x: hidden; position: relative;
+        /* ===== ROOT VARIABLES FOR EASY COLOR CUSTOMIZATION ===== */
+        :root {
+            --lux-gold: #D4AF37;
+            --lux-gold-light: #F5E7B2;
+            --lux-gold-dark: #C9A03D;
+            --lux-bg-dark: #0a0c10;
+            --lux-card-bg: rgba(15, 20, 25, 0.85);
+            --lux-border-gold: rgba(212, 175, 55, 0.3);
+            --lux-text-light: rgba(255,255,255,0.85);
+            --lux-text-muted: rgba(255,255,255,0.5);
+            --lux-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            --lux-radius: 28px;
         }
-        .page { display: none; padding: 28px 22px 100px; min-height: 100%; position: relative; z-index: 1; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--lux-bg-dark);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
+            overflow-y: auto;
+            position: relative;
+            transition: background 0.4s ease;
+        }
+        /* ===== RESPONSIVE UTILITY ===== */
+        .text-gold { color: var(--lux-gold); }
+        .text-gold-light { color: var(--lux-gold-light); }
+        .bg-gold-gradient { background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light), var(--lux-gold-dark)); }
+        .border-gold { border-color: var(--lux-border-gold) !important; }
+        .shadow-gold { box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25); }
+
+        /* ===== MARQUEE ICON STRIP ===== */
+        .icon-marquee {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 60px;
+            padding: 10px 0;
+            margin-bottom: 24px;
+            border: 1px solid var(--lux-border-gold);
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .icon-marquee-track {
+            display: inline-block;
+            animation: marqueeScroll 28s linear infinite;
+            padding-left: 100%;
+        }
+        .icon-marquee-track i {
+            font-size: 26px;
+            margin: 0 20px;
+            color: var(--lux-gold);
+            opacity: 0.8;
+            transition: 0.2s;
+            filter: drop-shadow(0 0 6px rgba(212,175,55,0.2));
+        }
+        .icon-marquee-track i:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            color: #fff;
+        }
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* ===== PAGE & CARDS ===== */
+        .page { display: none; padding: 28px 22px 100px; min-height: 100vh; position: relative; z-index: 1; }
         .active-page { display: block; animation: pageEnter 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
         @keyframes pageEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         .luxury-header {
-            background: rgba(10, 12, 16, 0.8); backdrop-filter: blur(20px); border-radius: 60px;
-            padding: 12px 24px; margin-bottom: 28px; display: flex; justify-content: space-between;
-            align-items: center; flex-wrap: wrap; gap: 15px; border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            background: rgba(10, 12, 16, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 60px;
+            padding: 12px 24px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border: 1px solid var(--lux-border-gold);
+            box-shadow: var(--lux-shadow);
         }
         .logo-area { display: flex; align-items: center; gap: 12px; }
-        .luxury-logo { width: 48px; height: 48px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+        .luxury-logo {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
         .luxury-logo i { font-size: 28px; color: #0a0c10; }
-        .luxury-brand { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: 2px; }
-        .company-info-btn { background: rgba(212, 175, 55, 0.12); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 40px; padding: 10px 20px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 10px; color: #D4AF37; font-weight: 600; backdrop-filter: blur(10px); }
-        .company-info-btn:hover { background: rgba(212, 175, 55, 0.25); transform: translateY(-2px); border-color: #D4AF37; }
-        
-        .luxury-hero { background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(212,175,55,0.1) 100%); backdrop-filter: blur(10px); border-radius: 48px; padding: 60px 48px; margin-bottom: 40px; position: relative; overflow: hidden; border: 1px solid rgba(212, 175, 55, 0.25); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .hero-badge { display: inline-block; background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 40px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: #D4AF37; margin-bottom: 20px; letter-spacing: 2px; }
-        .hero-title { font-family: 'Playfair Display', serif; font-size: 64px; font-weight: 800; background: linear-gradient(135deg, #F5E7B2, #D4AF37, #C9A03D); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; letter-spacing: -1px; }
-        .hero-subtitle { font-size: 18px; color: rgba(255,255,255,0.8); margin-bottom: 40px; max-width: 550px; line-height: 1.6; }
-        
-        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 48px; }
-        .service-card { background: rgba(15, 20, 25, 0.7); backdrop-filter: blur(12px); border-radius: 28px; padding: 32px 24px; text-align: center; cursor: pointer; transition: all 0.4s; border: 1px solid rgba(212, 175, 55, 0.2); }
-        .service-card:hover { transform: translateY(-8px); background: rgba(212, 175, 55, 0.08); border-color: rgba(212, 175, 55, 0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .service-icon { font-size: 48px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 20px; }
-        .service-title { font-size: 20px; font-weight: 700; color: #F5E7B2; margin-bottom: 12px; }
-        .service-desc { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
-        
-        .action-buttons-home { display: flex; gap: 20px; justify-content: center; margin-top: 40px; }
-        .btn-home { padding: 16px 48px; border-radius: 60px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s; border: none; letter-spacing: 1px; }
-        .btn-login { background: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D); color: #0a120e; box-shadow: 0 5px 25px rgba(212,175,55,0.3); }
-        .btn-register { background: transparent; border: 2px solid #D4AF37; color: #F5E7B2; }
-        .btn-home:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(212,175,55,0.4); }
-        
-        .card-lux { background: rgba(15, 20, 25, 0.8); backdrop-filter: blur(12px); border-radius: 32px; padding: 28px; margin-bottom: 24px; border: 1px solid rgba(212, 175, 55, 0.2); transition: all 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
-        .balance-badge-lux { background: linear-gradient(135deg, rgba(10,18,14,0.9), rgba(26,42,31,0.9)); border-radius: 36px; padding: 24px 28px; border: 1px solid #D4AF37; box-shadow: 0 8px 32px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
-        .btn-lux { background: linear-gradient(135deg, #D4AF37 0%, #F5E7B2 45%, #C9A03D 100%); border: none; padding: 14px 24px; border-radius: 60px; font-weight: 800; font-size: 16px; color: #0a120e; width: 100%; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); letter-spacing: 0.5px; }
+        .luxury-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        .card-lux {
+            background: var(--lux-card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: var(--lux-radius);
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid var(--lux-border-gold);
+            transition: all 0.3s;
+            box-shadow: var(--lux-shadow);
+        }
+        .btn-lux {
+            background: linear-gradient(135deg, var(--lux-gold) 0%, var(--lux-gold-light) 45%, var(--lux-gold-dark) 100%);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 16px;
+            color: #0a120e;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
         .btn-lux:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(212,175,55,0.4); }
-        .btn-outline-lux { background: transparent; border: 2px solid #D4AF37; color: #F5E7B2; font-weight: 700; }
-        .input-lux { background: rgba(0,0,0,0.6); border: 1px solid rgba(212, 175, 55, 0.3); padding: 14px 20px; border-radius: 60px; width: 100%; font-size: 15px; color: #ffffff; margin-bottom: 16px; outline: none; transition: all 0.3s; }
-        .input-lux:focus { border-color: #D4AF37; box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
-        
+        .btn-outline-lux {
+            background: transparent;
+            border: 2px solid var(--lux-gold);
+            color: var(--lux-gold-light);
+            font-weight: 700;
+        }
+        .input-lux {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--lux-border-gold);
+            padding: 14px 20px;
+            border-radius: 60px;
+            width: 100%;
+            font-size: 15px;
+            color: #ffffff;
+            margin-bottom: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-lux:focus { border-color: var(--lux-gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .text-gold { color: #D4AF37; font-weight: 700; }
-        .text-light { color: rgba(255,255,255,0.85); }
-        .text-muted { color: rgba(255,255,255,0.5); }
-        
-        .signout-icon, .refresh-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 40px; padding: 8px 18px; cursor: pointer; color: #D4AF37; transition: all 0.3s; }
-        .signout-icon:hover, .refresh-btn:hover { background: rgba(212, 175, 55, 0.15); border-color: #D4AF37; }
-        .refresh-btn:hover { transform: rotate(180deg); }
-        
-        .bottom-nav-lux { background: rgba(5, 8, 6, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(212, 175, 55, 0.3); display: flex; justify-content: space-around; align-items: center; padding: 12px 20px 28px; position: fixed; bottom: 0; width: 100%; z-index: 30; }
-        .nav-item-lux { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,0.6); cursor: pointer; font-weight: 600; transition: all 0.3s; }
-        .nav-item-lux i { font-size: 24px; transition: all 0.3s; color: rgba(212, 175, 55, 0.7); }
-        .nav-item-lux.active { color: #D4AF37; }
-        .nav-item-lux.active i { transform: scale(1.1); color: #D4AF37; }
-        .nav-item-lux:hover { color: #D4AF37; transform: translateY(-3px); }
-        .hidden-nav { display: none !important; }
-        
-        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 14px; border-radius: 20px; font-size: 11px; display: inline-block; font-weight: 700; }
+
+        /* ===== BADGES & VIP ===== */
+        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
         .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
         .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
-        .vip-badge-4 { background: linear-gradient(135deg, #D4AF37, #b8941e); color: #0a120e; }
-        
-        .progress-bar { background: rgba(255,255,255,0.1); border-radius: 20px; height: 8px; overflow: hidden; }
-        .progress-fill { background: linear-gradient(90deg, #D4AF37, #F5E7B2); height: 100%; width: 0%; transition: width 0.5s; }
-        
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(12px); }
-        .modal-content { background: linear-gradient(135deg, #1a1e26, #0f1117); border-radius: 40px; padding: 32px; width: 90%; max-width: 550px; max-height: 85vh; overflow-y: auto; border: 1px solid rgba(212, 175, 55, 0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        
-        .wallet-address-box { background: rgba(0,0,0,0.6); padding: 18px; border-radius: 20px; word-break: break-all; margin: 16px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border: 1px solid #D4AF37; }
-        .wallet-address-text { font-family: monospace; font-size: 14px; color: #D4AF37; letter-spacing: 1px; }
-        .copy-btn { background: linear-gradient(135deg, #D4AF37, #C9A03D); color: #0a120e; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: 700; transition: all 0.2s; }
-        .copy-btn:hover { transform: scale(1.02); }
-        
-        .amount-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
-        .amount-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.3); padding: 10px 18px; border-radius: 40px; cursor: pointer; text-align: center; color: #F5E7B2; transition: all 0.2s; }
-        .amount-btn:hover { background: rgba(212,175,55,0.15); border-color: #D4AF37; }
-        
-        .stars { display: flex; gap: 10px; cursor: pointer; margin-top: 10px; flex-wrap: wrap; }
-        .stars i { font-size: 28px; color: #4a5a4e; transition: all 0.2s; }
-        .stars i.active-star { color: #F5B042; }
-        
-        .order-detail-card { background: linear-gradient(135deg, rgba(15,25,20,0.9), rgba(26,42,31,0.9)); border-radius: 32px; padding: 24px; margin-bottom: 24px; border: 1px solid #D4AF37; position: relative; overflow: hidden; }
-        .order-detail-card.injection-order { border: 2px solid #f59e0b; box-shadow: 0 0 20px rgba(245,158,11,0.3); }
-        .injection-badge { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { opacity: 0.7; } 100% { opacity: 1; } }
-        .order-image { width: 100%; height: 180px; background: rgba(0,0,0,0.5); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; border: 1px solid rgba(212,175,55,0.3); }
-        .amount-big { font-size: 28px; font-weight: 800; color: #F5E7B2; }
-        
-        .invite-card { background: rgba(0,0,0,0.5); border-radius: 24px; padding: 16px; margin-top: 16px; text-align: center; border: 1px solid rgba(212,175,55,0.3); }
-        .invite-code { font-size: 22px; font-weight: 800; letter-spacing: 3px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        
-        .live-feed-container { background: rgba(0,0,0,0.5); border-radius: 24px; padding: 16px; margin-top: 20px; max-height: 200px; overflow-y: auto; border: 1px solid rgba(212,175,55,0.15); }
-        .live-feed-item { padding: 10px; border-bottom: 1px solid rgba(212,175,55,0.15); font-size: 12px; color: rgba(255,255,255,0.8); }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
-        .stat-card { background: rgba(0,0,0,0.4); border-radius: 24px; padding: 18px; text-align: center; border: 1px solid rgba(212,175,55,0.15); }
-        .stat-value { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        
-        .profile-photo-large { width: 120px; height: 120px; border-radius: 60px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); display: flex; align-items: center; justify-content: center; border: 4px solid #D4AF37; overflow: hidden; box-shadow: 0 0 0 4px rgba(212,175,55,0.2), 0 10px 30px rgba(0,0,0,0.3); transition: transform 0.3s; cursor: pointer; }
+        .vip-badge-4 { background: linear-gradient(135deg, var(--lux-gold), #b8941e); color: #0a120e; }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav-lux {
+            background: rgba(5, 8, 6, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--lux-border-gold);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 20px 28px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 30;
+        }
+        .nav-item-lux {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .nav-item-lux i { font-size: 24px; transition: all 0.3s; color: var(--lux-gold); opacity: 0.6; }
+        .nav-item-lux.active { color: var(--lux-gold); }
+        .nav-item-lux.active i { transform: scale(1.1); opacity: 1; }
+        .nav-item-lux:hover { color: var(--lux-gold); transform: translateY(-3px); }
+        .hidden-nav { display: none !important; }
+
+        /* ===== CHAT ===== */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+            background: rgba(5, 10, 8, 0.9);
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .chat-message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 20px;
+            word-break: break-word;
+        }
+        .chat-message.sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-dark));
+            color: #0a120e;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-message.received {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            color: #ffffff;
+            border: 1px solid var(--lux-border-gold);
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input-area { display: flex; gap: 12px; padding: 16px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--lux-border-gold); }
+
+        /* ===== MODAL ===== */
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #1a1e26, #0f1117);
+            border-radius: 40px;
+            padding: 32px;
+            width: 90%;
+            max-width: 550px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border: 1px solid var(--lux-border-gold);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .page { padding: 16px 12px 100px; }
+            .luxury-header { padding: 10px 16px; border-radius: 40px; }
+            .luxury-brand { font-size: 20px; }
+            .icon-marquee-track i { font-size: 20px; margin: 0 12px; }
+            .btn-lux { font-size: 14px; padding: 12px 18px; }
+            .card-lux { padding: 20px; }
+            .modal-content { padding: 24px; }
+            .bottom-nav-lux { padding: 8px 12px 20px; }
+            .nav-item-lux i { font-size: 20px; }
+        }
+        @media (max-width: 480px) {
+            .luxury-brand { font-size: 18px; }
+            .icon-marquee-track i { font-size: 16px; margin: 0 8px; }
+            .btn-lux { font-size: 13px; padding: 10px 14px; }
+            .card-lux { padding: 16px; }
+            .chat-message { max-width: 95%; }
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1a1e26; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
+
+        /* ===== REAL-TIME INDICATOR ===== */
+        .real-time-indicator {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            z-index: 100;
+            animation: pulse 1.5s infinite;
+            display: none;
+        }
+        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        /* ===== UPLOAD AREA ===== */
+        .upload-area-sm {
+            border: 2px dashed var(--lux-border-gold);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            cursor: pointer;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.7);
+            transition: all 0.2s;
+        }
+        .upload-area-sm:hover { border-color: var(--lux-gold); background: rgba(212,175,55,0.05); }
+
+        /* ===== INJECTION BADGE ===== */
+        .injection-badge {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            animation: pulse 1s infinite;
+            display: inline-block;
+        }
+        .order-detail-card.injection-order {
+            border: 2px solid #f59e0b;
+            box-shadow: 0 0 20px rgba(245,158,11,0.3);
+        }
+
+        /* ===== COMPANY SECTION ===== */
+        .company-section {
+            background: var(--lux-card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 40px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .company-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-item { text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 28px; }
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .company-description { color: var(--lux-text-light); line-height: 1.8; }
+        .company-description p { margin-bottom: 12px; }
+
+        /* ===== LOGO CONTAINER ===== */
+        .logo-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .logo-item {
+            width: 80px;
+            height: 80px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--lux-border-gold);
+            overflow: hidden;
+        }
+        .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .logo-item i { font-size: 40px; color: var(--lux-gold); }
+
+        /* ===== PHOTO PREVIEW ===== */
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 75px;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--lux-gold);
+            overflow: hidden;
+        }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-preview i { font-size: 80px; color: #0a120e; }
+        .profile-photo-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--lux-gold);
+            overflow: hidden;
+            box-shadow: 0 0 0 4px rgba(212,175,55,0.2), 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
         .profile-photo-large:hover { transform: scale(1.02); }
         .profile-photo-large img { width: 100%; height: 100%; object-fit: cover; }
         .profile-photo-large i { font-size: 64px; color: #0a120e; }
-        
-        .upload-area-sm { border: 2px dashed rgba(212,175,55,0.3); border-radius: 16px; padding: 16px; text-align: center; background: rgba(0,0,0,0.3); cursor: pointer; margin-bottom: 12px; color: rgba(255,255,255,0.7); transition: all 0.2s; }
-        .upload-area-sm:hover { border-color: #D4AF37; background: rgba(212,175,55,0.05); }
-        
-        .receipt-img { max-width: 100%; max-height: 200px; border-radius: 16px; margin-top: 12px; background: #0f1117; padding: 8px; border: 1px solid #D4AF37; }
-        
-        .warning-modal { text-align: center; }
-        .warning-icon { font-size: 60px; color: #dc2626; margin-bottom: 20px; }
-        .warning-title { color: #dc2626; font-size: 24px; margin-bottom: 16px; }
-        .warning-message { color: rgba(255,255,255,0.8); margin-bottom: 24px; line-height: 1.6; }
-        .btn-warning-modal { background: #dc2626; color: white; border: none; padding: 12px 28px; border-radius: 40px; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.2s; }
-        .btn-warning-modal:hover { background: #ef4444; transform: scale(1.02); }
-        
-        .history-item { background: rgba(0,0,0,0.4); border-radius: 16px; padding: 14px; margin-bottom: 12px; border-left: 3px solid #D4AF37; }
-        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(212,175,55,0.1); }
-        
-        .language-selector { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
-        .lang-option { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; padding: 10px 16px; border-radius: 16px; background: rgba(0,0,0,0.4); border: 1px solid rgba(212,175,55,0.2); transition: all 0.2s; }
-        .lang-option:hover, .lang-option.active { border-color: #D4AF37; background: rgba(212,175,55,0.15); transform: translateY(-2px); }
-        
-        .real-time-indicator { position: fixed; bottom: 90px; right: 20px; background: #10b981; color: white; padding: 6px 14px; border-radius: 30px; font-size: 11px; z-index: 100; animation: pulse 1.5s infinite; }
-        
-        .commission-info { background: rgba(212,175,55,0.05); border-radius: 24px; padding: 20px; margin-top: 20px; border: 1px solid rgba(212,175,55,0.15); }
-        .commission-info h4 { color: #D4AF37; margin-bottom: 16px; }
-        .commission-info p { color: rgba(255,255,255,0.7); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
-        
-        .chat-container { display: flex; flex-direction: column; height: calc(100vh - 180px); background: rgba(5, 10, 8, 0.9); border-radius: 32px; overflow: hidden; border: 1px solid rgba(212,175,55,0.3); }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .chat-message { max-width: 80%; padding: 12px 18px; border-radius: 20px; }
-        .chat-message.sent { align-self: flex-end; background: linear-gradient(135deg, #D4AF37, #C9A03D); color: #0a120e; border-bottom-right-radius: 4px; }
-        .chat-message.received { align-self: flex-start; background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(212,175,55,0.3); border-bottom-left-radius: 4px; }
-        .chat-input-area { display: flex; gap: 12px; padding: 16px; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(212,175,55,0.2); }
-        
-        .back-btn { background: rgba(0,0,0,0.5); border: 1px solid rgba(212,175,55,0.3); border-radius: 40px; padding: 10px 20px; cursor: pointer; color: #D4AF37; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; transition: all 0.2s; }
-        .back-btn:hover { background: rgba(212,175,55,0.15); transform: translateX(-3px); }
-        
-        .company-section { background: rgba(15,20,25,0.7); backdrop-filter: blur(12px); border-radius: 40px; padding: 40px; margin-bottom: 30px; border: 1px solid rgba(212,175,55,0.2); }
-        .company-header { display: flex; align-items: center; gap: 24px; margin-bottom: 30px; flex-wrap: wrap; }
-        .company-logo { width: 80px; height: 80px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); border-radius: 24px; display: flex; align-items: center; justify-content: center; }
-        .company-logo i { font-size: 48px; color: #0a0c10; }
-        .company-name { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #F5E7B2, #D4AF37); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .company-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
-        .stat-item { text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 28px; }
-        .stat-number { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        
-        .photo-preview-area { display: flex; justify-content: center; margin-bottom: 20px; }
-        .photo-preview { width: 150px; height: 150px; border-radius: 75px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); display: flex; align-items: center; justify-content: center; border: 3px solid #D4AF37; overflow: hidden; }
-        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-preview i { font-size: 80px; color: #0a120e; }
-        .upload-btn-area { display: flex; gap: 12px; margin-top: 16px; }
-        
-        .logo-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
-        .logo-item { width: 80px; height: 80px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(212,175,55,0.3); overflow: hidden; }
-        .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .logo-item i { font-size: 40px; color: #D4AF37; }
-        
-        @media (max-width: 992px) { .services-grid { grid-template-columns: repeat(2, 1fr); } .hero-title { font-size: 48px; } }
-        @media (max-width: 768px) { .services-grid { grid-template-columns: 1fr; } .hero-title { font-size: 36px; } .action-buttons-home { flex-direction: column; align-items: center; } .btn-home { width: 200px; } .profile-photo-large { width: 100px; height: 100px; } }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #1a1e26; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 10px; }
     </style>
 </head>
 <body>
 <div class="app-container" id="appContainer">
-    <div id="realTimeIndicator" class="real-time-indicator" style="display: none;"><i class="fas fa-sync-alt fa-fw"></i> Live</div>
+    <div id="realTimeIndicator" class="real-time-indicator"><i class="fas fa-sync-alt fa-fw"></i> Live</div>
 
-    <!-- LANDING PAGE -->
-    <div id="landingPage" class="page">
+    <!-- ===== LANDING PAGE ===== -->
+    <div id="landingPage" class="page active-page">
         <div class="luxury-header">
             <div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="brandName">LUXCY</div></div>
-            <div class="company-info-btn" id="companyInfoBtn"><i class="fas fa-info-circle"></i><span id="companyInfoText">About Company</span></div>
+            <div class="company-info-btn" id="companyInfoBtn" style="background:rgba(212,175,55,0.12);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:10px;color:var(--lux-gold);font-weight:600;"><i class="fas fa-info-circle"></i><span id="companyInfoText">About Company</span></div>
         </div>
+        <!-- MARQUEE ICON STRIP -->
+        <div class="icon-marquee">
+            <div class="icon-marquee-track">
+                <i class="fas fa-plane"></i><i class="fas fa-hotel"></i><i class="fas fa-train"></i><i class="fas fa-tasks"></i>
+                <i class="fas fa-globe-asia"></i><i class="fas fa-umbrella-beach"></i><i class="fas fa-ship"></i><i class="fas fa-car"></i>
+                <i class="fas fa-bus"></i><i class="fas fa-bicycle"></i><i class="fas fa-map-marked-alt"></i><i class="fas fa-passport"></i>
+                <i class="fas fa-credit-card"></i><i class="fas fa-wallet"></i><i class="fas fa-coins"></i><i class="fas fa-gem"></i>
+                <i class="fas fa-rocket"></i><i class="fas fa-crown"></i><i class="fas fa-shield-alt"></i><i class="fas fa-lock"></i>
+                <i class="fas fa-key"></i><i class="fas fa-ticket-alt"></i><i class="fas fa-bed"></i><i class="fas fa-utensils"></i>
+                <i class="fas fa-dumbbell"></i><i class="fas fa-swimmer"></i><i class="fas fa-sun"></i><i class="fas fa-moon"></i>
+                <i class="fas fa-cloud-sun"></i><i class="fas fa-snowflake"></i><i class="fas fa-tree"></i><i class="fas fa-mountain"></i>
+                <i class="fas fa-camera"></i><i class="fas fa-video"></i><i class="fas fa-music"></i><i class="fas fa-headphones"></i>
+            </div>
+        </div>
+
         <div id="logoContainer" class="logo-container"></div>
-        <div class="luxury-hero">
-            <div class="hero-badge">PREMIUM TRAVEL & EARNINGS</div>
-            <h1 class="hero-title" id="heroTitle">LUXCY</h1>
-            <p class="hero-subtitle" id="heroSubtitle">Experience luxury travel while earning daily commissions. Book flights, hotels, trains and complete tasks to grow your wealth.</p>
-            <div class="services-grid">
-                <div class="service-card" id="serviceFlights"><div class="service-icon"><i class="fas fa-plane"></i></div><div class="service-title" id="serviceFlightsTitle">Flights</div><div class="service-desc" id="serviceFlightsDesc">Book flights worldwide with exclusive luxury prices</div></div>
-                <div class="service-card" id="serviceHotels"><div class="service-icon"><i class="fas fa-hotel"></i></div><div class="service-title" id="serviceHotelsTitle">Hotels</div><div class="service-desc" id="serviceHotelsDesc">Find best luxury hotel deals globally</div></div>
-                <div class="service-card" id="serviceTrains"><div class="service-icon"><i class="fas fa-train"></i></div><div class="service-title" id="serviceTrainsTitle">Trains</div><div class="service-desc" id="serviceTrainsDesc">Premium train tickets & schedules</div></div>
-                <div class="service-card" id="serviceTasks"><div class="service-icon"><i class="fas fa-tasks"></i></div><div class="service-title" id="serviceTasksTitle">Task Platform</div><div class="service-desc" id="serviceTasksDesc">Earn daily commissions up to 1%</div></div>
+
+        <div class="luxury-hero" style="background:linear-gradient(135deg,rgba(0,0,0,0.6) 0%,rgba(212,175,55,0.1) 100%);backdrop-filter:blur(10px);border-radius:48px;padding:60px 48px;margin-bottom:40px;border:1px solid var(--lux-border-gold);box-shadow:var(--lux-shadow);">
+            <div class="hero-badge" style="display:inline-block;background:rgba(212,175,55,0.15);border:1px solid var(--lux-border-gold);border-radius:40px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--lux-gold);margin-bottom:20px;letter-spacing:2px;">PREMIUM TRAVEL & EARNINGS</div>
+            <h1 class="hero-title" id="heroTitle" style="font-family:'Playfair Display',serif;font-size:64px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold-light),var(--lux-gold),var(--lux-gold-dark));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;">LUXCY</h1>
+            <p class="hero-subtitle" id="heroSubtitle" style="font-size:18px;color:var(--lux-text-light);margin-bottom:40px;max-width:550px;line-height:1.6;">Experience luxury travel while earning daily commissions. Book flights, hotels, trains and complete tasks to grow your wealth.</p>
+            <div class="services-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:48px;">
+                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-plane"></i></div><div class="service-title" id="serviceFlightsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Flights</div><div class="service-desc" id="serviceFlightsDesc" style="font-size:13px;color:var(--lux-text-muted);">Book flights worldwide</div></div>
+                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-hotel"></i></div><div class="service-title" id="serviceHotelsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Hotels</div><div class="service-desc" id="serviceHotelsDesc" style="font-size:13px;color:var(--lux-text-muted);">Best luxury hotel deals</div></div>
+                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-train"></i></div><div class="service-title" id="serviceTrainsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Trains</div><div class="service-desc" id="serviceTrainsDesc" style="font-size:13px;color:var(--lux-text-muted);">Premium train tickets</div></div>
+                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-tasks"></i></div><div class="service-title" id="serviceTasksTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Task Platform</div><div class="service-desc" id="serviceTasksDesc" style="font-size:13px;color:var(--lux-text-muted);">Earn up to 1% daily</div></div>
             </div>
-            <div class="action-buttons-home">
-                <button class="btn-home btn-login" id="landingLoginBtn"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
-                <button class="btn-home btn-register" id="landingRegisterBtn"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
+            <div class="action-buttons-home" style="display:flex;gap:20px;justify-content:center;margin-top:40px;flex-wrap:wrap;">
+                <button class="btn-home btn-login" id="landingLoginBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;border:none;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light),var(--lux-gold-dark));color:#0a120e;box-shadow:0 5px 25px rgba(212,175,55,0.3);"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
+                <button class="btn-home btn-register" id="landingRegisterBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;background:transparent;border:2px solid var(--lux-gold);color:var(--lux-gold-light);"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
             </div>
         </div>
+
         <div class="company-section" id="companySection">
-            <div class="company-header">
-                <div class="company-logo" id="companyLogo"><i class="fas fa-globe-asia"></i></div>
-                <div><div class="company-name" id="companyNameText">LUXCY Travel & Task</div><div class="text-muted" id="companyTaglineText">Global Luxury Travel & Earning Platform</div></div>
+            <div class="company-header" style="display:flex;align-items:center;gap:24px;margin-bottom:30px;flex-wrap:wrap;">
+                <div class="company-logo" id="companyLogo" style="width:80px;height:80px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));border-radius:24px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-globe-asia" style="font-size:48px;color:#0a0c10;"></i></div>
+                <div><div class="company-name" id="companyNameText" style="font-family:'Playfair Display',serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold-light),var(--lux-gold));-webkit-background-clip:text;background-clip:text;color:transparent;">LUXCY Travel & Task</div><div class="text-muted" id="companyTaglineText" style="color:var(--lux-text-muted);">Global Luxury Travel & Earning Platform</div></div>
             </div>
             <div class="company-stats">
-                <div class="stat-item"><div class="stat-number" id="stat1Number">50M+</div><div class="stat-label" id="stat1Label">Happy Customers</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat2Number">200+</div><div class="stat-label" id="stat2Label">Countries & Regions</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat3Number">1M+</div><div class="stat-label" id="stat3Label">Daily Bookings</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat1Number">50M+</div><div class="stat-label" id="stat1Label" style="color:var(--lux-text-muted);">Happy Customers</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat2Number">200+</div><div class="stat-label" id="stat2Label" style="color:var(--lux-text-muted);">Countries & Regions</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat3Number">1M+</div><div class="stat-label" id="stat3Label" style="color:var(--lux-text-muted);">Daily Bookings</div></div>
             </div>
-            <div class="company-description" id="companyDescription" style="color: rgba(255,255,255,0.8); line-height: 1.8;"><p>LUXCY is a premier luxury travel and task platform that combines affordable travel bookings with earning opportunities.</p><p>With over 50 million satisfied customers worldwide, we provide flights, hotels, train tickets, and car rentals at the best prices.</p><p>Join millions of users who trust LUXCY for their travel needs and extra income. 24/7 customer support, secure payments, and best price guarantee.</p></div>
+            <div class="company-description" id="companyDescription"><p>LUXCY is a premier luxury travel and task platform that combines affordable travel bookings with earning opportunities.</p><p>With over 50 million satisfied customers worldwide, we provide flights, hotels, train tickets, and car rentals at the best prices.</p><p>Join millions of users who trust LUXCY for their travel needs and extra income. 24/7 customer support, secure payments, and best price guarantee.</p></div>
         </div>
     </div>
 
-    <!-- LOGIN PAGE -->
+    <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage" class="page">
-        <div class="back-btn" id="backToLandingFromLogin"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
-        <div style="text-align: center; margin: 20px 0 30px;"><div class="luxury-logo" style="margin: 0 auto 16px; width: 70px; height: 70px;"><i class="fas fa-crown" style="font-size: 40px;"></i></div><h1 style="font-size: 42px; background: linear-gradient(135deg, #D4AF37, #F5E7B2); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: 'Playfair Display', serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline">Premium Task Ecosystem</p></div>
-        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position: relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right: 50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #D4AF37;"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button><div class="flex-between" style="margin-top: 20px;"><span class="text-muted" id="forgotPasswordText">Forgot Password?</span><span id="goToRegisterBtn" style="color:#D4AF37; font-weight:800; cursor:pointer;">Register →</span></div></div>
+        <div class="back-btn" id="backToLandingFromLogin" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;color:var(--lux-gold);display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;transition:all 0.2s;"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
+        <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--lux-text-muted);">Premium Task Ecosystem</p></div>
+        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button><div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--lux-text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Register →</span></div></div>
     </div>
 
-    <!-- REGISTER PAGE -->
+    <!-- ===== REGISTER PAGE ===== -->
     <div id="registerPage" class="page">
-        <div class="back-btn" id="backToLandingFromRegister"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
-        <div style="text-align: center; margin-bottom: 20px;"><h2 style="color:#D4AF37; font-family: 'Playfair Display', serif;" id="registerTitle">Create Account</h2></div>
-        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position: relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right: 50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #D4AF37;"></i></div><div class="password-wrapper" style="position: relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right: 50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #D4AF37;"></i></div><div class="password-wrapper" style="position: relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right: 50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #D4AF37;"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button><div style="text-align:center; margin-top: 18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:#D4AF37; font-weight:800; cursor:pointer;">Login</span></div></div>
+        <div class="back-btn" id="backToLandingFromRegister" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;color:var(--lux-gold);display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;transition:all 0.2s;"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
+        <div style="text-align:center;margin-bottom:20px;"><h2 style="color:var(--lux-gold);font-family:'Playfair Display',serif;" id="registerTitle">Create Account</h2></div>
+        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button><div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Login</span></div></div>
     </div>
-    
-    <!-- HOME PAGE -->
+
+    <!-- ===== HOME PAGE ===== -->
     <div id="homePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">Ubuy</div></div><div style="display: flex; gap: 12px;"><div class="refresh-btn" id="refreshHomeBtn"><i class="fas fa-sync-alt"></i></div><div class="signout-icon" id="signOutBtnHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div></div></div>
-        <div class="flex-between" style="margin-bottom: 16px;"><div><span class="text-muted" id="welcomeText">Welcome</span> <strong id="homeFullName" style="color:#D4AF37; font-size: 20px;">---</strong></div><div><span class="text-muted" id="vipLevelText">VIP Level</span> <strong id="homeVipLevel" class="text-gold">VIP 1</strong></div></div>
-        <div class="balance-badge-lux"><div class="text-muted" id="accountBalanceText">Account Balance</div><div style="font-size: 52px; font-weight: 800; color:#F5E7B2;" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
-        <div class="card-lux"><div class="flex-between"><div><span class="text-muted" id="todayEarningsText">Today's Earnings</span><br><strong id="todayEarningsHome" class="text-gold" style="font-size: 24px;">S/ 0.00</strong></div><div><span class="text-muted" id="yesterdayText">Yesterday</span><br><strong id="yesterdayEarnings" class="text-gold">S/ 0.00</strong></div><div><span class="text-muted" id="totalCommissionText">Total Commission</span><br><strong id="totalCommissionHome" class="text-gold">S/ 0.00</strong></div></div></div>
-        <div class="flex-between" style="gap: 16px; margin-bottom: 20px;"><button class="btn-lux" id="rechargeHomeBtn" style="background: linear-gradient(135deg, #10b981, #059669); color:white;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button><button class="btn-lux" id="withdrawHomeBtn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color:white;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button></div>
-        <div class="invite-card"><div class="text-muted" id="referralCodeText">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay">------</div></div>
-        <div class="card-lux" style="padding: 16px;"><div class="flex-between"><span class="text-light">VIP1 (0.5%)</span><span class="text-light">VIP2 (0.7%)</span><span class="text-light">VIP3 (0.8%)</span><span class="text-light">VIP4 (1.0%)</span></div><div class="flex-between text-muted" style="font-size:11px; margin-top: 8px;"><span>Min: S/0</span><span>Min: S/100</span><span>Min: S/500</span><span>Min: S/1500</span></div></div>
-        <div class="live-feed-container"><div class="text-gold" style="margin-bottom: 12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div><div id="liveFeedList"></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">LUXCY</div></div><div style="display:flex;gap:12px;"><div class="refresh-btn" id="refreshHomeBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div><div class="signout-icon" id="signOutBtnHome" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div></div></div>
+        <div class="flex-between" style="margin-bottom:16px;"><div><span class="text-muted" id="welcomeText" style="color:var(--lux-text-muted);">Welcome</span> <strong id="homeFullName" style="color:var(--lux-gold);font-size:20px;">---</strong></div><div><span class="text-muted" id="vipLevelText" style="color:var(--lux-text-muted);">VIP Level</span> <strong id="homeVipLevel" class="text-gold">VIP 1</strong></div></div>
+        <div class="balance-badge-lux" style="background:linear-gradient(135deg,rgba(10,18,14,0.9),rgba(26,42,31,0.9));border-radius:36px;padding:24px 28px;border:1px solid var(--lux-gold);box-shadow:var(--lux-shadow);position:relative;overflow:hidden;"><div class="text-muted" id="accountBalanceText" style="color:var(--lux-text-muted);">Account Balance</div><div style="font-size:52px;font-weight:800;color:var(--lux-gold-light);" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
+        <div class="card-lux"><div class="flex-between"><div><span class="text-muted" id="todayEarningsText" style="color:var(--lux-text-muted);">Today's Earnings</span><br><strong id="todayEarningsHome" class="text-gold" style="font-size:24px;">S/ 0.00</strong></div><div><span class="text-muted" id="yesterdayText" style="color:var(--lux-text-muted);">Yesterday</span><br><strong id="yesterdayEarnings" class="text-gold">S/ 0.00</strong></div><div><span class="text-muted" id="totalCommissionText" style="color:var(--lux-text-muted);">Total Commission</span><br><strong id="totalCommissionHome" class="text-gold">S/ 0.00</strong></div></div></div>
+        <div class="flex-between" style="gap:16px;margin-bottom:20px;"><button class="btn-lux" id="rechargeHomeBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button><button class="btn-lux" id="withdrawHomeBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button></div>
+        <div class="invite-card" style="background:rgba(0,0,0,0.5);border-radius:24px;padding:16px;margin-top:16px;text-align:center;border:1px solid var(--lux-border-gold);"><div class="text-muted" id="referralCodeText" style="color:var(--lux-text-muted);">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay" style="font-size:22px;font-weight:800;letter-spacing:3px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">------</div></div>
+        <div class="card-lux" style="padding:16px;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">VIP1 (0.5%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP2 (0.7%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP3 (0.8%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP4 (1.0%)</span></div><div class="flex-between text-muted" style="font-size:11px;margin-top:8px;color:var(--lux-text-muted);"><span>Min: S/0</span><span>Min: S/100</span><span>Min: S/500</span><span>Min: S/1500</span></div></div>
+        <div class="live-feed-container" style="background:rgba(0,0,0,0.5);border-radius:24px;padding:16px;margin-top:20px;max-height:200px;overflow-y:auto;border:1px solid rgba(212,175,55,0.15);"><div class="text-gold" style="margin-bottom:12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div><div id="liveFeedList"></div></div>
     </div>
 
-    <!-- WORK PAGE -->
+    <!-- ===== WORK PAGE ===== -->
     <div id="workPage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-briefcase"></i></div><div class="luxury-brand" id="shoppingTasksText">Shopping Tasks</div></div><div class="refresh-btn" id="refreshWorkBtn"><i class="fas fa-sync-alt"></i></div></div>
-        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin: 16px 0;"><div class="progress-fill" id="taskProgressFill"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
-        <div id="currentOrderDisplay" style="display: none;"></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-briefcase"></i></div><div class="luxury-brand" id="shoppingTasksText">Shopping Tasks</div></div><div class="refresh-btn" id="refreshWorkBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText" style="color:var(--lux-text-light);">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin:16px 0;background:rgba(255,255,255,0.1);border-radius:20px;height:8px;overflow:hidden;"><div class="progress-fill" id="taskProgressFill" style="background:linear-gradient(90deg,var(--lux-gold),var(--lux-gold-light));height:100%;width:0%;transition:width 0.5s;"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
+        <div id="currentOrderDisplay" style="display:none;"></div>
     </div>
 
-    <!-- ORDER HISTORY PAGE -->
+    <!-- ===== ORDER HISTORY PAGE ===== -->
     <div id="orderPage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-clipboard-list"></i></div><div class="luxury-brand" id="orderHistoryText">Order History</div></div><div class="refresh-btn" id="refreshOrderBtn"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-clipboard-list"></i></div><div class="luxury-brand" id="orderHistoryText">Order History</div></div><div class="refresh-btn" id="refreshOrderBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
         <div id="completedOrdersList"></div>
     </div>
 
-    <!-- MINE PAGE -->
+    <!-- ===== MINE PAGE ===== -->
     <div id="minePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-user"></i></div><div class="luxury-brand" id="myProfileText">My Profile</div></div><div class="refresh-btn" id="refreshMineBtn"><i class="fas fa-sync-alt"></i></div></div>
-        
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-user"></i></div><div class="luxury-brand" id="myProfileText">My Profile</div></div><div class="refresh-btn" id="refreshMineBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
         <div class="card-lux">
-            <div style="display: flex; align-items: center; gap: 32px; flex-wrap: wrap;">
+            <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
                 <div class="profile-photo-large" id="mineProfilePhoto"><i class="fas fa-user-circle"></i></div>
-                <div>
-                    <strong id="mineFullName" style="color:#D4AF37; font-size: 28px; font-family: 'Playfair Display', serif;">---</strong>
-                    <div style="margin-top: 12px;"><span class="badge-lux" id="mineVipLevel">VIP 1</span></div>
-                    <div class="text-muted" style="margin-top: 10px;">⭐ <span id="creditText">Credit</span>: <span id="creditScore" style="color:#D4AF37; font-weight:700; font-size: 18px;">0</span></div>
-                </div>
+                <div><strong id="mineFullName" style="color:var(--lux-gold);font-size:28px;font-family:'Playfair Display',serif;">---</strong><div style="margin-top:12px;"><span class="badge-lux" id="mineVipLevel">VIP 1</span></div><div class="text-muted" style="margin-top:10px;color:var(--lux-text-muted);">⭐ <span id="creditText">Credit</span>: <span id="creditScore" style="color:var(--lux-gold);font-weight:700;font-size:18px;">0</span></div></div>
             </div>
         </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card"><div class="stat-value" id="mineTotalAssets">S/ 0.00</div><div class="stat-label" id="totalAssetsText">Total Assets</div></div>
-            <div class="stat-card"><div class="stat-value" id="mineTodayOrders">0</div><div class="stat-label" id="todayOrdersText">Today's Orders</div></div>
-            <div class="stat-card"><div class="stat-value" id="mineTodayEarn">S/ 0.0000</div><div class="stat-label" id="todayEarningsTextMine">Today's Earnings</div></div>
-            <div class="stat-card"><div class="stat-value" id="mineTotalComm">S/ 0.0000</div><div class="stat-label" id="totalCommissionTextMine">Total Commission</div></div>
+        <div class="stats-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0;">
+            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTotalAssets" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.00</div><div class="stat-label" id="totalAssetsText" style="color:var(--lux-text-muted);">Total Assets</div></div>
+            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTodayOrders" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">0</div><div class="stat-label" id="todayOrdersText" style="color:var(--lux-text-muted);">Today's Orders</div></div>
+            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTodayEarn" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.0000</div><div class="stat-label" id="todayEarningsTextMine" style="color:var(--lux-text-muted);">Today's Earnings</div></div>
+            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTotalComm" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.0000</div><div class="stat-label" id="totalCommissionTextMine" style="color:var(--lux-text-muted);">Total Commission</div></div>
         </div>
-        
-        <div class="flex-between" style="gap: 16px; margin-bottom: 20px;">
-            <button class="btn-lux" id="depositBtn" style="background: linear-gradient(135deg, #10b981, #059669); color:white; width:48%;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
-            <button class="btn-lux" id="withdrawBtn" style="background: linear-gradient(135deg, #f59e0b, #d97706); color:white; width:48%;"><i class="fas fa-minus-circle"></i> <span id="withdrawTextMine">Withdraw</span></button>
+        <div class="flex-between" style="gap:16px;margin-bottom:20px;">
+            <button class="btn-lux" id="depositBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;width:48%;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
+            <button class="btn-lux" id="withdrawBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;width:48%;"><i class="fas fa-minus-circle"></i> <span id="withdrawTextMine">Withdraw</span></button>
         </div>
-        
-        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px;">
             <button class="btn-outline-lux btn-lux" id="bindWalletBtn"><i class="fas fa-link"></i> <span id="bindWalletText">Bind Crypto Wallet</span></button>
             <button class="btn-outline-lux btn-lux" id="personalDetailsBtn"><i class="fas fa-id-card"></i> <span id="personalDetailsText">Personal Details</span></button>
             <button class="btn-outline-lux btn-lux" id="loanServiceBtn"><i class="fas fa-hand-holding-usd"></i> <span id="loanServiceText">Loan Service</span></button>
         </div>
-        
-        <div class="flex-between" style="gap: 12px; margin-bottom: 20px;">
+        <div class="flex-between" style="gap:12px;margin-bottom:20px;">
             <button class="btn-outline-lux btn-lux" id="rechargeHistoryBtn" style="flex:1;"><i class="fas fa-history"></i> <span id="rechargeHistoryText">Recharge History</span></button>
             <button class="btn-outline-lux btn-lux" id="withdrawHistoryBtn" style="flex:1;"><i class="fas fa-list"></i> <span id="withdrawHistoryText">Withdraw History</span></button>
         </div>
-        
-        <div class="card-lux" style="margin-bottom: 20px;">
-            <div class="info-row"><span class="info-label"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay">Not set</span></div>
+        <div class="card-lux" style="margin-bottom:20px;">
+            <div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay" style="color:var(--lux-text-light);">Not set</span></div>
         </div>
-        
-        <div class="commission-info">
-            <h4><i class="fas fa-chart-line"></i> <span id="howCommissionsText">How Commissions Work</span></h4>
-            <p>• <span id="commDesc1">Each completed task earns you a commission based on your VIP level</span></p>
-            <p>• <strong class="text-gold">VIP 1:</strong> 0.5% | <strong class="text-gold">VIP 2:</strong> 0.7% | <strong class="text-gold">VIP 3:</strong> 0.8% | <strong class="text-gold">VIP 4:</strong> 1.0%</p>
-            <p>• <span id="commDesc2">Referral bonus: 10% of your referral's earnings</span></p>
-            <p>• <span id="commDesc3">Daily task limit: Based on your assigned orders</span></p>
-            <p class="text-muted" style="margin-top: 12px; font-size: 11px;"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
+        <div class="commission-info" style="background:rgba(212,175,55,0.05);border-radius:24px;padding:20px;margin-top:20px;border:1px solid rgba(212,175,55,0.15);">
+            <h4 style="color:var(--lux-gold);margin-bottom:16px;"><i class="fas fa-chart-line"></i> <span id="howCommissionsText">How Commissions Work</span></h4>
+            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc1">Each completed task earns commission based on VIP level</span></p>
+            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <strong class="text-gold">VIP 1:</strong> 0.5% | <strong class="text-gold">VIP 2:</strong> 0.7% | <strong class="text-gold">VIP 3:</strong> 0.8% | <strong class="text-gold">VIP 4:</strong> 1.0%</p>
+            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc2">Referral bonus: 10% of referral's earnings</span></p>
+            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc3">Daily task limit based on assigned orders</span></p>
+            <p class="text-muted" style="margin-top:12px;font-size:11px;color:var(--lux-text-muted);"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
         </div>
-        
-        <div class="card-lux" style="margin-top: 20px;">
-            <div style="text-align: center; margin-bottom: 16px;"><span class="text-gold"><i class="fas fa-globe"></i> <span id="selectLanguageText">Select Language</span></span></div>
-            <div class="language-selector" id="languageSelector">
-                <div class="lang-option" data-lang="en"><span class="lang-flag">🇺🇸</span><span class="lang-name">English</span></div>
-                <div class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span><span class="lang-name">Thai</span></div>
-                <div class="lang-option" data-lang="es"><span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span></div>
-                <div class="lang-option" data-lang="uk"><span class="lang-flag">🇺🇦</span><span class="lang-name">Ukrainian</span></div>
-                <div class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span class="lang-name">Russian</span></div>
+        <div class="card-lux" style="margin-top:20px;">
+            <div style="text-align:center;margin-bottom:16px;"><span class="text-gold"><i class="fas fa-globe"></i> <span id="selectLanguageText">Select Language</span></span></div>
+            <div class="language-selector" id="languageSelector" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0;">
+                <div class="lang-option" data-lang="en" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇺🇸</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">English</span></div>
+                <div class="lang-option" data-lang="th" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇹🇭</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Thai</span></div>
+                <div class="lang-option" data-lang="es" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇪🇸</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Spanish</span></div>
+                <div class="lang-option" data-lang="uk" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇺🇦</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Ukrainian</span></div>
+                <div class="lang-option" data-lang="ru" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇷🇺</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Russian</span></div>
             </div>
         </div>
-        
-        <div class="signout-icon" id="signOutBtnMine" style="justify-content:center; margin-top:16px; text-align:center;"><span id="signOutText">Sign Out</span></div>
+        <div class="signout-icon" id="signOutBtnMine" style="justify-content:center;margin-top:16px;text-align:center;background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:12px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><span id="signOutText">Sign Out</span></div>
     </div>
 
-    <!-- SERVICE PAGE -->
+    <!-- ===== SERVICE PAGE ===== -->
     <div id="servicePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-headset"></i></div><div class="luxury-brand" id="customerServiceText">Customer Service</div></div><div class="refresh-btn" id="refreshServiceBtn"><i class="fas fa-sync-alt"></i></div></div>
-        <div class="chat-container"><div class="chat-messages" id="customerChatMessages"></div><div class="chat-input-area"><button class="emoji-btn" id="customerEmojiBtn" style="background: rgba(212,175,55,0.2); border: none; border-radius: 40px; padding: 10px 16px; cursor: pointer; color: #D4AF37;"><i class="far fa-smile"></i></button><input type="text" class="input-lux" id="customerChatInput" placeholder="Type a message..." style="margin-bottom:0;"><button class="upload-chat-btn" id="customerUploadBtn" style="background: rgba(212,175,55,0.2); border: none; border-radius: 40px; padding: 10px 16px; cursor: pointer; color: #D4AF37;"><i class="fas fa-image"></i></button><input type="file" id="customerChatImageInput" accept="image/*" style="display:none;"><button class="btn-lux" id="customerSendBtn" style="width:auto; padding:10px 24px;"><span id="sendText">Send</span></button></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-headset"></i></div><div class="luxury-brand" id="customerServiceText">Customer Service</div></div><div class="refresh-btn" id="refreshServiceBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="chat-container">
+            <div class="chat-messages" id="customerChatMessages"></div>
+            <div class="chat-input-area">
+                <button class="emoji-btn" id="customerEmojiBtn" style="background:rgba(212,175,55,0.2);border:none;border-radius:40px;padding:10px 16px;cursor:pointer;color:var(--lux-gold);"><i class="far fa-smile"></i></button>
+                <input type="text" class="input-lux" id="customerChatInput" placeholder="Type a message..." style="margin-bottom:0;">
+                <button class="upload-chat-btn" id="customerUploadBtn" style="background:rgba(212,175,55,0.2);border:none;border-radius:40px;padding:10px 16px;cursor:pointer;color:var(--lux-gold);"><i class="fas fa-image"></i></button>
+                <input type="file" id="customerChatImageInput" accept="image/*" style="display:none;">
+                <button class="btn-lux" id="customerSendBtn" style="width:auto;padding:10px 24px;"><span id="sendText">Send</span></button>
+            </div>
+        </div>
     </div>
 
+    <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav-lux hidden-nav" id="bottomNav">
         <div class="nav-item-lux" data-nav="home"><i class="fas fa-home"></i><span id="navHome">Home</span></div>
         <div class="nav-item-lux" data-nav="work"><i class="fas fa-briefcase"></i><span id="navWork">Work</span></div>
@@ -352,11 +600,10 @@
         messagingSenderId: "319316492310",
         appId: "1:319316492310:web:b6b4969543d00b993eb537"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // ==================== CONFIG ====================
+    // ==================== GLOBALS ====================
     let currentUser = null;
     let currentOrder = null;
     let currentRatings = { service: 0, quality: 0, sales: 0 };
@@ -368,9 +615,9 @@
     let unsubscribeLogos = null;
     let unsubscribeCompany = null;
     let unsubscribeInjections = null;
+    let currentLang = localStorage.getItem('lang') || 'en';
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
-    
     function getVIPLevel(user) {
         if (user && user.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel;
         const balance = user?.balance || 0;
@@ -379,7 +626,6 @@
         if (balance >= 100) return 2;
         return 1;
     }
-
     function getCommissionRate(user) { return VIP_RATES[getVIPLevel(user)]; }
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
 
@@ -576,15 +822,12 @@
             bonusOrder: "БОНУСНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!"
         }
     };
-    
-    let currentLang = localStorage.getItem('lang') || 'en';
-    
+
     function applyLanguage(lang) {
         const dict = translations[lang] || translations.en;
         currentLang = lang;
         localStorage.setItem('lang', lang);
         document.querySelectorAll('.lang-option').forEach(opt => { if (opt.getAttribute('data-lang') === lang) opt.classList.add('active'); else opt.classList.remove('active'); });
-        
         const elements = {
             heroTitle: dict.heroTitle, heroSubtitle: dict.heroSubtitle,
             serviceFlightsTitle: dict.serviceFlightsTitle, serviceFlightsDesc: dict.serviceFlightsDesc,
@@ -623,13 +866,12 @@
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
 
-    // ==================== FIREBASE HELPER FUNCTIONS ====================
+    // ==================== FIREBASE HELPERS ====================
     async function saveOrderToHistory(userId, orderData) {
         const ordersRef = collection(db, "users", userId, "orders");
         await addDoc(ordersRef, { ...orderData, timestamp: new Date().toISOString() });
         await deleteOldOrdersIfNeeded(userId, 50);
     }
-    
     async function getUserOrders(userId) {
         const ordersRef = collection(db, "users", userId, "orders");
         const q = query(ordersRef, orderBy("timestamp", "desc"));
@@ -638,7 +880,6 @@
         snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
         return orders;
     }
-    
     async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
         const ordersRef = collection(db, "users", userId, "orders");
         const q = query(ordersRef, orderBy("timestamp", "desc"));
@@ -646,61 +887,45 @@
         if (snapshot.size > maxOrders) {
             const toDelete = [];
             let count = 0;
-            for (const doc of snapshot.docs) {
-                count++;
-                if (count > maxOrders) toDelete.push(doc.id);
-            }
+            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
             for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
         }
     }
-    
-    // ==================== INJECTION SYSTEM - REAL TIME SUBSCRIPTION ====================
+
+    // ==================== INJECTION SYSTEM ====================
     function subscribeToInjections(userId) {
         if (unsubscribeInjections) unsubscribeInjections();
         const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
         unsubscribeInjections = onSnapshot(q, async (snapshot) => {
             const pendingInjections = [];
             snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-            
             if (pendingInjections.length > 0 && currentUser) {
-                // Sort by task number to ensure proper order
                 pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
                 currentUser.pendingInjections = pendingInjections;
                 await saveCurrentUser();
-                
                 const dict = translations[currentLang] || translations.en;
                 showLiveFeedback(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`, false);
-                
-                // If user is on work page, refresh order immediately
-                if (document.getElementById("workPage").classList.contains("active-page")) {
-                    refreshWorkPageOrder();
-                }
+                if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
             }
         });
     }
-    
     async function markInjectionAsUsed(injectionId) {
         const injectionRef = doc(db, "injections", injectionId);
         await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
     }
-    
     async function checkAndApplyInjections() {
         if (!currentUser) return [];
-        
         const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
         const snapshot = await getDocs(q);
         const pendingInjections = [];
         snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-        
         if (pendingInjections.length > 0) {
             pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
             currentUser.pendingInjections = pendingInjections;
             await saveCurrentUser();
         }
-        
         return pendingInjections;
     }
-    
     async function getInjectionForTask(taskNumber) {
         if (!currentUser || !currentUser.pendingInjections) return null;
         const injection = currentUser.pendingInjections.find(i => i.taskNumber === taskNumber);
@@ -713,33 +938,14 @@
         return null;
     }
 
-    // ==================== PROFILE PHOTO UPLOAD MODAL ====================
+    // ==================== PROFILE PHOTO ====================
     function showUploadPhotoModal() {
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div");
         modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2 class="text-gold" style="text-align:center; margin-bottom: 20px;">${dict.uploadPhoto}</h2>
-                <div class="photo-preview-area">
-                    <div class="photo-preview" id="uploadPreview">
-                        ${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle"></i>'}
-                    </div>
-                </div>
-                <div class="upload-area-sm" id="selectPhotoArea">
-                    <i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}
-                    <input type="file" id="photoUploadInput" accept="image/*" style="display:none;">
-                </div>
-                <div class="upload-btn-area">
-                    <button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button>
-                    <button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button>
-                </div>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.uploadPhoto}</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="uploadPreview" style="width:150px;height:150px;border-radius:75px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--lux-gold);overflow:hidden;">${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle" style="font-size:80px;color:#0a120e;"></i>'}</div></div><div class="upload-area-sm" id="selectPhotoArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}<input type="file" id="photoUploadInput" accept="image/*" style="display:none;"></div><div class="upload-btn-area" style="display:flex;gap:12px;margin-top:16px;"><button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button><button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button></div></div>`;
         document.body.appendChild(modal);
-        
         let selectedImageData = null;
-        
         modal.querySelector("#selectPhotoArea").onclick = () => modal.querySelector("#photoUploadInput").click();
         modal.querySelector("#photoUploadInput").onchange = async (e) => {
             const file = e.target.files[0];
@@ -750,23 +956,14 @@
                 previewDiv.innerHTML = `<img src="${compressed}">`;
             }
         };
-        
         modal.querySelector("#savePhotoBtn").onclick = async () => {
-            if (selectedImageData) {
-                currentUser.profilePhoto = selectedImageData;
-                await saveCurrentUser();
-                updateMineAvatar();
-                showLiveFeedback("Profile photo updated!");
-            }
+            if (selectedImageData) { currentUser.profilePhoto = selectedImageData; await saveCurrentUser(); updateMineAvatar(); showLiveFeedback("Profile photo updated!"); }
             document.body.removeChild(modal);
         };
-        
-        modal.querySelector("#cancelPhotoBtn").onclick = () => {
-            document.body.removeChild(modal);
-        };
+        modal.querySelector("#cancelPhotoBtn").onclick = () => document.body.removeChild(modal);
     }
 
-    // ==================== REAL-TIME SUBSCRIPTIONS ====================
+    // ==================== SUBSCRIPTIONS ====================
     function subscribeToLogos() {
         if (unsubscribeLogos) unsubscribeLogos();
         const logosRef = doc(db, "systemSettings", "logos");
@@ -796,7 +993,7 @@
                 if (data.companyName) document.getElementById("companyNameText").innerText = data.companyName;
                 if (data.companyTagline) document.getElementById("companyTaglineText").innerText = data.companyTagline;
                 if (data.companyDescription) document.getElementById("companyDescription").innerHTML = data.companyDescription;
-                if (data.companyLogo) { const logoEl = document.getElementById("companyLogo"); if (logoEl) logoEl.innerHTML = `<img src="${data.companyLogo}" style="width:60px; height:60px; object-fit:contain;">`; }
+                if (data.companyLogo) { const logoEl = document.getElementById("companyLogo"); if (logoEl) logoEl.innerHTML = `<img src="${data.companyLogo}" style="width:60px;height:60px;object-fit:contain;">`; }
                 if (data.stat1Number) document.getElementById("stat1Number").innerText = data.stat1Number;
                 if (data.stat2Number) document.getElementById("stat2Number").innerText = data.stat2Number;
                 if (data.stat3Number) document.getElementById("stat3Number").innerText = data.stat3Number;
@@ -810,7 +1007,7 @@
     function showCompanyInfoModal() {
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 style="color:#D4AF37; margin-bottom: 20px;">${dict.companyModalTitle || "About LUXCY"}</h2><div style="display: flex; justify-content: center; margin-bottom: 20px;"><div id="modalCompanyLogo" style="width: 100px; height: 100px; background: rgba(212,175,55,0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-globe-asia" style="font-size: 60px; color: #D4AF37;"></i></div></div><div id="modalCompanyDesc" style="color: rgba(255,255,255,0.8); line-height: 1.6; margin-bottom: 20px;">LUXCY is a premier luxury travel and task platform.</div><div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 16px; margin-bottom: 16px;"><h3 style="color: #D4AF37; margin-bottom: 10px;"><i class="fas fa-bullseye"></i> ${dict.companyModalMission || "Our Mission"}</h3><p style="color: rgba(255,255,255,0.7);">To provide seamless travel experiences and financial freedom.</p></div><div style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 16px; margin-bottom: 20px;"><h3 style="color: #D4AF37; margin-bottom: 10px;"><i class="fas fa-eye"></i> ${dict.companyModalVision || "Our Vision"}</h3><p style="color: rgba(255,255,255,0.7);">To become the world's leading integrated travel and earning platform.</p></div><button class="btn-lux" id="closeCompanyModal" style="width: 100%;">${dict.close || "Close"}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 style="color:var(--lux-gold);margin-bottom:20px;">${dict.companyModalTitle || "About LUXCY"}</h2><div style="display:flex;justify-content:center;margin-bottom:20px;"><div id="modalCompanyLogo" style="width:100px;height:100px;background:rgba(212,175,55,0.1);border-radius:20px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-globe-asia" style="font-size:60px;color:var(--lux-gold);"></i></div></div><div id="modalCompanyDesc" style="color:var(--lux-text-light);line-height:1.6;margin-bottom:20px;">LUXCY is a premier luxury travel and task platform.</div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:16px;"><h3 style="color:var(--lux-gold);margin-bottom:10px;"><i class="fas fa-bullseye"></i> ${dict.companyModalMission || "Our Mission"}</h3><p style="color:var(--lux-text-light);">To provide seamless travel experiences and financial freedom.</p></div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:20px;"><h3 style="color:var(--lux-gold);margin-bottom:10px;"><i class="fas fa-eye"></i> ${dict.companyModalVision || "Our Vision"}</h3><p style="color:var(--lux-text-light);">To become the world's leading integrated travel and earning platform.</p></div><button class="btn-lux" id="closeCompanyModal" style="width:100%;">${dict.close || "Close"}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("closeCompanyModal").onclick = () => document.body.removeChild(modal);
     }
@@ -855,16 +1052,16 @@
     const allNames = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
     function randName() { return allNames[Math.floor(Math.random()*allNames.length)]; }
     function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
-    function startLiveFeed() { 
-        if(liveFeedInterval) clearInterval(liveFeedInterval); 
-        const container = document.getElementById("liveFeedList"); 
-        if(!container) return; 
-        function add() { const item = document.createElement("div"); item.className = "live-feed-item"; item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+S/ ${randComm().toLocaleString()}</span> commission!`; container.prepend(item); if(container.children.length>8) container.removeChild(container.lastChild); } 
-        for(let i=0; i<3; i++) add(); 
-        liveFeedInterval = setInterval(add, 5000); 
+    function startLiveFeed() {
+        if(liveFeedInterval) clearInterval(liveFeedInterval);
+        const container = document.getElementById("liveFeedList");
+        if(!container) return;
+        function add() { const item = document.createElement("div"); item.className = "live-feed-item"; item.style.padding="10px"; item.style.borderBottom="1px solid rgba(212,175,55,0.15)"; item.style.fontSize="12px"; item.style.color="var(--lux-text-light)"; item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+S/ ${randComm().toLocaleString()}</span> commission!`; container.prepend(item); if(container.children.length>8) container.removeChild(container.lastChild); }
+        for(let i=0; i<3; i++) add();
+        liveFeedInterval = setInterval(add, 5000);
     }
 
-    // ==================== REAL-TIME SETTINGS ====================
+    // ==================== SETTINGS ====================
     function startSettingsSubscription() {
         if (unsubscribeSettings) unsubscribeSettings();
         const settingsRef = doc(db, "systemSettings", "main");
@@ -891,18 +1088,17 @@
     });
 
     // ==================== DATA HELPERS ====================
-    async function saveCurrentUser() { 
-        if(!currentUser) return; 
+    async function saveCurrentUser() {
+        if(!currentUser) return;
         const cleanUser = { ...currentUser };
         delete cleanUser.orders;
         delete cleanUser.pendingInjections;
-        await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true }); 
-        localStorage.setItem("currentUserId", currentUser.id); 
+        await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
+        localStorage.setItem("currentUserId", currentUser.id);
     }
-    
     async function loadSystemSettings() { const docRef = doc(db, "systemSettings", "main"); const docSnap = await getDoc(docRef); if (docSnap.exists()) return docSnap.data(); return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; }
     async function loadCustomOrders() { const snapshot = await getDocs(collection(db, "customOrders")); const orders = []; snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); return orders; }
-    
+
     function showLiveFeedback(message, isError = false) {
         let feedback = document.createElement('div');
         feedback.style.position = 'fixed'; feedback.style.bottom = '90px'; feedback.style.left = '50%'; feedback.style.transform = 'translateX(-50%)'; feedback.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(30,42,36,0.95)';
@@ -935,14 +1131,12 @@
         if(!currentUser) return;
         const dict = translations[currentLang] || translations.en;
         const userOrders = await getUserOrders(currentUser.id);
-        
         let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
         let balance = currentUser.balance || 0;
         let vipLevel = getVIPLevel(currentUser);
         let commissionRate = getCommissionRate(currentUser);
         let vipBadgeClass = getVIPBadgeClass(vipLevel);
-        
         document.getElementById("homeFullName").innerText = currentUser.username;
         document.getElementById("balanceAmount").innerText = `S/ ${balance.toFixed(2)}`;
         document.getElementById("todayOrdersCount").innerText = completedCount;
@@ -963,34 +1157,29 @@
         document.getElementById("taskCounterWork").innerText = `${completedCount}/${dailyLimit}`;
         let pct = dailyLimit ? (completedCount / dailyLimit) * 100 : 0;
         document.getElementById("taskProgressFill").style.width = pct + "%";
-        
         const completedOrders = userOrders.filter(o => o.status === "completed");
-        document.getElementById("completedOrdersList").innerHTML = completedOrders.length ? completedOrders.slice(0, 20).map(o => `<div class="card-lux"><div class="flex-between"><strong class="text-light">${o.name}</strong><span class="text-gold">${dict.completed || "Completed"}</span></div><div class="text-light">Amount: S/ ${o.amount?.toFixed(2) || 0} | Profit: +S/ ${(o.profit || 0).toFixed(4)}</div><div class="text-muted">${o.date || o.timestamp ? new Date(o.timestamp).toLocaleString() : ''}</div></div>`).join("") : `<div class="card-lux"><div class="text-light">${dict.noRecords || "No completed orders"}</div></div>`;
-        
+        document.getElementById("completedOrdersList").innerHTML = completedOrders.length ? completedOrders.slice(0, 20).map(o => `<div class="card-lux"><div class="flex-between"><strong class="text-light" style="color:var(--lux-text-light);">${o.name}</strong><span class="text-gold">${dict.completed || "Completed"}</span></div><div class="text-light" style="color:var(--lux-text-light);">Amount: S/ ${o.amount?.toFixed(2) || 0} | Profit: +S/ ${(o.profit || 0).toFixed(4)}</div><div class="text-muted" style="color:var(--lux-text-muted);">${o.date || o.timestamp ? new Date(o.timestamp).toLocaleString() : ''}</div></div>`).join("") : `<div class="card-lux"><div class="text-light" style="color:var(--lux-text-light);">${dict.noRecords || "No completed orders"}</div></div>`;
         updateMineAvatar();
     }
 
-    function updateMineAvatar() { 
-        const avatarDiv = document.getElementById("mineProfilePhoto"); 
+    function updateMineAvatar() {
+        const avatarDiv = document.getElementById("mineProfilePhoto");
         if(avatarDiv && currentUser) {
             avatarDiv.innerHTML = currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle"></i>';
         }
     }
-    
-    // ==================== ORDER SYSTEM WITH INJECTION SUPPORT ====================
-    async function getRandomOrderTemplate() { 
-        let orders = await loadCustomOrders(); 
-        if(orders.length === 0) return { id: 0, name: "Default Order", image: null, price: 10 }; 
-        return orders[Math.floor(Math.random() * orders.length)]; 
+
+    // ==================== ORDER SYSTEM WITH INJECTION ====================
+    async function getRandomOrderTemplate() {
+        let orders = await loadCustomOrders();
+        if(orders.length === 0) return { id: 0, name: "Default Order", image: null, price: 10 };
+        return orders[Math.floor(Math.random() * orders.length)];
     }
 
     async function getNextOrder() {
         const balance = currentUser.balance || 0;
         const commissionRate = getCommissionRate(currentUser);
-        
         const nextTaskNumber = (currentUser.tasks?.completed || 0) + 1;
-        
-        // Check for injection first - priority over normal orders
         let injection = null;
         if (currentUser.pendingInjections && currentUser.pendingInjections.length > 0) {
             injection = currentUser.pendingInjections.find(i => i.taskNumber === nextTaskNumber);
@@ -998,60 +1187,38 @@
                 await markInjectionAsUsed(injection.id);
                 currentUser.pendingInjections = currentUser.pendingInjections.filter(i => i.id !== injection.id);
                 await saveCurrentUser();
-            } else {
-                injection = null;
-            }
+            } else injection = null;
         }
-        
         let tpl = await getRandomOrderTemplate();
         let amount, netCommission, isInjection = false;
-        
         if (injection) {
-            // INJECTION ORDER - Use injection data from admin
             const injectionAmount = injection.extraAmount || 0;
-            // Order amount = user's current balance + injection extra amount
             amount = balance + injectionAmount;
-            
-            // Calculate commission: if fixed commission > 0, use it; else use rate
-            if (injection.commission > 0) {
-                netCommission = injection.commission;
-            } else if (injection.commissionRate > 0) {
-                netCommission = amount * (injection.commissionRate / 100);
-            } else {
-                netCommission = amount * commissionRate;
-            }
-            
+            if (injection.commission > 0) netCommission = injection.commission;
+            else if (injection.commissionRate > 0) netCommission = amount * (injection.commissionRate / 100);
+            else netCommission = amount * commissionRate;
             isInjection = true;
-            
             const dict = translations[currentLang] || translations.en;
             showLiveFeedback(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'} ${dict.injectionMessage || 'Special order from admin!'} Amount: S/ ${amount.toFixed(2)} | Commission: S/ ${netCommission.toFixed(4)}`, false);
         } else {
-            // Normal order
             let percent = 0.53 + (Math.random() * 0.26);
             amount = parseFloat((balance * percent).toFixed(2));
             let gross = balance * commissionRate;
             let fee = gross * 0.01;
             netCommission = gross - fee;
         }
-        
-        const order = { 
-            id: Date.now(), 
-            name: injection ? (injection.orderName || tpl.name) : tpl.name, 
-            imageData: injection?.imageData || tpl.image || null, 
-            amount: amount, 
-            netCommission: netCommission, 
-            rate: injection?.commissionRate || (commissionRate * 100), 
-            orderNumber: "ORD" + Math.floor(Math.random() * 1e9), 
+        const order = {
+            id: Date.now(),
+            name: injection ? (injection.orderName || tpl.name) : tpl.name,
+            imageData: injection?.imageData || tpl.image || null,
+            amount: amount,
+            netCommission: netCommission,
+            rate: injection?.commissionRate || (commissionRate * 100),
+            orderNumber: "ORD" + Math.floor(Math.random() * 1e9),
             profit: netCommission,
             isInjection: isInjection,
-            injectionDetails: isInjection ? {
-                extraAmount: injection?.extraAmount || 0,
-                customCommission: netCommission,
-                originalBalance: balance,
-                injectionId: injection?.id
-            } : null
+            injectionDetails: isInjection ? { extraAmount: injection?.extraAmount || 0, customCommission: netCommission, originalBalance: balance, injectionId: injection?.id } : null
         };
-        
         return order;
     }
 
@@ -1059,83 +1226,38 @@
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div");
         modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content warning-modal">
-                <div class="warning-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                <h2 class="warning-title">⚠️ ${dict.warning}</h2>
-                <p class="warning-message">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p>
-                <button class="btn-warning-modal" id="warningOkayBtn">${dict.okay || "Okay"}</button>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content warning-modal" style="text-align:center;"><div class="warning-icon" style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div><h2 class="warning-title" style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2><p class="warning-message" style="color:var(--lux-text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p><button class="btn-warning-modal" id="warningOkayBtn" style="background:#dc2626;color:white;border:none;padding:12px 28px;border-radius:40px;font-weight:700;cursor:pointer;width:100%;transition:all 0.2s;">${dict.okay || "Okay"}</button></div>`;
         document.body.appendChild(modal);
-        document.getElementById("warningOkayBtn").onclick = () => { 
-            document.body.removeChild(modal); 
-            showPage("work"); 
-            if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) {
-                displayOrder(currentUser.currentOrderObj);
-            } else if (currentOrder) {
-                displayOrder(currentOrder);
-            }
-        };
+        document.getElementById("warningOkayBtn").onclick = () => { document.body.removeChild(modal); showPage("work"); if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj); else if (currentOrder) displayOrder(currentOrder); };
     }
 
     function displayOrder(order) {
         const dict = translations[currentLang] || translations.en;
-        let imgHtml = order.imageData ? `<img src="${order.imageData}" style="width:100%; height:100%; object-fit:contain;">` : '<i class="fas fa-box"></i>';
+        let imgHtml = order.imageData ? `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:48px;color:var(--lux-gold);"></i>';
         let afterOrderBalance = currentUser.balance + order.netCommission;
         const insufficient = currentUser.balance < order.amount;
-        
         const isInjection = order.isInjection || false;
         const injectionClass = isInjection ? 'injection-order' : '';
         const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
-        
         let injectionInfoHtml = '';
         if (isInjection && order.injectionDetails) {
-            injectionInfoHtml = `
-                <div style="background: rgba(245,158,11,0.1); border-radius: 16px; padding: 12px; margin: 12px 0;">
-                    <div class="flex-between"><span class="text-light">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex-between"><span class="text-light">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex-between"><span class="text-light">💵 Total Order Amount:</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div>
-                    <div class="flex-between"><span class="text-light">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div>
-                </div>
-            `;
+            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💵 Total Order Amount:</span><span class="amount-big" style="font-size:28px;font-weight:800;color:var(--lux-gold-light);">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div></div>`;
         }
-
         document.getElementById("currentOrderDisplay").innerHTML = `
-            <div class="order-detail-card ${injectionClass}">
+            <div class="order-detail-card ${injectionClass}" style="background:linear-gradient(135deg,rgba(15,25,20,0.9),rgba(26,42,31,0.9));border-radius:32px;padding:24px;margin-bottom:24px;border:1px solid var(--lux-gold);position:relative;overflow:hidden;">
                 ${injectionBadge}
-                <div class="order-image">${imgHtml}</div>
-                <h2 style="color:#F5E7B2;">${order.name}</h2>
-                <div class="text-light">Order #: ${order.orderNumber}</div>
+                <div class="order-image" style="width:100%;height:180px;background:rgba(0,0,0,0.5);border-radius:24px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;overflow:hidden;border:1px solid var(--lux-border-gold);">${imgHtml}</div>
+                <h2 style="color:var(--lux-gold-light);">${order.name}</h2>
+                <div class="text-light" style="color:var(--lux-text-light);">Order #: ${order.orderNumber}</div>
                 ${injectionInfoHtml}
-                ${!injectionInfoHtml ? `
-                <div class="flex-between"><span class="text-light">${dict.orderAmount}</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div>
-                <div class="flex-between"><span class="text-light">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>
-                ` : ''}
-                <div class="flex-between" style="margin-top:12px; padding-top:12px; border-top:1px solid #D4AF37;">
-                    <span class="text-light">${dict.afterCompletionBalance}</span>
-                    <strong style="color:#F5E7B2; font-size:20px;">S/ ${afterOrderBalance.toFixed(2)}</strong>
-                </div>
+                ${!injectionInfoHtml ? `<div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">${dict.orderAmount}</span><span class="amount-big" style="font-size:28px;font-weight:800;color:var(--lux-gold-light);">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>` : ''}
+                <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--lux-gold);"><span class="text-light" style="color:var(--lux-text-light);">${dict.afterCompletionBalance}</span><strong style="color:var(--lux-gold-light);font-size:20px;">S/ ${afterOrderBalance.toFixed(2)}</strong></div>
                 ${!insufficient ? `
-                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div>
-                    <div class="stars" data-category="service"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div>
-                </div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div>
-                    <div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div>
-                </div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div>
-                    <div class="stars" data-category="sales"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div>
-                </div>
+                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
                 <button class="btn-lux" id="submitOrderFromCardBtn" style="margin-top:20px;">${dict.submitComplete}</button>
-                ` : `<div class="alert-danger" style="margin-top:16px; background: rgba(220,38,38,0.2); border-radius: 20px; padding: 16px;">
-                    <strong style="color:#dc2626;">${dict.insufficientBalance}</strong>
-                    <div class="insufficient-details" style="margin-top:8px;">
-                        <div>💰 ${dict.orderAmount}: S/ ${order.amount.toFixed(2)}</div>
-                        <div>💵 ${dict.yourBalance}: S/ ${currentUser.balance.toFixed(2)}</div>
-                        <div>🔴 ${dict.needAdditional}: S/ ${(order.amount - currentUser.balance).toFixed(2)}</div>
-                    </div>
-                    <button class="btn-lux" id="rechargeFromOrderBtn" style="margin-top:12px; background:#10b981; color:white;">${dict.rechargeNow}</button>
-                </div>`}
+                ` : `<div class="alert-danger" style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;"><strong style="color:#dc2626;">${dict.insufficientBalance}</strong><div class="insufficient-details" style="margin-top:8px;"><div>💰 ${dict.orderAmount}: S/ ${order.amount.toFixed(2)}</div><div>💵 ${dict.yourBalance}: S/ ${currentUser.balance.toFixed(2)}</div><div>🔴 ${dict.needAdditional}: S/ ${(order.amount - currentUser.balance).toFixed(2)}</div></div><button class="btn-lux" id="rechargeFromOrderBtn" style="margin-top:12px;background:#10b981;color:white;">${dict.rechargeNow}</button></div>`}
             </div>
         `;
         document.getElementById("currentOrderDisplay").style.display = "block";
@@ -1146,58 +1268,38 @@
             document.querySelectorAll('#currentOrderDisplay .stars').forEach(container => {
                 let cat = container.dataset.category;
                 let stars = container.querySelectorAll('i');
-                stars.forEach(star => { star.onclick = () => { let val = parseInt(star.dataset.value); currentRatings[cat] = val; stars.forEach((s, i) => { s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; }); }; });
+                stars.forEach(star => { star.onclick = () => { let val = parseInt(star.dataset.value); currentRatings[cat] = val; stars.forEach((s, i) => { s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; if (i < val) s.style.color = '#F5B042'; else s.style.color = '#4a5a4e'; }); }; });
             });
-            
             let submitBtn = document.getElementById("submitOrderFromCardBtn");
             if (submitBtn) {
                 submitBtn.onclick = async function() {
                     if(submitBtn.disabled) return;
-                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { 
-                        alert("Please provide all ratings"); 
-                        return; 
-                    }
-                    submitBtn.disabled = true; 
-                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
+                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { alert("Please provide all ratings"); return; }
+                    submitBtn.disabled = true; submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
                     try {
                         let profitEarned = currentOrder.netCommission;
                         if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
-                        
                         currentUser.balance = (currentUser.balance || 0) + profitEarned;
                         currentUser.todayEarnings = (currentUser.todayEarnings || 0) + profitEarned;
                         currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
                         currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
-                        
-                        currentOrder.status = "completed"; 
-                        currentOrder.ratings = { ...currentRatings }; 
-                        currentOrder.date = new Date().toLocaleString(); 
+                        currentOrder.status = "completed";
+                        currentOrder.ratings = { ...currentRatings };
+                        currentOrder.date = new Date().toLocaleString();
                         currentOrder.profit = profitEarned;
-                        
                         await saveOrderToHistory(currentUser.id, currentOrder);
                         currentUser.currentOrderObj = null;
                         await saveCurrentUser();
                         currentOrder = null;
                         updateUI();
-                        
-                        if (currentOrder?.isInjection) {
-                            showLiveFeedback(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`, false);
-                        } else {
-                            showLiveFeedback(`Order Completed! +S/ ${profitEarned.toFixed(4)}`, false);
-                        }
-                        
-                        let dailyLimit = currentUser.tasks.total; 
+                        if (currentOrder?.isInjection) showLiveFeedback(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`, false);
+                        else showLiveFeedback(`Order Completed! +S/ ${profitEarned.toFixed(4)}`, false);
+                        let dailyLimit = currentUser.tasks.total;
                         let completedCount = currentUser.tasks.completed;
-                        if(completedCount >= dailyLimit && dailyLimit > 0) { 
-                            document.getElementById("currentOrderDisplay").style.display = "none"; 
-                        } else { 
-                            await loadNextOrderAutomatically(); 
-                        }
-                    } catch(err) { 
-                        console.error(err); 
-                        alert("Error: " + err.message); 
-                    }
-                    submitBtn.disabled = false; 
-                    submitBtn.innerHTML = dict.submitComplete;
+                        if(completedCount >= dailyLimit && dailyLimit > 0) document.getElementById("currentOrderDisplay").style.display = "none";
+                        else await loadNextOrderAutomatically();
+                    } catch(err) { console.error(err); alert("Error: " + err.message); }
+                    submitBtn.disabled = false; submitBtn.innerHTML = dict.submitComplete;
                 };
             }
         } else {
@@ -1207,18 +1309,11 @@
     }
 
     async function loadNextOrderAutomatically() {
-        let dailyLimit = currentUser.tasks?.total || 0; 
+        let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
-        if(completedCount >= dailyLimit && dailyLimit > 0) { 
-            document.getElementById("currentOrderDisplay").style.display = "none"; 
-            return; 
-        }
+        if(completedCount >= dailyLimit && dailyLimit > 0) { document.getElementById("currentOrderDisplay").style.display = "none"; return; }
         let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
-            document.getElementById("currentOrderDisplay").style.display = "none"; 
-            showLiveFeedback("Insufficient balance! Please recharge.", true); 
-            return; 
-        }
+        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { document.getElementById("currentOrderDisplay").style.display = "none"; showLiveFeedback("Insufficient balance! Please recharge.", true); return; }
         let newOrder = await getNextOrder();
         currentUser.currentOrderObj = newOrder;
         await saveCurrentUser();
@@ -1227,19 +1322,12 @@
 
     function refreshWorkPageOrder() {
         if(!currentUser) return;
-        let dailyLimit = currentUser.tasks?.total || 0; 
+        let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
-        if(completedCount >= dailyLimit && dailyLimit > 0) { 
-            document.getElementById("currentOrderDisplay").style.display = "none"; 
-            return; 
-        }
-        if(currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) {
-            displayOrder(currentUser.currentOrderObj);
-        } else if(currentOrder) {
-            displayOrder(currentOrder);
-        } else { 
-            if(completedCount < dailyLimit && dailyLimit > 0) loadNextOrderAutomatically(); 
-        }
+        if(completedCount >= dailyLimit && dailyLimit > 0) { document.getElementById("currentOrderDisplay").style.display = "none"; return; }
+        if(currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj);
+        else if(currentOrder) displayOrder(currentOrder);
+        else { if(completedCount < dailyLimit && dailyLimit > 0) loadNextOrderAutomatically(); }
     }
 
     document.getElementById("startWorkingBtn").onclick = async () => {
@@ -1248,15 +1336,9 @@
         let completedCount = currentUser.tasks?.completed || 0;
         if(dailyLimit === 0) { alert("No orders assigned by admin"); return; }
         if(completedCount >= dailyLimit) { alert("All orders completed for today!"); return; }
-        if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { 
-            showPendingOrderWarning(); 
-            return; 
-        }
+        if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
         let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
-            alert(`Minimum balance S/ ${settings.minBalanceForOrder} required to start an order.`); 
-            return; 
-        }
+        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { alert(`Minimum balance S/ ${settings.minBalanceForOrder} required to start an order.`); return; }
         await loadNextOrderAutomatically();
     };
 
@@ -1266,52 +1348,21 @@
         let modal = document.createElement("div"); modal.className = "modal";
         let settings = await loadSystemSettings();
         let walletAddr = settings.usdtWalletAddress || "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf";
-        
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2 class="text-gold" style="text-align:center; margin-bottom: 20px;">${dict.recharge}</h2>
-                <div class="wallet-address-box">
-                    <div>
-                        <div class="text-muted" style="margin-bottom: 8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div>
-                        <div class="wallet-address-text" id="walletAddressTextDisplay">${walletAddr}</div>
-                    </div>
-                    <button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button>
-                </div>
-                <input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100">
-                <div class="amount-buttons">
-                    <div class="amount-btn" data-amt="50">50</div>
-                    <div class="amount-btn" data-amt="100">100</div>
-                    <div class="amount-btn" data-amt="500">500</div>
-                    <div class="amount-btn" data-amt="1000">1000</div>
-                </div>
-                <div class="upload-area-sm" id="uploadReceiptArea">
-                    <i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}
-                    <input type="file" id="receiptInput" accept="image/*" style="display:none;">
-                </div>
-                <div id="receiptPreview"></div>
-                <button class="btn-lux" id="submitRechargeBtn" style="margin-top: 16px;">${dict.submit}</button>
-                <button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top: 12px;">${dict.cancel}</button>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box" style="background:rgba(0,0,0,0.6);padding:18px;border-radius:20px;word-break:break-all;margin:16px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border:1px solid var(--lux-gold);"><div><div class="text-muted" style="color:var(--lux-text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay" style="font-family:monospace;font-size:14px;color:var(--lux-gold);letter-spacing:1px;">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn" style="background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-dark));color:#0a120e;border:none;padding:10px 20px;border-radius:40px;cursor:pointer;font-weight:700;transition:all 0.2s;">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons" style="display:flex;flex-wrap:wrap;gap:12px;margin:20px 0;"><div class="amount-btn" data-amt="50" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">50</div><div class="amount-btn" data-amt="100" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">100</div><div class="amount-btn" data-amt="500" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">500</div><div class="amount-btn" data-amt="1000" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
         document.body.appendChild(modal);
-        
         modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText(walletAddr); alert("Wallet address copied!"); };
         modal.querySelectorAll(".amount-btn").forEach(btn => btn.onclick = () => { modal.querySelector("#rechargeAmount").value = btn.dataset.amt; });
         modal.querySelector("#uploadReceiptArea").onclick = () => modal.querySelector("#receiptInput").click();
-        modal.querySelector("#receiptInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { const compressed = await compressImage(file, 400, 400, 0.5); modal.querySelector("#receiptPreview").innerHTML = `<img src="${compressed}" class="receipt-img">`; modal.querySelector("#receiptInput").compressedData = compressed; } };
-        
-        modal.querySelector("#submitRechargeBtn").onclick = async () => { 
-            const amount = parseFloat(modal.querySelector("#rechargeAmount").value); 
-            const file = modal.querySelector("#receiptInput").files[0]; 
-            if(isNaN(amount) || amount < 1) { alert(dict.enterValidAmount); return; } 
-            if(!file) { alert(dict.uploadReceipt); return; } 
-            const imgData = modal.querySelector("#receiptInput").compressedData; 
-            await setDoc(doc(db, "rechargeRequests", Date.now().toString()), { 
-                id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, 
-                amount: amount, receiptImage: imgData, status: "pending", timestamp: new Date().toISOString() 
-            }); 
-            document.body.removeChild(modal); 
-            showLiveFeedback("Recharge request submitted!"); 
+        modal.querySelector("#receiptInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { const compressed = await compressImage(file, 400, 400, 0.5); modal.querySelector("#receiptPreview").innerHTML = `<img src="${compressed}" class="receipt-img" style="max-width:100%;max-height:200px;border-radius:16px;margin-top:12px;background:#0f1117;padding:8px;border:1px solid var(--lux-gold);">`; modal.querySelector("#receiptInput").compressedData = compressed; } };
+        modal.querySelector("#submitRechargeBtn").onclick = async () => {
+            const amount = parseFloat(modal.querySelector("#rechargeAmount").value);
+            const file = modal.querySelector("#receiptInput").files[0];
+            if(isNaN(amount) || amount < 1) { alert(dict.enterValidAmount); return; }
+            if(!file) { alert(dict.uploadReceipt); return; }
+            const imgData = modal.querySelector("#receiptInput").compressedData;
+            await setDoc(doc(db, "rechargeRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, receiptImage: imgData, status: "pending", timestamp: new Date().toISOString() });
+            document.body.removeChild(modal);
+            showLiveFeedback("Recharge request submitted!");
         };
         modal.querySelector("#closeRechargeModal").onclick = () => document.body.removeChild(modal);
     }
@@ -1320,7 +1371,7 @@
     async function showWithdrawModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center; margin-bottom: 20px;">${dict.withdraw}</h2><input type="text" id="withdrawWallet" class="input-lux" placeholder="USDT TRC20 Wallet Address"><input type="number" id="withdrawAmount" class="input-lux" placeholder="Amount" step="0.01"><div class="flex-between" style="gap: 12px;"><button class="btn-lux" id="confirmWithdrawBtn" style="flex:1;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeWithdrawModal" style="flex:1;">${dict.cancel}</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.withdraw}</h2><input type="text" id="withdrawWallet" class="input-lux" placeholder="USDT TRC20 Wallet Address"><input type="number" id="withdrawAmount" class="input-lux" placeholder="Amount" step="0.01"><div class="flex-between" style="gap:12px;"><button class="btn-lux" id="confirmWithdrawBtn" style="flex:1;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeWithdrawModal" style="flex:1;">${dict.cancel}</button></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("confirmWithdrawBtn").onclick = async () => { let wallet = document.getElementById("withdrawWallet").value.trim(); let amount = parseFloat(document.getElementById("withdrawAmount").value); if(!wallet) { alert("Enter wallet address"); return; } if(isNaN(amount) || amount < 1) { alert("Enter valid amount"); return; } if(amount > currentUser.balance) { alert("Insufficient balance"); return; } currentUser.balance -= amount; await saveCurrentUser(); updateUI(); await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, walletAddress: wallet, status: "pending", timestamp: new Date().toISOString() }); document.body.removeChild(modal); showLiveFeedback("Withdraw request submitted!"); };
         document.getElementById("closeWithdrawModal").onclick = () => document.body.removeChild(modal);
@@ -1329,19 +1380,18 @@
     // ==================== HISTORY MODALS ====================
     async function showRechargeHistory() { const q = query(collection(db, "rechargeRequests"), where("userId", "==", currentUser.id)); const snapshot = await getDocs(q); const items = []; snapshot.forEach(doc => items.push(doc.data())); showHistoryModal("Recharge History", items, "recharge"); }
     async function showWithdrawHistory() { const q = query(collection(db, "withdrawRequests"), where("userId", "==", currentUser.id)); const snapshot = await getDocs(q); const items = []; snapshot.forEach(doc => items.push(doc.data())); showHistoryModal("Withdraw History", items, "withdraw"); }
-    
     function showHistoryModal(title, items, type) {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        let html = `<div class="modal-content"><h2 class="text-gold" style="margin-bottom: 20px;">${title}</h2>`;
-        if(items.length === 0) html += `<p class="text-light" style="text-align:center; padding: 20px;">${dict.noRecords}</p>`;
-        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item"><div class="flex-between"><strong>${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')}">${item.status.toUpperCase()}</span></div><div>Amount: S/ ${item.amount}</div><div class="text-muted">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img">`:''}${item.adminNote?`<div class="text-muted">Note: ${item.adminNote}</div>`:''}</div>`; });
-        html += `<button class="btn-lux" id="closeHistoryModal" style="margin-top: 16px;">${dict.close}</button></div>`;
+        let html = `<div class="modal-content"><h2 class="text-gold" style="margin-bottom:20px;">${title}</h2>`;
+        if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;color:var(--lux-text-light);">${dict.noRecords}</p>`;
+        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item" style="background:rgba(0,0,0,0.4);border-radius:16px;padding:14px;margin-bottom:12px;border-left:3px solid var(--lux-gold);"><div class="flex-between"><strong style="color:var(--lux-text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div><div style="color:var(--lux-text-light);">Amount: S/ ${item.amount}</div><div class="text-muted" style="color:var(--lux-text-muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img" style="max-width:100%;max-height:200px;border-radius:16px;margin-top:12px;background:#0f1117;padding:8px;border:1px solid var(--lux-gold);">`:''}${item.adminNote?`<div class="text-muted" style="color:var(--lux-text-muted);">Note: ${item.adminNote}</div>`:''}</div>`; });
+        html += `<button class="btn-lux" id="closeHistoryModal" style="margin-top:16px;">${dict.close}</button></div>`;
         modal.innerHTML = html; document.body.appendChild(modal);
         document.getElementById("closeHistoryModal").onclick = () => document.body.removeChild(modal);
     }
 
-    // ==================== CHAT SYSTEM ====================
+    // ==================== CHAT ====================
     async function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
         const q = query(collection(db, "chatMessages"));
@@ -1353,12 +1403,11 @@
                 snapshot.forEach(doc => { const msg = doc.data(); if ((msg.to === 'admin' && msg.from === currentUser.username) || (msg.from === 'admin' && msg.to === currentUser.username)) relevant.push(msg); });
                 relevant.sort((a,b) => a.id - b.id);
                 container.innerHTML = '';
-                relevant.forEach(msg => { const isSent = msg.from === currentUser.username; const div = document.createElement('div'); div.className = `chat-message ${isSent ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text || ''}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)">` : ''}<div class="chat-time">${msg.time || ''}</div>`; container.appendChild(div); });
+                relevant.forEach(msg => { const isSent = msg.from === currentUser.username; const div = document.createElement('div'); div.className = `chat-message ${isSent ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text || ''}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || ''}</div>`; container.appendChild(div); });
                 container.scrollTop = container.scrollHeight;
             }
         });
     }
-
     async function sendChatMessage(text, imageData = null) { if (!currentUser) return; await setDoc(doc(db, "chatMessages", (Date.now() + Math.random()).toString()), { id: Date.now() + Math.random(), from: currentUser.username, to: 'admin', text: text, image: imageData, time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) }); }
 
     // ==================== MODALS ====================
@@ -1374,7 +1423,7 @@
     function showPersonalDetailsModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area"><div class="photo-preview" id="profilePreview" style="width:150px; height:150px; border-radius:75px;">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size: 80px;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row"><span class="info-label">Credit Score:</span><span class="info-value">${currentUser.creditScore || 100}</span></div><div class="info-row"><span class="info-label">Balance:</span><span class="info-value">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row"><span class="info-label">Invitation Code:</span><span class="info-value">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top: 16px;">${dict.close}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="profilePreview" style="width:150px;height:150px;border-radius:75px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--lux-gold);overflow:hidden;">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;color:#0a120e;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Credit Score:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.creditScore || 100}</span></div><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Balance:</span><span class="info-value" style="color:var(--lux-text-light);">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("uploadPhotoBtn").onclick = () => { document.body.removeChild(modal); showUploadPhotoModal(); };
         document.getElementById("closePersonalModal").onclick = () => document.body.removeChild(modal);
@@ -1383,12 +1432,12 @@
     async function showLoanServiceModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">${dict.loanService}</h2><p class="text-light" style="margin-bottom: 16px;">Apply for a loan</p><div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div><div class="doc-type-selector"><div class="doc-option active" data-type="nrc">NRC</div><div class="doc-option" data-type="driver">Driver License</div><div class="doc-option" data-type="passport">Passport</div></div><div class="flex-between" style="gap: 12px;"><div class="upload-area-sm" id="frontUpload" style="flex:1;">Front Side<input type="file" id="frontInput" accept="image/*" style="display:none;"></div><div class="upload-area-sm" id="backUpload" style="flex:1;">Back Side<input type="file" id="backInput" accept="image/*" style="display:none;"></div></div><input type="number" id="loanAmount" class="input-lux" placeholder="Loan Amount"><button class="btn-lux" id="submitLoanBtn" style="margin-top: 16px;">Submit Loan Request</button><button class="btn-outline-lux btn-lux" id="closeLoanModal" style="margin-top: 12px;">Cancel</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">${dict.loanService}</h2><p class="text-light" style="color:var(--lux-text-light);margin-bottom:16px;">Apply for a loan</p><div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div><div class="doc-type-selector" style="display:flex;gap:12px;margin:12px 0;"><div class="doc-option active" data-type="nrc" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(212,175,55,0.2);border:1px solid var(--lux-gold);color:var(--lux-gold-light);">NRC</div><div class="doc-option" data-type="driver" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--lux-border-gold);color:var(--lux-text-muted);">Driver License</div><div class="doc-option" data-type="passport" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--lux-border-gold);color:var(--lux-text-muted);">Passport</div></div><div class="flex-between" style="gap:12px;"><div class="upload-area-sm" id="frontUpload" style="flex:1;">Front Side<input type="file" id="frontInput" accept="image/*" style="display:none;"></div><div class="upload-area-sm" id="backUpload" style="flex:1;">Back Side<input type="file" id="backInput" accept="image/*" style="display:none;"></div></div><input type="number" id="loanAmount" class="input-lux" placeholder="Loan Amount"><button class="btn-lux" id="submitLoanBtn" style="margin-top:16px;">Submit Loan Request</button><button class="btn-outline-lux btn-lux" id="closeLoanModal" style="margin-top:12px;">Cancel</button></div>`;
         document.body.appendChild(modal);
         modal.querySelector("#uploadBankArea").onclick = () => modal.querySelector("#bankInput").click();
         modal.querySelector("#frontUpload").onclick = () => modal.querySelector("#frontInput").click();
         modal.querySelector("#backUpload").onclick = () => modal.querySelector("#backInput").click();
-        modal.querySelectorAll('.doc-option').forEach(opt => opt.onclick = function() { modal.querySelectorAll('.doc-option').forEach(o => o.classList.remove('active')); this.classList.add('active'); });
+        modal.querySelectorAll('.doc-option').forEach(opt => opt.onclick = function() { modal.querySelectorAll('.doc-option').forEach(o => { o.style.background = 'rgba(0,0,0,0.3)'; o.style.border = '1px solid var(--lux-border-gold)'; o.style.color = 'var(--lux-text-muted)'; }); this.style.background = 'rgba(212,175,55,0.2)'; this.style.border = '1px solid var(--lux-gold)'; this.style.color = 'var(--lux-gold-light)'; });
         modal.querySelector("#submitLoanBtn").onclick = async () => { const amount = parseFloat(modal.querySelector("#loanAmount").value); const docType = modal.querySelector('.doc-option.active').dataset.type; const bankFile = modal.querySelector("#bankInput").files[0]; const frontFile = modal.querySelector("#frontInput").files[0]; const backFile = modal.querySelector("#backInput").files[0]; if(!amount || amount <= 0) { alert("Enter valid amount"); return; } if(!bankFile || !frontFile || !backFile) { alert("Please upload all required documents"); return; } const readFile = (f) => new Promise((resolve) => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(f); }); await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, docType: docType, bankImage: await readFile(bankFile), frontImage: await readFile(frontFile), backImage: await readFile(backFile), status: "pending", timestamp: new Date().toISOString() }); alert("Loan request submitted!"); document.body.removeChild(modal); }; modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
     }
 
@@ -1465,7 +1514,7 @@
     // ==================== NAVIGATION ====================
     const pages = { landing: document.getElementById("landingPage"), login: document.getElementById("loginPage"), register: document.getElementById("registerPage"), home: document.getElementById("homePage"), work: document.getElementById("workPage"), order: document.getElementById("orderPage"), mine: document.getElementById("minePage"), service: document.getElementById("servicePage") };
     const bottomNav = document.getElementById("bottomNav");
-    
+
     function showPage(name) {
         if(!currentUser && name !== "login" && name !== "register" && name !== "landing") name = "landing";
         for(let k in pages) pages[k].classList.remove("active-page");
@@ -1479,7 +1528,7 @@
         loadBackgrounds();
         startLiveFeed();
     }
-    
+
     function signOut() {
         if (unsubscribeUser) unsubscribeUser();
         if (unsubscribeWithdrawals) unsubscribeWithdrawals();
@@ -1510,13 +1559,13 @@
         document.getElementById("rechargeHistoryBtn").onclick = () => currentUser ? showRechargeHistory() : alert("Login first");
         document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : alert("Login first");
         document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
-        
+
         document.getElementById("customerSendBtn").onclick = async () => { const input = document.getElementById("customerChatInput"); const text = input.value.trim(); if(text) { await sendChatMessage(text); input.value = ''; } };
         document.getElementById("customerChatInput").addEventListener('keypress', async (e) => { if(e.key === 'Enter') { const input = document.getElementById("customerChatInput"); const text = input.value.trim(); if(text) { await sendChatMessage(text); input.value = ''; } } });
-        document.getElementById("customerEmojiBtn").onclick = () => { const picker = document.createElement('div'); picker.style.cssText = 'position:absolute;bottom:80px;background:#1a1e26;padding:8px;border-radius:12px;z-index:10000;border:1px solid #D4AF37'; const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐']; emojis.forEach(e => { const s = document.createElement('span'); s.style.cssText = 'cursor:pointer;font-size:24px;margin:4px'; s.innerText = e; s.onclick = () => { document.getElementById("customerChatInput").value += e; picker.remove(); }; picker.appendChild(s); }); document.body.appendChild(picker); setTimeout(() => window.addEventListener('click', function close(e) { if(!picker.contains(e.target)) { picker.remove(); window.removeEventListener('click', close); } }), 100); };
+        document.getElementById("customerEmojiBtn").onclick = () => { const picker = document.createElement('div'); picker.style.cssText = 'position:absolute;bottom:80px;background:#1a1e26;padding:8px;border-radius:12px;z-index:10000;border:1px solid var(--lux-gold)'; const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐']; emojis.forEach(e => { const s = document.createElement('span'); s.style.cssText = 'cursor:pointer;font-size:24px;margin:4px'; s.innerText = e; s.onclick = () => { document.getElementById("customerChatInput").value += e; picker.remove(); }; picker.appendChild(s); }); document.body.appendChild(picker); setTimeout(() => window.addEventListener('click', function close(e) { if(!picker.contains(e.target)) { picker.remove(); window.removeEventListener('click', close); } }), 100); };
         document.getElementById("customerUploadBtn").onclick = () => document.getElementById("customerChatImageInput").click();
         document.getElementById("customerChatImageInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { try { const compressed = await compressImage(file, 400, 400, 0.6); await sendChatMessage('', compressed); } catch { const reader = new FileReader(); reader.onload = async ev => { await sendChatMessage('', ev.target.result); }; reader.readAsDataURL(file); } } };
-        
+
         document.getElementById("mineProfilePhoto").onclick = () => { if(currentUser) showUploadPhotoModal(); };
     });
 
