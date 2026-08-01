@@ -5,41 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Trip.com Admin | Premium Control Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
-        /* ===== ROOT VARIABLES - Gradient-Rich Glassmorphism ===== */
+        /* ===== ROOT VARIABLES (Easy color customization) ===== */
         :root {
             --lux-gold: #D4AF37;
             --lux-gold-light: #F5E7B2;
             --lux-gold-dark: #C9A03D;
             --lux-bg-dark: #0a0c10;
-            --lux-card-bg: rgba(20, 25, 35, 0.65);
-            --lux-border-gold: rgba(212, 175, 55, 0.3);
-            --lux-text-light: rgba(255,255,255,0.92);
+            --lux-card-bg: rgba(26, 30, 38, 0.95);
+            --lux-border-gold: rgba(212, 175, 55, 0.25);
+            --lux-text-light: rgba(255,255,255,0.85);
             --lux-text-muted: rgba(255,255,255,0.5);
-            --lux-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --lux-shadow: 0 8px 32px rgba(0,0,0,0.3);
             --lux-radius: 24px;
-            --glass-blur: blur(18px);
-            --gradient-primary: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D, #E8D5A3);
-            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--lux-bg-dark);
-            color: var(--lux-text-light);
+            color: #e2e8f0;
             height: 100vh;
             overflow: hidden;
         }
         .admin-container { display: flex; height: 100vh; }
-        /* Sidebar - Glass */
+        /* Sidebar */
         .sidebar {
             width: 280px;
-            background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
+            background: linear-gradient(180deg, #0f1117 0%, #0a0c10 100%);
             border-right: 1px solid var(--lux-border-gold);
             padding: 24px 16px;
             overflow-y: auto;
@@ -54,95 +50,71 @@
             flex: 1;
             padding: 24px 32px;
             overflow-y: auto;
-            background: radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.06) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.04) 0%, transparent 50%),
-                        var(--lux-bg-dark);
+            background: var(--lux-bg-dark);
         }
         .main-content::-webkit-scrollbar { width: 4px; }
         .main-content::-webkit-scrollbar-track { background: #1a1e26; }
         .main-content::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
-        /* Cards - Glass */
+        /* Cards */
         .admin-card {
             background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
+            backdrop-filter: blur(10px);
             border-radius: var(--lux-radius);
             padding: 24px;
             margin-bottom: 24px;
             border: 1px solid var(--lux-border-gold);
-            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.2s, border-color 0.2s;
             box-shadow: var(--lux-shadow);
         }
-        .admin-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(212, 175, 55, 0.5);
-            box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.04);
-        }
+        .admin-card:hover { transform: translateY(-2px); border-color: rgba(212,175,55,0.5); }
         .btn-admin {
-            background: var(--gradient-primary);
+            background: linear-gradient(105deg, var(--lux-gold), var(--lux-gold-dark), #009688);
             border: none;
             padding: 10px 20px;
             border-radius: 40px;
             font-weight: 700;
             cursor: pointer;
             color: #0a120e;
-            transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(212,175,55,0.2);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .btn-admin::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        .btn-admin:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.35); }
-        .btn-admin:hover::before { opacity: 1; }
-        .btn-danger { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; border: none; }
-        .btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; }
-        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; }
-        .btn-info { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; }
-        .btn-secondary { background: rgba(255,255,255,0.08); backdrop-filter: blur(4px); color: white; border: 1px solid var(--lux-border-gold); }
+        .btn-admin:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
+        .btn-danger { background: linear-gradient(105deg, #dc2626, #ef4444); color: white; border: none; }
+        .btn-success { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; }
+        .btn-warning { background: linear-gradient(105deg, #f59e0b, #d97706); color: white; border: none; }
+        .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
+        .btn-secondary { background: #4a5568; color: white; border: none; }
         input, select, textarea {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(8px);
-            border: 1px solid var(--lux-border-gold);
+            background: #0f1117;
+            border: 1px solid #2d3748;
             padding: 10px 14px;
             border-radius: 12px;
             color: white;
             width: 100%;
             margin-bottom: 12px;
             outline: none;
-            transition: all 0.3s;
+            transition: border-color 0.2s;
         }
         input:focus, select:focus, textarea:focus {
             border-color: var(--lux-gold);
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.15), 0 0 30px rgba(212,175,55,0.03);
-            background: rgba(0,0,0,0.6);
+            box-shadow: 0 0 0 2px rgba(212,175,55,0.2);
         }
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
         .nav-item {
             padding: 12px 16px;
             margin: 4px 0;
             border-radius: 12px;
             cursor: pointer;
-            color: var(--lux-text-muted);
-            transition: all 0.3s;
+            color: #94a3b8;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 500;
         }
         .nav-item:hover, .nav-item.active {
-            background: rgba(212,175,55,0.08);
+            background: linear-gradient(90deg, rgba(212,175,55,0.15), transparent);
             color: var(--lux-gold);
             border-left: 2px solid var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.03);
         }
         .badge { background: var(--lux-gold); color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
@@ -153,14 +125,12 @@
         .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--lux-gold); cursor: pointer; margin: 4px; }
         .login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%),
-                        radial-gradient(ellipse at 70% 60%, rgba(212,175,55,0.05) 0%, transparent 50%),
-                        var(--lux-bg-dark);
+            background: linear-gradient(135deg, #0a0c10 0%, #0f1117 100%);
             display: flex; align-items: center; justify-content: center; z-index: 1000;
         }
         .login-box {
-            background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
+            background: rgba(26, 30, 38, 0.95);
+            backdrop-filter: blur(16px);
             padding: 40px;
             border-radius: 32px;
             width: 420px;
@@ -173,13 +143,12 @@
         .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--lux-gold); background: transparent; border: none; font-size: 18px; }
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.96);
             display: flex; align-items: center; justify-content: center;
-            z-index: 2000; backdrop-filter: blur(16px);
+            z-index: 2000; backdrop-filter: blur(8px);
         }
         .modal-content {
-            background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
+            background: #1a1e26;
             border-radius: var(--lux-radius);
             padding: 24px;
             max-width: 550px;
@@ -200,42 +169,38 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85);
             display: flex; align-items: center; justify-content: center;
-            z-index: 9999; font-size: 24px; color: var(--lux-gold); backdrop-filter: blur(8px);
+            z-index: 9999; font-size: 24px; color: var(--lux-gold); backdrop-filter: blur(4px);
         }
         .real-time-indicator {
             position: fixed; bottom: 20px; right: 20px;
-            background: rgba(16,185,129,0.9);
-            backdrop-filter: blur(8px);
-            color: white;
+            background: #10b981; color: white;
             padding: 6px 14px; border-radius: 30px; font-size: 11px;
             z-index: 100; animation: pulse 1s infinite; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             display: none;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
         /* VIP Badges */
         .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; display: inline-block; }
         .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
         .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
-        .vip-badge-4 { background: var(--gradient-primary); color: #0a120e; }
+        .vip-badge-4 { background: linear-gradient(135deg, var(--lux-gold), #b8941e); color: #0a120e; }
         .commission-rate { color: var(--lux-gold); font-weight: bold; }
         .btn-sm { padding: 5px 10px; font-size: 12px; }
         .injection-history-item {
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(4px);
+            background: #0f1117;
             padding: 12px;
             border-radius: 12px;
             margin-bottom: 10px;
             border-left: 3px solid var(--lux-gold);
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
         .injection-history-item:hover {
-            background: rgba(0,0,0,0.4);
+            background: #1a1e26;
             border-color: var(--lux-gold-light);
         }
+        /* Popup Ads Preview */
         .popup-preview {
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.6);
             border-radius: 16px;
             padding: 16px;
             margin-top: 12px;
@@ -243,34 +208,6 @@
             text-align: center;
         }
         .popup-preview img { max-width: 100%; max-height: 200px; border-radius: 12px; }
-        /* P2P Rates Management */
-        .p2p-rate-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            padding: 12px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--lux-border-gold);
-        }
-        .p2p-rate-row .currency-flag { font-size: 28px; }
-        .p2p-rate-row input { width: 120px; margin-bottom: 0; }
-        /* KYC Management */
-        .kyc-request-card {
-            background: rgba(0,0,0,0.2);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--lux-border-gold);
-            transition: all 0.3s;
-        }
-        .kyc-request-card:hover {
-            border-color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.03);
-        }
-        .kyc-request-card img { max-width: 80px; max-height: 80px; border-radius: 8px; cursor: pointer; border: 1px solid var(--lux-gold); margin: 4px; }
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar { width: 100%; max-height: 60px; flex-direction: row; overflow-x: auto; padding: 8px 12px; border-right: none; border-bottom: 1px solid var(--lux-border-gold); }
@@ -280,82 +217,16 @@
             .main-content { padding: 16px; }
             .admin-card { padding: 16px; }
             .login-box { padding: 24px; width: 95%; }
-            .p2p-rate-row input { width: 80px; }
         }
         @media (max-width: 480px) {
             .main-content { padding: 10px; }
             .admin-card { padding: 12px; }
             .flex-between { flex-direction: column; align-items: stretch; }
             .btn { width: 100%; margin-bottom: 6px; }
-            .p2p-rate-row { flex-direction: column; align-items: stretch; }
-            .p2p-rate-row input { width: 100%; }
         }
         .text-gold { color: var(--lux-gold); }
-        .bg-dark-card { background: rgba(0,0,0,0.25); backdrop-filter: blur(4px); }
+        .bg-dark-card { background: #0f1117; }
         .border-gold { border-color: var(--lux-gold); }
-        .btn-outline-gold {
-            color: var(--lux-gold);
-            border-color: var(--lux-gold);
-            background: transparent;
-        }
-        .btn-outline-gold:hover {
-            background: rgba(212,175,55,0.12);
-            color: var(--lux-gold-light);
-        }
-        .settings-tab {
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .settings-tab.active {
-            background: rgba(212,175,55,0.12);
-            border-color: var(--lux-gold);
-            color: var(--lux-gold);
-        }
-        .settings-tab-content { display: none; }
-        .settings-tab-content.active { display: block; }
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 60vh;
-            background: rgba(0,0,0,0.2);
-            border-radius: var(--lux-radius);
-            overflow: hidden;
-            border: 1px solid var(--lux-border-gold);
-        }
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .chat-message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 20px;
-            word-break: break-word;
-        }
-        .chat-message.sent {
-            align-self: flex-end;
-            background: var(--gradient-primary);
-            color: #0a120e;
-            border-bottom-right-radius: 4px;
-        }
-        .chat-message.received {
-            align-self: flex-start;
-            background: rgba(255,255,255,0.06);
-            color: #e2e8f0;
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--lux-border-gold);
-        }
-        .chat-time { font-size: 10px; opacity: 0.5; margin-top: 4px; text-align: right; }
-        .chat-image { max-width: 200px; max-height: 150px; border-radius: 12px; margin-top: 8px; cursor: pointer; border: 1px solid var(--lux-gold); }
-        .chat-input-area { display: flex; gap: 10px; padding: 16px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--lux-border-gold); }
-        .chat-input-area input { flex: 1; margin-bottom: 0; }
-        .typing-indicator { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(0,0,0,0.3); border-radius: 20px; width: fit-content; margin: 5px 20px; }
-        .typing-dot { width: 8px; height: 8px; background: var(--lux-gold); border-radius: 50%; animation: typingBounce 1.4s infinite ease-in-out; display: inline-block; }
-        @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
@@ -390,9 +261,6 @@
             <div class="nav-item" data-section="agency"><i class="fas fa-user-tie me-2"></i> Agencies</div>
             <div class="nav-item" data-section="background"><i class="fas fa-paint-brush me-2"></i> Settings</div>
             <div class="nav-item" data-section="popupAds"><i class="fas fa-ad me-2"></i> Popup Ads</div>
-            <div class="nav-item" data-section="kyc"><i class="fas fa-id-card me-2"></i> KYC</div>
-            <div class="nav-item" data-section="p2pRates"><i class="fas fa-exchange-alt me-2"></i> P2P Rates</div>
-            <div class="nav-item" data-section="p2pOrders"><i class="fas fa-list me-2"></i> P2P Orders</div>
             <div class="nav-item" data-section="chat"><i class="fas fa-comment-dots me-2"></i> Chat</div>
             <hr class="border-secondary">
             <div class="nav-item" id="adminLogoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</div>
@@ -403,7 +271,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, increment } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
@@ -425,9 +293,6 @@
     let agencies = [];
     let loanRequests = [];
     let popupAds = [];
-    let kycRequests = [];
-    let p2pOrders = [];
-    let p2pRates = {};
     let systemSettings = { customerName: "Trip.com", customerTagline: "Premium Task Ecosystem", homePageName: "Trip.com", usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf", minBalanceForOrder: 10 };
     let currentSection = 'dashboard';
     let selectedChatUser = null;
@@ -451,26 +316,6 @@
         const input = document.getElementById(inputId);
         if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
-    };
-    window.showLiveFeedback = function(message, isError = false) {
-        let feedback = document.createElement('div');
-        feedback.style.position = 'fixed';
-        feedback.style.bottom = '80px';
-        feedback.style.left = '50%';
-        feedback.style.transform = 'translateX(-50%)';
-        feedback.style.background = isError ? 'rgba(220,38,38,0.92)' : 'rgba(30,42,36,0.92)';
-        feedback.style.backdropFilter = 'blur(12px)';
-        feedback.style.padding = '12px 28px';
-        feedback.style.borderRadius = '40px';
-        feedback.style.fontSize = '13px';
-        feedback.style.zIndex = '100';
-        feedback.style.borderLeft = '3px solid var(--lux-gold)';
-        feedback.style.fontWeight = '700';
-        feedback.style.color = 'white';
-        feedback.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
-        feedback.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${message}`;
-        document.body.appendChild(feedback);
-        setTimeout(() => feedback.remove(), 3000);
     };
 
     // ==================== AUTH ====================
@@ -548,19 +393,6 @@
             agencies = []; agenciesSnap.forEach(doc => agencies.push({ id: doc.id, ...doc.data() }));
             const popupSnap = await getDocs(collection(db, "popupAds"));
             popupAds = []; popupSnap.forEach(doc => popupAds.push({ id: doc.id, ...doc.data() }));
-            const kycSnap = await getDocs(collection(db, "kycRequests"));
-            kycRequests = []; kycSnap.forEach(doc => kycRequests.push({ id: doc.id, ...doc.data() }));
-            const p2pSnap = await getDocs(collection(db, "p2pOrders"));
-            p2pOrders = []; p2pSnap.forEach(doc => p2pOrders.push({ id: doc.id, ...doc.data() }));
-            const ratesSnap = await getDoc(doc(db, "systemSettings", "p2pRates"));
-            if (ratesSnap.exists()) p2pRates = ratesSnap.data();
-            else p2pRates = {
-                thb: { buy: 34.50, sell: 34.00, label: 'THB' },
-                uah: { buy: 41.20, sell: 40.80, label: 'UAH' },
-                rub: { buy: 91.50, sell: 90.80, label: 'RUB' },
-                tjs: { buy: 10.80, sell: 10.50, label: 'TJS' },
-                uzs: { buy: 12750, sell: 12650, label: 'UZS' }
-            };
             const settingsDoc = await getDoc(doc(db, "systemSettings", "main"));
             if (settingsDoc.exists()) systemSettings = settingsDoc.data();
         } catch (e) { console.error("Load error:", e); }
@@ -572,7 +404,7 @@
         unsubscribeUsers = onSnapshot(collection(db, "users"), (snapshot) => {
             users = [];
             snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
-            if (['users','vip','injection','dashboard','kyc'].includes(currentSection)) renderSection(currentSection);
+            if (['users','vip','injection','dashboard'].includes(currentSection)) renderSection(currentSection);
             const indicator = document.getElementById("realTimeIndicator");
             if (indicator) { indicator.style.display = "flex"; setTimeout(() => { if(indicator) indicator.style.display = "none"; }, 2000); }
         });
@@ -585,117 +417,7 @@
         });
     }
 
-    // ==================== P2P RATES MANAGEMENT ====================
-    async function saveP2PRates() {
-        const rates = {};
-        document.querySelectorAll('.p2p-rate-row').forEach(row => {
-            const currency = row.dataset.currency;
-            const buy = parseFloat(row.querySelector('.p2p-buy').value) || 0;
-            const sell = parseFloat(row.querySelector('.p2p-sell').value) || 0;
-            const label = row.querySelector('.p2p-label').value || currency.toUpperCase();
-            rates[currency] = { buy, sell, label };
-        });
-        await setDoc(doc(db, "systemSettings", "p2pRates"), rates);
-        p2pRates = rates;
-        showLiveFeedback("P2P rates saved successfully!");
-        renderSection('p2pRates');
-    }
-
-    // ==================== KYC MANAGEMENT ====================
-    async function approveKyc(kycId) {
-        const kyc = kycRequests.find(k => k.id === kycId);
-        if (!kyc) return;
-        await updateDoc(doc(db, "kycRequests", kycId), { status: 'approved', reviewedAt: new Date().toISOString() });
-        showLiveFeedback(`KYC approved for ${kyc.username}`);
-        renderSection('kyc');
-    }
-
-    async function rejectKyc(kycId) {
-        const kyc = kycRequests.find(k => k.id === kycId);
-        if (!kyc) return;
-        await updateDoc(doc(db, "kycRequests", kycId), { status: 'rejected', reviewedAt: new Date().toISOString() });
-        showLiveFeedback(`KYC rejected for ${kyc.username}`);
-        renderSection('kyc');
-    }
-
-    // ==================== P2P ORDERS MANAGEMENT ====================
-    async function processP2POrder(orderId, action) {
-        const order = p2pOrders.find(o => o.id === orderId);
-        if (!order) return;
-        
-        if (action === 'process') {
-            // Admin provides bank details
-            const modal = document.createElement("div"); modal.className = "modal";
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <h2 class="text-gold">Process P2P Order</h2>
-                    <p>Order: ${order.type} ${order.amount} USDT (${order.currency.toUpperCase()})</p>
-                    <div class="mb-2"><label class="text-gold">Bank Name</label><input id="p2pBankName" class="form-control bg-dark text-white border-secondary" placeholder="Bank Name"></div>
-                    <div class="mb-2"><label class="text-gold">Account Number</label><input id="p2pAccountNumber" class="form-control bg-dark text-white border-secondary" placeholder="Account Number"></div>
-                    <div class="mb-2"><label class="text-gold">Account Name</label><input id="p2pAccountName" class="form-control bg-dark text-white border-secondary" placeholder="Account Name"></div>
-                    <div class="d-flex gap-2"><button class="btn-success" id="p2pSubmitBankBtn">Submit Bank Details</button><button class="btn-danger" id="p2pCancelBankBtn">Cancel</button></div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById("p2pSubmitBankBtn").onclick = async () => {
-                const bankName = document.getElementById("p2pBankName").value.trim();
-                const accountNumber = document.getElementById("p2pAccountNumber").value.trim();
-                const accountName = document.getElementById("p2pAccountName").value.trim();
-                if (!bankName || !accountNumber || !accountName) {
-                    alert("Please fill all fields.");
-                    return;
-                }
-                await updateDoc(doc(db, "p2pOrders", orderId), {
-                    status: 'pending',
-                    adminBankDetails: { bankName, accountNumber, accountName },
-                    processedAt: new Date().toISOString()
-                });
-                document.body.removeChild(modal);
-                showLiveFeedback("Bank details sent to customer!");
-                renderSection('p2pOrders');
-            };
-            document.getElementById("p2pCancelBankBtn").onclick = () => document.body.removeChild(modal);
-        } else if (action === 'complete') {
-            // Check if receipt uploaded
-            if (!order.receiptImage) {
-                alert("Customer has not uploaded receipt yet.");
-                return;
-            }
-            await updateDoc(doc(db, "p2pOrders", orderId), {
-                status: 'completed',
-                completedAt: new Date().toISOString()
-            });
-            // If sell order, USDT already deducted. If buy, add USDT to user balance
-            if (order.type === 'buy') {
-                const userRef = doc(db, "users", order.userId);
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists()) {
-                    await updateDoc(userRef, { balance: increment(order.amount) });
-                }
-            }
-            showLiveFeedback(`P2P order ${order.id} completed!`);
-            renderSection('p2pOrders');
-        } else if (action === 'cancel') {
-            if (confirm("Cancel this P2P order?")) {
-                await updateDoc(doc(db, "p2pOrders", orderId), {
-                    status: 'cancelled',
-                    cancelledAt: new Date().toISOString()
-                });
-                // Refund USDT for sell orders
-                if (order.type === 'sell') {
-                    const userRef = doc(db, "users", order.userId);
-                    const userSnap = await getDoc(userRef);
-                    if (userSnap.exists()) {
-                        await updateDoc(userRef, { balance: increment(order.amount) });
-                    }
-                }
-                showLiveFeedback(`P2P order cancelled.`);
-                renderSection('p2pOrders');
-            }
-        }
-    }
-
-    // ==================== POPUP ADS ====================
+    // ==================== POPUP ADS FUNCTIONS ====================
     async function savePopupAd(adData, editId = null) {
         const id = editId || Date.now().toString();
         await setDoc(doc(db, "popupAds", id), { id, ...adData, createdAt: new Date().toISOString() });
@@ -713,7 +435,7 @@
         }
     }
 
-    // ==================== INJECTION ====================
+    // ==================== INJECTION FUNCTIONS ====================
     window.showInjectionModal = (userId) => {
         let user = users.find(u => u.id === userId);
         if(!user) return;
@@ -723,7 +445,7 @@
             <p>💰 Balance: S/ ${user.balance?.toFixed(2) || 0} | 📋 Orders: ${user.tasks?.completed||0}/${user.tasks?.total||0}</p>
             <div class="mb-2"><label class="text-gold">📌 Task Number</label><input type="number" id="injectTaskNum" class="form-control bg-dark text-white border-secondary" value="${(user.tasks?.completed||0)+1}" min="1"></div>
             <div class="mb-2"><label class="text-gold">📝 Order Name</label><input id="injectOrderName" class="form-control bg-dark text-white border-secondary" value="Premium Task Order"></div>
-            <div class="mb-2"><label class="text-gold">➕ Extra Amount</label><input type="number" id="injectExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
+            <div class="mb-2"><label class="text-gold">➕ Extra Amount (added to balance)</label><input type="number" id="injectExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
             <div class="mb-2"><label class="text-gold">📊 Commission Rate (%)</label><input type="number" id="injectRate" class="form-control bg-dark text-white border-secondary" step="0.01" value="0.5"></div>
             <div class="mb-2"><label class="text-gold">💰 Fixed Commission (S/)</label><input type="number" id="injectCommission" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
             <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="injectImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="injectPreview" class="mt-1"></div></div>
@@ -751,6 +473,7 @@
         document.getElementById("closeInjectModal").onclick = () => document.body.removeChild(modal);
     };
 
+    // ==================== INJECTION HISTORY WITH EDIT/DELETE ====================
     window.showInjectionHistory = (userId) => {
         let user = users.find(u => u.id === userId);
         let injs = injections.filter(i => i.userId === userId);
@@ -785,7 +508,7 @@
             <div class="mb-2"><label class="text-gold">➕ Extra Amount</label><input type="number" id="editExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.extraAmount}"></div>
             <div class="mb-2"><label class="text-gold">📊 Commission Rate (%)</label><input type="number" id="editRate" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.commissionRate}"></div>
             <div class="mb-2"><label class="text-gold">💰 Fixed Commission (S/)</label><input type="number" id="editCommission" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.commission}"></div>
-            <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="editImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="editPreview" class="mt-1">${injection.imageData ? `<img src="${injection.imageData}" style="max-width:100px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
+            <div class="mb-2"><label class="text-gold">🖼️ Image (optional)</label><input type="file" id="editImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="editPreview" class="mt-1">${injection.imageData ? `<img src="${injection.imageData}" style="max-width:100px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
             <div class="d-flex gap-2 mt-2"><button class="btn-success" id="submitEditBtn">💾 Save Changes</button><button class="btn-danger" id="closeEditModal">❌ Cancel</button></div>
             <div id="editStatus" class="mt-2 text-center"></div>
         </div>`;
@@ -827,7 +550,7 @@
         }
     };
 
-    // ==================== CHAT ====================
+    // ==================== CHAT SYSTEM ====================
     function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
@@ -890,7 +613,7 @@
     window.approveLoan = async (loanId) => { let loan = loanRequests.find(l => l.id === loanId); if(loan && loan.status === "pending") { loan.status = "approved"; let user = users.find(u => u.id === loan.userId); if(user) { user.balance = (user.balance || 0) + loan.amount; await setDoc(doc(db, "users", user.id), user, { merge: true }); } await setDoc(doc(db, "loanRequests", loanId), loan, { merge: true }); renderSection("loanRequests"); alert(`✅ Loan approved! S/ ${loan.amount} added.`); } };
     window.rejectLoan = async (loanId) => { let loan = loanRequests.find(l => l.id === loanId); if(loan && loan.status === "pending") { loan.status = "rejected"; await setDoc(doc(db, "loanRequests", loanId), loan, { merge: true }); renderSection("loanRequests"); alert(`❌ Loan rejected.`); } };
 
-    // ==================== ADD MEMBER ====================
+    // ==================== ADD MEMBER MODAL ====================
     async function showAddMemberModal() {
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Add New Member</h2><input id="newUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input id="newEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><input id="newPhone" placeholder="Phone" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="newPassword" placeholder="Login Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="newWithdrawPassword" placeholder="Withdraw Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newWithdrawPassword', this)"></i></div><input id="newInviteCode" placeholder="Invitation Code (optional)" class="form-control bg-dark text-white border-secondary"><button class="btn-admin mt-2" id="confirmAdd">Create Member</button><button class="btn-secondary mt-1" id="closeAdd">Cancel</button><div id="addMemberStatus" class="mt-2 text-center"></div></div>`;
@@ -915,87 +638,245 @@
         document.getElementById("closeAdd").onclick = () => document.body.removeChild(modal);
     }
 
-    // ==================== AGENCY MANAGEMENT ====================
-    function renderAgencyManagement() {
-        function renderAgencyList() {
-            const listDiv = document.getElementById("agencyList");
-            if (!listDiv) return;
-            if (agencies.length === 0) { listDiv.innerHTML = '<div class="text-center py-4 text-secondary">No agencies created yet.</div>'; return; }
-            listDiv.innerHTML = agencies.map(agency => `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between align-items-center"><div><strong class="text-gold">${escapeHtml(agency.username)}</strong> <span class="badge ${agency.status==='active'?'bg-success':'bg-danger'}">${agency.status}</span></div><div class="d-flex flex-wrap gap-1"><button class="btn btn-info btn-sm" onclick="window.generateAgencyAccessCode('${agency.id}')">📱 Code</button>${agency.status === 'active' ? `<button class="btn btn-warning btn-sm" onclick="window.changeAgencyPassword('${agency.id}')">🔑 Change PW</button><button class="btn btn-danger btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔒 Close</button>` : `<button class="btn btn-success btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔓 Reactivate</button>`}<button class="btn btn-danger btn-sm" onclick="window.deleteAgency('${agency.id}')">🗑️</button></div></div><div class="mt-1 text-secondary small">Email: ${agency.email || 'Not set'} | Created: ${new Date(agency.createdAt).toLocaleString()}</div><div class="mt-1"><span class="text-secondary">Permissions:</span> ${Object.entries(agency.permissions||{}).filter(([k,v])=>v).map(([k])=>`<span class="badge bg-secondary me-1">${k.replace('can','')}</span>`).join(' ')}</div></div>`).join('');
+    // ==================== RENDER SECTIONS ====================
+    function renderSection(section) {
+        currentSection = section;
+        localStorage.setItem("adminCurrentSection", section);
+        let main = document.getElementById("mainContent");
+
+        if(section === "dashboard") {
+            let totalUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
+            let totalBalance = users.reduce((a,u)=>a + (u.balance||0),0);
+            let totalCommission = users.reduce((a,u)=>a + (u.totalCommission||0),0);
+            let pendingRecharge = rechargeRequests.filter(r=>r.status==="pending").length;
+            let pendingWithdraw = withdrawRequests.filter(w=>w.status==="pending").length;
+            let pendingLoan = loanRequests.filter(l=>l.status==="pending").length;
+            let activeAgencies = agencies.filter(a=>a.status==="active").length;
+            let vipCounts = {1:0,2:0,3:0,4:0};
+            users.forEach(u => { if(u.role !== 'admin' && u.role !== 'agency') { const level = getVIPLevel(u.balance||0); vipCounts[level]++; } });
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold">📊 Dashboard</h2><div class="row g-3 mt-2"><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Users</h6><p class="display-6 fw-bold text-gold">${totalUsers}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Balance</h6><p class="display-6 fw-bold text-gold">S/ ${totalBalance.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Commission</h6><p class="display-6 fw-bold text-gold">S/ ${totalCommission.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Active Agencies</h6><p class="display-6 fw-bold text-gold">${activeAgencies}/${agencies.length}</p></div></div></div><div class="row g-3 mt-2"><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending Requests</h6><div class="d-flex gap-3"><span class="text-warning">💰 ${pendingRecharge}</span><span class="text-info">💳 ${pendingWithdraw}</span><span class="text-success">🏦 ${pendingLoan}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">VIP Distribution</h6><div class="d-flex flex-wrap gap-2"><span class="vip-badge-1">VIP1 ${vipCounts[1]}</span><span class="vip-badge-2">VIP2 ${vipCounts[2]}</span><span class="vip-badge-3">VIP3 ${vipCounts[3]}</span><span class="vip-badge-4">VIP4 ${vipCounts[4]}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">System Wallet</h6><p class="text-truncate small">${(systemSettings.usdtWalletAddress||'').substring(0,25)}...</p></div></div></div></div>`;
         }
+        else if(section === "vip") {
+            if (!checkPermission('canManageVIP')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-star me-2"></i>VIP Management</h2><p class="text-secondary">Manage customer VIP levels.</p><div class="bg-dark-card p-3 rounded mb-3"><h6 class="text-gold">Commission Rates</h6><div class="d-flex gap-3"><span class="vip-badge-1">VIP 1 0.5%</span><span class="vip-badge-2">VIP 2 0.7%</span><span class="vip-badge-3">VIP 3 0.8%</span><span class="vip-badge-4">VIP 4 1.0%</span></div></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead><tbody>`;
+            for (const u of customerUsers) {
+                const hasManualOverride = u.manualVIPLevel && u.manualVIPLevel > 0;
+                const currentLevel = hasManualOverride ? u.manualVIPLevel : getVIPLevel(u.balance||0);
+                const currentRate = (VIP_RATES[currentLevel] * 100).toFixed(1);
+                const vipClass = getVIPBadgeClass(currentLevel);
+                html += `<tr><td><strong>${escapeHtml(u.username)}</strong>${hasManualOverride?' <span class="badge bg-warning text-dark">Manual</span>':''}</td><td>S/ ${(u.balance||0).toFixed(2)}</td><td><span class="${vipClass}">VIP ${currentLevel}</span></td><td><span class="commission-rate">${currentRate}%</span></td><td><select class="form-select form-select-sm bg-dark text-white border-secondary vip-select" id="vip-select-${u.id}"><option value="1" ${currentLevel===1?'selected':''}>VIP 1</option><option value="2" ${currentLevel===2?'selected':''}>VIP 2</option><option value="3" ${currentLevel===3?'selected':''}>VIP 3</option><option value="4" ${currentLevel===4?'selected':''}>VIP 4</option><option value="0" ${!hasManualOverride?'selected':''}>Auto</option></select></td><td><button class="btn btn-info btn-sm" onclick="window.applyManualVIP('${u.id}')">Apply</button></td></tr>`;
+            }
+            html += `</tbody></table></div></div>`;
+            main.innerHTML = html;
+        }
+        else if(section === "users") {
+            if (!checkPermission('canManageMembers')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            let filtered = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
+            function renderUserTable() {
+                let tbody = "";
+                filtered.forEach(u => {
+                    const level = getVIPLevel(u.balance||0);
+                    const vipClass = getVIPBadgeClass(level);
+                    tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong><br><small>${u.email||''}</small></td><td>S/ ${(u.balance||0).toFixed(2)}<br>Credit: ${u.creditScore||100}</td><td><span class="${vipClass}">VIP ${level}</span></td><td>${u.invitationCode||'N/A'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>${u.walletAddress?u.walletAddress.substring(0,10)+'...':'Not set'}</td><td><div class="d-flex flex-wrap gap-1"><button class="btn btn-warning btn-sm" onclick="window.setupOrder('${u.id}')">📦 Orders</button><button class="btn btn-info btn-sm" onclick="window.setupBalance('${u.id}')">💰 Balance</button><button class="btn btn-admin btn-sm" onclick="window.changeLoginPwd('${u.id}')">🔑 Login</button><button class="btn btn-admin btn-sm" onclick="window.changeWithdrawPwd('${u.id}')">💳 Withdraw</button><button class="btn btn-info btn-sm" onclick="window.adjustCredit('${u.id}')">⭐ Credit</button><button class="btn btn-admin btn-sm" onclick="window.changeWallet('${u.id}')">🏦 Wallet</button><button class="btn btn-danger btn-sm" onclick="window.toggleDisable('${u.id}')">${u.disabled?'Enable':'Disable'}</button></div></td></tr>`;
+                });
+                document.getElementById("userTableBody").innerHTML = tbody || "<tr><td colspan='8'>No users</td></tr>";
+            }
+            main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-users me-2"></i>Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div><div class="d-flex flex-wrap gap-2 my-3"><input id="userSearch" placeholder="Search..." class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:150px;"><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
+            renderUserTable();
+            document.getElementById("searchBtn").onclick = () => { let v = document.getElementById("userSearch").value.toLowerCase(); filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'&&(u.username.toLowerCase().includes(v)||(u.email||'').toLowerCase().includes(v)||(u.phone||'').includes(v))); renderUserTable(); };
+            document.getElementById("resetSearchBtn").onclick = () => { document.getElementById("userSearch").value = ""; filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'); renderUserTable(); };
+            document.getElementById("addMemberBtn").onclick = showAddMemberModal;
+        }
+        else if(section === "injection") {
+            if (!checkPermission('canInject')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
+            function renderInjectionTable() {
+                const phone = document.getElementById("injectionSearchPhone")?.value || "";
+                const email = document.getElementById("injectionSearchEmail")?.value || "";
+                let filtered = customerUsers.filter(u => (phone === "" || (u.phone || "").includes(phone)) && (email === "" || (u.email || "").toLowerCase().includes(email.toLowerCase())));
+                let tbody = "";
+                if (filtered.length === 0) tbody = `<tr><td colspan="7" class="text-center">No users found</td></tr>`;
+                else filtered.forEach(u => { tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${u.phone || '-'}</td><td>${u.email || '-'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>S/ ${(u.balance||0).toFixed(2)}</td><td><button class="btn btn-danger btn-sm" onclick="window.showInjectionModal('${u.id}')">💉 Inject</button> <button class="btn btn-info btn-sm" onclick="window.showInjectionHistory('${u.id}')">📜 History</button></td></tr>`; });
+                document.getElementById("injectionUserTableBody").innerHTML = tbody;
+            }
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-syringe me-2"></i>Injection Management</h2><div class="d-flex flex-wrap gap-2 my-3"><input id="injectionSearchPhone" placeholder="🔍 Phone" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><input id="injectionSearchEmail" placeholder="📧 Email" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><button class="btn-admin" id="injectionSearchBtn">Search</button><button class="btn-warning" id="resetInjectionSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Username</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="injectionUserTableBody"><tr><td colspan="7" class="text-center">Loading...</td></tr></tbody></table></div></div>`;
+            renderInjectionTable();
+            document.getElementById("injectionSearchBtn").onclick = renderInjectionTable;
+            document.getElementById("resetInjectionSearchBtn").onclick = () => { document.getElementById("injectionSearchPhone").value = ""; document.getElementById("injectionSearchEmail").value = ""; renderInjectionTable(); };
+        }
+        else if(section === "addOrder") {
+            if (!checkPermission('canManageOrders')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            function refresh() { let list = customOrders.map((o,i)=>`<div class="bg-dark-card p-2 rounded d-flex align-items-center gap-3 mb-2"><div class="bg-dark p-1 rounded" style="width:50px;height:50px;">${o.image?`<img src="${o.image}" style="width:45px;height:45px;object-fit:cover;">`:'<i class="fas fa-box text-gold fs-2"></i>'}</div><div><strong>${escapeHtml(o.name)}</strong><br>Price: S/ ${o.price}</div><button class="btn btn-danger btn-sm ms-auto" onclick="window.removeOrder(${i})">Delete</button></div>`).join(""); document.getElementById("orderListDiv").innerHTML = list || "<p class='text-secondary'>No orders yet.</p>"; }
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-plus-circle me-2"></i>Add New Order</h2><input id="newOrderName" placeholder="Order Name" class="form-control bg-dark text-white border-secondary"><input type="number" id="newOrderPrice" placeholder="Price" step="0.01" class="form-control bg-dark text-white border-secondary"><input type="file" id="orderImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="imagePreview" class="mt-1"></div><button class="btn-admin mt-2" id="addOrderBtn">Add Order</button><h5 class="mt-4 text-gold">Existing Orders (${customOrders.length})</h5><div id="orderListDiv"></div></div>`;
+            refresh();
+            document.getElementById("orderImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("imagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px;">`; r.readAsDataURL(f); } };
+            document.getElementById("addOrderBtn").onclick = async () => { let name = document.getElementById("newOrderName").value.trim(); let price = parseFloat(document.getElementById("newOrderPrice").value) || 0; if(!name) { alert("Enter order name"); return; } let file = document.getElementById("orderImage").files[0]; if(file) { let reader = new FileReader(); reader.onload = async e => { customOrders.push({ id: Date.now().toString(), name, image: e.target.result, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); document.getElementById("orderImage").value = ""; document.getElementById("imagePreview").innerHTML = ""; }; reader.readAsDataURL(file); } else { customOrders.push({ id: Date.now().toString(), name, image: null, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); } };
+        }
+        else if(section === "rechargeRequests") {
+            if (!checkPermission('canManageRecharge')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-coins me-2"></i>Recharge Requests</h2>`;
+            if(rechargeRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
+            else rechargeRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.receiptImage?`<img src="${req.receiptImage}" class="request-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveRecharge('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','recharge')">Reject</button></div>`:''}</div>`; });
+            html += `</div>`; main.innerHTML = html;
+        }
+        else if(section === "withdrawRequests") {
+            if (!checkPermission('canManageWithdraw')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Requests</h2>`;
+            if(withdrawRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
+            else withdrawRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Wallet: ${req.walletAddress}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveWithdraw('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','withdraw')">Reject</button></div>`:''}</div>`; });
+            html += `</div>`; main.innerHTML = html;
+        }
+        else if(section === "loanRequests") {
+            if (!checkPermission('canManageLoans')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-heart me-2"></i>Loan Requests</h2>`;
+            if(loanRequests.length===0) html += `<p class="text-secondary">No loan requests.</p>`;
+            else { loanRequests.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach((req) => { let statusClass = req.status === 'pending' ? 'bg-warning' : (req.status === 'approved' ? 'bg-success' : 'bg-danger'); html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${statusClass}">${req.status}</span></div><div>Amount: S/ ${req.amount.toFixed(2)} | Doc: ${req.docType}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.bankImage?`<img src="${req.bankImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.frontImage?`<img src="${req.frontImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.backImage?`<img src="${req.backImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveLoan('${req.id}')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="window.rejectLoan('${req.id}')">✗ Reject</button></div>`:''}</div>`; }); }
+            html += `</div>`; main.innerHTML = html;
+        }
+        else if(section === "agency") {
+            if (!checkPermission('canManageAgencies') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            renderAgencyManagement();
+        }
+        else if(section === "background") {
+            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            main.innerHTML = renderWebsiteSettings();
+            initWebsiteSettingsEventListeners();
+        }
+        else if(section === "popupAds") {
+            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            renderPopupAdsSection();
+        }
+        else if(section === "chat") {
+            if (!checkPermission('canChat') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            renderChatSection();
+        }
+    }
+
+    // ==================== POPUP ADS SECTION ====================
+    function renderPopupAdsSection() {
         const main = document.getElementById("mainContent");
-        main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-user-tie me-2"></i>Agency Management</h2><button class="btn-admin" id="createAgencyBtn">+ Create Agency</button></div><div id="agencyList"></div></div>`;
-        renderAgencyList();
-        document.getElementById("createAgencyBtn").onclick = showCreateAgencyModal;
+        main.innerHTML = `
+            <div class="admin-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <h2 class="text-gold"><i class="fas fa-ad me-2"></i>Popup Ads Management</h2>
+                    <button class="btn-admin" id="createPopupAdBtn"><i class="fas fa-plus"></i> Create New Ad</button>
+                </div>
+                <p class="text-secondary">Create popup ads that will show to customers after they login. Users can dismiss them.</p>
+                <div id="popupAdsList" class="mt-3"></div>
+            </div>
+        `;
+        renderPopupAdsList();
+        document.getElementById("createPopupAdBtn").onclick = () => showPopupAdForm();
     }
-    window.generateAgencyAccessCode = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (!agency) return;
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content text-center"><h2 class="text-gold">🔐 Access Code for ${escapeHtml(agency.username)}</h2><div class="display-1 fw-bold text-gold bg-dark p-3 rounded my-3">${code}</div><p class="text-warning"><i class="fas fa-clock"></i> Valid for 5 minutes</p><div class="d-flex gap-2 justify-content-center"><button class="btn-admin" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button><button class="btn-secondary" id="closeCodeModal">Close</button></div></div>`;
-        document.body.appendChild(modal);
-        modal.querySelector("#closeCodeModal").onclick = () => document.body.removeChild(modal);
-    };
-    function showCreateAgencyModal() {
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Create Agency</h2><input type="text" id="agencyUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input type="email" id="agencyEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="agencyPassword" placeholder="Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="agencyConfirmPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyConfirmPassword', this)"></i></div><div class="mb-2"><label class="text-gold">Permissions</label><div class="d-flex flex-wrap gap-2">${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `<label class="permission-checkbox bg-dark p-1 rounded border border-secondary"><input type="checkbox" id="perm${p}" ${p!=='Settings'?'checked':''}> ${p}</label>`).join('')}</div></div><div class="d-flex gap-2"><button class="btn-success" id="confirmCreateAgency">Create</button><button class="btn-secondary" id="cancelCreateAgency">Cancel</button></div><div id="createAgencyStatus" class="mt-2 text-center"></div></div>`;
-        document.body.appendChild(modal);
-        document.getElementById("confirmCreateAgency").onclick = async () => {
-            const username = document.getElementById("agencyUsername").value.trim();
-            const email = document.getElementById("agencyEmail").value.trim();
-            const password = document.getElementById("agencyPassword").value;
-            const confirmPassword = document.getElementById("agencyConfirmPassword").value;
-            const statusDiv = document.getElementById("createAgencyStatus");
-            if (!username || !email || !password) { statusDiv.innerHTML = '<span class="text-danger">All fields required</span>'; return; }
-            if (password !== confirmPassword) { statusDiv.innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
-            if (agencies.find(a => a.username === username)) { statusDiv.innerHTML = '<span class="text-danger">Username exists</span>'; return; }
-            const permissions = { canManageMembers: document.getElementById("permMembers").checked, canManageVIP: document.getElementById("permVIP").checked, canInject: document.getElementById("permInject").checked, canManageOrders: document.getElementById("permOrders").checked, canManageRecharge: document.getElementById("permRecharge").checked, canManageWithdraw: document.getElementById("permWithdraw").checked, canManageLoans: document.getElementById("permLoans").checked, canEditSettings: document.getElementById("permSettings").checked, canChat: document.getElementById("permChat").checked };
-            const newAgency = { id: Date.now().toString(), username, email, password, role: 'agency', permissions, status: 'active', createdAt: new Date().toISOString(), lastLogin: null };
-            agencies.push(newAgency);
-            await setDoc(doc(db, "agencies", newAgency.id), newAgency);
-            statusDiv.innerHTML = '<span class="text-success">✅ Agency created!</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderAgencyManagement(); }, 1500);
-        };
-        document.getElementById("cancelCreateAgency").onclick = () => document.body.removeChild(modal);
+
+    function renderPopupAdsList() {
+        const container = document.getElementById("popupAdsList");
+        if (!container) return;
+        if (popupAds.length === 0) {
+            container.innerHTML = `<div class="text-center py-4 text-secondary">No popup ads created yet.</div>`;
+            return;
+        }
+        container.innerHTML = popupAds.map(ad => `
+            <div class="bg-dark-card p-3 rounded mb-2 border border-gold">
+                <div class="d-flex flex-wrap justify-content-between align-items-start">
+                    <div><strong class="text-gold">${escapeHtml(ad.title || 'Untitled')}</strong><br>
+                    <span class="text-secondary">${ad.subtitle || ''}</span><br>
+                    <small class="text-muted">Created: ${new Date(ad.createdAt).toLocaleString()}</small></div>
+                    <div class="d-flex gap-1 flex-wrap">
+                        <button class="btn btn-warning btn-sm" onclick="window.editPopupAd('${ad.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="window.deletePopupAd('${ad.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="popup-preview mt-2">
+                    ${ad.imageData ? `<img src="${ad.imageData}" alt="Ad preview">` : ''}
+                    <div class="mt-2"><span class="badge bg-success">${ad.isActive ? 'Active' : 'Inactive'}</span></div>
+                </div>
+            </div>
+        `).join('');
     }
-    window.changeAgencyPassword = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (!agency) return;
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Change Password for ${escapeHtml(agency.username)}</h2><div class="password-wrapper"><input type="password" id="newPassword" placeholder="New Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="confirmNewPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('confirmNewPassword', this)"></i></div><div class="d-flex gap-2"><button class="btn-success" id="confirmPasswordChange">Update</button><button class="btn-secondary" id="cancelPasswordChange">Cancel</button></div><div id="passwordStatus" class="mt-2"></div></div>`;
-        document.body.appendChild(modal);
-        document.getElementById("confirmPasswordChange").onclick = async () => {
-            const newPass = document.getElementById("newPassword").value;
-            const confirmPass = document.getElementById("confirmNewPassword").value;
-            if (!newPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Enter password</span>'; return; }
-            if (newPass !== confirmPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
-            agency.password = newPass;
-            await setDoc(doc(db, "agencies", agencyId), agency, { merge: true });
-            document.getElementById("passwordStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
-            setTimeout(() => document.body.removeChild(modal), 1000);
-        };
-        document.getElementById("cancelPasswordChange").onclick = () => document.body.removeChild(modal);
-    };
-    window.toggleAgencyStatus = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (agency) { agency.status = agency.status === 'active' ? 'closed' : 'active'; await setDoc(doc(db, "agencies", agencyId), agency, { merge: true }); renderAgencyManagement(); }
-    };
-    window.deleteAgency = async (agencyId) => {
-        if (confirm("⚠️ Delete this agency?")) { await deleteDoc(doc(db, "agencies", agencyId)); agencies = agencies.filter(a => a.id !== agencyId); renderAgencyManagement(); }
+
+    window.editPopupAd = (adId) => {
+        const ad = popupAds.find(a => a.id === adId);
+        if (ad) showPopupAdForm(ad);
     };
 
-    // ==================== VIP ====================
-    window.applyManualVIP = async (userId) => {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-        const select = document.getElementById(`vip-select-${userId}`);
-        if (!select) return;
-        const selectedValue = parseInt(select.value);
-        if (selectedValue === 0) { if (user.manualVIPLevel) { delete user.manualVIPLevel; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ ${user.username} set to AUTO mode.`); } else alert(`ℹ️ ${user.username} already in AUTO mode.`); }
-        else { user.manualVIPLevel = selectedValue; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ VIP level for ${user.username} set to VIP ${selectedValue}.`); }
-        renderSection('vip');
+    window.deletePopupAd = async (adId) => {
+        if (confirm("Delete this popup ad?")) {
+            await deleteDoc(doc(db, "popupAds", adId));
+            popupAds = popupAds.filter(a => a.id !== adId);
+            showLiveFeedback("Popup ad deleted!");
+            renderPopupAdsSection();
+        }
     };
+
+    function showPopupAdForm(existingAd = null) {
+        const dict = { title: "Title", subtitle: "Subtitle / Message", image: "Image", active: "Active", cancel: "Cancel", save: "Save", create: "Create" };
+        const isEdit = !!existingAd;
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2 class="text-gold">${isEdit ? '✏️ Edit Popup Ad' : '🆕 Create Popup Ad'}</h2>
+                <div class="mb-2"><label class="text-gold">📌 Title</label><input id="popupTitle" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(existingAd?.title || '')}" placeholder="Ad Title"></div>
+                <div class="mb-2"><label class="text-gold">📝 Subtitle / Message</label><textarea id="popupSubtitle" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="Subtitle or message">${escapeHtml(existingAd?.subtitle || '')}</textarea></div>
+                <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="popupImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="popupImagePreview" class="mt-1">${existingAd?.imageData ? `<img src="${existingAd.imageData}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
+                <div class="mb-2"><label class="text-gold">🔘 Status</label>
+                    <select id="popupActive" class="form-control bg-dark text-white border-secondary">
+                        <option value="true" ${existingAd?.isActive !== false ? 'selected' : ''}>Active</option>
+                        <option value="false" ${existingAd?.isActive === false ? 'selected' : ''}>Inactive</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    <button class="btn-success" id="savePopupBtn">${isEdit ? '💾 Update' : '✅ Create'}</button>
+                    <button class="btn-danger" id="closePopupForm">❌ Cancel</button>
+                </div>
+                <div id="popupFormStatus" class="mt-2 text-center"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById("popupImage").onchange = e => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = ev => document.getElementById("popupImagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">`;
+                reader.readAsDataURL(file);
+            }
+        };
+
+        document.getElementById("savePopupBtn").onclick = async () => {
+            const title = document.getElementById("popupTitle").value.trim() || "Untitled";
+            const subtitle = document.getElementById("popupSubtitle").value.trim();
+            const isActive = document.getElementById("popupActive").value === "true";
+            const imgInput = document.getElementById("popupImage");
+            const statusDiv = document.getElementById("popupFormStatus");
+
+            const saveAd = async (imageData) => {
+                const adData = { title, subtitle, imageData: imageData || existingAd?.imageData || null, isActive };
+                if (isEdit && existingAd) {
+                    await setDoc(doc(db, "popupAds", existingAd.id), { ...adData, id: existingAd.id, createdAt: existingAd.createdAt, updatedAt: new Date().toISOString() });
+                    popupAds = popupAds.map(a => a.id === existingAd.id ? { ...adData, id: existingAd.id, createdAt: existingAd.createdAt } : a);
+                    statusDiv.innerHTML = '<span class="text-success">✅ Ad updated!</span>';
+                } else {
+                    const newId = Date.now().toString();
+                    await setDoc(doc(db, "popupAds", newId), { ...adData, id: newId, createdAt: new Date().toISOString() });
+                    popupAds.push({ ...adData, id: newId });
+                    statusDiv.innerHTML = '<span class="text-success">✅ Ad created!</span>';
+                }
+                setTimeout(() => { document.body.removeChild(modal); renderPopupAdsSection(); }, 1000);
+            };
+
+            if (imgInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = ev => saveAd(ev.target.result);
+                reader.readAsDataURL(imgInput.files[0]);
+            } else {
+                await saveAd(null);
+            }
+        };
+
+        document.getElementById("closePopupForm").onclick = () => document.body.removeChild(modal);
+    }
 
     // ==================== WEBSITE SETTINGS ====================
     function renderWebsiteSettings() {
@@ -1110,397 +991,87 @@
     window.previewCompanyLogo = previewCompanyLogo;
     window.previewLogo = previewLogo;
 
-    // ==================== POPUP ADS SECTION ====================
-    function renderPopupAdsSection() {
+    // ==================== AGENCY MANAGEMENT ====================
+    function renderAgencyManagement() {
+        function renderAgencyList() {
+            const listDiv = document.getElementById("agencyList");
+            if (!listDiv) return;
+            if (agencies.length === 0) { listDiv.innerHTML = '<div class="text-center py-4 text-secondary">No agencies created yet.</div>'; return; }
+            listDiv.innerHTML = agencies.map(agency => `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between align-items-center"><div><strong class="text-gold">${escapeHtml(agency.username)}</strong> <span class="badge ${agency.status==='active'?'bg-success':'bg-danger'}">${agency.status}</span></div><div class="d-flex flex-wrap gap-1"><button class="btn btn-info btn-sm" onclick="window.generateAgencyAccessCode('${agency.id}')">📱 Code</button>${agency.status === 'active' ? `<button class="btn btn-warning btn-sm" onclick="window.changeAgencyPassword('${agency.id}')">🔑 Change PW</button><button class="btn btn-danger btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔒 Close</button>` : `<button class="btn btn-success btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔓 Reactivate</button>`}<button class="btn btn-danger btn-sm" onclick="window.deleteAgency('${agency.id}')">🗑️</button></div></div><div class="mt-1 text-secondary small">Email: ${agency.email || 'Not set'} | Created: ${new Date(agency.createdAt).toLocaleString()}</div><div class="mt-1"><span class="text-secondary">Permissions:</span> ${Object.entries(agency.permissions||{}).filter(([k,v])=>v).map(([k])=>`<span class="badge bg-secondary me-1">${k.replace('can','')}</span>`).join(' ')}</div></div>`).join('');
+        }
         const main = document.getElementById("mainContent");
-        main.innerHTML = `
-            <div class="admin-card">
-                <div class="d-flex flex-wrap justify-content-between align-items-center">
-                    <h2 class="text-gold"><i class="fas fa-ad me-2"></i>Popup Ads Management</h2>
-                    <button class="btn-admin" id="createPopupAdBtn"><i class="fas fa-plus"></i> Create New Ad</button>
-                </div>
-                <p class="text-secondary">Create popup ads that will show to customers after they login. Users can dismiss them.</p>
-                <div id="popupAdsList" class="mt-3"></div>
-            </div>
-        `;
-        renderPopupAdsList();
-        document.getElementById("createPopupAdBtn").onclick = () => showPopupAdForm();
+        main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-user-tie me-2"></i>Agency Management</h2><button class="btn-admin" id="createAgencyBtn">+ Create Agency</button></div><div id="agencyList"></div></div>`;
+        renderAgencyList();
+        document.getElementById("createAgencyBtn").onclick = showCreateAgencyModal;
     }
-
-    function renderPopupAdsList() {
-        const container = document.getElementById("popupAdsList");
-        if (!container) return;
-        if (popupAds.length === 0) {
-            container.innerHTML = `<div class="text-center py-4 text-secondary">No popup ads created yet.</div>`;
-            return;
-        }
-        container.innerHTML = popupAds.map(ad => `
-            <div class="bg-dark-card p-3 rounded mb-2 border border-gold">
-                <div class="d-flex flex-wrap justify-content-between align-items-start">
-                    <div><strong class="text-gold">${escapeHtml(ad.title || 'Untitled')}</strong><br>
-                    <span class="text-secondary">${ad.subtitle || ''}</span><br>
-                    <small class="text-muted">Created: ${new Date(ad.createdAt).toLocaleString()}</small></div>
-                    <div class="d-flex gap-1 flex-wrap">
-                        <button class="btn btn-warning btn-sm" onclick="window.editPopupAd('${ad.id}')"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-danger btn-sm" onclick="window.deletePopupAd('${ad.id}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-                <div class="popup-preview mt-2">
-                    ${ad.imageData ? `<img src="${ad.imageData}" alt="Ad preview">` : ''}
-                    <div class="mt-2"><span class="badge bg-success">${ad.isActive ? 'Active' : 'Inactive'}</span></div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    window.editPopupAd = (adId) => {
-        const ad = popupAds.find(a => a.id === adId);
-        if (ad) showPopupAdForm(ad);
-    };
-
-    window.deletePopupAd = async (adId) => {
-        if (confirm("Delete this popup ad?")) {
-            await deleteDoc(doc(db, "popupAds", adId));
-            popupAds = popupAds.filter(a => a.id !== adId);
-            showLiveFeedback("Popup ad deleted!");
-            renderPopupAdsSection();
-        }
-    };
-
-    function showPopupAdForm(existingAd = null) {
-        const isEdit = !!existingAd;
+    window.generateAgencyAccessCode = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (!agency) return;
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
         const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2 class="text-gold">${isEdit ? '✏️ Edit Popup Ad' : '🆕 Create Popup Ad'}</h2>
-                <div class="mb-2"><label class="text-gold">📌 Title</label><input id="popupTitle" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(existingAd?.title || '')}" placeholder="Ad Title"></div>
-                <div class="mb-2"><label class="text-gold">📝 Subtitle / Message</label><textarea id="popupSubtitle" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="Subtitle or message">${escapeHtml(existingAd?.subtitle || '')}</textarea></div>
-                <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="popupImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="popupImagePreview" class="mt-1">${existingAd?.imageData ? `<img src="${existingAd.imageData}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
-                <div class="mb-2"><label class="text-gold">🔘 Status</label>
-                    <select id="popupActive" class="form-control bg-dark text-white border-secondary">
-                        <option value="true" ${existingAd?.isActive !== false ? 'selected' : ''}>Active</option>
-                        <option value="false" ${existingAd?.isActive === false ? 'selected' : ''}>Inactive</option>
-                    </select>
-                </div>
-                <div class="d-flex gap-2 mt-2">
-                    <button class="btn-success" id="savePopupBtn">${isEdit ? '💾 Update' : '✅ Create'}</button>
-                    <button class="btn-danger" id="closePopupForm">❌ Cancel</button>
-                </div>
-                <div id="popupFormStatus" class="mt-2 text-center"></div>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-content text-center"><h2 class="text-gold">🔐 Access Code for ${escapeHtml(agency.username)}</h2><div class="display-1 fw-bold text-gold bg-dark p-3 rounded my-3">${code}</div><p class="text-warning"><i class="fas fa-clock"></i> Valid for 5 minutes</p><div class="d-flex gap-2 justify-content-center"><button class="btn-admin" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button><button class="btn-secondary" id="closeCodeModal">Close</button></div></div>`;
         document.body.appendChild(modal);
-
-        document.getElementById("popupImage").onchange = e => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = ev => document.getElementById("popupImagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">`;
-                reader.readAsDataURL(file);
-            }
+        modal.querySelector("#closeCodeModal").onclick = () => document.body.removeChild(modal);
+    };
+    function showCreateAgencyModal() {
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Create Agency</h2><input type="text" id="agencyUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input type="email" id="agencyEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="agencyPassword" placeholder="Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="agencyConfirmPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyConfirmPassword', this)"></i></div><div class="mb-2"><label class="text-gold">Permissions</label><div class="d-flex flex-wrap gap-2">${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `<label class="permission-checkbox bg-dark p-1 rounded border border-secondary"><input type="checkbox" id="perm${p}" ${p!=='Settings'?'checked':''}> ${p}</label>`).join('')}</div></div><div class="d-flex gap-2"><button class="btn-success" id="confirmCreateAgency">Create</button><button class="btn-secondary" id="cancelCreateAgency">Cancel</button></div><div id="createAgencyStatus" class="mt-2 text-center"></div></div>`;
+        document.body.appendChild(modal);
+        document.getElementById("confirmCreateAgency").onclick = async () => {
+            const username = document.getElementById("agencyUsername").value.trim();
+            const email = document.getElementById("agencyEmail").value.trim();
+            const password = document.getElementById("agencyPassword").value;
+            const confirmPassword = document.getElementById("agencyConfirmPassword").value;
+            const statusDiv = document.getElementById("createAgencyStatus");
+            if (!username || !email || !password) { statusDiv.innerHTML = '<span class="text-danger">All fields required</span>'; return; }
+            if (password !== confirmPassword) { statusDiv.innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
+            if (agencies.find(a => a.username === username)) { statusDiv.innerHTML = '<span class="text-danger">Username exists</span>'; return; }
+            const permissions = { canManageMembers: document.getElementById("permMembers").checked, canManageVIP: document.getElementById("permVIP").checked, canInject: document.getElementById("permInject").checked, canManageOrders: document.getElementById("permOrders").checked, canManageRecharge: document.getElementById("permRecharge").checked, canManageWithdraw: document.getElementById("permWithdraw").checked, canManageLoans: document.getElementById("permLoans").checked, canEditSettings: document.getElementById("permSettings").checked, canChat: document.getElementById("permChat").checked };
+            const newAgency = { id: Date.now().toString(), username, email, password, role: 'agency', permissions, status: 'active', createdAt: new Date().toISOString(), lastLogin: null };
+            agencies.push(newAgency);
+            await setDoc(doc(db, "agencies", newAgency.id), newAgency);
+            statusDiv.innerHTML = '<span class="text-success">✅ Agency created!</span>';
+            setTimeout(() => { document.body.removeChild(modal); renderAgencyManagement(); }, 1500);
         };
-
-        document.getElementById("savePopupBtn").onclick = async () => {
-            const title = document.getElementById("popupTitle").value.trim() || "Untitled";
-            const subtitle = document.getElementById("popupSubtitle").value.trim();
-            const isActive = document.getElementById("popupActive").value === "true";
-            const imgInput = document.getElementById("popupImage");
-            const statusDiv = document.getElementById("popupFormStatus");
-
-            const saveAd = async (imageData) => {
-                const adData = { title, subtitle, imageData: imageData || existingAd?.imageData || null, isActive };
-                if (isEdit && existingAd) {
-                    await setDoc(doc(db, "popupAds", existingAd.id), { ...adData, id: existingAd.id, createdAt: existingAd.createdAt, updatedAt: new Date().toISOString() });
-                    popupAds = popupAds.map(a => a.id === existingAd.id ? { ...adData, id: existingAd.id, createdAt: existingAd.createdAt } : a);
-                    statusDiv.innerHTML = '<span class="text-success">✅ Ad updated!</span>';
-                } else {
-                    const newId = Date.now().toString();
-                    await setDoc(doc(db, "popupAds", newId), { ...adData, id: newId, createdAt: new Date().toISOString() });
-                    popupAds.push({ ...adData, id: newId });
-                    statusDiv.innerHTML = '<span class="text-success">✅ Ad created!</span>';
-                }
-                setTimeout(() => { document.body.removeChild(modal); renderPopupAdsSection(); }, 1000);
-            };
-
-            if (imgInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = ev => saveAd(ev.target.result);
-                reader.readAsDataURL(imgInput.files[0]);
-            } else {
-                await saveAd(null);
-            }
+        document.getElementById("cancelCreateAgency").onclick = () => document.body.removeChild(modal);
+    }
+    window.changeAgencyPassword = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (!agency) return;
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Change Password for ${escapeHtml(agency.username)}</h2><div class="password-wrapper"><input type="password" id="newPassword" placeholder="New Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="confirmNewPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('confirmNewPassword', this)"></i></div><div class="d-flex gap-2"><button class="btn-success" id="confirmPasswordChange">Update</button><button class="btn-secondary" id="cancelPasswordChange">Cancel</button></div><div id="passwordStatus" class="mt-2"></div></div>`;
+        document.body.appendChild(modal);
+        document.getElementById("confirmPasswordChange").onclick = async () => {
+            const newPass = document.getElementById("newPassword").value;
+            const confirmPass = document.getElementById("confirmNewPassword").value;
+            if (!newPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Enter password</span>'; return; }
+            if (newPass !== confirmPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
+            agency.password = newPass;
+            await setDoc(doc(db, "agencies", agencyId), agency, { merge: true });
+            document.getElementById("passwordStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
+            setTimeout(() => document.body.removeChild(modal), 1000);
         };
+        document.getElementById("cancelPasswordChange").onclick = () => document.body.removeChild(modal);
+    };
+    window.toggleAgencyStatus = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (agency) { agency.status = agency.status === 'active' ? 'closed' : 'active'; await setDoc(doc(db, "agencies", agencyId), agency, { merge: true }); renderAgencyManagement(); }
+    };
+    window.deleteAgency = async (agencyId) => {
+        if (confirm("⚠️ Delete this agency?")) { await deleteDoc(doc(db, "agencies", agencyId)); agencies = agencies.filter(a => a.id !== agencyId); renderAgencyManagement(); }
+    };
 
-        document.getElementById("closePopupForm").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ==================== RENDER SECTIONS ====================
-    function renderSection(section) {
-        currentSection = section;
-        localStorage.setItem("adminCurrentSection", section);
-        let main = document.getElementById("mainContent");
-
-        if(section === "dashboard") {
-            let totalUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
-            let totalBalance = users.reduce((a,u)=>a + (u.balance||0),0);
-            let totalCommission = users.reduce((a,u)=>a + (u.totalCommission||0),0);
-            let pendingRecharge = rechargeRequests.filter(r=>r.status==="pending").length;
-            let pendingWithdraw = withdrawRequests.filter(w=>w.status==="pending").length;
-            let pendingLoan = loanRequests.filter(l=>l.status==="pending").length;
-            let pendingKyc = kycRequests.filter(k=>k.status==="pending").length;
-            let pendingP2P = p2pOrders.filter(o=>o.status==="pending").length;
-            let activeAgencies = agencies.filter(a=>a.status==="active").length;
-            let vipCounts = {1:0,2:0,3:0,4:0};
-            users.forEach(u => { if(u.role !== 'admin' && u.role !== 'agency') { const level = getVIPLevel(u.balance||0); vipCounts[level]++; } });
-            main.innerHTML = `<div class="admin-card"><h2 class="text-gold">📊 Dashboard</h2><div class="row g-3 mt-2"><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Users</h6><p class="display-6 fw-bold text-gold">${totalUsers}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Balance</h6><p class="display-6 fw-bold text-gold">S/ ${totalBalance.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Commission</h6><p class="display-6 fw-bold text-gold">S/ ${totalCommission.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Active Agencies</h6><p class="display-6 fw-bold text-gold">${activeAgencies}/${agencies.length}</p></div></div></div><div class="row g-3 mt-2"><div class="col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending Recharge</h6><p class="text-warning fw-bold">${pendingRecharge}</p></div></div><div class="col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending Withdraw</h6><p class="text-info fw-bold">${pendingWithdraw}</p></div></div><div class="col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending KYC</h6><p class="text-warning fw-bold">${pendingKyc}</p></div></div><div class="col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending P2P</h6><p class="text-warning fw-bold">${pendingP2P}</p></div></div></div><div class="row g-3 mt-2"><div class="col-md-6"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">VIP Distribution</h6><div class="d-flex flex-wrap gap-2"><span class="vip-badge-1">VIP1 ${vipCounts[1]}</span><span class="vip-badge-2">VIP2 ${vipCounts[2]}</span><span class="vip-badge-3">VIP3 ${vipCounts[3]}</span><span class="vip-badge-4">VIP4 ${vipCounts[4]}</span></div></div></div><div class="col-md-6"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">System Wallet</h6><p class="text-truncate small">${(systemSettings.usdtWalletAddress||'').substring(0,25)}...</p></div></div></div></div>`;
-        }
-        else if(section === "vip") {
-            if (!checkPermission('canManageVIP')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
-            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-star me-2"></i>VIP Management</h2><p class="text-secondary">Manage customer VIP levels.</p><div class="bg-dark-card p-3 rounded mb-3"><h6 class="text-gold">Commission Rates</h6><div class="d-flex gap-3"><span class="vip-badge-1">VIP 1 0.5%</span><span class="vip-badge-2">VIP 2 0.7%</span><span class="vip-badge-3">VIP 3 0.8%</span><span class="vip-badge-4">VIP 4 1.0%</span></div></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead><tbody>`;
-            for (const u of customerUsers) {
-                const hasManualOverride = u.manualVIPLevel && u.manualVIPLevel > 0;
-                const currentLevel = hasManualOverride ? u.manualVIPLevel : getVIPLevel(u.balance||0);
-                const currentRate = (VIP_RATES[currentLevel] * 100).toFixed(1);
-                const vipClass = getVIPBadgeClass(currentLevel);
-                html += `<tr><td><strong>${escapeHtml(u.username)}</strong>${hasManualOverride?' <span class="badge bg-warning text-dark">Manual</span>':''}</td><td>S/ ${(u.balance||0).toFixed(2)}</td><td><span class="${vipClass}">VIP ${currentLevel}</span></td><td><span class="commission-rate">${currentRate}%</span></td><td><select class="form-select form-select-sm bg-dark text-white border-secondary vip-select" id="vip-select-${u.id}"><option value="1" ${currentLevel===1?'selected':''}>VIP 1</option><option value="2" ${currentLevel===2?'selected':''}>VIP 2</option><option value="3" ${currentLevel===3?'selected':''}>VIP 3</option><option value="4" ${currentLevel===4?'selected':''}>VIP 4</option><option value="0" ${!hasManualOverride?'selected':''}>Auto</option></select></td><td><button class="btn btn-info btn-sm" onclick="window.applyManualVIP('${u.id}')">Apply</button></td></tr>`;
-            }
-            html += `</tbody></table></div></div>`;
-            main.innerHTML = html;
-        }
-        else if(section === "users") {
-            if (!checkPermission('canManageMembers')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let filtered = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-            function renderUserTable() {
-                let tbody = "";
-                filtered.forEach(u => {
-                    const level = getVIPLevel(u.balance||0);
-                    const vipClass = getVIPBadgeClass(level);
-                    tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong><br><small>${u.email||''}</small></td><td>S/ ${(u.balance||0).toFixed(2)}<br>Credit: ${u.creditScore||100}</td><td><span class="${vipClass}">VIP ${level}</span></td><td>${u.invitationCode||'N/A'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>${u.walletAddress?u.walletAddress.substring(0,10)+'...':'Not set'}</td><td><div class="d-flex flex-wrap gap-1"><button class="btn btn-warning btn-sm" onclick="window.setupOrder('${u.id}')">📦 Orders</button><button class="btn btn-info btn-sm" onclick="window.setupBalance('${u.id}')">💰 Balance</button><button class="btn btn-admin btn-sm" onclick="window.changeLoginPwd('${u.id}')">🔑 Login</button><button class="btn btn-admin btn-sm" onclick="window.changeWithdrawPwd('${u.id}')">💳 Withdraw</button><button class="btn btn-info btn-sm" onclick="window.adjustCredit('${u.id}')">⭐ Credit</button><button class="btn btn-admin btn-sm" onclick="window.changeWallet('${u.id}')">🏦 Wallet</button><button class="btn btn-danger btn-sm" onclick="window.toggleDisable('${u.id}')">${u.disabled?'Enable':'Disable'}</button></div></td></tr>`;
-                });
-                document.getElementById("userTableBody").innerHTML = tbody || "<tr><td colspan='8'>No users</td></tr>";
-            }
-            main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-users me-2"></i>Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div><div class="d-flex flex-wrap gap-2 my-3"><input id="userSearch" placeholder="Search..." class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:150px;"><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
-            renderUserTable();
-            document.getElementById("searchBtn").onclick = () => { let v = document.getElementById("userSearch").value.toLowerCase(); filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'&&(u.username.toLowerCase().includes(v)||(u.email||'').toLowerCase().includes(v)||(u.phone||'').includes(v))); renderUserTable(); };
-            document.getElementById("resetSearchBtn").onclick = () => { document.getElementById("userSearch").value = ""; filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'); renderUserTable(); };
-            document.getElementById("addMemberBtn").onclick = showAddMemberModal;
-        }
-        else if(section === "injection") {
-            if (!checkPermission('canInject')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-            function renderInjectionTable() {
-                const phone = document.getElementById("injectionSearchPhone")?.value || "";
-                const email = document.getElementById("injectionSearchEmail")?.value || "";
-                let filtered = customerUsers.filter(u => (phone === "" || (u.phone || "").includes(phone)) && (email === "" || (u.email || "").toLowerCase().includes(email.toLowerCase())));
-                let tbody = "";
-                if (filtered.length === 0) tbody = `<tr><td colspan="7" class="text-center">No users found</td></tr>`;
-                else filtered.forEach(u => { tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${u.phone || '-'}</td><td>${u.email || '-'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>S/ ${(u.balance||0).toFixed(2)}</td><td><button class="btn btn-danger btn-sm" onclick="window.showInjectionModal('${u.id}')">💉 Inject</button> <button class="btn btn-info btn-sm" onclick="window.showInjectionHistory('${u.id}')">📜 History</button></td></tr>`; });
-                document.getElementById("injectionUserTableBody").innerHTML = tbody;
-            }
-            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-syringe me-2"></i>Injection Management</h2><div class="d-flex flex-wrap gap-2 my-3"><input id="injectionSearchPhone" placeholder="🔍 Phone" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><input id="injectionSearchEmail" placeholder="📧 Email" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><button class="btn-admin" id="injectionSearchBtn">Search</button><button class="btn-warning" id="resetInjectionSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Username</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="injectionUserTableBody"><tr><td colspan="7" class="text-center">Loading...</td></tr></tbody></table></div></div>`;
-            renderInjectionTable();
-            document.getElementById("injectionSearchBtn").onclick = renderInjectionTable;
-            document.getElementById("resetInjectionSearchBtn").onclick = () => { document.getElementById("injectionSearchPhone").value = ""; document.getElementById("injectionSearchEmail").value = ""; renderInjectionTable(); };
-        }
-        else if(section === "addOrder") {
-            if (!checkPermission('canManageOrders')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            function refresh() { let list = customOrders.map((o,i)=>`<div class="bg-dark-card p-2 rounded d-flex align-items-center gap-3 mb-2"><div class="bg-dark p-1 rounded" style="width:50px;height:50px;">${o.image?`<img src="${o.image}" style="width:45px;height:45px;object-fit:cover;">`:'<i class="fas fa-box text-gold fs-2"></i>'}</div><div><strong>${escapeHtml(o.name)}</strong><br>Price: S/ ${o.price}</div><button class="btn btn-danger btn-sm ms-auto" onclick="window.removeOrder(${i})">Delete</button></div>`).join(""); document.getElementById("orderListDiv").innerHTML = list || "<p class='text-secondary'>No orders yet.</p>"; }
-            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-plus-circle me-2"></i>Add New Order</h2><input id="newOrderName" placeholder="Order Name" class="form-control bg-dark text-white border-secondary"><input type="number" id="newOrderPrice" placeholder="Price" step="0.01" class="form-control bg-dark text-white border-secondary"><input type="file" id="orderImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="imagePreview" class="mt-1"></div><button class="btn-admin mt-2" id="addOrderBtn">Add Order</button><h5 class="mt-4 text-gold">Existing Orders (${customOrders.length})</h5><div id="orderListDiv"></div></div>`;
-            refresh();
-            document.getElementById("orderImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("imagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px;">`; r.readAsDataURL(f); } };
-            document.getElementById("addOrderBtn").onclick = async () => { let name = document.getElementById("newOrderName").value.trim(); let price = parseFloat(document.getElementById("newOrderPrice").value) || 0; if(!name) { alert("Enter order name"); return; } let file = document.getElementById("orderImage").files[0]; if(file) { let reader = new FileReader(); reader.onload = async e => { customOrders.push({ id: Date.now().toString(), name, image: e.target.result, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); document.getElementById("orderImage").value = ""; document.getElementById("imagePreview").innerHTML = ""; }; reader.readAsDataURL(file); } else { customOrders.push({ id: Date.now().toString(), name, image: null, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); } };
-        }
-        else if(section === "rechargeRequests") {
-            if (!checkPermission('canManageRecharge')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-coins me-2"></i>Recharge Requests</h2>`;
-            if(rechargeRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
-            else rechargeRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.receiptImage?`<img src="${req.receiptImage}" class="request-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveRecharge('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','recharge')">Reject</button></div>`:''}</div>`; });
-            html += `</div>`; main.innerHTML = html;
-        }
-        else if(section === "withdrawRequests") {
-            if (!checkPermission('canManageWithdraw')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Requests</h2>`;
-            if(withdrawRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
-            else withdrawRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Wallet: ${req.walletAddress}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveWithdraw('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','withdraw')">Reject</button></div>`:''}</div>`; });
-            html += `</div>`; main.innerHTML = html;
-        }
-        else if(section === "loanRequests") {
-            if (!checkPermission('canManageLoans')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-heart me-2"></i>Loan Requests</h2>`;
-            if(loanRequests.length===0) html += `<p class="text-secondary">No loan requests.</p>`;
-            else { loanRequests.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach((req) => { let statusClass = req.status === 'pending' ? 'bg-warning' : (req.status === 'approved' ? 'bg-success' : 'bg-danger'); html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${statusClass}">${req.status}</span></div><div>Amount: S/ ${req.amount.toFixed(2)} | Doc: ${req.docType}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.bankImage?`<img src="${req.bankImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.frontImage?`<img src="${req.frontImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.backImage?`<img src="${req.backImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveLoan('${req.id}')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="window.rejectLoan('${req.id}')">✗ Reject</button></div>`:''}</div>`; }); }
-            html += `</div>`; main.innerHTML = html;
-        }
-        else if(section === "agency") {
-            if (!checkPermission('canManageAgencies') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            renderAgencyManagement();
-        }
-        else if(section === "background") {
-            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            main.innerHTML = renderWebsiteSettings();
-            initWebsiteSettingsEventListeners();
-        }
-        else if(section === "popupAds") {
-            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            renderPopupAdsSection();
-        }
-        else if(section === "kyc") {
-            if (!checkPermission('canManageMembers') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            renderKycSection();
-        }
-        else if(section === "p2pRates") {
-            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            renderP2PRatesSection();
-        }
-        else if(section === "p2pOrders") {
-            if (!checkPermission('canManageOrders') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            renderP2POrdersSection();
-        }
-        else if(section === "chat") {
-            renderChatSection();
-        }
-    }
-
-    // ==================== KYC SECTION ====================
-    function renderKycSection() {
-        const main = document.getElementById("mainContent");
-        main.innerHTML = `
-            <div class="admin-card">
-                <h2 class="text-gold"><i class="fas fa-id-card me-2"></i>KYC Verification Management</h2>
-                <p class="text-secondary">Review and approve/reject KYC requests from customers.</p>
-                <div id="kycRequestsList" class="mt-3"></div>
-            </div>
-        `;
-        renderKycRequestsList();
-    }
-
-    function renderKycRequestsList() {
-        const container = document.getElementById("kycRequestsList");
-        if (!container) return;
-        if (kycRequests.length === 0) {
-            container.innerHTML = `<div class="text-center py-4 text-secondary">No KYC requests found.</div>`;
-            return;
-        }
-        container.innerHTML = kycRequests.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt)).map(kyc => `
-            <div class="kyc-request-card">
-                <div class="d-flex flex-wrap justify-content-between align-items-start">
-                    <div>
-                        <strong class="text-gold">${escapeHtml(kyc.username)}</strong>
-                        <span class="badge ${kyc.status === 'pending' ? 'bg-warning' : (kyc.status === 'approved' ? 'bg-success' : 'bg-danger')}">${kyc.status}</span>
-                        <div class="text-muted small">Document: ${kyc.docType} | Submitted: ${new Date(kyc.submittedAt).toLocaleString()}</div>
-                    </div>
-                    <div class="d-flex gap-1 flex-wrap">
-                        ${kyc.status === 'pending' ? `
-                            <button class="btn btn-success btn-sm" onclick="window.approveKyc('${kyc.id}')"><i class="fas fa-check"></i> Approve</button>
-                            <button class="btn btn-danger btn-sm" onclick="window.rejectKyc('${kyc.id}')"><i class="fas fa-times"></i> Reject</button>
-                        ` : ''}
-                    </div>
-                </div>
-                <div class="d-flex gap-2 mt-2 flex-wrap">
-                    ${kyc.frontImage ? `<img src="${kyc.frontImage}" class="request-img" onclick="window.showImageModal(this.src)" title="Front">` : ''}
-                    ${kyc.backImage ? `<img src="${kyc.backImage}" class="request-img" onclick="window.showImageModal(this.src)" title="Back">` : ''}
-                </div>
-                ${kyc.reviewedAt ? `<div class="text-muted small mt-1">Reviewed: ${new Date(kyc.reviewedAt).toLocaleString()}</div>` : ''}
-            </div>
-        `).join('');
-    }
-
-    window.approveKyc = approveKyc;
-    window.rejectKyc = rejectKyc;
-
-    // ==================== P2P RATES SECTION ====================
-    function renderP2PRatesSection() {
-        const main = document.getElementById("mainContent");
-        const currencies = [
-            { code: 'thb', flag: '🇹🇭', label: 'THB' },
-            { code: 'uah', flag: '🇺🇦', label: 'UAH' },
-            { code: 'rub', flag: '🇷🇺', label: 'RUB' },
-            { code: 'tjs', flag: '🇹🇯', label: 'TJS' },
-            { code: 'uzs', flag: '🇺🇿', label: 'UZS' }
-        ];
-        let html = `
-            <div class="admin-card">
-                <h2 class="text-gold"><i class="fas fa-exchange-alt me-2"></i>P2P Exchange Rates</h2>
-                <p class="text-secondary">Set buy and sell rates for each currency. These rates will be shown to customers in the P2P page.</p>
-                <div id="p2pRatesContainer">
-        `;
-        currencies.forEach(c => {
-            const rate = p2pRates[c.code] || { buy: 0, sell: 0, label: c.label };
-            html += `
-                <div class="p2p-rate-row" data-currency="${c.code}">
-                    <span class="currency-flag">${c.flag}</span>
-                    <span class="text-gold" style="font-weight:700;min-width:50px;">${c.label}</span>
-                    <input type="text" class="p2p-label form-control bg-dark text-white border-secondary" placeholder="Label" value="${rate.label || c.label}" style="width:80px;">
-                    <input type="number" class="p2p-buy form-control bg-dark text-white border-secondary" placeholder="Buy Rate" value="${rate.buy || 0}" step="0.01" style="width:120px;">
-                    <input type="number" class="p2p-sell form-control bg-dark text-white border-secondary" placeholder="Sell Rate" value="${rate.sell || 0}" step="0.01" style="width:120px;">
-                </div>
-            `;
-        });
-        html += `
-                </div>
-                <button class="btn-admin mt-3" id="saveP2PRatesBtn"><i class="fas fa-save"></i> Save Rates</button>
-            </div>
-        `;
-        main.innerHTML = html;
-        document.getElementById("saveP2PRatesBtn").onclick = saveP2PRates;
-    }
-
-    // ==================== P2P ORDERS SECTION ====================
-    function renderP2POrdersSection() {
-        const main = document.getElementById("mainContent");
-        main.innerHTML = `
-            <div class="admin-card">
-                <h2 class="text-gold"><i class="fas fa-list me-2"></i>P2P Orders</h2>
-                <p class="text-secondary">Manage customer P2P buy/sell orders.</p>
-                <div id="p2pOrdersList" class="mt-3"></div>
-            </div>
-        `;
-        renderP2POrdersList();
-    }
-
-    function renderP2POrdersList() {
-        const container = document.getElementById("p2pOrdersList");
-        if (!container) return;
-        if (p2pOrders.length === 0) {
-            container.innerHTML = `<div class="text-center py-4 text-secondary">No P2P orders found.</div>`;
-            return;
-        }
-        container.innerHTML = p2pOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(order => {
-            const statusClass = order.status === 'pending' ? 'text-warning' : (order.status === 'completed' ? 'text-success' : 'text-danger');
-            const actionLabel = order.type === 'buy' ? 'Buy' : 'Sell';
-            return `
-                <div class="kyc-request-card">
-                    <div class="d-flex flex-wrap justify-content-between align-items-start">
-                        <div>
-                            <strong class="text-gold">${escapeHtml(order.username)}</strong>
-                            <span class="badge ${order.status === 'pending' ? 'bg-warning' : (order.status === 'completed' ? 'bg-success' : 'bg-danger')}">${order.status}</span>
-                            <div class="text-muted small">${actionLabel} ${order.amount} USDT @ ${order.rate} ${order.currency.toUpperCase()} | Total: ${(order.amount * order.rate).toFixed(2)} ${order.currency.toUpperCase()}</div>
-                            <div class="text-muted small">Created: ${new Date(order.createdAt).toLocaleString()}</div>
-                            ${order.adminBankDetails ? `
-                                <div class="text-muted small mt-1" style="color:#10b981;">Bank: ${order.adminBankDetails.bankName} | Acc: ${order.adminBankDetails.accountNumber} | Name: ${order.adminBankDetails.accountName}</div>
-                            ` : ''}
-                            ${order.receiptImage ? `<div class="text-muted small mt-1" style="color:#10b981;"><i class="fas fa-check-circle"></i> Receipt uploaded</div>` : ''}
-                        </div>
-                        <div class="d-flex gap-1 flex-wrap">
-                            ${order.status === 'pending' && !order.adminBankDetails ? `
-                                <button class="btn btn-info btn-sm" onclick="window.processP2POrder('${order.id}','process')"><i class="fas fa-edit"></i> Provide Bank</button>
-                            ` : ''}
-                            ${order.status === 'pending' && order.adminBankDetails && order.receiptImage ? `
-                                <button class="btn btn-success btn-sm" onclick="window.processP2POrder('${order.id}','complete')"><i class="fas fa-check"></i> Complete</button>
-                            ` : ''}
-                            ${order.status === 'pending' ? `
-                                <button class="btn btn-danger btn-sm" onclick="window.processP2POrder('${order.id}','cancel')"><i class="fas fa-times"></i> Cancel</button>
-                            ` : ''}
-                        </div>
-                    </div>
-                    ${order.receiptImage ? `<img src="${order.receiptImage}" class="request-img mt-2" onclick="window.showImageModal(this.src)">` : ''}
-                </div>
-            `;
-        }).join('');
-    }
-
-    window.processP2POrder = processP2POrder;
+    // ==================== VIP MANUAL ====================
+    window.applyManualVIP = async (userId) => {
+        const user = users.find(u => u.id === userId);
+        if (!user) return;
+        const select = document.getElementById(`vip-select-${userId}`);
+        if (!select) return;
+        const selectedValue = parseInt(select.value);
+        if (selectedValue === 0) { if (user.manualVIPLevel) { delete user.manualVIPLevel; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ ${user.username} set to AUTO mode.`); } else alert(`ℹ️ ${user.username} already in AUTO mode.`); }
+        else { user.manualVIPLevel = selectedValue; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ VIP level for ${user.username} set to VIP ${selectedValue}.`); }
+        renderSection('vip');
+    };
 
     // ==================== CHAT SECTION ====================
     function renderChatSection() {
@@ -1510,20 +1081,22 @@
             <div class="admin-card">
                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
                     <h2 class="text-gold"><i class="fas fa-comment-dots me-2"></i>Customer Service Chat</h2>
-                    <div class="sound-toggle" id="adminSoundToggleBtn" style="cursor:pointer;background:rgba(212,175,55,0.12);padding:6px 14px;border-radius:30px;border:1px solid var(--lux-gold);backdrop-filter:blur(4px);"><i class="fas fa-volume-up"></i> <span id="adminSoundText">Sound On</span></div>
+                    <div class="sound-toggle" id="adminSoundToggleBtn" style="cursor:pointer;background:rgba(212,175,55,0.15);padding:6px 14px;border-radius:30px;border:1px solid var(--lux-gold);"><i class="fas fa-volume-up"></i> <span id="adminSoundText">Sound On</span></div>
                 </div>
                 <select id="chatUserSelect" class="form-select bg-dark text-white border-secondary mb-2">
                     <option value="">-- Select Customer --</option>
                     ${customerUsers.map(u => `<option value="${escapeHtml(u.username)}">${escapeHtml(u.username)} (${u.email || 'No email'})</option>`).join('')}
                 </select>
-                <div class="chat-container">
-                    <div class="chat-messages" id="adminChatMessages"></div>
-                    <div id="adminTypingIndicator" class="typing-indicator" style="display:none;margin:0 20px 10px 20px;">
+                <div class="chat-container" style="display:flex;flex-direction:column;height:60vh;background:#0f1117;border-radius:24px;overflow:hidden;border:1px solid var(--lux-border-gold);">
+                    <div class="chat-messages" id="adminChatMessages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;"></div>
+                    <div id="adminTypingIndicator" class="typing-indicator" style="display:none;margin:0 20px 10px 20px;padding:6px 14px;background:rgba(0,0,0,0.5);border-radius:20px;width:fit-content;">
                         <span id="adminTypingUser">Admin</span> is typing
-                        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;"></div>
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;animation-delay:0.2s;"></div>
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;animation-delay:0.4s;"></div>
                     </div>
-                    <div class="chat-input-area">
-                        <input type="text" id="adminChatInput" placeholder="Type message..." class="form-control bg-dark text-white border-secondary" style="margin-bottom:0;">
+                    <div class="chat-input-area" style="display:flex;gap:10px;padding:16px;background:#0f1117;border-top:1px solid #2d3748;">
+                        <input type="text" id="adminChatInput" placeholder="Type message..." class="form-control bg-dark text-white border-secondary" style="margin-bottom:0;flex:1;">
                         <button class="btn-admin" id="adminSendBtn" style="white-space:nowrap;">Send</button>
                     </div>
                 </div>
@@ -1552,7 +1125,7 @@
                             let html = '';
                             relevant.forEach(msg => {
                                 const isSent = msg.from === 'admin';
-                                html += `<div class="chat-message ${isSent ? 'sent' : 'received'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')">` : ''}<div class="chat-time">${msg.time || new Date().toLocaleString()}</div></div>`;
+                                html += `<div class="chat-message ${isSent ? 'sent' : 'received'}" style="max-width:80%;padding:12px 16px;border-radius:20px;word-break:break-word;${isSent ? 'align-self:flex-end;background:var(--lux-gold);color:#0a120e;border-bottom-right-radius:4px;' : 'align-self:flex-start;background:#2a3a2f;color:#e2e8f0;border-bottom-left-radius:4px;border:1px solid var(--lux-gold);'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || new Date().toLocaleString()}</div></div>`;
                             });
                             const messagesDiv = document.getElementById("adminChatMessages");
                             messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet. Start chatting!</div>';
@@ -1580,7 +1153,7 @@
                 let html = '';
                 relevant.forEach(msg => {
                     const isSent = msg.from === 'admin';
-                    html += `<div class="chat-message ${isSent ? 'sent' : 'received'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')">` : ''}<div class="chat-time">${msg.time || new Date().toLocaleString()}</div></div>`;
+                    html += `<div class="chat-message ${isSent ? 'sent' : 'received'}" style="max-width:80%;padding:12px 16px;border-radius:20px;word-break:break-word;${isSent ? 'align-self:flex-end;background:var(--lux-gold);color:#0a120e;border-bottom-right-radius:4px;' : 'align-self:flex-start;background:#2a3a2f;color:#e2e8f0;border-bottom-left-radius:4px;border:1px solid var(--lux-gold);'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || new Date().toLocaleString()}</div></div>`;
                 });
                 const messagesDiv = document.getElementById("adminChatMessages");
                 messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet.</div>';
@@ -1600,7 +1173,7 @@
     // ==================== SOUND ====================
     function initNotificationSound() {
         try {
-            notificationAudio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAcHBwgICAACAgIAAgAAAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAAA=');
+            notificationAudio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAcHBwgICAACAgIAAgAAAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAAA=');
         } catch(e) {}
     }
     function playNotificationSound() { if (soundEnabled && notificationAudio) { try { notificationAudio.play(); } catch(e) {} } }
@@ -1642,35 +1215,82 @@
         })();
     }
 
-    // Expose functions to global
-    window.editInjection = editInjection;
-    window.deleteInjection = deleteInjection;
-    window.editPopupAd = editPopupAd;
-    window.deletePopupAd = deletePopupAd;
-    window.showInjectionModal = showInjectionModal;
-    window.showInjectionHistory = showInjectionHistory;
-    window.setupOrder = setupOrder;
-    window.setupBalance = setupBalance;
-    window.changeLoginPwd = changeLoginPwd;
-    window.changeWithdrawPwd = changeWithdrawPwd;
-    window.adjustCredit = adjustCredit;
-    window.changeWallet = changeWallet;
-    window.toggleDisable = toggleDisable;
-    window.removeOrder = removeOrder;
-    window.approveRecharge = approveRecharge;
-    window.approveWithdraw = approveWithdraw;
-    window.showRejectNote = showRejectNote;
-    window.approveLoan = approveLoan;
-    window.rejectLoan = rejectLoan;
-    window.applyManualVIP = applyManualVIP;
-    window.generateAgencyAccessCode = generateAgencyAccessCode;
-    window.changeAgencyPassword = changeAgencyPassword;
-    window.toggleAgencyStatus = toggleAgencyStatus;
-    window.deleteAgency = deleteAgency;
-    window.approveKyc = approveKyc;
-    window.rejectKyc = rejectKyc;
-    window.processP2POrder = processP2POrder;
+    // ==================== LIVE FEEDBACK ====================
+    function showLiveFeedback(message, isError = false) {
+        let feedback = document.createElement('div');
+        feedback.style.position = 'fixed';
+        feedback.style.bottom = '80px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(30,42,36,0.95)';
+        feedback.style.padding = '12px 28px';
+        feedback.style.borderRadius = '40px';
+        feedback.style.fontSize = '13px';
+        feedback.style.zIndex = '100';
+        feedback.style.borderLeft = '3px solid var(--lux-gold)';
+        feedback.style.fontWeight = '700';
+        feedback.style.backdropFilter = 'blur(8px)';
+        feedback.style.color = 'white';
+        feedback.style.maxWidth = '90%';
+        feedback.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${message}`;
+        document.body.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 3000);
+    }
+    window.showLiveFeedback = showLiveFeedback;
+
+    // Expose functions to global scope for onclick usage
+    window.editInjection = window.editInjection;
+    window.deleteInjection = window.deleteInjection;
+    window.editPopupAd = window.editPopupAd;
+    window.deletePopupAd = window.deletePopupAd;
+    window.showInjectionModal = window.showInjectionModal;
+    window.showInjectionHistory = window.showInjectionHistory;
+    window.setupOrder = window.setupOrder;
+    window.setupBalance = window.setupBalance;
+    window.changeLoginPwd = window.changeLoginPwd;
+    window.changeWithdrawPwd = window.changeWithdrawPwd;
+    window.adjustCredit = window.adjustCredit;
+    window.changeWallet = window.changeWallet;
+    window.toggleDisable = window.toggleDisable;
+    window.removeOrder = window.removeOrder;
+    window.approveRecharge = window.approveRecharge;
+    window.approveWithdraw = window.approveWithdraw;
+    window.showRejectNote = window.showRejectNote;
+    window.approveLoan = window.approveLoan;
+    window.rejectLoan = window.rejectLoan;
+    window.applyManualVIP = window.applyManualVIP;
+    window.generateAgencyAccessCode = window.generateAgencyAccessCode;
+    window.changeAgencyPassword = window.changeAgencyPassword;
+    window.toggleAgencyStatus = window.toggleAgencyStatus;
+    window.deleteAgency = window.deleteAgency;
     window.showImageModal = showImageModal;
+    window.previewLogo = previewLogo;
+    window.previewCompanyLogo = previewCompanyLogo;
+
+    // Add typing animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        .typing-dot {
+            display: inline-block;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .btn-outline-gold {
+            color: var(--lux-gold);
+            border-color: var(--lux-gold);
+            background: transparent;
+        }
+        .btn-outline-gold:hover {
+            background: var(--lux-gold);
+            color: #0a120e;
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
