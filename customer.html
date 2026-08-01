@@ -7,11 +7,11 @@
     <!-- Font Awesome + Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap 5 + Icons (lightweight, responsive) -->
+    <!-- Bootstrap 5 + Icons (responsive) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
-        /* ===== ROOT VARIABLES FOR EASY COLOR CUSTOMIZATION ===== */
+        /* ===== ROOT VARIABLES ===== */
         :root {
             --lux-gold: #D4AF37;
             --lux-gold-light: #F5E7B2;
@@ -24,7 +24,6 @@
             --lux-shadow: 0 8px 32px rgba(0,0,0,0.3);
             --lux-radius: 28px;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
@@ -41,13 +40,6 @@
             position: relative;
             transition: background 0.4s ease;
         }
-        /* ===== RESPONSIVE UTILITY ===== */
-        .text-gold { color: var(--lux-gold); }
-        .text-gold-light { color: var(--lux-gold-light); }
-        .bg-gold-gradient { background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light), var(--lux-gold-dark)); }
-        .border-gold { border-color: var(--lux-border-gold) !important; }
-        .shadow-gold { box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25); }
-
         /* ===== MARQUEE ICON STRIP ===== */
         .icon-marquee {
             background: rgba(0,0,0,0.3);
@@ -82,12 +74,10 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
-
         /* ===== PAGE & CARDS ===== */
         .page { display: none; padding: 28px 22px 100px; min-height: 100vh; position: relative; z-index: 1; }
         .active-page { display: block; animation: pageEnter 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
         @keyframes pageEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .luxury-header {
             background: rgba(10, 12, 16, 0.8);
             backdrop-filter: blur(20px);
@@ -168,13 +158,13 @@
         }
         .input-lux:focus { border-color: var(--lux-gold); box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-
-        /* ===== BADGES & VIP ===== */
+        .text-gold { color: var(--lux-gold); }
+        .text-gold-light { color: var(--lux-gold-light); }
+        /* ===== VIP BADGES ===== */
         .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
         .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
         .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
         .vip-badge-4 { background: linear-gradient(135deg, var(--lux-gold), #b8941e); color: #0a120e; }
-
         /* ===== BOTTOM NAV ===== */
         .bottom-nav-lux {
             background: rgba(5, 8, 6, 0.95);
@@ -205,7 +195,6 @@
         .nav-item-lux.active i { transform: scale(1.1); opacity: 1; }
         .nav-item-lux:hover { color: var(--lux-gold); transform: translateY(-3px); }
         .hidden-nav { display: none !important; }
-
         /* ===== CHAT ===== */
         .chat-container {
             display: flex;
@@ -237,7 +226,6 @@
             border-bottom-left-radius: 4px;
         }
         .chat-input-area { display: flex; gap: 12px; padding: 16px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--lux-border-gold); }
-
         /* ===== MODAL ===== */
         .modal {
             position: fixed;
@@ -261,7 +249,77 @@
             border: 1px solid var(--lux-border-gold);
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
-
+        /* ===== POPUP AD OVERLAY ===== */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(12px);
+            animation: popupFade 0.4s ease;
+        }
+        @keyframes popupFade {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .popup-card {
+            background: linear-gradient(145deg, #1a1e26, #0f1117);
+            border-radius: 40px;
+            padding: 32px;
+            max-width: 480px;
+            width: 92%;
+            border: 1px solid var(--lux-gold);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            position: relative;
+            text-align: center;
+        }
+        .popup-card img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .popup-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .popup-close-btn:hover {
+            background: rgba(220,38,38,0.6);
+            transform: rotate(90deg);
+        }
+        .popup-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--lux-gold-light), var(--lux-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        .popup-subtitle {
+            color: var(--lux-text-light);
+            font-size: 16px;
+            line-height: 1.6;
+        }
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .page { padding: 16px 12px 100px; }
@@ -273,6 +331,8 @@
             .modal-content { padding: 24px; }
             .bottom-nav-lux { padding: 8px 12px 20px; }
             .nav-item-lux i { font-size: 20px; }
+            .popup-card { padding: 24px; }
+            .popup-title { font-size: 22px; }
         }
         @media (max-width: 480px) {
             .luxury-brand { font-size: 18px; }
@@ -280,13 +340,12 @@
             .btn-lux { font-size: 13px; padding: 10px 14px; }
             .card-lux { padding: 16px; }
             .chat-message { max-width: 95%; }
+            .popup-card { padding: 18px; }
         }
-
         /* ===== CUSTOM SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #1a1e26; border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
-
         /* ===== REAL-TIME INDICATOR ===== */
         .real-time-indicator {
             position: fixed;
@@ -302,7 +361,6 @@
             display: none;
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
-
         /* ===== UPLOAD AREA ===== */
         .upload-area-sm {
             border: 2px dashed var(--lux-border-gold);
@@ -316,7 +374,6 @@
             transition: all 0.2s;
         }
         .upload-area-sm:hover { border-color: var(--lux-gold); background: rgba(212,175,55,0.05); }
-
         /* ===== INJECTION BADGE ===== */
         .injection-badge {
             background: linear-gradient(135deg, #f59e0b, #ea580c);
@@ -332,7 +389,6 @@
             border: 2px solid #f59e0b;
             box-shadow: 0 0 20px rgba(245,158,11,0.3);
         }
-
         /* ===== COMPANY SECTION ===== */
         .company-section {
             background: var(--lux-card-bg);
@@ -359,7 +415,6 @@
         }
         .company-description { color: var(--lux-text-light); line-height: 1.8; }
         .company-description p { margin-bottom: 12px; }
-
         /* ===== LOGO CONTAINER ===== */
         .logo-container {
             display: flex;
@@ -381,7 +436,6 @@
         }
         .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .logo-item i { font-size: 40px; color: var(--lux-gold); }
-
         /* ===== PHOTO PREVIEW ===== */
         .photo-preview {
             width: 150px;
@@ -413,6 +467,323 @@
         .profile-photo-large:hover { transform: scale(1.02); }
         .profile-photo-large img { width: 100%; height: 100%; object-fit: cover; }
         .profile-photo-large i { font-size: 64px; color: #0a120e; }
+        /* ===== BALANCE BADGE ===== */
+        .balance-badge-lux {
+            background: linear-gradient(135deg, rgba(10,18,14,0.9), rgba(26,42,31,0.9));
+            border-radius: 36px;
+            padding: 24px 28px;
+            border: 1px solid var(--lux-gold);
+            box-shadow: var(--lux-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-badge-lux .amount {
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--lux-gold-light);
+        }
+        /* ===== SERVICE CARDS ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        .service-card {
+            background: rgba(15,20,25,0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 32px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: rgba(212,175,55,0.08);
+            border-color: rgba(212,175,55,0.6);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .service-icon {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        .service-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--lux-gold-light);
+            margin-bottom: 12px;
+        }
+        .service-desc {
+            font-size: 13px;
+            color: var(--lux-text-muted);
+        }
+        @media (max-width: 992px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 576px) { .services-grid { grid-template-columns: 1fr; } }
+        /* ===== HERO ===== */
+        .luxury-hero {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(212,175,55,0.1) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 60px 48px;
+            margin-bottom: 40px;
+            border: 1px solid var(--lux-border-gold);
+            box-shadow: var(--lux-shadow);
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--lux-gold-light), var(--lux-gold), var(--lux-gold-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--lux-text-light);
+            margin-bottom: 40px;
+            max-width: 550px;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) { .hero-title { font-size: 36px; } .luxury-hero { padding: 32px 24px; } }
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid rgba(212,175,55,0.15);
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .stat-label { color: var(--lux-text-muted); }
+        /* ===== INVITE CARD ===== */
+        .invite-card {
+            background: rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .invite-code {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* ===== LIVE FEED ===== */
+        .live-feed-container {
+            background: rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(212,175,55,0.15);
+        }
+        .live-feed-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(212,175,55,0.15);
+            font-size: 12px;
+            color: var(--lux-text-light);
+        }
+        /* ===== PROGRESS BAR ===== */
+        .progress-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--lux-gold), var(--lux-gold-light));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        /* ===== WALLET ADDRESS BOX ===== */
+        .wallet-address-box {
+            background: rgba(0,0,0,0.6);
+            padding: 18px;
+            border-radius: 20px;
+            word-break: break-all;
+            margin: 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid var(--lux-gold);
+        }
+        .wallet-address-text {
+            font-family: monospace;
+            font-size: 14px;
+            color: var(--lux-gold);
+            letter-spacing: 1px;
+        }
+        .copy-btn {
+            background: linear-gradient(135deg, var(--lux-gold), var(--lux-gold-dark));
+            color: #0a120e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { transform: scale(1.02); }
+        /* ===== AMOUNT BUTTONS ===== */
+        .amount-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .amount-btn {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--lux-border-gold);
+            padding: 10px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            text-align: center;
+            color: var(--lux-gold-light);
+            transition: all 0.2s;
+        }
+        .amount-btn:hover {
+            background: rgba(212,175,55,0.15);
+            border-color: var(--lux-gold);
+        }
+        /* ===== ORDER DETAIL CARD ===== */
+        .order-detail-card {
+            background: linear-gradient(135deg, rgba(15,25,20,0.9), rgba(26,42,31,0.9));
+            border-radius: 32px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--lux-gold);
+            position: relative;
+            overflow: hidden;
+        }
+        .order-image {
+            width: 100%;
+            height: 180px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--lux-border-gold);
+        }
+        .amount-big {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--lux-gold-light);
+        }
+        /* ===== RECEIPT IMG ===== */
+        .receipt-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 16px;
+            margin-top: 12px;
+            background: #0f1117;
+            padding: 8px;
+            border: 1px solid var(--lux-gold);
+        }
+        /* ===== HISTORY ITEM ===== */
+        .history-item {
+            background: rgba(0,0,0,0.4);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--lux-gold);
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.1);
+        }
+        /* ===== LANGUAGE SELECTOR ===== */
+        .language-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+        .lang-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px 16px;
+            border-radius: 16px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--lux-border-gold);
+            transition: all 0.2s;
+        }
+        .lang-option:hover, .lang-option.active {
+            border-color: var(--lux-gold);
+            background: rgba(212,175,55,0.15);
+            transform: translateY(-2px);
+        }
+        .lang-name { color: var(--lux-text-light); font-size: 13px; }
+        /* ===== COMMISSION INFO ===== */
+        .commission-info {
+            background: rgba(212,175,55,0.05);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(212,175,55,0.15);
+        }
+        .commission-info h4 { color: var(--lux-gold); margin-bottom: 16px; }
+        .commission-info p { color: var(--lux-text-light); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+        /* ===== BACK BUTTON ===== */
+        .back-btn {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--lux-border-gold);
+            border-radius: 40px;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: var(--lux-gold);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(212,175,55,0.15);
+            transform: translateX(-3px);
+        }
+        /* ===== STARS RATING ===== */
+        .stars { display: flex; gap: 10px; cursor: pointer; margin-top: 10px; flex-wrap: wrap; }
+        .stars i { font-size: 28px; color: #4a5a4e; transition: all 0.2s; }
+        .stars i.active-star { color: #F5B042; }
     </style>
 </head>
 <body>
@@ -439,25 +810,22 @@
                 <i class="fas fa-camera"></i><i class="fas fa-video"></i><i class="fas fa-music"></i><i class="fas fa-headphones"></i>
             </div>
         </div>
-
         <div id="logoContainer" class="logo-container"></div>
-
-        <div class="luxury-hero" style="background:linear-gradient(135deg,rgba(0,0,0,0.6) 0%,rgba(212,175,55,0.1) 100%);backdrop-filter:blur(10px);border-radius:48px;padding:60px 48px;margin-bottom:40px;border:1px solid var(--lux-border-gold);box-shadow:var(--lux-shadow);">
+        <div class="luxury-hero">
             <div class="hero-badge" style="display:inline-block;background:rgba(212,175,55,0.15);border:1px solid var(--lux-border-gold);border-radius:40px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--lux-gold);margin-bottom:20px;letter-spacing:2px;">PREMIUM TRAVEL & EARNINGS</div>
-            <h1 class="hero-title" id="heroTitle" style="font-family:'Playfair Display',serif;font-size:64px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold-light),var(--lux-gold),var(--lux-gold-dark));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;">LUXCY</h1>
-            <p class="hero-subtitle" id="heroSubtitle" style="font-size:18px;color:var(--lux-text-light);margin-bottom:40px;max-width:550px;line-height:1.6;">Experience luxury travel while earning daily commissions. Book flights, hotels, trains and complete tasks to grow your wealth.</p>
-            <div class="services-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:48px;">
-                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-plane"></i></div><div class="service-title" id="serviceFlightsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Flights</div><div class="service-desc" id="serviceFlightsDesc" style="font-size:13px;color:var(--lux-text-muted);">Book flights worldwide</div></div>
-                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-hotel"></i></div><div class="service-title" id="serviceHotelsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Hotels</div><div class="service-desc" id="serviceHotelsDesc" style="font-size:13px;color:var(--lux-text-muted);">Best luxury hotel deals</div></div>
-                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-train"></i></div><div class="service-title" id="serviceTrainsTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Trains</div><div class="service-desc" id="serviceTrainsDesc" style="font-size:13px;color:var(--lux-text-muted);">Premium train tickets</div></div>
-                <div class="service-card" style="background:rgba(15,20,25,0.7);backdrop-filter:blur(12px);border-radius:28px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.4s;border:1px solid var(--lux-border-gold);"><div class="service-icon" style="font-size:48px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:20px;"><i class="fas fa-tasks"></i></div><div class="service-title" id="serviceTasksTitle" style="font-size:20px;font-weight:700;color:var(--lux-gold-light);margin-bottom:12px;">Task Platform</div><div class="service-desc" id="serviceTasksDesc" style="font-size:13px;color:var(--lux-text-muted);">Earn up to 1% daily</div></div>
+            <h1 class="hero-title" id="heroTitle">LUXCY</h1>
+            <p class="hero-subtitle" id="heroSubtitle">Experience luxury travel while earning daily commissions. Book flights, hotels, trains and complete tasks to grow your wealth.</p>
+            <div class="services-grid">
+                <div class="service-card"><div class="service-icon"><i class="fas fa-plane"></i></div><div class="service-title" id="serviceFlightsTitle">Flights</div><div class="service-desc" id="serviceFlightsDesc">Book flights worldwide</div></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-hotel"></i></div><div class="service-title" id="serviceHotelsTitle">Hotels</div><div class="service-desc" id="serviceHotelsDesc">Best luxury hotel deals</div></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-train"></i></div><div class="service-title" id="serviceTrainsTitle">Trains</div><div class="service-desc" id="serviceTrainsDesc">Premium train tickets</div></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-tasks"></i></div><div class="service-title" id="serviceTasksTitle">Task Platform</div><div class="service-desc" id="serviceTasksDesc">Earn up to 1% daily</div></div>
             </div>
             <div class="action-buttons-home" style="display:flex;gap:20px;justify-content:center;margin-top:40px;flex-wrap:wrap;">
                 <button class="btn-home btn-login" id="landingLoginBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;border:none;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light),var(--lux-gold-dark));color:#0a120e;box-shadow:0 5px 25px rgba(212,175,55,0.3);"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
                 <button class="btn-home btn-register" id="landingRegisterBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;background:transparent;border:2px solid var(--lux-gold);color:var(--lux-gold-light);"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
             </div>
         </div>
-
         <div class="company-section" id="companySection">
             <div class="company-header" style="display:flex;align-items:center;gap:24px;margin-bottom:30px;flex-wrap:wrap;">
                 <div class="company-logo" id="companyLogo" style="width:80px;height:80px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));border-radius:24px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-globe-asia" style="font-size:48px;color:#0a0c10;"></i></div>
@@ -474,14 +842,14 @@
 
     <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage" class="page">
-        <div class="back-btn" id="backToLandingFromLogin" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;color:var(--lux-gold);display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;transition:all 0.2s;"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
+        <div class="back-btn" id="backToLandingFromLogin"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
         <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--lux-text-muted);">Premium Task Ecosystem</p></div>
         <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button><div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--lux-text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Register →</span></div></div>
     </div>
 
     <!-- ===== REGISTER PAGE ===== -->
     <div id="registerPage" class="page">
-        <div class="back-btn" id="backToLandingFromRegister" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;color:var(--lux-gold);display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;transition:all 0.2s;"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
+        <div class="back-btn" id="backToLandingFromRegister"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
         <div style="text-align:center;margin-bottom:20px;"><h2 style="color:var(--lux-gold);font-family:'Playfair Display',serif;" id="registerTitle">Create Account</h2></div>
         <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button><div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Login</span></div></div>
     </div>
@@ -490,18 +858,18 @@
     <div id="homePage" class="page">
         <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">LUXCY</div></div><div style="display:flex;gap:12px;"><div class="refresh-btn" id="refreshHomeBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div><div class="signout-icon" id="signOutBtnHome" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div></div></div>
         <div class="flex-between" style="margin-bottom:16px;"><div><span class="text-muted" id="welcomeText" style="color:var(--lux-text-muted);">Welcome</span> <strong id="homeFullName" style="color:var(--lux-gold);font-size:20px;">---</strong></div><div><span class="text-muted" id="vipLevelText" style="color:var(--lux-text-muted);">VIP Level</span> <strong id="homeVipLevel" class="text-gold">VIP 1</strong></div></div>
-        <div class="balance-badge-lux" style="background:linear-gradient(135deg,rgba(10,18,14,0.9),rgba(26,42,31,0.9));border-radius:36px;padding:24px 28px;border:1px solid var(--lux-gold);box-shadow:var(--lux-shadow);position:relative;overflow:hidden;"><div class="text-muted" id="accountBalanceText" style="color:var(--lux-text-muted);">Account Balance</div><div style="font-size:52px;font-weight:800;color:var(--lux-gold-light);" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
+        <div class="balance-badge-lux"><div class="text-muted" id="accountBalanceText" style="color:var(--lux-text-muted);">Account Balance</div><div class="amount" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
         <div class="card-lux"><div class="flex-between"><div><span class="text-muted" id="todayEarningsText" style="color:var(--lux-text-muted);">Today's Earnings</span><br><strong id="todayEarningsHome" class="text-gold" style="font-size:24px;">S/ 0.00</strong></div><div><span class="text-muted" id="yesterdayText" style="color:var(--lux-text-muted);">Yesterday</span><br><strong id="yesterdayEarnings" class="text-gold">S/ 0.00</strong></div><div><span class="text-muted" id="totalCommissionText" style="color:var(--lux-text-muted);">Total Commission</span><br><strong id="totalCommissionHome" class="text-gold">S/ 0.00</strong></div></div></div>
         <div class="flex-between" style="gap:16px;margin-bottom:20px;"><button class="btn-lux" id="rechargeHomeBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button><button class="btn-lux" id="withdrawHomeBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button></div>
-        <div class="invite-card" style="background:rgba(0,0,0,0.5);border-radius:24px;padding:16px;margin-top:16px;text-align:center;border:1px solid var(--lux-border-gold);"><div class="text-muted" id="referralCodeText" style="color:var(--lux-text-muted);">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay" style="font-size:22px;font-weight:800;letter-spacing:3px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">------</div></div>
+        <div class="invite-card"><div class="text-muted" id="referralCodeText" style="color:var(--lux-text-muted);">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay">------</div></div>
         <div class="card-lux" style="padding:16px;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">VIP1 (0.5%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP2 (0.7%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP3 (0.8%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP4 (1.0%)</span></div><div class="flex-between text-muted" style="font-size:11px;margin-top:8px;color:var(--lux-text-muted);"><span>Min: S/0</span><span>Min: S/100</span><span>Min: S/500</span><span>Min: S/1500</span></div></div>
-        <div class="live-feed-container" style="background:rgba(0,0,0,0.5);border-radius:24px;padding:16px;margin-top:20px;max-height:200px;overflow-y:auto;border:1px solid rgba(212,175,55,0.15);"><div class="text-gold" style="margin-bottom:12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div><div id="liveFeedList"></div></div>
+        <div class="live-feed-container"><div class="text-gold" style="margin-bottom:12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div><div id="liveFeedList"></div></div>
     </div>
 
     <!-- ===== WORK PAGE ===== -->
     <div id="workPage" class="page">
         <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-briefcase"></i></div><div class="luxury-brand" id="shoppingTasksText">Shopping Tasks</div></div><div class="refresh-btn" id="refreshWorkBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
-        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText" style="color:var(--lux-text-light);">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin:16px 0;background:rgba(255,255,255,0.1);border-radius:20px;height:8px;overflow:hidden;"><div class="progress-fill" id="taskProgressFill" style="background:linear-gradient(90deg,var(--lux-gold),var(--lux-gold-light));height:100%;width:0%;transition:width 0.5s;"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
+        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText" style="color:var(--lux-text-light);">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin:16px 0;"><div class="progress-fill" id="taskProgressFill"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
         <div id="currentOrderDisplay" style="display:none;"></div>
     </div>
 
@@ -520,11 +888,11 @@
                 <div><strong id="mineFullName" style="color:var(--lux-gold);font-size:28px;font-family:'Playfair Display',serif;">---</strong><div style="margin-top:12px;"><span class="badge-lux" id="mineVipLevel">VIP 1</span></div><div class="text-muted" style="margin-top:10px;color:var(--lux-text-muted);">⭐ <span id="creditText">Credit</span>: <span id="creditScore" style="color:var(--lux-gold);font-weight:700;font-size:18px;">0</span></div></div>
             </div>
         </div>
-        <div class="stats-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0;">
-            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTotalAssets" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.00</div><div class="stat-label" id="totalAssetsText" style="color:var(--lux-text-muted);">Total Assets</div></div>
-            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTodayOrders" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">0</div><div class="stat-label" id="todayOrdersText" style="color:var(--lux-text-muted);">Today's Orders</div></div>
-            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTodayEarn" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.0000</div><div class="stat-label" id="todayEarningsTextMine" style="color:var(--lux-text-muted);">Today's Earnings</div></div>
-            <div class="stat-card" style="background:rgba(0,0,0,0.4);border-radius:24px;padding:18px;text-align:center;border:1px solid rgba(212,175,55,0.15);"><div class="stat-value" id="mineTotalComm" style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;">S/ 0.0000</div><div class="stat-label" id="totalCommissionTextMine" style="color:var(--lux-text-muted);">Total Commission</div></div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-value" id="mineTotalAssets">S/ 0.00</div><div class="stat-label" id="totalAssetsText">Total Assets</div></div>
+            <div class="stat-card"><div class="stat-value" id="mineTodayOrders">0</div><div class="stat-label" id="todayOrdersText">Today's Orders</div></div>
+            <div class="stat-card"><div class="stat-value" id="mineTodayEarn">S/ 0.0000</div><div class="stat-label" id="todayEarningsTextMine">Today's Earnings</div></div>
+            <div class="stat-card"><div class="stat-value" id="mineTotalComm">S/ 0.0000</div><div class="stat-label" id="totalCommissionTextMine">Total Commission</div></div>
         </div>
         <div class="flex-between" style="gap:16px;margin-bottom:20px;">
             <button class="btn-lux" id="depositBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;width:48%;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
@@ -540,24 +908,24 @@
             <button class="btn-outline-lux btn-lux" id="withdrawHistoryBtn" style="flex:1;"><i class="fas fa-list"></i> <span id="withdrawHistoryText">Withdraw History</span></button>
         </div>
         <div class="card-lux" style="margin-bottom:20px;">
-            <div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay" style="color:var(--lux-text-light);">Not set</span></div>
+            <div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay" style="color:var(--lux-text-light);">Not set</span></div>
         </div>
-        <div class="commission-info" style="background:rgba(212,175,55,0.05);border-radius:24px;padding:20px;margin-top:20px;border:1px solid rgba(212,175,55,0.15);">
-            <h4 style="color:var(--lux-gold);margin-bottom:16px;"><i class="fas fa-chart-line"></i> <span id="howCommissionsText">How Commissions Work</span></h4>
-            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc1">Each completed task earns commission based on VIP level</span></p>
-            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <strong class="text-gold">VIP 1:</strong> 0.5% | <strong class="text-gold">VIP 2:</strong> 0.7% | <strong class="text-gold">VIP 3:</strong> 0.8% | <strong class="text-gold">VIP 4:</strong> 1.0%</p>
-            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc2">Referral bonus: 10% of referral's earnings</span></p>
-            <p style="color:var(--lux-text-light);font-size:13px;line-height:1.6;margin-bottom:10px;">• <span id="commDesc3">Daily task limit based on assigned orders</span></p>
+        <div class="commission-info">
+            <h4><i class="fas fa-chart-line"></i> <span id="howCommissionsText">How Commissions Work</span></h4>
+            <p>• <span id="commDesc1">Each completed task earns commission based on VIP level</span></p>
+            <p>• <strong class="text-gold">VIP 1:</strong> 0.5% | <strong class="text-gold">VIP 2:</strong> 0.7% | <strong class="text-gold">VIP 3:</strong> 0.8% | <strong class="text-gold">VIP 4:</strong> 1.0%</p>
+            <p>• <span id="commDesc2">Referral bonus: 10% of referral's earnings</span></p>
+            <p>• <span id="commDesc3">Daily task limit based on assigned orders</span></p>
             <p class="text-muted" style="margin-top:12px;font-size:11px;color:var(--lux-text-muted);"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
         </div>
         <div class="card-lux" style="margin-top:20px;">
             <div style="text-align:center;margin-bottom:16px;"><span class="text-gold"><i class="fas fa-globe"></i> <span id="selectLanguageText">Select Language</span></span></div>
-            <div class="language-selector" id="languageSelector" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0;">
-                <div class="lang-option" data-lang="en" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇺🇸</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">English</span></div>
-                <div class="lang-option" data-lang="th" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇹🇭</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Thai</span></div>
-                <div class="lang-option" data-lang="es" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇪🇸</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Spanish</span></div>
-                <div class="lang-option" data-lang="uk" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇺🇦</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Ukrainian</span></div>
-                <div class="lang-option" data-lang="ru" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:10px 16px;border-radius:16px;background:rgba(0,0,0,0.4);border:1px solid var(--lux-border-gold);transition:all 0.2s;"><span class="lang-flag">🇷🇺</span><span class="lang-name" style="color:var(--lux-text-light);font-size:13px;">Russian</span></div>
+            <div class="language-selector" id="languageSelector">
+                <div class="lang-option" data-lang="en"><span class="lang-flag">🇺🇸</span><span class="lang-name">English</span></div>
+                <div class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span><span class="lang-name">Thai</span></div>
+                <div class="lang-option" data-lang="es"><span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span></div>
+                <div class="lang-option" data-lang="uk"><span class="lang-flag">🇺🇦</span><span class="lang-name">Ukrainian</span></div>
+                <div class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span class="lang-name">Russian</span></div>
             </div>
         </div>
         <div class="signout-icon" id="signOutBtnMine" style="justify-content:center;margin-top:16px;text-align:center;background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:12px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><span id="signOutText">Sign Out</span></div>
@@ -616,6 +984,8 @@
     let unsubscribeCompany = null;
     let unsubscribeInjections = null;
     let currentLang = localStorage.getItem('lang') || 'en';
+    let popupAdsCache = [];
+    let shownPopupIds = [];
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
     function getVIPLevel(user) {
@@ -628,6 +998,7 @@
     }
     function getCommissionRate(user) { return VIP_RATES[getVIPLevel(user)]; }
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
     // ==================== LANGUAGE SYSTEM ====================
     const translations = {
@@ -926,16 +1297,53 @@
         }
         return pendingInjections;
     }
-    async function getInjectionForTask(taskNumber) {
-        if (!currentUser || !currentUser.pendingInjections) return null;
-        const injection = currentUser.pendingInjections.find(i => i.taskNumber === taskNumber);
-        if (injection && !injection.used) {
-            await markInjectionAsUsed(injection.id);
-            currentUser.pendingInjections = currentUser.pendingInjections.filter(i => i.id !== injection.id);
-            await saveCurrentUser();
-            return injection;
-        }
-        return null;
+
+    // ==================== POPUP ADS SYSTEM ====================
+    async function checkAndShowPopupAds() {
+        if (!currentUser) return;
+        try {
+            const snapshot = await getDocs(collection(db, "popupAds"));
+            const ads = [];
+            snapshot.forEach(doc => ads.push({ id: doc.id, ...doc.data() }));
+            popupAdsCache = ads;
+            const activeAds = ads.filter(a => a.isActive !== false);
+            // Show only one popup per session (per user)
+            const shownKey = `popup_shown_${currentUser.id}`;
+            const alreadyShown = sessionStorage.getItem(shownKey);
+            if (alreadyShown) return;
+            
+            // Pick first active ad
+            const ad = activeAds[0];
+            if (ad) {
+                sessionStorage.setItem(shownKey, 'true');
+                showPopupAd(ad);
+            }
+        } catch(e) { console.error("Popup ads error:", e); }
+    }
+
+    function showPopupAd(ad) {
+        const overlay = document.createElement('div');
+        overlay.className = 'popup-overlay';
+        overlay.innerHTML = `
+            <div class="popup-card">
+                <button class="popup-close-btn" id="popupDismissBtn"><i class="fas fa-times"></i></button>
+                ${ad.imageData ? `<img src="${ad.imageData}" alt="Popup ad">` : ''}
+                <div class="popup-title">${escapeHtml(ad.title || 'Special Offer')}</div>
+                <div class="popup-subtitle">${escapeHtml(ad.subtitle || '')}</div>
+                <button class="btn-lux mt-3" id="popupActionBtn" style="width:auto;padding:12px 32px;">${escapeHtml(ad.buttonText || 'Close')}</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const dismiss = () => {
+            if (overlay.parentNode) document.body.removeChild(overlay);
+        };
+
+        document.getElementById('popupDismissBtn').onclick = dismiss;
+        document.getElementById('popupActionBtn').onclick = dismiss;
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) dismiss();
+        });
     }
 
     // ==================== PROFILE PHOTO ====================
@@ -943,7 +1351,7 @@
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div");
         modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.uploadPhoto}</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="uploadPreview" style="width:150px;height:150px;border-radius:75px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--lux-gold);overflow:hidden;">${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle" style="font-size:80px;color:#0a120e;"></i>'}</div></div><div class="upload-area-sm" id="selectPhotoArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}<input type="file" id="photoUploadInput" accept="image/*" style="display:none;"></div><div class="upload-btn-area" style="display:flex;gap:12px;margin-top:16px;"><button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button><button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.uploadPhoto}</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="uploadPreview">${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle"></i>'}</div></div><div class="upload-area-sm" id="selectPhotoArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}<input type="file" id="photoUploadInput" accept="image/*" style="display:none;"></div><div class="upload-btn-area" style="display:flex;gap:12px;margin-top:16px;"><button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button><button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button></div></div>`;
         document.body.appendChild(modal);
         let selectedImageData = null;
         modal.querySelector("#selectPhotoArea").onclick = () => modal.querySelector("#photoUploadInput").click();
@@ -1056,7 +1464,7 @@
         if(liveFeedInterval) clearInterval(liveFeedInterval);
         const container = document.getElementById("liveFeedList");
         if(!container) return;
-        function add() { const item = document.createElement("div"); item.className = "live-feed-item"; item.style.padding="10px"; item.style.borderBottom="1px solid rgba(212,175,55,0.15)"; item.style.fontSize="12px"; item.style.color="var(--lux-text-light)"; item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+S/ ${randComm().toLocaleString()}</span> commission!`; container.prepend(item); if(container.children.length>8) container.removeChild(container.lastChild); }
+        function add() { const item = document.createElement("div"); item.className = "live-feed-item"; item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+S/ ${randComm().toLocaleString()}</span> commission!`; container.prepend(item); if(container.children.length>8) container.removeChild(container.lastChild); }
         for(let i=0; i<3; i++) add();
         liveFeedInterval = setInterval(add, 5000);
     }
@@ -1101,9 +1509,19 @@
 
     function showLiveFeedback(message, isError = false) {
         let feedback = document.createElement('div');
-        feedback.style.position = 'fixed'; feedback.style.bottom = '90px'; feedback.style.left = '50%'; feedback.style.transform = 'translateX(-50%)'; feedback.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(30,42,36,0.95)';
-        feedback.style.padding = '12px 28px'; feedback.style.borderRadius = '40px'; feedback.style.fontSize = '13px'; feedback.style.zIndex = '100'; feedback.style.borderLeft = '3px solid #D4AF37'; feedback.style.fontWeight = '700';
-        feedback.style.backdropFilter = 'blur(8px)'; feedback.style.color = 'white';
+        feedback.style.position = 'fixed';
+        feedback.style.bottom = '90px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(30,42,36,0.95)';
+        feedback.style.padding = '12px 28px';
+        feedback.style.borderRadius = '40px';
+        feedback.style.fontSize = '13px';
+        feedback.style.zIndex = '100';
+        feedback.style.borderLeft = '3px solid var(--lux-gold)';
+        feedback.style.fontWeight = '700';
+        feedback.style.backdropFilter = 'blur(8px)';
+        feedback.style.color = 'white';
         feedback.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${message}`;
         document.body.appendChild(feedback);
         setTimeout(() => feedback.remove(), 3000);
@@ -1241,21 +1659,21 @@
         const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
         let injectionInfoHtml = '';
         if (isInjection && order.injectionDetails) {
-            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💵 Total Order Amount:</span><span class="amount-big" style="font-size:28px;font-weight:800;color:var(--lux-gold-light);">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div></div>`;
+            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💵 Total Order Amount:</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div></div>`;
         }
         document.getElementById("currentOrderDisplay").innerHTML = `
-            <div class="order-detail-card ${injectionClass}" style="background:linear-gradient(135deg,rgba(15,25,20,0.9),rgba(26,42,31,0.9));border-radius:32px;padding:24px;margin-bottom:24px;border:1px solid var(--lux-gold);position:relative;overflow:hidden;">
+            <div class="order-detail-card ${injectionClass}">
                 ${injectionBadge}
-                <div class="order-image" style="width:100%;height:180px;background:rgba(0,0,0,0.5);border-radius:24px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;overflow:hidden;border:1px solid var(--lux-border-gold);">${imgHtml}</div>
+                <div class="order-image">${imgHtml}</div>
                 <h2 style="color:var(--lux-gold-light);">${order.name}</h2>
                 <div class="text-light" style="color:var(--lux-text-light);">Order #: ${order.orderNumber}</div>
                 ${injectionInfoHtml}
-                ${!injectionInfoHtml ? `<div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">${dict.orderAmount}</span><span class="amount-big" style="font-size:28px;font-weight:800;color:var(--lux-gold-light);">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>` : ''}
+                ${!injectionInfoHtml ? `<div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">${dict.orderAmount}</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>` : ''}
                 <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--lux-gold);"><span class="text-light" style="color:var(--lux-text-light);">${dict.afterCompletionBalance}</span><strong style="color:var(--lux-gold-light);font-size:20px;">S/ ${afterOrderBalance.toFixed(2)}</strong></div>
                 ${!insufficient ? `
-                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales" style="display:flex;gap:10px;cursor:pointer;margin-top:10px;flex-wrap:wrap;"><i class="far fa-star" data-value="1" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="2" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="3" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="4" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i><i class="far fa-star" data-value="5" style="font-size:28px;color:#4a5a4e;transition:all 0.2s;"></i></div></div>
+                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
                 <button class="btn-lux" id="submitOrderFromCardBtn" style="margin-top:20px;">${dict.submitComplete}</button>
                 ` : `<div class="alert-danger" style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;"><strong style="color:#dc2626;">${dict.insufficientBalance}</strong><div class="insufficient-details" style="margin-top:8px;"><div>💰 ${dict.orderAmount}: S/ ${order.amount.toFixed(2)}</div><div>💵 ${dict.yourBalance}: S/ ${currentUser.balance.toFixed(2)}</div><div>🔴 ${dict.needAdditional}: S/ ${(order.amount - currentUser.balance).toFixed(2)}</div></div><button class="btn-lux" id="rechargeFromOrderBtn" style="margin-top:12px;background:#10b981;color:white;">${dict.rechargeNow}</button></div>`}
             </div>
@@ -1268,7 +1686,7 @@
             document.querySelectorAll('#currentOrderDisplay .stars').forEach(container => {
                 let cat = container.dataset.category;
                 let stars = container.querySelectorAll('i');
-                stars.forEach(star => { star.onclick = () => { let val = parseInt(star.dataset.value); currentRatings[cat] = val; stars.forEach((s, i) => { s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; if (i < val) s.style.color = '#F5B042'; else s.style.color = '#4a5a4e'; }); }; });
+                stars.forEach(star => { star.onclick = () => { let val = parseInt(star.dataset.value); currentRatings[cat] = val; stars.forEach((s, i) => { s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; }); }; });
             });
             let submitBtn = document.getElementById("submitOrderFromCardBtn");
             if (submitBtn) {
@@ -1348,12 +1766,12 @@
         let modal = document.createElement("div"); modal.className = "modal";
         let settings = await loadSystemSettings();
         let walletAddr = settings.usdtWalletAddress || "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box" style="background:rgba(0,0,0,0.6);padding:18px;border-radius:20px;word-break:break-all;margin:16px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;border:1px solid var(--lux-gold);"><div><div class="text-muted" style="color:var(--lux-text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay" style="font-family:monospace;font-size:14px;color:var(--lux-gold);letter-spacing:1px;">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn" style="background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-dark));color:#0a120e;border:none;padding:10px 20px;border-radius:40px;cursor:pointer;font-weight:700;transition:all 0.2s;">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons" style="display:flex;flex-wrap:wrap;gap:12px;margin:20px 0;"><div class="amount-btn" data-amt="50" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">50</div><div class="amount-btn" data-amt="100" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">100</div><div class="amount-btn" data-amt="500" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">500</div><div class="amount-btn" data-amt="1000" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);padding:10px 18px;border-radius:40px;cursor:pointer;text-align:center;color:var(--lux-gold-light);transition:all 0.2s;">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box"><div><div class="text-muted" style="color:var(--lux-text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons"><div class="amount-btn" data-amt="50">50</div><div class="amount-btn" data-amt="100">100</div><div class="amount-btn" data-amt="500">500</div><div class="amount-btn" data-amt="1000">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
         document.body.appendChild(modal);
         modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText(walletAddr); alert("Wallet address copied!"); };
         modal.querySelectorAll(".amount-btn").forEach(btn => btn.onclick = () => { modal.querySelector("#rechargeAmount").value = btn.dataset.amt; });
         modal.querySelector("#uploadReceiptArea").onclick = () => modal.querySelector("#receiptInput").click();
-        modal.querySelector("#receiptInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { const compressed = await compressImage(file, 400, 400, 0.5); modal.querySelector("#receiptPreview").innerHTML = `<img src="${compressed}" class="receipt-img" style="max-width:100%;max-height:200px;border-radius:16px;margin-top:12px;background:#0f1117;padding:8px;border:1px solid var(--lux-gold);">`; modal.querySelector("#receiptInput").compressedData = compressed; } };
+        modal.querySelector("#receiptInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { const compressed = await compressImage(file, 400, 400, 0.5); modal.querySelector("#receiptPreview").innerHTML = `<img src="${compressed}" class="receipt-img">`; modal.querySelector("#receiptInput").compressedData = compressed; } };
         modal.querySelector("#submitRechargeBtn").onclick = async () => {
             const amount = parseFloat(modal.querySelector("#rechargeAmount").value);
             const file = modal.querySelector("#receiptInput").files[0];
@@ -1385,7 +1803,7 @@
         let modal = document.createElement("div"); modal.className = "modal";
         let html = `<div class="modal-content"><h2 class="text-gold" style="margin-bottom:20px;">${title}</h2>`;
         if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;color:var(--lux-text-light);">${dict.noRecords}</p>`;
-        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item" style="background:rgba(0,0,0,0.4);border-radius:16px;padding:14px;margin-bottom:12px;border-left:3px solid var(--lux-gold);"><div class="flex-between"><strong style="color:var(--lux-text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div><div style="color:var(--lux-text-light);">Amount: S/ ${item.amount}</div><div class="text-muted" style="color:var(--lux-text-muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img" style="max-width:100%;max-height:200px;border-radius:16px;margin-top:12px;background:#0f1117;padding:8px;border:1px solid var(--lux-gold);">`:''}${item.adminNote?`<div class="text-muted" style="color:var(--lux-text-muted);">Note: ${item.adminNote}</div>`:''}</div>`; });
+        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item"><div class="flex-between"><strong style="color:var(--lux-text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div><div style="color:var(--lux-text-light);">Amount: S/ ${item.amount}</div><div class="text-muted" style="color:var(--lux-text-muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img">`:''}${item.adminNote?`<div class="text-muted" style="color:var(--lux-text-muted);">Note: ${item.adminNote}</div>`:''}</div>`; });
         html += `<button class="btn-lux" id="closeHistoryModal" style="margin-top:16px;">${dict.close}</button></div>`;
         modal.innerHTML = html; document.body.appendChild(modal);
         document.getElementById("closeHistoryModal").onclick = () => document.body.removeChild(modal);
@@ -1423,7 +1841,7 @@
     function showPersonalDetailsModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="profilePreview" style="width:150px;height:150px;border-radius:75px;background:linear-gradient(135deg,var(--lux-gold),var(--lux-gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--lux-gold);overflow:hidden;">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;color:#0a120e;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Credit Score:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.creditScore || 100}</span></div><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Balance:</span><span class="info-value" style="color:var(--lux-text-light);">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row" style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(212,175,55,0.1);"><span class="info-label" style="color:var(--lux-text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="profilePreview">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Credit Score:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.creditScore || 100}</span></div><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Balance:</span><span class="info-value" style="color:var(--lux-text-light);">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("uploadPhotoBtn").onclick = () => { document.body.removeChild(modal); showUploadPhotoModal(); };
         document.getElementById("closePersonalModal").onclick = () => document.body.removeChild(modal);
@@ -1468,6 +1886,8 @@
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 showLiveFeedback(`Welcome back, ${username}`);
                 startChatSubscription();
+                // Check for popup ads after login
+                await checkAndShowPopupAds();
             } else alert("Invalid credentials");
         } catch(e) { alert("Login failed"); }
         btn.disabled = false;
@@ -1509,6 +1929,7 @@
         showPage("home");
         showLiveFeedback("Registration successful!");
         startChatSubscription();
+        await checkAndShowPopupAds();
     };
 
     // ==================== NAVIGATION ====================
@@ -1536,6 +1957,7 @@
         if (unsubscribeInjections) unsubscribeInjections();
         currentUser = null;
         localStorage.removeItem("currentUserId");
+        sessionStorage.removeItem(`popup_shown_${currentUser?.id}`);
         showPage("landing");
         showLiveFeedback("Signed out");
     }
@@ -1591,6 +2013,7 @@
                     const lastPage = localStorage.getItem("customerLastPage");
                     showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                     startChatSubscription();
+                    await checkAndShowPopupAds();
                 } else showPage("landing");
             } else showPage("landing");
         })();

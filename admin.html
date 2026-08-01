@@ -4,65 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Trip.com Admin | Premium Control Panel</title>
-    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap 5 + Icons (lightweight) -->
+    <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
+        /* ===== ROOT VARIABLES (Easy color customization) ===== */
+        :root {
+            --lux-gold: #D4AF37;
+            --lux-gold-light: #F5E7B2;
+            --lux-gold-dark: #C9A03D;
+            --lux-bg-dark: #0a0c10;
+            --lux-card-bg: rgba(26, 30, 38, 0.95);
+            --lux-border-gold: rgba(212, 175, 55, 0.25);
+            --lux-text-light: rgba(255,255,255,0.85);
+            --lux-text-muted: rgba(255,255,255,0.5);
+            --lux-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            --lux-radius: 24px;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: #0a0c10;
+            background: var(--lux-bg-dark);
             color: #e2e8f0;
             height: 100vh;
             overflow: hidden;
         }
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #1a1e26; }
-        ::-webkit-scrollbar-thumb { background: #00D4C8; border-radius: 10px; }
-
-        .admin-container {
-            display: flex;
-            height: 100vh;
-        }
+        .admin-container { display: flex; height: 100vh; }
         /* Sidebar */
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, #0f1117 0%, #0a0c10 100%);
-            border-right: 1px solid rgba(0, 212, 200, 0.2);
+            border-right: 1px solid var(--lux-border-gold);
             padding: 24px 16px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
         }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: #1a1e26; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
         .main-content {
             flex: 1;
             padding: 24px 32px;
             overflow-y: auto;
-            background: #0a0c10;
+            background: var(--lux-bg-dark);
         }
+        .main-content::-webkit-scrollbar { width: 4px; }
+        .main-content::-webkit-scrollbar-track { background: #1a1e26; }
+        .main-content::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
         /* Cards */
         .admin-card {
-            background: rgba(26, 30, 38, 0.95);
+            background: var(--lux-card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 24px;
+            border-radius: var(--lux-radius);
             padding: 24px;
             margin-bottom: 24px;
-            border: 1px solid rgba(0, 212, 200, 0.25);
+            border: 1px solid var(--lux-border-gold);
             transition: transform 0.2s, border-color 0.2s;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            box-shadow: var(--lux-shadow);
         }
-        .admin-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 212, 200, 0.5);
-        }
-        /* Buttons */
+        .admin-card:hover { transform: translateY(-2px); border-color: rgba(212,175,55,0.5); }
         .btn-admin {
-            background: linear-gradient(105deg, #00D4C8, #00B09B, #009688);
+            background: linear-gradient(105deg, var(--lux-gold), var(--lux-gold-dark), #009688);
             border: none;
             padding: 10px 20px;
             border-radius: 40px;
@@ -72,13 +78,12 @@
             transition: all 0.2s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        .btn-admin:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,212,200,0.4); }
+        .btn-admin:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(212,175,55,0.4); }
         .btn-danger { background: linear-gradient(105deg, #dc2626, #ef4444); color: white; border: none; }
         .btn-success { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; }
         .btn-warning { background: linear-gradient(105deg, #f59e0b, #d97706); color: white; border: none; }
         .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
         .btn-secondary { background: #4a5568; color: white; border: none; }
-
         input, select, textarea {
             background: #0f1117;
             border: 1px solid #2d3748;
@@ -91,8 +96,8 @@
             transition: border-color 0.2s;
         }
         input:focus, select:focus, textarea:focus {
-            border-color: #00D4C8;
-            box-shadow: 0 0 0 2px rgba(0,212,200,0.2);
+            border-color: var(--lux-gold);
+            box-shadow: 0 0 0 2px rgba(212,175,55,0.2);
         }
         .nav-item {
             padding: 12px 16px;
@@ -107,23 +112,17 @@
             font-weight: 500;
         }
         .nav-item:hover, .nav-item.active {
-            background: linear-gradient(90deg, rgba(0,212,200,0.15), transparent);
-            color: #00D4C8;
-            border-left: 2px solid #00D4C8;
+            background: linear-gradient(90deg, rgba(212,175,55,0.15), transparent);
+            color: var(--lux-gold);
+            border-left: 2px solid var(--lux-gold);
         }
-        .badge { background: #00D4C8; color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .badge { background: var(--lux-gold); color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .status-pending { color: #f59e0b; font-weight: 700; }
         .status-approved { color: #10b981; font-weight: 700; }
         .status-rejected { color: #dc2626; font-weight: 700; }
-        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
-        .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
-        .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
-        .vip-badge-4 { background: linear-gradient(135deg, #00D4C8, #009688); color: #0a120e; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
-        .commission-rate { color: #00D4C8; font-weight: bold; }
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
-        .request-img { max-width: 80px; max-height: 80px; border-radius: 8px; cursor: pointer; border: 1px solid #00D4C8; }
-        .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid #00D4C8; cursor: pointer; margin: 4px; }
+        .request-img { max-width: 80px; max-height: 80px; border-radius: 8px; cursor: pointer; border: 1px solid var(--lux-gold); }
+        .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--lux-gold); cursor: pointer; margin: 4px; }
         .login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #0a0c10 0%, #0f1117 100%);
@@ -136,69 +135,87 @@
             border-radius: 32px;
             width: 420px;
             max-width: 92%;
-            border: 1px solid rgba(0,212,200,0.35);
+            border: 1px solid var(--lux-border-gold);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
         .password-wrapper { position: relative; width: 100%; margin-bottom: 12px; }
         .password-wrapper input { width: 100%; margin-bottom: 0; padding-right: 50px; }
-        .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #00D4C8; background: transparent; border: none; font-size: 18px; }
-
-        /* Chat */
-        .chat-container { display: flex; flex-direction: column; height: 60vh; background: #0f1117; border-radius: 24px; overflow: hidden; border: 1px solid #2d3748; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-        .chat-message { max-width: 80%; padding: 12px 16px; border-radius: 20px; word-break: break-word; }
-        .chat-message.sent { align-self: flex-end; background: #00D4C8; color: #0a120e; border-bottom-right-radius: 4px; }
-        .chat-message.received { align-self: flex-start; background: #2a3a2f; color: #e2e8f0; border-bottom-left-radius: 4px; border: 1px solid #00D4C8; }
-        .chat-time { font-size: 10px; opacity: 0.7; margin-top: 4px; text-align: right; }
-        .chat-image { max-width: 200px; max-height: 150px; border-radius: 12px; margin-top: 8px; cursor: pointer; border: 1px solid #00D4C8; }
-        .chat-input-area { display: flex; gap: 10px; padding: 16px; background: #0f1117; border-top: 1px solid #2d3748; }
-        .chat-input-area input { flex: 1; margin-bottom: 0; }
-        .typing-indicator { display: flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(0,0,0,0.5); border-radius: 20px; width: fit-content; margin: 5px 20px; }
-        .typing-dot { width: 8px; height: 8px; background: #00D4C8; border-radius: 50%; animation: typingBounce 1.4s infinite ease-in-out; }
-        @keyframes typingBounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
-
-        /* Marquee / Scrolling icon strip */
-        .icon-marquee {
-            background: rgba(0, 212, 200, 0.08);
-            border-radius: 40px;
-            padding: 8px 0;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0, 212, 200, 0.15);
-            overflow: hidden;
-            white-space: nowrap;
+        .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--lux-gold); background: transparent; border: none; font-size: 18px; }
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.96);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 2000; backdrop-filter: blur(8px);
         }
-        .icon-marquee-track {
-            display: inline-block;
-            animation: marqueeScroll 22s linear infinite;
-            padding-left: 100%;
+        .modal-content {
+            background: #1a1e26;
+            border-radius: var(--lux-radius);
+            padding: 24px;
+            max-width: 550px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--lux-gold);
+            box-shadow: var(--lux-shadow);
         }
-        .icon-marquee-track i {
-            font-size: 22px;
-            margin: 0 18px;
-            color: #00D4C8;
-            opacity: 0.8;
-            transition: 0.2s;
+        .image-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 3000; cursor: pointer;
         }
-        .icon-marquee-track i:hover {
-            opacity: 1;
-            transform: scale(1.2);
-            color: #fff;
+        .image-modal img { max-width: 90%; max-height: 90%; border-radius: 16px; border: 2px solid var(--lux-gold); }
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; font-size: 24px; color: var(--lux-gold); backdrop-filter: blur(4px);
         }
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+        .real-time-indicator {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #10b981; color: white;
+            padding: 6px 14px; border-radius: 30px; font-size: 11px;
+            z-index: 100; animation: pulse 1s infinite; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            display: none;
         }
-
+        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+        /* VIP Badges */
+        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; display: inline-block; }
+        .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
+        .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
+        .vip-badge-4 { background: linear-gradient(135deg, var(--lux-gold), #b8941e); color: #0a120e; }
+        .commission-rate { color: var(--lux-gold); font-weight: bold; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .injection-history-item {
+            background: #0f1117;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--lux-gold);
+            transition: all 0.2s;
+        }
+        .injection-history-item:hover {
+            background: #1a1e26;
+            border-color: var(--lux-gold-light);
+        }
+        /* Popup Ads Preview */
+        .popup-preview {
+            background: rgba(0,0,0,0.6);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 12px;
+            border: 1px dashed var(--lux-gold);
+            text-align: center;
+        }
+        .popup-preview img { max-width: 100%; max-height: 200px; border-radius: 12px; }
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar { width: 100%; max-height: 60px; flex-direction: row; overflow-x: auto; padding: 8px 12px; border-right: none; border-bottom: 1px solid rgba(0,212,200,0.2); }
+            .sidebar { width: 100%; max-height: 60px; flex-direction: row; overflow-x: auto; padding: 8px 12px; border-right: none; border-bottom: 1px solid var(--lux-border-gold); }
             .sidebar .nav-item { white-space: nowrap; margin: 0 4px; padding: 8px 12px; font-size: 13px; flex-shrink: 0; }
             .sidebar h2 { display: none; }
             .sidebar .refresh-btn { display: none; }
             .main-content { padding: 16px; }
             .admin-card { padding: 16px; }
-            .icon-marquette { padding: 4px 0; }
-            .icon-marquee-track i { font-size: 18px; margin: 0 12px; }
             .login-box { padding: 24px; width: 95%; }
         }
         @media (max-width: 480px) {
@@ -207,25 +224,15 @@
             .flex-between { flex-direction: column; align-items: stretch; }
             .btn { width: 100%; margin-bottom: 6px; }
         }
-        /* Utilities */
-        .text-teal { color: #00D4C8; }
+        .text-gold { color: var(--lux-gold); }
         .bg-dark-card { background: #0f1117; }
-        .border-teal { border-color: #00D4C8; }
-        .modal-content { background: #1a1e26; border-radius: 24px; padding: 24px; max-width: 520px; width: 90%; max-height: 80vh; overflow-y: auto; border: 1px solid #00D4C8; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); display: flex; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(8px); }
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 3000; cursor: pointer; }
-        .image-modal img { max-width: 90%; max-height: 90%; border-radius: 16px; border: 2px solid #00D4C8; }
-        .loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; font-size: 24px; color: #00D4C8; backdrop-filter: blur(4px); }
-        .real-time-indicator { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 6px 14px; border-radius: 30px; font-size: 11px; z-index: 100; animation: pulse 1s infinite; box-shadow: 0 2px 10px rgba(0,0,0,0.3); display: none; }
-        @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+        .border-gold { border-color: var(--lux-gold); }
     </style>
 </head>
 <body>
-
-<!-- LOGIN SCREEN -->
 <div id="adminLoginScreen" class="login-screen">
     <div class="login-box">
-        <h2 class="text-teal text-center mb-4"><i class="fas fa-crown me-2"></i>Trip.com Admin</h2>
+        <h2 class="text-gold text-center mb-4"><i class="fas fa-crown me-2"></i>Trip.com Admin</h2>
         <input type="text" id="adminUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary">
         <div class="password-wrapper">
             <input type="password" id="adminPassword" placeholder="Password" class="form-control bg-dark text-white border-secondary">
@@ -236,14 +243,12 @@
     </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="adminPanel" style="display:none;">
     <div class="admin-container">
-        <!-- SIDEBAR -->
         <div class="sidebar" id="sidebarNav">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="text-teal fs-5 d-none d-md-block"><i class="fas fa-crown me-2"></i>Trip.com</h2>
-                <div class="refresh-btn" id="refreshAdminBtn"><i class="fas fa-sync-alt text-teal"></i></div>
+                <h2 class="text-gold fs-5 d-none d-md-block"><i class="fas fa-crown me-2"></i>Trip.com</h2>
+                <div class="refresh-btn" id="refreshAdminBtn"><i class="fas fa-sync-alt text-gold"></i></div>
             </div>
             <div class="nav-item active" data-section="dashboard"><i class="fas fa-chart-pie me-2"></i> Dashboard</div>
             <div class="nav-item" data-section="users"><i class="fas fa-users me-2"></i> Members</div>
@@ -255,33 +260,14 @@
             <div class="nav-item" data-section="loanRequests"><i class="fas fa-hand-holding-heart me-2"></i> Loans</div>
             <div class="nav-item" data-section="agency"><i class="fas fa-user-tie me-2"></i> Agencies</div>
             <div class="nav-item" data-section="background"><i class="fas fa-paint-brush me-2"></i> Settings</div>
+            <div class="nav-item" data-section="popupAds"><i class="fas fa-ad me-2"></i> Popup Ads</div>
             <div class="nav-item" data-section="chat"><i class="fas fa-comment-dots me-2"></i> Chat</div>
             <hr class="border-secondary">
             <div class="nav-item" id="adminLogoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</div>
         </div>
-
-        <!-- MAIN CONTENT -->
-        <div class="main-content" id="mainContent">
-            <!-- MARQUEE ICON STRIP (always visible) -->
-            <div class="icon-marquee">
-                <div class="icon-marquee-track">
-                    <i class="fas fa-plane"></i><i class="fas fa-hotel"></i><i class="fas fa-train"></i><i class="fas fa-tasks"></i>
-                    <i class="fas fa-globe-asia"></i><i class="fas fa-umbrella-beach"></i><i class="fas fa-ship"></i><i class="fas fa-car"></i>
-                    <i class="fas fa-bus"></i><i class="fas fa-bicycle"></i><i class="fas fa-map-marked-alt"></i><i class="fas fa-passport"></i>
-                    <i class="fas fa-credit-card"></i><i class="fas fa-wallet"></i><i class="fas fa-coins"></i><i class="fas fa-gem"></i>
-                    <i class="fas fa-rocket"></i><i class="fas fa-crown"></i><i class="fas fa-shield-alt"></i><i class="fas fa-lock"></i>
-                    <i class="fas fa-key"></i><i class="fas fa-ticket-alt"></i><i class="fas fa-bed"></i><i class="fas fa-utensils"></i>
-                    <i class="fas fa-dumbbell"></i><i class="fas fa-swimmer"></i><i class="fas fa-sun"></i><i class="fas fa-moon"></i>
-                    <i class="fas fa-cloud-sun"></i><i class="fas fa-snowflake"></i><i class="fas fa-tree"></i><i class="fas fa-mountain"></i>
-                </div>
-            </div>
-            <!-- Dynamic sections render here -->
-        </div>
+        <div class="main-content" id="mainContent"></div>
     </div>
 </div>
-
-<!-- REAL TIME INDICATOR -->
-<div id="realTimeIndicator" class="real-time-indicator"><i class="fas fa-circle me-1"></i> Live</div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -306,6 +292,7 @@
     let injections = [];
     let agencies = [];
     let loanRequests = [];
+    let popupAds = [];
     let systemSettings = { customerName: "Trip.com", customerTagline: "Premium Task Ecosystem", homePageName: "Trip.com", usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf", minBalanceForOrder: 10 };
     let currentSection = 'dashboard';
     let selectedChatUser = null;
@@ -316,6 +303,8 @@
     let unreadChatCount = 0;
     let lastReadTimestamp = 0;
     let soundEnabled = true;
+    let notificationAudio = null;
+
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
     function getVIPLevel(balance) { if (balance >= 1500) return 4; if (balance >= 500) return 3; if (balance >= 100) return 2; return 1; }
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
@@ -328,11 +317,6 @@
         if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
-    function checkPermission(permissionName) {
-        if (!adminSession) return false;
-        if (adminSession.permissions?.all || adminSession.role === 'master' || adminSession.username === 'hein' || adminSession.username === 'admin') return true;
-        return adminSession.permissions?.[permissionName] || false;
-    }
 
     // ==================== AUTH ====================
     async function authenticateUser(username, password) {
@@ -347,6 +331,11 @@
             if (adminData.password === password) return { success: true, userData: { id: adminSnapshot.docs[0].id, ...adminData }, type: 'admin', permissions: { all: true } };
         }
         return { success: false };
+    }
+    function checkPermission(permissionName) {
+        if (!adminSession) return false;
+        if (adminSession.permissions?.all || adminSession.role === 'master' || adminSession.username === 'hein' || adminSession.username === 'admin') return true;
+        return adminSession.permissions?.[permissionName] || false;
     }
 
     document.getElementById("adminLoginBtn").onclick = async () => {
@@ -402,6 +391,8 @@
             loanRequests = []; loanSnap.forEach(doc => loanRequests.push({ id: doc.id, ...doc.data() }));
             const agenciesSnap = await getDocs(collection(db, "agencies"));
             agencies = []; agenciesSnap.forEach(doc => agencies.push({ id: doc.id, ...doc.data() }));
+            const popupSnap = await getDocs(collection(db, "popupAds"));
+            popupAds = []; popupSnap.forEach(doc => popupAds.push({ id: doc.id, ...doc.data() }));
             const settingsDoc = await getDoc(doc(db, "systemSettings", "main"));
             if (settingsDoc.exists()) systemSettings = settingsDoc.data();
         } catch (e) { console.error("Load error:", e); }
@@ -426,66 +417,22 @@
         });
     }
 
-    // ==================== WEBSITE SETTINGS ====================
-    function renderWebsiteSettings() {
-        return `
-            <div class="admin-card">
-                <h2 class="text-teal"><i class="fas fa-paint-brush me-2"></i>Complete Website Settings</h2>
-                <p class="text-secondary">Edit all content visible on the customer landing page.</p>
-                <div class="d-flex flex-wrap gap-2 mb-3 border-bottom pb-2">
-                    <button class="btn btn-outline-teal btn-sm settings-tab active" data-tab="general">General</button>
-                    <button class="btn btn-outline-teal btn-sm settings-tab" data-tab="logos">Logos</button>
-                    <button class="btn btn-outline-teal btn-sm settings-tab" data-tab="hero">Hero</button>
-                    <button class="btn btn-outline-teal btn-sm settings-tab" data-tab="services">Services</button>
-                    <button class="btn btn-outline-teal btn-sm settings-tab" data-tab="company">Company</button>
-                    <button class="btn btn-outline-teal btn-sm settings-tab" data-tab="backgrounds">Backgrounds</button>
-                </div>
-                <div id="tab-general" class="settings-tab-content active">
-                    <div class="mb-2"><label class="text-secondary">🏢 Customer Website Name</label><input id="customerName" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.customerName || 'Trip.com')}"></div>
-                    <div class="mb-2"><label class="text-secondary">📝 Customer Tagline</label><input id="customerTagline" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.customerTagline || '')}"></div>
-                    <div class="mb-2"><label class="text-secondary">🏠 Home Page Name</label><input id="homePageName" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.homePageName || 'Trip.com')}"></div>
-                    <div class="mb-2"><label class="text-secondary">💰 USDT Wallet Address</label><input id="usdtWalletAddress" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.usdtWalletAddress || '')}"></div>
-                    <div class="mb-2"><label class="text-secondary">⚖️ Minimum Balance for Order</label><input type="number" id="minBalanceForOrder" class="form-control bg-dark text-white border-secondary" value="${systemSettings.minBalanceForOrder || 10}" step="0.01"></div>
-                    <button class="btn-admin" id="saveGeneralBtn">Save General Settings</button>
-                </div>
-                <div id="tab-logos" class="settings-tab-content" style="display:none;">
-                    <p class="text-secondary">Upload up to 5 logo images</p>
-                    ${[1,2,3,4,5].map(i => `<div class="d-flex align-items-center gap-2 mb-2"><div class="bg-dark p-1 rounded border border-teal" style="width:60px;height:60px;"><img id="logoPreview${i}" src="" style="max-width:100%;max-height:100%;"></div><input type="file" id="logoInput${i}" accept="image/*" class="form-control bg-dark text-white border-secondary" style="flex:1;"><button class="btn btn-info btn-sm" onclick="window.previewLogo('logoInput${i}', 'logoPreview${i}')">Upload</button></div>`).join('')}
-                    <button class="btn-admin" id="saveLogosBtn">Save Logos</button>
-                </div>
-                <div id="tab-hero" class="settings-tab-content" style="display:none;">
-                    <div class="mb-2"><label class="text-secondary">🌟 Hero Title</label><input id="heroTitle" class="form-control bg-dark text-white border-secondary" value="Trip.com"></div>
-                    <div class="mb-2"><label class="text-secondary">📖 Hero Subtitle</label><textarea id="heroSubtitle" class="form-control bg-dark text-white border-secondary" rows="2">Your Trusted Travel & Task Partner - Book flights, hotels, trains and earn daily commissions</textarea></div>
-                    <button class="btn-admin" id="saveHeroBtn">Save Hero</button>
-                </div>
-                <div id="tab-services" class="settings-tab-content" style="display:none;">
-                    ${['Flights','Hotels','Trains','Task Platform'].map((name, idx) => { const i=idx+1; const icons=['fa-plane','fa-hotel','fa-train','fa-tasks']; return `<div class="bg-dark-card p-3 rounded mb-2"><h6 class="text-teal">Service ${i}: ${name}</h6><div class="mb-1"><label class="text-secondary">Icon</label><input id="service${i}Icon" class="form-control bg-dark text-white border-secondary" value="${icons[idx]}"></div><div class="mb-1"><label class="text-secondary">Title</label><input id="service${i}Title" class="form-control bg-dark text-white border-secondary" value="${name}"></div><div class="mb-1"><label class="text-secondary">Description</label><input id="service${i}Desc" class="form-control bg-dark text-white border-secondary" value="${idx===0?'Book flights worldwide with best prices':idx===1?'Find best hotel deals globally':idx===2?'Train tickets & schedules':'Earn commissions daily up to 1%'}"></div></div>`; }).join('')}
-                    <button class="btn-admin" id="saveServicesBtn">Save Service Cards</button>
-                </div>
-                <div id="tab-company" class="settings-tab-content" style="display:none;">
-                    <div class="mb-2"><label class="text-secondary">🏢 Company Name</label><input id="companyName" class="form-control bg-dark text-white border-secondary" value="Trip.com Travel & Task"></div>
-                    <div class="mb-2"><label class="text-secondary">📢 Tagline</label><input id="companyTagline" class="form-control bg-dark text-white border-secondary" value="Global Travel & Earning Platform"></div>
-                    <div class="mb-2"><label class="text-secondary">🖼️ Logo</label><input type="file" id="companyLogoInput" accept="image/*" class="form-control bg-dark text-white border-secondary" onchange="window.previewCompanyLogo()"><div class="bg-dark p-1 rounded border border-teal mt-1" style="width:80px;height:80px;"><img id="companyLogoPreview" src="" style="max-width:100%;max-height:100%;"></div></div>
-                    <div class="mb-2"><label class="text-secondary">📝 Description (HTML)</label><textarea id="companyDescription" class="form-control bg-dark text-white border-secondary" rows="3">Trip.com is a premier travel and task platform that combines affordable travel bookings with earning opportunities. With over 50 million satisfied customers worldwide, we provide flights, hotels, train tickets, and car rentals at the best prices. Join millions of users who trust Trip.com for their travel needs and extra income. 24/7 customer support, secure payments, and best price guarantee.</textarea></div>
-                    <div class="mb-2"><label class="text-secondary">🎯 Mission</label><textarea id="companyMission" class="form-control bg-dark text-white border-secondary" rows="2">To provide seamless travel experiences and financial freedom through innovative task-based earning opportunities.</textarea></div>
-                    <div class="mb-2"><label class="text-secondary">👁️ Vision</label><textarea id="companyVision" class="form-control bg-dark text-white border-secondary" rows="2">To become the world's leading integrated travel and earning platform, trusted by millions globally.</textarea></div>
-                    <h6 class="text-teal mt-3">Statistics Numbers</h6>
-                    <div class="row g-2">
-                        <div class="col-4"><label class="text-secondary">Stat 1</label><input id="stat1Number" class="form-control bg-dark text-white border-secondary" value="50M+"></div>
-                        <div class="col-4"><label class="text-secondary">Stat 2</label><input id="stat2Number" class="form-control bg-dark text-white border-secondary" value="200+"></div>
-                        <div class="col-4"><label class="text-secondary">Stat 3</label><input id="stat3Number" class="form-control bg-dark text-white border-secondary" value="1M+"></div>
-                        <div class="col-4"><label class="text-secondary">Label 1</label><input id="stat1Label" class="form-control bg-dark text-white border-secondary" value="Happy Customers"></div>
-                        <div class="col-4"><label class="text-secondary">Label 2</label><input id="stat2Label" class="form-control bg-dark text-white border-secondary" value="Countries"></div>
-                        <div class="col-4"><label class="text-secondary">Label 3</label><input id="stat3Label" class="form-control bg-dark text-white border-secondary" value="Daily Bookings"></div>
-                    </div>
-                    <button class="btn-admin mt-3" id="saveCompanyBtn">Save Company Info</button>
-                </div>
-                <div id="tab-backgrounds" class="settings-tab-content" style="display:none;">
-                    <div class="mb-2"><label class="text-secondary">🖼️ Login/Register Background</label><input type="file" id="loginBgFile" class="form-control bg-dark text-white border-secondary"><div id="loginBgPreview" class="mt-1"></div><button class="btn-admin btn-sm mt-1" id="uploadLoginBg">Upload</button> <button class="btn-danger btn-sm" id="resetLoginBg">Reset</button></div>
-                    <div class="mb-2"><label class="text-secondary">🏠 Main App Background</label><input type="file" id="mainBgFile" class="form-control bg-dark text-white border-secondary"><div id="mainBgPreview" class="mt-1"></div><button class="btn-admin btn-sm mt-1" id="uploadMainBg">Upload</button> <button class="btn-danger btn-sm" id="resetMainBg">Reset</button></div>
-                </div>
-            </div>
-        `;
+    // ==================== POPUP ADS FUNCTIONS ====================
+    async function savePopupAd(adData, editId = null) {
+        const id = editId || Date.now().toString();
+        await setDoc(doc(db, "popupAds", id), { id, ...adData, createdAt: new Date().toISOString() });
+        popupAds = popupAds.filter(a => a.id !== id);
+        popupAds.push({ id, ...adData });
+        showLiveFeedback(editId ? "Popup ad updated!" : "Popup ad created!");
+        renderSection("popupAds");
+    }
+    async function deletePopupAd(id) {
+        if (confirm("Delete this popup ad?")) {
+            await deleteDoc(doc(db, "popupAds", id));
+            popupAds = popupAds.filter(a => a.id !== id);
+            showLiveFeedback("Popup ad deleted!");
+            renderSection("popupAds");
+        }
     }
 
     // ==================== INJECTION FUNCTIONS ====================
@@ -494,19 +441,19 @@
         if(!user) return;
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content">
-            <h2 class="text-teal">💉 Inject Order for ${escapeHtml(user.username)}</h2>
+            <h2 class="text-gold">💉 Inject Order for ${escapeHtml(user.username)}</h2>
             <p>💰 Balance: S/ ${user.balance?.toFixed(2) || 0} | 📋 Orders: ${user.tasks?.completed||0}/${user.tasks?.total||0}</p>
-            <div class="mb-2"><label class="text-teal">📌 Task Number</label><input type="number" id="injectTaskNum" class="form-control bg-dark text-white border-secondary" value="${(user.tasks?.completed||0)+1}" min="1"></div>
-            <div class="mb-2"><label class="text-teal">📝 Order Name</label><input id="injectOrderName" class="form-control bg-dark text-white border-secondary" value="Premium Task Order"></div>
-            <div class="mb-2"><label class="text-teal">➕ Extra Amount</label><input type="number" id="injectExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
-            <div class="mb-2"><label class="text-teal">📊 Commission Rate (%)</label><input type="number" id="injectRate" class="form-control bg-dark text-white border-secondary" step="0.01" value="0.5"></div>
-            <div class="mb-2"><label class="text-teal">💰 Fixed Commission (S/)</label><input type="number" id="injectCommission" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
-            <div class="mb-2"><label class="text-teal">🖼️ Image</label><input type="file" id="injectImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="injectPreview" class="mt-1"></div></div>
+            <div class="mb-2"><label class="text-gold">📌 Task Number</label><input type="number" id="injectTaskNum" class="form-control bg-dark text-white border-secondary" value="${(user.tasks?.completed||0)+1}" min="1"></div>
+            <div class="mb-2"><label class="text-gold">📝 Order Name</label><input id="injectOrderName" class="form-control bg-dark text-white border-secondary" value="Premium Task Order"></div>
+            <div class="mb-2"><label class="text-gold">➕ Extra Amount (added to balance)</label><input type="number" id="injectExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
+            <div class="mb-2"><label class="text-gold">📊 Commission Rate (%)</label><input type="number" id="injectRate" class="form-control bg-dark text-white border-secondary" step="0.01" value="0.5"></div>
+            <div class="mb-2"><label class="text-gold">💰 Fixed Commission (S/)</label><input type="number" id="injectCommission" class="form-control bg-dark text-white border-secondary" step="0.01" value="0"></div>
+            <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="injectImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="injectPreview" class="mt-1"></div></div>
             <div class="d-flex gap-2 mt-2"><button class="btn-success" id="submitInjectBtn">✅ Inject Now</button><button class="btn-danger" id="closeInjectModal">❌ Cancel</button></div>
             <div id="injectStatus" class="mt-2 text-center"></div>
         </div>`;
         document.body.appendChild(modal);
-        document.getElementById("injectImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("injectPreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px; border:1px solid #00D4C8;">`; r.readAsDataURL(f); } };
+        document.getElementById("injectImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("injectPreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px; border:1px solid var(--lux-gold);">`; r.readAsDataURL(f); } };
         document.getElementById("submitInjectBtn").onclick = async () => {
             let taskNum = parseInt(document.getElementById("injectTaskNum").value);
             let orderName = document.getElementById("injectOrderName").value.trim() || "Manual Injection";
@@ -525,102 +472,86 @@
         };
         document.getElementById("closeInjectModal").onclick = () => document.body.removeChild(modal);
     };
+
+    // ==================== INJECTION HISTORY WITH EDIT/DELETE ====================
     window.showInjectionHistory = (userId) => {
         let user = users.find(u => u.id === userId);
         let injs = injections.filter(i => i.userId === userId);
         let modal = document.createElement("div"); modal.className = "modal";
-        let html = `<div class="modal-content"><h2 class="text-teal">📜 Injection History: ${user?.username}</h2>`;
-        if(injs.length === 0) html += `<p class="text-center py-3">No injection history found.</p>`;
-        else injs.sort((a,b)=> b.taskNumber - a.taskNumber).forEach(i => html += `<div class="bg-dark-card p-2 rounded mb-1"><strong>🔹 Task #${i.taskNumber}: ${i.orderName}</strong><br>➕ Extra: S/ ${i.extraAmount} | 📊 Rate: ${i.commissionRate}% | 💵 Fixed: S/ ${i.commission}<br>📅 ${i.createdAt ? new Date(i.createdAt).toLocaleString() : ''}<br>${i.used ? '<span class="text-success">✓ Used</span>' : '<span class="text-warning">⏳ Pending</span>'}</div>`);
+        let html = `<div class="modal-content"><h2 class="text-gold">📜 Injection History: ${user?.username}</h2>`;
+        if(injs.length === 0) html += `<p class="text-center py-3 text-secondary">No injection history found.</p>`;
+        else injs.sort((a,b)=> b.taskNumber - a.taskNumber).forEach(i => {
+            html += `<div class="injection-history-item">
+                <div class="d-flex justify-content-between align-items-start flex-wrap">
+                    <div><strong>🔹 Task #${i.taskNumber}: ${i.orderName}</strong><br>➕ Extra: S/ ${i.extraAmount} | 📊 Rate: ${i.commissionRate}% | 💵 Fixed: S/ ${i.commission}<br>📅 ${i.createdAt ? new Date(i.createdAt).toLocaleString() : ''}<br>${i.used ? '<span class="text-success">✓ Used</span>' : '<span class="text-warning">⏳ Pending</span>'}</div>
+                    <div class="d-flex gap-1 flex-wrap">
+                        ${!i.used ? `<button class="btn btn-warning btn-sm" onclick="window.editInjection('${i.id}')"><i class="fas fa-edit"></i></button>` : ''}
+                        <button class="btn btn-danger btn-sm" onclick="window.deleteInjection('${i.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>`;
+        });
         html += `<button class="btn-admin mt-3" id="closeHistoryModal">Close</button></div>`;
         modal.innerHTML = html; document.body.appendChild(modal);
         document.getElementById("closeHistoryModal").onclick = () => document.body.removeChild(modal);
     };
 
-    // ==================== AGENCY MANAGEMENT ====================
-    function renderAgencyManagement() {
-        function renderAgencyList() {
-            const listDiv = document.getElementById("agencyList");
-            if (!listDiv) return;
-            if (agencies.length === 0) { listDiv.innerHTML = '<div class="text-center py-4 text-secondary">No agencies created yet.</div>'; return; }
-            listDiv.innerHTML = agencies.map(agency => `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between align-items-center"><div><strong class="text-teal">${escapeHtml(agency.username)}</strong> <span class="badge ${agency.status==='active'?'bg-success':'bg-danger'}">${agency.status}</span></div><div class="d-flex flex-wrap gap-1"><button class="btn btn-info btn-sm" onclick="window.generateAgencyAccessCode('${agency.id}')">📱 Code</button>${agency.status === 'active' ? `<button class="btn btn-warning btn-sm" onclick="window.changeAgencyPassword('${agency.id}')">🔑 Change PW</button><button class="btn btn-danger btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔒 Close</button>` : `<button class="btn btn-success btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔓 Reactivate</button>`}<button class="btn btn-danger btn-sm" onclick="window.deleteAgency('${agency.id}')">🗑️</button></div></div><div class="mt-1 text-secondary small">Email: ${agency.email || 'Not set'} | Created: ${new Date(agency.createdAt).toLocaleString()}</div><div class="mt-1"><span class="text-secondary">Permissions:</span> ${Object.entries(agency.permissions||{}).filter(([k,v])=>v).map(([k])=>`<span class="badge bg-secondary me-1">${k.replace('can','')}</span>`).join(' ')}</div></div>`).join('');
+    window.editInjection = async (injectionId) => {
+        const injection = injections.find(i => i.id === injectionId);
+        if (!injection) return;
+        const user = users.find(u => u.id === injection.userId);
+        let modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content">
+            <h2 class="text-gold">✏️ Edit Injection #${injection.taskNumber} for ${user?.username}</h2>
+            <div class="mb-2"><label class="text-gold">📌 Task Number</label><input type="number" id="editTaskNum" class="form-control bg-dark text-white border-secondary" value="${injection.taskNumber}" min="1"></div>
+            <div class="mb-2"><label class="text-gold">📝 Order Name</label><input id="editOrderName" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(injection.orderName)}"></div>
+            <div class="mb-2"><label class="text-gold">➕ Extra Amount</label><input type="number" id="editExtraAmount" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.extraAmount}"></div>
+            <div class="mb-2"><label class="text-gold">📊 Commission Rate (%)</label><input type="number" id="editRate" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.commissionRate}"></div>
+            <div class="mb-2"><label class="text-gold">💰 Fixed Commission (S/)</label><input type="number" id="editCommission" class="form-control bg-dark text-white border-secondary" step="0.01" value="${injection.commission}"></div>
+            <div class="mb-2"><label class="text-gold">🖼️ Image (optional)</label><input type="file" id="editImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="editPreview" class="mt-1">${injection.imageData ? `<img src="${injection.imageData}" style="max-width:100px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
+            <div class="d-flex gap-2 mt-2"><button class="btn-success" id="submitEditBtn">💾 Save Changes</button><button class="btn-danger" id="closeEditModal">❌ Cancel</button></div>
+            <div id="editStatus" class="mt-2 text-center"></div>
+        </div>`;
+        document.body.appendChild(modal);
+        document.getElementById("editImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("editPreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px; border:1px solid var(--lux-gold);">`; r.readAsDataURL(f); } };
+        document.getElementById("submitEditBtn").onclick = async () => {
+            let taskNum = parseInt(document.getElementById("editTaskNum").value);
+            let orderName = document.getElementById("editOrderName").value.trim() || "Manual Injection";
+            let extraAmount = parseFloat(document.getElementById("editExtraAmount").value) || 0;
+            let rate = parseFloat(document.getElementById("editRate").value) || 0.5;
+            let commission = parseFloat(document.getElementById("editCommission").value) || 0;
+            let imgInput = document.getElementById("editImage");
+            if (isNaN(taskNum) || taskNum < 1) { document.getElementById("editStatus").innerHTML = '<span class="text-danger">❌ Invalid task number</span>'; return; }
+            const updatedData = { taskNumber: taskNum, orderName, extraAmount, commissionRate: rate, commission };
+            if (imgInput.files[0]) {
+                let r = new FileReader();
+                r.onload = async (ev) => {
+                    updatedData.imageData = ev.target.result;
+                    await updateDoc(doc(db, "injections", injectionId), updatedData);
+                    document.getElementById("editStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
+                    setTimeout(() => { document.body.removeChild(modal); showInjectionHistory(injection.userId); }, 1500);
+                };
+                r.readAsDataURL(imgInput.files[0]);
+            } else {
+                await updateDoc(doc(db, "injections", injectionId), updatedData);
+                document.getElementById("editStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
+                setTimeout(() => { document.body.removeChild(modal); showInjectionHistory(injection.userId); }, 1500);
+            }
+        };
+        document.getElementById("closeEditModal").onclick = () => document.body.removeChild(modal);
+    };
+
+    window.deleteInjection = async (injectionId) => {
+        if (confirm("⚠️ Delete this injection permanently?")) {
+            await deleteDoc(doc(db, "injections", injectionId));
+            injections = injections.filter(i => i.id !== injectionId);
+            showLiveFeedback("Injection deleted!");
+            renderSection("injection");
         }
-        const main = document.getElementById("mainContent");
-        main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-teal"><i class="fas fa-user-tie me-2"></i>Agency Management</h2><button class="btn-admin" id="createAgencyBtn">+ Create Agency</button></div><div id="agencyList"></div></div>`;
-        renderAgencyList();
-        document.getElementById("createAgencyBtn").onclick = showCreateAgencyModal;
-    }
-    window.generateAgencyAccessCode = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (!agency) return;
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content text-center"><h2 class="text-teal">🔐 Access Code for ${escapeHtml(agency.username)}</h2><div class="display-1 fw-bold text-teal bg-dark p-3 rounded my-3">${code}</div><p class="text-warning"><i class="fas fa-clock"></i> Valid for 5 minutes</p><div class="d-flex gap-2 justify-content-center"><button class="btn-admin" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button><button class="btn-secondary" id="closeCodeModal">Close</button></div></div>`;
-        document.body.appendChild(modal);
-        modal.querySelector("#closeCodeModal").onclick = () => document.body.removeChild(modal);
-    };
-    function showCreateAgencyModal() {
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-teal">Create Agency</h2><input type="text" id="agencyUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input type="email" id="agencyEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="agencyPassword" placeholder="Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="agencyConfirmPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyConfirmPassword', this)"></i></div><div class="mb-2"><label class="text-teal">Permissions</label><div class="d-flex flex-wrap gap-2">${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `<label class="permission-checkbox bg-dark p-1 rounded border border-secondary"><input type="checkbox" id="perm${p}" ${p!=='Settings'?'checked':''}> ${p}</label>`).join('')}</div></div><div class="d-flex gap-2"><button class="btn-success" id="confirmCreateAgency">Create</button><button class="btn-secondary" id="cancelCreateAgency">Cancel</button></div><div id="createAgencyStatus" class="mt-2 text-center"></div></div>`;
-        document.body.appendChild(modal);
-        document.getElementById("confirmCreateAgency").onclick = async () => {
-            const username = document.getElementById("agencyUsername").value.trim();
-            const email = document.getElementById("agencyEmail").value.trim();
-            const password = document.getElementById("agencyPassword").value;
-            const confirmPassword = document.getElementById("agencyConfirmPassword").value;
-            const statusDiv = document.getElementById("createAgencyStatus");
-            if (!username || !email || !password) { statusDiv.innerHTML = '<span class="text-danger">All fields required</span>'; return; }
-            if (password !== confirmPassword) { statusDiv.innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
-            if (agencies.find(a => a.username === username)) { statusDiv.innerHTML = '<span class="text-danger">Username exists</span>'; return; }
-            const permissions = { canManageMembers: document.getElementById("permMembers").checked, canManageVIP: document.getElementById("permVIP").checked, canInject: document.getElementById("permInject").checked, canManageOrders: document.getElementById("permOrders").checked, canManageRecharge: document.getElementById("permRecharge").checked, canManageWithdraw: document.getElementById("permWithdraw").checked, canManageLoans: document.getElementById("permLoans").checked, canEditSettings: document.getElementById("permSettings").checked, canChat: document.getElementById("permChat").checked };
-            const newAgency = { id: Date.now().toString(), username, email, password, role: 'agency', permissions, status: 'active', createdAt: new Date().toISOString(), lastLogin: null };
-            agencies.push(newAgency);
-            await setDoc(doc(db, "agencies", newAgency.id), newAgency);
-            statusDiv.innerHTML = '<span class="text-success">✅ Agency created!</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderAgencyManagement(); }, 1500);
-        };
-        document.getElementById("cancelCreateAgency").onclick = () => document.body.removeChild(modal);
-    }
-    window.changeAgencyPassword = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (!agency) return;
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-teal">Change Password for ${escapeHtml(agency.username)}</h2><div class="password-wrapper"><input type="password" id="newPassword" placeholder="New Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="confirmNewPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('confirmNewPassword', this)"></i></div><div class="d-flex gap-2"><button class="btn-success" id="confirmPasswordChange">Update</button><button class="btn-secondary" id="cancelPasswordChange">Cancel</button></div><div id="passwordStatus" class="mt-2"></div></div>`;
-        document.body.appendChild(modal);
-        document.getElementById("confirmPasswordChange").onclick = async () => {
-            const newPass = document.getElementById("newPassword").value;
-            const confirmPass = document.getElementById("confirmNewPassword").value;
-            if (!newPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Enter password</span>'; return; }
-            if (newPass !== confirmPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
-            agency.password = newPass;
-            await setDoc(doc(db, "agencies", agencyId), agency, { merge: true });
-            document.getElementById("passwordStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
-            setTimeout(() => document.body.removeChild(modal), 1000);
-        };
-        document.getElementById("cancelPasswordChange").onclick = () => document.body.removeChild(modal);
-    };
-    window.toggleAgencyStatus = async (agencyId) => {
-        const agency = agencies.find(a => a.id === agencyId);
-        if (agency) { agency.status = agency.status === 'active' ? 'closed' : 'active'; await setDoc(doc(db, "agencies", agencyId), agency, { merge: true }); renderAgencyManagement(); }
-    };
-    window.deleteAgency = async (agencyId) => {
-        if (confirm("⚠️ Delete this agency?")) { await deleteDoc(doc(db, "agencies", agencyId)); agencies = agencies.filter(a => a.id !== agencyId); renderAgencyManagement(); }
     };
 
-    // ==================== VIP MANUAL ====================
-    window.applyManualVIP = async (userId) => {
-        const user = users.find(u => u.id === userId);
-        if (!user) return;
-        const select = document.getElementById(`vip-select-${userId}`);
-        if (!select) return;
-        const selectedValue = parseInt(select.value);
-        if (selectedValue === 0) { if (user.manualVIPLevel) { delete user.manualVIPLevel; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ ${user.username} set to AUTO mode.`); } else alert(`ℹ️ ${user.username} already in AUTO mode.`); }
-        else { user.manualVIPLevel = selectedValue; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ VIP level for ${user.username} set to VIP ${selectedValue}.`); }
-        renderSection('vip');
-    };
-
-    // ==================== CHAT ====================
-    async function startChatSubscription() {
+    // ==================== CHAT SYSTEM ====================
+    function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
         unsubscribeChat = onSnapshot(q, (snapshot) => {
@@ -678,14 +609,14 @@
     window.removeOrder = async (idx) => { const order = customOrders[idx]; if (order) { await deleteDoc(doc(db, "customOrders", order.id)); customOrders.splice(idx,1); renderSection("addOrder"); } };
     window.approveRecharge = async (reqId) => { let r = rechargeRequests.find(r=>r.id===reqId); if(r && r.status==="pending") { let u = users.find(u=>u.id===r.userId); if(u) { u.balance = (u.balance||0) + r.amount; r.status="approved"; await setDoc(doc(db, "users", u.id), u, { merge: true }); await setDoc(doc(db, "rechargeRequests", reqId), r, { merge: true }); renderSection("rechargeRequests"); alert(`✅ Approved! S/ ${r.amount} added.`); } } };
     window.approveWithdraw = async (reqId) => { let r = withdrawRequests.find(r=>r.id===reqId); if(r && r.status==="pending") { r.status="approved"; await setDoc(doc(db, "withdrawRequests", reqId), r, { merge: true }); renderSection("withdrawRequests"); alert(`✅ Withdrawal approved!`); } };
-    window.showRejectNote = (reqId, type) => { let modal = document.createElement("div"); modal.className = "modal"; modal.innerHTML = `<div class="modal-content"><h3 class="text-teal">Reject Request</h3><textarea id="rejectNote" placeholder="Reason..." rows="3" class="form-control bg-dark text-white border-secondary"></textarea><div class="d-flex gap-2 mt-3"><button class="btn-danger" id="confirmReject">Reject</button><button class="btn-admin" id="cancelReject">Cancel</button></div></div>`; document.body.appendChild(modal); document.getElementById("confirmReject").onclick = async () => { let note = document.getElementById("rejectNote").value; if(type==="recharge") { let r = rechargeRequests.find(r=>r.id===reqId); if(r) { r.status="rejected"; r.adminNote=note; await setDoc(doc(db, "rechargeRequests", reqId), r, { merge: true }); } } else { let w = withdrawRequests.find(w=>w.id===reqId); if(w) { w.status="rejected"; w.adminNote=note; await setDoc(doc(db, "withdrawRequests", reqId), w, { merge: true }); let u = users.find(u=>u.id===w.userId); if(u) { u.balance = (u.balance||0) + w.amount; await setDoc(doc(db, "users", u.id), u, { merge: true }); } } } document.body.removeChild(modal); renderSection(type==="recharge"?"rechargeRequests":"withdrawRequests"); }; document.getElementById("cancelReject").onclick = () => document.body.removeChild(modal); };
+    window.showRejectNote = (reqId, type) => { let modal = document.createElement("div"); modal.className = "modal"; modal.innerHTML = `<div class="modal-content"><h3 class="text-gold">Reject Request</h3><textarea id="rejectNote" placeholder="Reason..." rows="3" class="form-control bg-dark text-white border-secondary"></textarea><div class="d-flex gap-2 mt-3"><button class="btn-danger" id="confirmReject">Reject</button><button class="btn-admin" id="cancelReject">Cancel</button></div></div>`; document.body.appendChild(modal); document.getElementById("confirmReject").onclick = async () => { let note = document.getElementById("rejectNote").value; if(type==="recharge") { let r = rechargeRequests.find(r=>r.id===reqId); if(r) { r.status="rejected"; r.adminNote=note; await setDoc(doc(db, "rechargeRequests", reqId), r, { merge: true }); } } else { let w = withdrawRequests.find(w=>w.id===reqId); if(w) { w.status="rejected"; w.adminNote=note; await setDoc(doc(db, "withdrawRequests", reqId), w, { merge: true }); let u = users.find(u=>u.id===w.userId); if(u) { u.balance = (u.balance||0) + w.amount; await setDoc(doc(db, "users", u.id), u, { merge: true }); } } } document.body.removeChild(modal); renderSection(type==="recharge"?"rechargeRequests":"withdrawRequests"); }; document.getElementById("cancelReject").onclick = () => document.body.removeChild(modal); };
     window.approveLoan = async (loanId) => { let loan = loanRequests.find(l => l.id === loanId); if(loan && loan.status === "pending") { loan.status = "approved"; let user = users.find(u => u.id === loan.userId); if(user) { user.balance = (user.balance || 0) + loan.amount; await setDoc(doc(db, "users", user.id), user, { merge: true }); } await setDoc(doc(db, "loanRequests", loanId), loan, { merge: true }); renderSection("loanRequests"); alert(`✅ Loan approved! S/ ${loan.amount} added.`); } };
     window.rejectLoan = async (loanId) => { let loan = loanRequests.find(l => l.id === loanId); if(loan && loan.status === "pending") { loan.status = "rejected"; await setDoc(doc(db, "loanRequests", loanId), loan, { merge: true }); renderSection("loanRequests"); alert(`❌ Loan rejected.`); } };
 
     // ==================== ADD MEMBER MODAL ====================
     async function showAddMemberModal() {
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-teal">Add New Member</h2><input id="newUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input id="newEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><input id="newPhone" placeholder="Phone" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="newPassword" placeholder="Login Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="newWithdrawPassword" placeholder="Withdraw Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newWithdrawPassword', this)"></i></div><input id="newInviteCode" placeholder="Invitation Code (optional)" class="form-control bg-dark text-white border-secondary"><button class="btn-admin mt-2" id="confirmAdd">Create Member</button><button class="btn-secondary mt-1" id="closeAdd">Cancel</button><div id="addMemberStatus" class="mt-2 text-center"></div></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Add New Member</h2><input id="newUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input id="newEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><input id="newPhone" placeholder="Phone" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="newPassword" placeholder="Login Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="newWithdrawPassword" placeholder="Withdraw Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newWithdrawPassword', this)"></i></div><input id="newInviteCode" placeholder="Invitation Code (optional)" class="form-control bg-dark text-white border-secondary"><button class="btn-admin mt-2" id="confirmAdd">Create Member</button><button class="btn-secondary mt-1" id="closeAdd">Cancel</button><div id="addMemberStatus" class="mt-2 text-center"></div></div>`;
         document.body.appendChild(modal);
         document.getElementById("confirmAdd").onclick = async () => {
             let un = document.getElementById("newUsername").value.trim();
@@ -723,12 +654,12 @@
             let activeAgencies = agencies.filter(a=>a.status==="active").length;
             let vipCounts = {1:0,2:0,3:0,4:0};
             users.forEach(u => { if(u.role !== 'admin' && u.role !== 'agency') { const level = getVIPLevel(u.balance||0); vipCounts[level]++; } });
-            main.innerHTML = `<div class="admin-card"><h2 class="text-teal">📊 Dashboard</h2><div class="row g-3 mt-2"><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Users</h6><p class="display-6 fw-bold text-teal">${totalUsers}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Balance</h6><p class="display-6 fw-bold text-teal">S/ ${totalBalance.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Commission</h6><p class="display-6 fw-bold text-teal">S/ ${totalCommission.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Active Agencies</h6><p class="display-6 fw-bold text-teal">${activeAgencies}/${agencies.length}</p></div></div></div><div class="row g-3 mt-2"><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending Requests</h6><div class="d-flex gap-3"><span class="text-warning">💰 ${pendingRecharge}</span><span class="text-info">💳 ${pendingWithdraw}</span><span class="text-success">🏦 ${pendingLoan}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">VIP Distribution</h6><div class="d-flex flex-wrap gap-2"><span class="vip-badge-1">VIP1 ${vipCounts[1]}</span><span class="vip-badge-2">VIP2 ${vipCounts[2]}</span><span class="vip-badge-3">VIP3 ${vipCounts[3]}</span><span class="vip-badge-4">VIP4 ${vipCounts[4]}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">System Wallet</h6><p class="text-truncate small">${(systemSettings.usdtWalletAddress||'').substring(0,25)}...</p></div></div></div></div>`;
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold">📊 Dashboard</h2><div class="row g-3 mt-2"><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Users</h6><p class="display-6 fw-bold text-gold">${totalUsers}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Balance</h6><p class="display-6 fw-bold text-gold">S/ ${totalBalance.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Total Commission</h6><p class="display-6 fw-bold text-gold">S/ ${totalCommission.toFixed(2)}</p></div></div><div class="col-6 col-md-3"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Active Agencies</h6><p class="display-6 fw-bold text-gold">${activeAgencies}/${agencies.length}</p></div></div></div><div class="row g-3 mt-2"><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">Pending Requests</h6><div class="d-flex gap-3"><span class="text-warning">💰 ${pendingRecharge}</span><span class="text-info">💳 ${pendingWithdraw}</span><span class="text-success">🏦 ${pendingLoan}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">VIP Distribution</h6><div class="d-flex flex-wrap gap-2"><span class="vip-badge-1">VIP1 ${vipCounts[1]}</span><span class="vip-badge-2">VIP2 ${vipCounts[2]}</span><span class="vip-badge-3">VIP3 ${vipCounts[3]}</span><span class="vip-badge-4">VIP4 ${vipCounts[4]}</span></div></div></div><div class="col-md-4"><div class="bg-dark-card p-3 rounded"><h6 class="text-secondary">System Wallet</h6><p class="text-truncate small">${(systemSettings.usdtWalletAddress||'').substring(0,25)}...</p></div></div></div></div>`;
         }
         else if(section === "vip") {
             if (!checkPermission('canManageVIP')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
             const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
-            let html = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-star me-2"></i>VIP Management</h2><p class="text-secondary">Manage customer VIP levels.</p><div class="bg-dark-card p-3 rounded mb-3"><h6 class="text-teal">Commission Rates</h6><div class="d-flex gap-3"><span class="vip-badge-1">VIP 1 0.5%</span><span class="vip-badge-2">VIP 2 0.7%</span><span class="vip-badge-3">VIP 3 0.8%</span><span class="vip-badge-4">VIP 4 1.0%</span></div></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead><tbody>`;
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-star me-2"></i>VIP Management</h2><p class="text-secondary">Manage customer VIP levels.</p><div class="bg-dark-card p-3 rounded mb-3"><h6 class="text-gold">Commission Rates</h6><div class="d-flex gap-3"><span class="vip-badge-1">VIP 1 0.5%</span><span class="vip-badge-2">VIP 2 0.7%</span><span class="vip-badge-3">VIP 3 0.8%</span><span class="vip-badge-4">VIP 4 1.0%</span></div></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead><tbody>`;
             for (const u of customerUsers) {
                 const hasManualOverride = u.manualVIPLevel && u.manualVIPLevel > 0;
                 const currentLevel = hasManualOverride ? u.manualVIPLevel : getVIPLevel(u.balance||0);
@@ -751,7 +682,7 @@
                 });
                 document.getElementById("userTableBody").innerHTML = tbody || "<tr><td colspan='8'>No users</td></tr>";
             }
-            main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-teal"><i class="fas fa-users me-2"></i>Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div><div class="d-flex flex-wrap gap-2 my-3"><input id="userSearch" placeholder="Search..." class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:150px;"><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
+            main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-users me-2"></i>Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div><div class="d-flex flex-wrap gap-2 my-3"><input id="userSearch" placeholder="Search..." class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:150px;"><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
             renderUserTable();
             document.getElementById("searchBtn").onclick = () => { let v = document.getElementById("userSearch").value.toLowerCase(); filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'&&(u.username.toLowerCase().includes(v)||(u.email||'').toLowerCase().includes(v)||(u.phone||'').includes(v))); renderUserTable(); };
             document.getElementById("resetSearchBtn").onclick = () => { document.getElementById("userSearch").value = ""; filtered = users.filter(u => u.role!=='admin'&&u.role!=='agency'); renderUserTable(); };
@@ -769,36 +700,36 @@
                 else filtered.forEach(u => { tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong></td><td>${u.phone || '-'}</td><td>${u.email || '-'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>S/ ${(u.balance||0).toFixed(2)}</td><td><button class="btn btn-danger btn-sm" onclick="window.showInjectionModal('${u.id}')">💉 Inject</button> <button class="btn btn-info btn-sm" onclick="window.showInjectionHistory('${u.id}')">📜 History</button></td></tr>`; });
                 document.getElementById("injectionUserTableBody").innerHTML = tbody;
             }
-            main.innerHTML = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-syringe me-2"></i>Injection Management</h2><div class="d-flex flex-wrap gap-2 my-3"><input id="injectionSearchPhone" placeholder="🔍 Phone" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><input id="injectionSearchEmail" placeholder="📧 Email" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><button class="btn-admin" id="injectionSearchBtn">Search</button><button class="btn-warning" id="resetInjectionSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Username</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="injectionUserTableBody"><tr><td colspan="7" class="text-center">Loading...</td></tr></tbody></table></div></div>`;
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-syringe me-2"></i>Injection Management</h2><div class="d-flex flex-wrap gap-2 my-3"><input id="injectionSearchPhone" placeholder="🔍 Phone" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><input id="injectionSearchEmail" placeholder="📧 Email" class="form-control bg-dark text-white border-secondary" style="flex:1;min-width:120px;"><button class="btn-admin" id="injectionSearchBtn">Search</button><button class="btn-warning" id="resetInjectionSearchBtn">Reset</button></div><div class="table-responsive"><table class="table table-dark table-hover"><thead><tr><th>ID</th><th>Username</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead><tbody id="injectionUserTableBody"><tr><td colspan="7" class="text-center">Loading...</td></tr></tbody></table></div></div>`;
             renderInjectionTable();
             document.getElementById("injectionSearchBtn").onclick = renderInjectionTable;
             document.getElementById("resetInjectionSearchBtn").onclick = () => { document.getElementById("injectionSearchPhone").value = ""; document.getElementById("injectionSearchEmail").value = ""; renderInjectionTable(); };
         }
         else if(section === "addOrder") {
             if (!checkPermission('canManageOrders')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            function refresh() { let list = customOrders.map((o,i)=>`<div class="bg-dark-card p-2 rounded d-flex align-items-center gap-3 mb-2"><div class="bg-dark p-1 rounded" style="width:50px;height:50px;">${o.image?`<img src="${o.image}" style="width:45px;height:45px;object-fit:cover;">`:'<i class="fas fa-box text-teal fs-2"></i>'}</div><div><strong>${escapeHtml(o.name)}</strong><br>Price: S/ ${o.price}</div><button class="btn btn-danger btn-sm ms-auto" onclick="window.removeOrder(${i})">Delete</button></div>`).join(""); document.getElementById("orderListDiv").innerHTML = list || "<p class='text-secondary'>No orders yet.</p>"; }
-            main.innerHTML = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-plus-circle me-2"></i>Add New Order</h2><input id="newOrderName" placeholder="Order Name" class="form-control bg-dark text-white border-secondary"><input type="number" id="newOrderPrice" placeholder="Price" step="0.01" class="form-control bg-dark text-white border-secondary"><input type="file" id="orderImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="imagePreview" class="mt-1"></div><button class="btn-admin mt-2" id="addOrderBtn">Add Order</button><h5 class="mt-4 text-teal">Existing Orders (${customOrders.length})</h5><div id="orderListDiv"></div></div>`;
+            function refresh() { let list = customOrders.map((o,i)=>`<div class="bg-dark-card p-2 rounded d-flex align-items-center gap-3 mb-2"><div class="bg-dark p-1 rounded" style="width:50px;height:50px;">${o.image?`<img src="${o.image}" style="width:45px;height:45px;object-fit:cover;">`:'<i class="fas fa-box text-gold fs-2"></i>'}</div><div><strong>${escapeHtml(o.name)}</strong><br>Price: S/ ${o.price}</div><button class="btn btn-danger btn-sm ms-auto" onclick="window.removeOrder(${i})">Delete</button></div>`).join(""); document.getElementById("orderListDiv").innerHTML = list || "<p class='text-secondary'>No orders yet.</p>"; }
+            main.innerHTML = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-plus-circle me-2"></i>Add New Order</h2><input id="newOrderName" placeholder="Order Name" class="form-control bg-dark text-white border-secondary"><input type="number" id="newOrderPrice" placeholder="Price" step="0.01" class="form-control bg-dark text-white border-secondary"><input type="file" id="orderImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="imagePreview" class="mt-1"></div><button class="btn-admin mt-2" id="addOrderBtn">Add Order</button><h5 class="mt-4 text-gold">Existing Orders (${customOrders.length})</h5><div id="orderListDiv"></div></div>`;
             refresh();
             document.getElementById("orderImage").onchange = e => { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = ev => document.getElementById("imagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:100px; border-radius:8px;">`; r.readAsDataURL(f); } };
             document.getElementById("addOrderBtn").onclick = async () => { let name = document.getElementById("newOrderName").value.trim(); let price = parseFloat(document.getElementById("newOrderPrice").value) || 0; if(!name) { alert("Enter order name"); return; } let file = document.getElementById("orderImage").files[0]; if(file) { let reader = new FileReader(); reader.onload = async e => { customOrders.push({ id: Date.now().toString(), name, image: e.target.result, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); document.getElementById("orderImage").value = ""; document.getElementById("imagePreview").innerHTML = ""; }; reader.readAsDataURL(file); } else { customOrders.push({ id: Date.now().toString(), name, image: null, price }); await setDoc(doc(db, "customOrders", customOrders[customOrders.length-1].id), customOrders[customOrders.length-1]); refresh(); } };
         }
         else if(section === "rechargeRequests") {
             if (!checkPermission('canManageRecharge')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-coins me-2"></i>Recharge Requests</h2>`;
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-coins me-2"></i>Recharge Requests</h2>`;
             if(rechargeRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
             else rechargeRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.receiptImage?`<img src="${req.receiptImage}" class="request-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveRecharge('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','recharge')">Reject</button></div>`:''}</div>`; });
             html += `</div>`; main.innerHTML = html;
         }
         else if(section === "withdrawRequests") {
             if (!checkPermission('canManageWithdraw')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Requests</h2>`;
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-usd me-2"></i>Withdraw Requests</h2>`;
             if(withdrawRequests.length===0) html += `<p class="text-secondary">No requests.</p>`;
             else withdrawRequests.forEach((req) => { html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${req.status==='pending'?'bg-warning':req.status==='approved'?'bg-success':'bg-danger'}">${req.status}</span></div><div>Amount: S/ ${req.amount} | Wallet: ${req.walletAddress}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveWithdraw('${req.id}')">Approve</button><button class="btn btn-danger btn-sm" onclick="window.showRejectNote('${req.id}','withdraw')">Reject</button></div>`:''}</div>`; });
             html += `</div>`; main.innerHTML = html;
         }
         else if(section === "loanRequests") {
             if (!checkPermission('canManageLoans')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            let html = `<div class="admin-card"><h2 class="text-teal"><i class="fas fa-hand-holding-heart me-2"></i>Loan Requests</h2>`;
+            let html = `<div class="admin-card"><h2 class="text-gold"><i class="fas fa-hand-holding-heart me-2"></i>Loan Requests</h2>`;
             if(loanRequests.length===0) html += `<p class="text-secondary">No loan requests.</p>`;
             else { loanRequests.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach((req) => { let statusClass = req.status === 'pending' ? 'bg-warning' : (req.status === 'approved' ? 'bg-success' : 'bg-danger'); html += `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between"><strong>${escapeHtml(req.userName)}</strong> <span class="badge ${statusClass}">${req.status}</span></div><div>Amount: S/ ${req.amount.toFixed(2)} | Doc: ${req.docType}</div><div>Time: ${new Date(req.timestamp).toLocaleString()}</div>${req.bankImage?`<img src="${req.bankImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.frontImage?`<img src="${req.frontImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.backImage?`<img src="${req.backImage}" class="loan-img" onclick="window.showImageModal(this.src)">`:''}${req.status==='pending'?`<div class="mt-2"><button class="btn btn-success btn-sm" onclick="window.approveLoan('${req.id}')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="window.rejectLoan('${req.id}')">✗ Reject</button></div>`:''}</div>`; }); }
             html += `</div>`; main.innerHTML = html;
@@ -812,108 +743,203 @@
             main.innerHTML = renderWebsiteSettings();
             initWebsiteSettingsEventListeners();
         }
+        else if(section === "popupAds") {
+            if (!checkPermission('canEditSettings') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            renderPopupAdsSection();
+        }
         else if(section === "chat") {
             if (!checkPermission('canChat') && adminSession?.role !== 'master' && adminSession?.username !== 'hein' && adminSession?.username !== 'admin') { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
-            const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
-            main.innerHTML = `
-                <div class="admin-card">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-                        <h2 class="text-teal"><i class="fas fa-comment-dots me-2"></i>Customer Service Chat</h2>
-                        <div class="sound-toggle" id="adminSoundToggleBtn" style="cursor:pointer;background:rgba(0,212,200,0.15);padding:6px 14px;border-radius:30px;border:1px solid #00D4C8;"><i class="fas fa-volume-up"></i> <span id="adminSoundText">Sound On</span></div>
-                    </div>
-                    <select id="chatUserSelect" class="form-select bg-dark text-white border-secondary mb-2">
-                        <option value="">-- Select Customer --</option>
-                        ${customerUsers.map(u => `<option value="${escapeHtml(u.username)}">${escapeHtml(u.username)} (${u.email || 'No email'})</option>`).join('')}
-                    </select>
-                    <div class="chat-container">
-                        <div class="chat-messages" id="adminChatMessages" style="height:500px;overflow-y:auto;"></div>
-                        <div id="adminTypingIndicator" class="typing-indicator" style="display:none;margin:0 20px 10px 20px;">
-                            <span id="adminTypingUser">Admin</span> is typing
-                            <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-                        </div>
-                        <div class="chat-input-area">
-                            <input type="text" id="adminChatInput" placeholder="Type message..." class="form-control bg-dark text-white border-secondary" style="margin-bottom:0;">
-                            <button class="btn-admin" id="adminSendBtn">Send</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            const select = document.getElementById("chatUserSelect");
-            const sendBtn = document.getElementById("adminSendBtn");
-            const input = document.getElementById("adminChatInput");
-            let adminTypingTimeout = null;
-            let adminIsTyping = false;
-            if (select) {
-                select.onchange = () => {
-                    selectedChatUser = select.value;
-                    if (selectedChatUser) {
-                        document.getElementById("adminChatMessages").innerHTML = '<div class="text-center py-3 text-secondary">Loading messages...</div>';
-                        unreadChatCount = 0;
-                        updateAdminUnreadBadge();
-                        setTimeout(() => {
-                            const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
-                            getDocs(q).then(snapshot => {
-                                const relevant = [];
-                                snapshot.forEach(doc => { const m = doc.data(); if ((m.from === selectedChatUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedChatUser)) relevant.push(m); });
-                                relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
-                                let html = '';
-                                relevant.forEach(msg => {
-                                    const isSent = msg.from === 'admin';
-                                    html += `<div class="chat-message ${isSent ? 'sent' : 'received'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')">` : ''}<div class="chat-time">${msg.time || new Date().toLocaleString()}</div></div>`;
-                                });
-                                const messagesDiv = document.getElementById("adminChatMessages");
-                                messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet. Start chatting!</div>';
-                                messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                                if (relevant.length > 0) lastReadTimestamp = relevant[relevant.length - 1].id;
-                                if (unsubscribeChat) unsubscribeChat();
-                                startChatSubscription();
-                            });
-                        }, 100);
-                    } else document.getElementById("adminChatMessages").innerHTML = '<div class="text-center py-3 text-secondary">Select a customer to start chatting</div>';
-                };
-            }
-            if (sendBtn && input) {
-                sendBtn.onclick = async () => {
-                    const text = input.value.trim();
-                    if (!text || !selectedChatUser) { if (!selectedChatUser) alert("Please select a customer first"); return; }
-                    await sendAdminMessage(selectedChatUser, text);
-                    input.value = '';
-                    sendAdminTypingStatus(false, selectedChatUser);
-                    const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
-                    const snapshot = await getDocs(q);
-                    const relevant = [];
-                    snapshot.forEach(doc => { const m = doc.data(); if ((m.from === selectedChatUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedChatUser)) relevant.push(m); });
-                    relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
-                    let html = '';
-                    relevant.forEach(msg => {
-                        const isSent = msg.from === 'admin';
-                        html += `<div class="chat-message ${isSent ? 'sent' : 'received'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')">` : ''}<div class="chat-time">${msg.time || new Date().toLocaleString()}</div></div>`;
-                    });
-                    const messagesDiv = document.getElementById("adminChatMessages");
-                    messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet.</div>';
-                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                };
-                input.addEventListener('keypress', (e) => { if (e.key === 'Enter' && sendBtn) sendBtn.click(); });
-                input.addEventListener('keydown', () => {
-                    if (!adminIsTyping && selectedChatUser) { adminIsTyping = true; sendAdminTypingStatus(true, selectedChatUser); }
-                    if (adminTypingTimeout) clearTimeout(adminTypingTimeout);
-                    adminTypingTimeout = setTimeout(() => { adminIsTyping = false; sendAdminTypingStatus(false, selectedChatUser); }, 1000);
-                });
-            }
-            const soundToggleBtn = document.getElementById("adminSoundToggleBtn");
-            if (soundToggleBtn) soundToggleBtn.onclick = () => { soundEnabled = !soundEnabled; document.getElementById("adminSoundText").innerText = soundEnabled ? "Sound On" : "Sound Off"; };
+            renderChatSection();
         }
     }
 
-    // ==================== SOUND ====================
-    function initNotificationSound() {
-        try {
-            notificationAudio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAcHBwgICAACAgIAAgAAAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAAA=');
-        } catch(e) {}
+    // ==================== POPUP ADS SECTION ====================
+    function renderPopupAdsSection() {
+        const main = document.getElementById("mainContent");
+        main.innerHTML = `
+            <div class="admin-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <h2 class="text-gold"><i class="fas fa-ad me-2"></i>Popup Ads Management</h2>
+                    <button class="btn-admin" id="createPopupAdBtn"><i class="fas fa-plus"></i> Create New Ad</button>
+                </div>
+                <p class="text-secondary">Create popup ads that will show to customers after they login. Users can dismiss them.</p>
+                <div id="popupAdsList" class="mt-3"></div>
+            </div>
+        `;
+        renderPopupAdsList();
+        document.getElementById("createPopupAdBtn").onclick = () => showPopupAdForm();
     }
-    function playNotificationSound() { if (soundEnabled && notificationAudio) { try { notificationAudio.play(); } catch(e) {} } }
 
-    // ==================== SETTINGS EVENT LISTENERS ====================
+    function renderPopupAdsList() {
+        const container = document.getElementById("popupAdsList");
+        if (!container) return;
+        if (popupAds.length === 0) {
+            container.innerHTML = `<div class="text-center py-4 text-secondary">No popup ads created yet.</div>`;
+            return;
+        }
+        container.innerHTML = popupAds.map(ad => `
+            <div class="bg-dark-card p-3 rounded mb-2 border border-gold">
+                <div class="d-flex flex-wrap justify-content-between align-items-start">
+                    <div><strong class="text-gold">${escapeHtml(ad.title || 'Untitled')}</strong><br>
+                    <span class="text-secondary">${ad.subtitle || ''}</span><br>
+                    <small class="text-muted">Created: ${new Date(ad.createdAt).toLocaleString()}</small></div>
+                    <div class="d-flex gap-1 flex-wrap">
+                        <button class="btn btn-warning btn-sm" onclick="window.editPopupAd('${ad.id}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="window.deletePopupAd('${ad.id}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="popup-preview mt-2">
+                    ${ad.imageData ? `<img src="${ad.imageData}" alt="Ad preview">` : ''}
+                    <div class="mt-2"><span class="badge bg-success">${ad.isActive ? 'Active' : 'Inactive'}</span></div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.editPopupAd = (adId) => {
+        const ad = popupAds.find(a => a.id === adId);
+        if (ad) showPopupAdForm(ad);
+    };
+
+    window.deletePopupAd = async (adId) => {
+        if (confirm("Delete this popup ad?")) {
+            await deleteDoc(doc(db, "popupAds", adId));
+            popupAds = popupAds.filter(a => a.id !== adId);
+            showLiveFeedback("Popup ad deleted!");
+            renderPopupAdsSection();
+        }
+    };
+
+    function showPopupAdForm(existingAd = null) {
+        const dict = { title: "Title", subtitle: "Subtitle / Message", image: "Image", active: "Active", cancel: "Cancel", save: "Save", create: "Create" };
+        const isEdit = !!existingAd;
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h2 class="text-gold">${isEdit ? '✏️ Edit Popup Ad' : '🆕 Create Popup Ad'}</h2>
+                <div class="mb-2"><label class="text-gold">📌 Title</label><input id="popupTitle" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(existingAd?.title || '')}" placeholder="Ad Title"></div>
+                <div class="mb-2"><label class="text-gold">📝 Subtitle / Message</label><textarea id="popupSubtitle" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="Subtitle or message">${escapeHtml(existingAd?.subtitle || '')}</textarea></div>
+                <div class="mb-2"><label class="text-gold">🖼️ Image</label><input type="file" id="popupImage" accept="image/*" class="form-control bg-dark text-white border-secondary"><div id="popupImagePreview" class="mt-1">${existingAd?.imageData ? `<img src="${existingAd.imageData}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">` : ''}</div></div>
+                <div class="mb-2"><label class="text-gold">🔘 Status</label>
+                    <select id="popupActive" class="form-control bg-dark text-white border-secondary">
+                        <option value="true" ${existingAd?.isActive !== false ? 'selected' : ''}>Active</option>
+                        <option value="false" ${existingAd?.isActive === false ? 'selected' : ''}>Inactive</option>
+                    </select>
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    <button class="btn-success" id="savePopupBtn">${isEdit ? '💾 Update' : '✅ Create'}</button>
+                    <button class="btn-danger" id="closePopupForm">❌ Cancel</button>
+                </div>
+                <div id="popupFormStatus" class="mt-2 text-center"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        document.getElementById("popupImage").onchange = e => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = ev => document.getElementById("popupImagePreview").innerHTML = `<img src="${ev.target.result}" style="max-width:150px; border-radius:8px; border:1px solid var(--lux-gold);">`;
+                reader.readAsDataURL(file);
+            }
+        };
+
+        document.getElementById("savePopupBtn").onclick = async () => {
+            const title = document.getElementById("popupTitle").value.trim() || "Untitled";
+            const subtitle = document.getElementById("popupSubtitle").value.trim();
+            const isActive = document.getElementById("popupActive").value === "true";
+            const imgInput = document.getElementById("popupImage");
+            const statusDiv = document.getElementById("popupFormStatus");
+
+            const saveAd = async (imageData) => {
+                const adData = { title, subtitle, imageData: imageData || existingAd?.imageData || null, isActive };
+                if (isEdit && existingAd) {
+                    await setDoc(doc(db, "popupAds", existingAd.id), { ...adData, id: existingAd.id, createdAt: existingAd.createdAt, updatedAt: new Date().toISOString() });
+                    popupAds = popupAds.map(a => a.id === existingAd.id ? { ...adData, id: existingAd.id, createdAt: existingAd.createdAt } : a);
+                    statusDiv.innerHTML = '<span class="text-success">✅ Ad updated!</span>';
+                } else {
+                    const newId = Date.now().toString();
+                    await setDoc(doc(db, "popupAds", newId), { ...adData, id: newId, createdAt: new Date().toISOString() });
+                    popupAds.push({ ...adData, id: newId });
+                    statusDiv.innerHTML = '<span class="text-success">✅ Ad created!</span>';
+                }
+                setTimeout(() => { document.body.removeChild(modal); renderPopupAdsSection(); }, 1000);
+            };
+
+            if (imgInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = ev => saveAd(ev.target.result);
+                reader.readAsDataURL(imgInput.files[0]);
+            } else {
+                await saveAd(null);
+            }
+        };
+
+        document.getElementById("closePopupForm").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ==================== WEBSITE SETTINGS ====================
+    function renderWebsiteSettings() {
+        return `
+            <div class="admin-card">
+                <h2 class="text-gold"><i class="fas fa-paint-brush me-2"></i>Complete Website Settings</h2>
+                <p class="text-secondary">Edit all content visible on the customer landing page.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3 border-bottom pb-2">
+                    <button class="btn btn-outline-gold btn-sm settings-tab active" data-tab="general">General</button>
+                    <button class="btn btn-outline-gold btn-sm settings-tab" data-tab="logos">Logos</button>
+                    <button class="btn btn-outline-gold btn-sm settings-tab" data-tab="hero">Hero</button>
+                    <button class="btn btn-outline-gold btn-sm settings-tab" data-tab="services">Services</button>
+                    <button class="btn btn-outline-gold btn-sm settings-tab" data-tab="company">Company</button>
+                    <button class="btn btn-outline-gold btn-sm settings-tab" data-tab="backgrounds">Backgrounds</button>
+                </div>
+                <div id="tab-general" class="settings-tab-content active">
+                    <div class="mb-2"><label class="text-secondary">🏢 Customer Website Name</label><input id="customerName" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.customerName || 'Trip.com')}"></div>
+                    <div class="mb-2"><label class="text-secondary">📝 Customer Tagline</label><input id="customerTagline" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.customerTagline || '')}"></div>
+                    <div class="mb-2"><label class="text-secondary">🏠 Home Page Name</label><input id="homePageName" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.homePageName || 'Trip.com')}"></div>
+                    <div class="mb-2"><label class="text-secondary">💰 USDT Wallet Address</label><input id="usdtWalletAddress" class="form-control bg-dark text-white border-secondary" value="${escapeHtml(systemSettings.usdtWalletAddress || '')}"></div>
+                    <div class="mb-2"><label class="text-secondary">⚖️ Minimum Balance for Order</label><input type="number" id="minBalanceForOrder" class="form-control bg-dark text-white border-secondary" value="${systemSettings.minBalanceForOrder || 10}" step="0.01"></div>
+                    <button class="btn-admin" id="saveGeneralBtn">Save General Settings</button>
+                </div>
+                <div id="tab-logos" class="settings-tab-content" style="display:none;">
+                    <p class="text-secondary">Upload up to 5 logo images</p>
+                    ${[1,2,3,4,5].map(i => `<div class="d-flex align-items-center gap-2 mb-2"><div class="bg-dark p-1 rounded border border-gold" style="width:60px;height:60px;"><img id="logoPreview${i}" src="" style="max-width:100%;max-height:100%;"></div><input type="file" id="logoInput${i}" accept="image/*" class="form-control bg-dark text-white border-secondary" style="flex:1;"><button class="btn btn-info btn-sm" onclick="window.previewLogo('logoInput${i}', 'logoPreview${i}')">Upload</button></div>`).join('')}
+                    <button class="btn-admin" id="saveLogosBtn">Save Logos</button>
+                </div>
+                <div id="tab-hero" class="settings-tab-content" style="display:none;">
+                    <div class="mb-2"><label class="text-secondary">🌟 Hero Title</label><input id="heroTitle" class="form-control bg-dark text-white border-secondary" value="Trip.com"></div>
+                    <div class="mb-2"><label class="text-secondary">📖 Hero Subtitle</label><textarea id="heroSubtitle" class="form-control bg-dark text-white border-secondary" rows="2">Your Trusted Travel & Task Partner - Book flights, hotels, trains and earn daily commissions</textarea></div>
+                    <button class="btn-admin" id="saveHeroBtn">Save Hero</button>
+                </div>
+                <div id="tab-services" class="settings-tab-content" style="display:none;">
+                    ${['Flights','Hotels','Trains','Task Platform'].map((name, idx) => { const i=idx+1; const icons=['fa-plane','fa-hotel','fa-train','fa-tasks']; return `<div class="bg-dark-card p-3 rounded mb-2"><h6 class="text-gold">Service ${i}: ${name}</h6><div class="mb-1"><label class="text-secondary">Icon</label><input id="service${i}Icon" class="form-control bg-dark text-white border-secondary" value="${icons[idx]}"></div><div class="mb-1"><label class="text-secondary">Title</label><input id="service${i}Title" class="form-control bg-dark text-white border-secondary" value="${name}"></div><div class="mb-1"><label class="text-secondary">Description</label><input id="service${i}Desc" class="form-control bg-dark text-white border-secondary" value="${idx===0?'Book flights worldwide with best prices':idx===1?'Find best hotel deals globally':idx===2?'Train tickets & schedules':'Earn commissions daily up to 1%'}"></div></div>`; }).join('')}
+                    <button class="btn-admin" id="saveServicesBtn">Save Service Cards</button>
+                </div>
+                <div id="tab-company" class="settings-tab-content" style="display:none;">
+                    <div class="mb-2"><label class="text-secondary">🏢 Company Name</label><input id="companyName" class="form-control bg-dark text-white border-secondary" value="Trip.com Travel & Task"></div>
+                    <div class="mb-2"><label class="text-secondary">📢 Tagline</label><input id="companyTagline" class="form-control bg-dark text-white border-secondary" value="Global Travel & Earning Platform"></div>
+                    <div class="mb-2"><label class="text-secondary">🖼️ Logo</label><input type="file" id="companyLogoInput" accept="image/*" class="form-control bg-dark text-white border-secondary" onchange="window.previewCompanyLogo()"><div class="bg-dark p-1 rounded border border-gold mt-1" style="width:80px;height:80px;"><img id="companyLogoPreview" src="" style="max-width:100%;max-height:100%;"></div></div>
+                    <div class="mb-2"><label class="text-secondary">📝 Description (HTML)</label><textarea id="companyDescription" class="form-control bg-dark text-white border-secondary" rows="3">Trip.com is a premier travel and task platform that combines affordable travel bookings with earning opportunities. With over 50 million satisfied customers worldwide, we provide flights, hotels, train tickets, and car rentals at the best prices. Join millions of users who trust Trip.com for their travel needs and extra income. 24/7 customer support, secure payments, and best price guarantee.</textarea></div>
+                    <div class="mb-2"><label class="text-secondary">🎯 Mission</label><textarea id="companyMission" class="form-control bg-dark text-white border-secondary" rows="2">To provide seamless travel experiences and financial freedom through innovative task-based earning opportunities.</textarea></div>
+                    <div class="mb-2"><label class="text-secondary">👁️ Vision</label><textarea id="companyVision" class="form-control bg-dark text-white border-secondary" rows="2">To become the world's leading integrated travel and earning platform, trusted by millions globally.</textarea></div>
+                    <h6 class="text-gold mt-3">Statistics Numbers</h6>
+                    <div class="row g-2">
+                        <div class="col-4"><label class="text-secondary">Stat 1</label><input id="stat1Number" class="form-control bg-dark text-white border-secondary" value="50M+"></div>
+                        <div class="col-4"><label class="text-secondary">Stat 2</label><input id="stat2Number" class="form-control bg-dark text-white border-secondary" value="200+"></div>
+                        <div class="col-4"><label class="text-secondary">Stat 3</label><input id="stat3Number" class="form-control bg-dark text-white border-secondary" value="1M+"></div>
+                        <div class="col-4"><label class="text-secondary">Label 1</label><input id="stat1Label" class="form-control bg-dark text-white border-secondary" value="Happy Customers"></div>
+                        <div class="col-4"><label class="text-secondary">Label 2</label><input id="stat2Label" class="form-control bg-dark text-white border-secondary" value="Countries"></div>
+                        <div class="col-4"><label class="text-secondary">Label 3</label><input id="stat3Label" class="form-control bg-dark text-white border-secondary" value="Daily Bookings"></div>
+                    </div>
+                    <button class="btn-admin mt-3" id="saveCompanyBtn">Save Company Info</button>
+                </div>
+                <div id="tab-backgrounds" class="settings-tab-content" style="display:none;">
+                    <div class="mb-2"><label class="text-secondary">🖼️ Login/Register Background</label><input type="file" id="loginBgFile" class="form-control bg-dark text-white border-secondary"><div id="loginBgPreview" class="mt-1"></div><button class="btn-admin btn-sm mt-1" id="uploadLoginBg">Upload</button> <button class="btn-danger btn-sm" id="resetLoginBg">Reset</button></div>
+                    <div class="mb-2"><label class="text-secondary">🏠 Main App Background</label><input type="file" id="mainBgFile" class="form-control bg-dark text-white border-secondary"><div id="mainBgPreview" class="mt-1"></div><button class="btn-admin btn-sm mt-1" id="uploadMainBg">Upload</button> <button class="btn-danger btn-sm" id="resetMainBg">Reset</button></div>
+                </div>
+            </div>
+        `;
+    }
+
     function initWebsiteSettingsEventListeners() {
         document.querySelectorAll('.settings-tab').forEach(tab => { tab.onclick = () => { document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.settings-tab-content').forEach(c => c.style.display='none'); tab.classList.add('active'); document.getElementById(`tab-${tab.dataset.tab}`).style.display='block'; }; });
         document.getElementById("saveGeneralBtn")?.addEventListener('click', async () => { systemSettings.customerName = document.getElementById("customerName").value; systemSettings.customerTagline = document.getElementById("customerTagline").value; systemSettings.homePageName = document.getElementById("homePageName").value; systemSettings.usdtWalletAddress = document.getElementById("usdtWalletAddress").value; systemSettings.minBalanceForOrder = parseFloat(document.getElementById("minBalanceForOrder").value) || 10; await setDoc(doc(db, "systemSettings", "main"), systemSettings, { merge: true }); alert("✅ General settings saved!"); });
@@ -962,9 +988,195 @@
         const preview = document.getElementById("companyLogoPreview");
         if (input.files && input.files[0]) { const reader = new FileReader(); reader.onload = (e) => { preview.src = e.target.result; }; reader.readAsDataURL(input.files[0]); }
     }
-
     window.previewCompanyLogo = previewCompanyLogo;
     window.previewLogo = previewLogo;
+
+    // ==================== AGENCY MANAGEMENT ====================
+    function renderAgencyManagement() {
+        function renderAgencyList() {
+            const listDiv = document.getElementById("agencyList");
+            if (!listDiv) return;
+            if (agencies.length === 0) { listDiv.innerHTML = '<div class="text-center py-4 text-secondary">No agencies created yet.</div>'; return; }
+            listDiv.innerHTML = agencies.map(agency => `<div class="bg-dark-card p-3 rounded mb-2"><div class="d-flex flex-wrap justify-content-between align-items-center"><div><strong class="text-gold">${escapeHtml(agency.username)}</strong> <span class="badge ${agency.status==='active'?'bg-success':'bg-danger'}">${agency.status}</span></div><div class="d-flex flex-wrap gap-1"><button class="btn btn-info btn-sm" onclick="window.generateAgencyAccessCode('${agency.id}')">📱 Code</button>${agency.status === 'active' ? `<button class="btn btn-warning btn-sm" onclick="window.changeAgencyPassword('${agency.id}')">🔑 Change PW</button><button class="btn btn-danger btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔒 Close</button>` : `<button class="btn btn-success btn-sm" onclick="window.toggleAgencyStatus('${agency.id}')">🔓 Reactivate</button>`}<button class="btn btn-danger btn-sm" onclick="window.deleteAgency('${agency.id}')">🗑️</button></div></div><div class="mt-1 text-secondary small">Email: ${agency.email || 'Not set'} | Created: ${new Date(agency.createdAt).toLocaleString()}</div><div class="mt-1"><span class="text-secondary">Permissions:</span> ${Object.entries(agency.permissions||{}).filter(([k,v])=>v).map(([k])=>`<span class="badge bg-secondary me-1">${k.replace('can','')}</span>`).join(' ')}</div></div>`).join('');
+        }
+        const main = document.getElementById("mainContent");
+        main.innerHTML = `<div class="admin-card"><div class="d-flex flex-wrap justify-content-between"><h2 class="text-gold"><i class="fas fa-user-tie me-2"></i>Agency Management</h2><button class="btn-admin" id="createAgencyBtn">+ Create Agency</button></div><div id="agencyList"></div></div>`;
+        renderAgencyList();
+        document.getElementById("createAgencyBtn").onclick = showCreateAgencyModal;
+    }
+    window.generateAgencyAccessCode = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (!agency) return;
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content text-center"><h2 class="text-gold">🔐 Access Code for ${escapeHtml(agency.username)}</h2><div class="display-1 fw-bold text-gold bg-dark p-3 rounded my-3">${code}</div><p class="text-warning"><i class="fas fa-clock"></i> Valid for 5 minutes</p><div class="d-flex gap-2 justify-content-center"><button class="btn-admin" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button><button class="btn-secondary" id="closeCodeModal">Close</button></div></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#closeCodeModal").onclick = () => document.body.removeChild(modal);
+    };
+    function showCreateAgencyModal() {
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Create Agency</h2><input type="text" id="agencyUsername" placeholder="Username" class="form-control bg-dark text-white border-secondary"><input type="email" id="agencyEmail" placeholder="Email" class="form-control bg-dark text-white border-secondary"><div class="password-wrapper"><input type="password" id="agencyPassword" placeholder="Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="agencyConfirmPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('agencyConfirmPassword', this)"></i></div><div class="mb-2"><label class="text-gold">Permissions</label><div class="d-flex flex-wrap gap-2">${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `<label class="permission-checkbox bg-dark p-1 rounded border border-secondary"><input type="checkbox" id="perm${p}" ${p!=='Settings'?'checked':''}> ${p}</label>`).join('')}</div></div><div class="d-flex gap-2"><button class="btn-success" id="confirmCreateAgency">Create</button><button class="btn-secondary" id="cancelCreateAgency">Cancel</button></div><div id="createAgencyStatus" class="mt-2 text-center"></div></div>`;
+        document.body.appendChild(modal);
+        document.getElementById("confirmCreateAgency").onclick = async () => {
+            const username = document.getElementById("agencyUsername").value.trim();
+            const email = document.getElementById("agencyEmail").value.trim();
+            const password = document.getElementById("agencyPassword").value;
+            const confirmPassword = document.getElementById("agencyConfirmPassword").value;
+            const statusDiv = document.getElementById("createAgencyStatus");
+            if (!username || !email || !password) { statusDiv.innerHTML = '<span class="text-danger">All fields required</span>'; return; }
+            if (password !== confirmPassword) { statusDiv.innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
+            if (agencies.find(a => a.username === username)) { statusDiv.innerHTML = '<span class="text-danger">Username exists</span>'; return; }
+            const permissions = { canManageMembers: document.getElementById("permMembers").checked, canManageVIP: document.getElementById("permVIP").checked, canInject: document.getElementById("permInject").checked, canManageOrders: document.getElementById("permOrders").checked, canManageRecharge: document.getElementById("permRecharge").checked, canManageWithdraw: document.getElementById("permWithdraw").checked, canManageLoans: document.getElementById("permLoans").checked, canEditSettings: document.getElementById("permSettings").checked, canChat: document.getElementById("permChat").checked };
+            const newAgency = { id: Date.now().toString(), username, email, password, role: 'agency', permissions, status: 'active', createdAt: new Date().toISOString(), lastLogin: null };
+            agencies.push(newAgency);
+            await setDoc(doc(db, "agencies", newAgency.id), newAgency);
+            statusDiv.innerHTML = '<span class="text-success">✅ Agency created!</span>';
+            setTimeout(() => { document.body.removeChild(modal); renderAgencyManagement(); }, 1500);
+        };
+        document.getElementById("cancelCreateAgency").onclick = () => document.body.removeChild(modal);
+    }
+    window.changeAgencyPassword = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (!agency) return;
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Change Password for ${escapeHtml(agency.username)}</h2><div class="password-wrapper"><input type="password" id="newPassword" placeholder="New Password" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('newPassword', this)"></i></div><div class="password-wrapper"><input type="password" id="confirmNewPassword" placeholder="Confirm" class="form-control bg-dark text-white border-secondary"><i class="fas fa-eye toggle-password" onclick="window.togglePassword('confirmNewPassword', this)"></i></div><div class="d-flex gap-2"><button class="btn-success" id="confirmPasswordChange">Update</button><button class="btn-secondary" id="cancelPasswordChange">Cancel</button></div><div id="passwordStatus" class="mt-2"></div></div>`;
+        document.body.appendChild(modal);
+        document.getElementById("confirmPasswordChange").onclick = async () => {
+            const newPass = document.getElementById("newPassword").value;
+            const confirmPass = document.getElementById("confirmNewPassword").value;
+            if (!newPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Enter password</span>'; return; }
+            if (newPass !== confirmPass) { document.getElementById("passwordStatus").innerHTML = '<span class="text-danger">Passwords do not match</span>'; return; }
+            agency.password = newPass;
+            await setDoc(doc(db, "agencies", agencyId), agency, { merge: true });
+            document.getElementById("passwordStatus").innerHTML = '<span class="text-success">✅ Updated!</span>';
+            setTimeout(() => document.body.removeChild(modal), 1000);
+        };
+        document.getElementById("cancelPasswordChange").onclick = () => document.body.removeChild(modal);
+    };
+    window.toggleAgencyStatus = async (agencyId) => {
+        const agency = agencies.find(a => a.id === agencyId);
+        if (agency) { agency.status = agency.status === 'active' ? 'closed' : 'active'; await setDoc(doc(db, "agencies", agencyId), agency, { merge: true }); renderAgencyManagement(); }
+    };
+    window.deleteAgency = async (agencyId) => {
+        if (confirm("⚠️ Delete this agency?")) { await deleteDoc(doc(db, "agencies", agencyId)); agencies = agencies.filter(a => a.id !== agencyId); renderAgencyManagement(); }
+    };
+
+    // ==================== VIP MANUAL ====================
+    window.applyManualVIP = async (userId) => {
+        const user = users.find(u => u.id === userId);
+        if (!user) return;
+        const select = document.getElementById(`vip-select-${userId}`);
+        if (!select) return;
+        const selectedValue = parseInt(select.value);
+        if (selectedValue === 0) { if (user.manualVIPLevel) { delete user.manualVIPLevel; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ ${user.username} set to AUTO mode.`); } else alert(`ℹ️ ${user.username} already in AUTO mode.`); }
+        else { user.manualVIPLevel = selectedValue; await setDoc(doc(db, "users", userId), user, { merge: true }); alert(`✅ VIP level for ${user.username} set to VIP ${selectedValue}.`); }
+        renderSection('vip');
+    };
+
+    // ==================== CHAT SECTION ====================
+    function renderChatSection() {
+        const customerUsers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
+        const main = document.getElementById("mainContent");
+        main.innerHTML = `
+            <div class="admin-card">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                    <h2 class="text-gold"><i class="fas fa-comment-dots me-2"></i>Customer Service Chat</h2>
+                    <div class="sound-toggle" id="adminSoundToggleBtn" style="cursor:pointer;background:rgba(212,175,55,0.15);padding:6px 14px;border-radius:30px;border:1px solid var(--lux-gold);"><i class="fas fa-volume-up"></i> <span id="adminSoundText">Sound On</span></div>
+                </div>
+                <select id="chatUserSelect" class="form-select bg-dark text-white border-secondary mb-2">
+                    <option value="">-- Select Customer --</option>
+                    ${customerUsers.map(u => `<option value="${escapeHtml(u.username)}">${escapeHtml(u.username)} (${u.email || 'No email'})</option>`).join('')}
+                </select>
+                <div class="chat-container" style="display:flex;flex-direction:column;height:60vh;background:#0f1117;border-radius:24px;overflow:hidden;border:1px solid var(--lux-border-gold);">
+                    <div class="chat-messages" id="adminChatMessages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;"></div>
+                    <div id="adminTypingIndicator" class="typing-indicator" style="display:none;margin:0 20px 10px 20px;padding:6px 14px;background:rgba(0,0,0,0.5);border-radius:20px;width:fit-content;">
+                        <span id="adminTypingUser">Admin</span> is typing
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;"></div>
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;animation-delay:0.2s;"></div>
+                        <div class="typing-dot" style="width:8px;height:8px;background:var(--lux-gold);border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;display:inline-block;animation-delay:0.4s;"></div>
+                    </div>
+                    <div class="chat-input-area" style="display:flex;gap:10px;padding:16px;background:#0f1117;border-top:1px solid #2d3748;">
+                        <input type="text" id="adminChatInput" placeholder="Type message..." class="form-control bg-dark text-white border-secondary" style="margin-bottom:0;flex:1;">
+                        <button class="btn-admin" id="adminSendBtn" style="white-space:nowrap;">Send</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const select = document.getElementById("chatUserSelect");
+        const sendBtn = document.getElementById("adminSendBtn");
+        const input = document.getElementById("adminChatInput");
+        let adminTypingTimeout = null;
+        let adminIsTyping = false;
+
+        if (select) {
+            select.onchange = () => {
+                selectedChatUser = select.value;
+                if (selectedChatUser) {
+                    document.getElementById("adminChatMessages").innerHTML = '<div class="text-center py-3 text-secondary">Loading messages...</div>';
+                    unreadChatCount = 0;
+                    updateAdminUnreadBadge();
+                    setTimeout(() => {
+                        const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
+                        getDocs(q).then(snapshot => {
+                            const relevant = [];
+                            snapshot.forEach(doc => { const m = doc.data(); if ((m.from === selectedChatUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedChatUser)) relevant.push(m); });
+                            relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
+                            let html = '';
+                            relevant.forEach(msg => {
+                                const isSent = msg.from === 'admin';
+                                html += `<div class="chat-message ${isSent ? 'sent' : 'received'}" style="max-width:80%;padding:12px 16px;border-radius:20px;word-break:break-word;${isSent ? 'align-self:flex-end;background:var(--lux-gold);color:#0a120e;border-bottom-right-radius:4px;' : 'align-self:flex-start;background:#2a3a2f;color:#e2e8f0;border-bottom-left-radius:4px;border:1px solid var(--lux-gold);'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || new Date().toLocaleString()}</div></div>`;
+                            });
+                            const messagesDiv = document.getElementById("adminChatMessages");
+                            messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet. Start chatting!</div>';
+                            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                            if (relevant.length > 0) lastReadTimestamp = relevant[relevant.length - 1].id;
+                            if (unsubscribeChat) unsubscribeChat();
+                            startChatSubscription();
+                        });
+                    }, 100);
+                } else document.getElementById("adminChatMessages").innerHTML = '<div class="text-center py-3 text-secondary">Select a customer to start chatting</div>';
+            };
+        }
+        if (sendBtn && input) {
+            sendBtn.onclick = async () => {
+                const text = input.value.trim();
+                if (!text || !selectedChatUser) { if (!selectedChatUser) alert("Please select a customer first"); return; }
+                await sendAdminMessage(selectedChatUser, text);
+                input.value = '';
+                sendAdminTypingStatus(false, selectedChatUser);
+                const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
+                const snapshot = await getDocs(q);
+                const relevant = [];
+                snapshot.forEach(doc => { const m = doc.data(); if ((m.from === selectedChatUser && m.to === 'admin') || (m.from === 'admin' && m.to === selectedChatUser)) relevant.push(m); });
+                relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
+                let html = '';
+                relevant.forEach(msg => {
+                    const isSent = msg.from === 'admin';
+                    html += `<div class="chat-message ${isSent ? 'sent' : 'received'}" style="max-width:80%;padding:12px 16px;border-radius:20px;word-break:break-word;${isSent ? 'align-self:flex-end;background:var(--lux-gold);color:#0a120e;border-bottom-right-radius:4px;' : 'align-self:flex-start;background:#2a3a2f;color:#e2e8f0;border-bottom-left-radius:4px;border:1px solid var(--lux-gold);'}"><div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.showImageModal('${msg.image}')" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || new Date().toLocaleString()}</div></div>`;
+                });
+                const messagesDiv = document.getElementById("adminChatMessages");
+                messagesDiv.innerHTML = html || '<div class="text-center py-3 text-secondary">No messages yet.</div>';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            };
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter' && sendBtn) sendBtn.click(); });
+            input.addEventListener('keydown', () => {
+                if (!adminIsTyping && selectedChatUser) { adminIsTyping = true; sendAdminTypingStatus(true, selectedChatUser); }
+                if (adminTypingTimeout) clearTimeout(adminTypingTimeout);
+                adminTypingTimeout = setTimeout(() => { adminIsTyping = false; sendAdminTypingStatus(false, selectedChatUser); }, 1000);
+            });
+        }
+        const soundToggleBtn = document.getElementById("adminSoundToggleBtn");
+        if (soundToggleBtn) soundToggleBtn.onclick = () => { soundEnabled = !soundEnabled; document.getElementById("adminSoundText").innerText = soundEnabled ? "Sound On" : "Sound Off"; };
+    }
+
+    // ==================== SOUND ====================
+    function initNotificationSound() {
+        try {
+            notificationAudio = new Audio('data:audio/wav;base64,UklGRnoAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVoAAACAgICAcHBwgICAACAgIAAgAAAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAACAgICAAAAAgIAAgICAAAA=');
+        } catch(e) {}
+    }
+    function playNotificationSound() { if (soundEnabled && notificationAudio) { try { notificationAudio.play(); } catch(e) {} } }
 
     // ==================== NAVIGATION ====================
     document.getElementById("refreshAdminBtn").onclick = async () => { showLoader(); await loadAllData(); renderSection(currentSection); };
@@ -1002,6 +1214,83 @@
             startChatSubscription();
         })();
     }
+
+    // ==================== LIVE FEEDBACK ====================
+    function showLiveFeedback(message, isError = false) {
+        let feedback = document.createElement('div');
+        feedback.style.position = 'fixed';
+        feedback.style.bottom = '80px';
+        feedback.style.left = '50%';
+        feedback.style.transform = 'translateX(-50%)';
+        feedback.style.background = isError ? 'rgba(220,38,38,0.95)' : 'rgba(30,42,36,0.95)';
+        feedback.style.padding = '12px 28px';
+        feedback.style.borderRadius = '40px';
+        feedback.style.fontSize = '13px';
+        feedback.style.zIndex = '100';
+        feedback.style.borderLeft = '3px solid var(--lux-gold)';
+        feedback.style.fontWeight = '700';
+        feedback.style.backdropFilter = 'blur(8px)';
+        feedback.style.color = 'white';
+        feedback.style.maxWidth = '90%';
+        feedback.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${message}`;
+        document.body.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 3000);
+    }
+    window.showLiveFeedback = showLiveFeedback;
+
+    // Expose functions to global scope for onclick usage
+    window.editInjection = window.editInjection;
+    window.deleteInjection = window.deleteInjection;
+    window.editPopupAd = window.editPopupAd;
+    window.deletePopupAd = window.deletePopupAd;
+    window.showInjectionModal = window.showInjectionModal;
+    window.showInjectionHistory = window.showInjectionHistory;
+    window.setupOrder = window.setupOrder;
+    window.setupBalance = window.setupBalance;
+    window.changeLoginPwd = window.changeLoginPwd;
+    window.changeWithdrawPwd = window.changeWithdrawPwd;
+    window.adjustCredit = window.adjustCredit;
+    window.changeWallet = window.changeWallet;
+    window.toggleDisable = window.toggleDisable;
+    window.removeOrder = window.removeOrder;
+    window.approveRecharge = window.approveRecharge;
+    window.approveWithdraw = window.approveWithdraw;
+    window.showRejectNote = window.showRejectNote;
+    window.approveLoan = window.approveLoan;
+    window.rejectLoan = window.rejectLoan;
+    window.applyManualVIP = window.applyManualVIP;
+    window.generateAgencyAccessCode = window.generateAgencyAccessCode;
+    window.changeAgencyPassword = window.changeAgencyPassword;
+    window.toggleAgencyStatus = window.toggleAgencyStatus;
+    window.deleteAgency = window.deleteAgency;
+    window.showImageModal = showImageModal;
+    window.previewLogo = previewLogo;
+    window.previewCompanyLogo = previewCompanyLogo;
+
+    // Add typing animation CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+        .typing-dot {
+            display: inline-block;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .btn-outline-gold {
+            color: var(--lux-gold);
+            border-color: var(--lux-gold);
+            background: transparent;
+        }
+        .btn-outline-gold:hover {
+            background: var(--lux-gold);
+            color: #0a120e;
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
