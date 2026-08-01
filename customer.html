@@ -195,7 +195,7 @@
         .nav-item-lux.active i { transform: scale(1.1); opacity: 1; }
         .nav-item-lux:hover { color: var(--lux-gold); transform: translateY(-3px); }
         .hidden-nav { display: none !important; }
-        /* ===== CHAT ===== */
+        /* ===== CHAT - IMPROVED ===== */
         .chat-container {
             display: flex;
             flex-direction: column;
@@ -205,12 +205,22 @@
             overflow: hidden;
             border: 1px solid var(--lux-border-gold);
         }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: rgba(0,0,0,0.2);
+        }
         .chat-message {
             max-width: 80%;
             padding: 12px 18px;
             border-radius: 20px;
             word-break: break-word;
+            font-size: 15px;
+            line-height: 1.5;
         }
         .chat-message.sent {
             align-self: flex-end;
@@ -225,7 +235,60 @@
             border: 1px solid var(--lux-border-gold);
             border-bottom-left-radius: 4px;
         }
-        .chat-input-area { display: flex; gap: 12px; padding: 16px; background: rgba(0,0,0,0.5); border-top: 1px solid var(--lux-border-gold); }
+        .chat-message .chat-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 6px;
+            text-align: right;
+        }
+        .chat-message .chat-image {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+            border: 1px solid var(--lux-gold);
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid var(--lux-border-gold);
+            align-items: center;
+        }
+        .chat-input-area .input-lux {
+            margin-bottom: 0;
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 15px;
+            min-height: 52px;
+        }
+        .chat-input-area .btn-lux {
+            width: auto;
+            padding: 12px 28px;
+            white-space: nowrap;
+            font-size: 15px;
+            min-height: 52px;
+        }
+        .chat-input-area .chat-btn-icon {
+            background: rgba(212,175,55,0.15);
+            border: 1px solid var(--lux-border-gold);
+            border-radius: 40px;
+            padding: 10px 16px;
+            cursor: pointer;
+            color: var(--lux-gold);
+            transition: all 0.2s;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .chat-input-area .chat-btn-icon:hover {
+            background: rgba(212,175,55,0.25);
+            border-color: var(--lux-gold);
+        }
         /* ===== MODAL ===== */
         .modal {
             position: fixed;
@@ -333,14 +396,21 @@
             .nav-item-lux i { font-size: 20px; }
             .popup-card { padding: 24px; }
             .popup-title { font-size: 22px; }
+            .chat-input-area { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
+            .chat-input-area .input-lux { min-height: 44px; font-size: 14px; }
+            .chat-input-area .btn-lux { min-height: 44px; padding: 10px 18px; font-size: 14px; }
+            .chat-input-area .chat-btn-icon { min-height: 44px; padding: 8px 12px; font-size: 18px; }
         }
         @media (max-width: 480px) {
             .luxury-brand { font-size: 18px; }
             .icon-marquee-track i { font-size: 16px; margin: 0 8px; }
             .btn-lux { font-size: 13px; padding: 10px 14px; }
             .card-lux { padding: 16px; }
-            .chat-message { max-width: 95%; }
+            .chat-message { max-width: 95%; font-size: 14px; }
             .popup-card { padding: 18px; }
+            .chat-input-area .input-lux { min-height: 40px; font-size: 13px; }
+            .chat-input-area .btn-lux { min-height: 40px; padding: 8px 14px; font-size: 13px; }
+            .chat-input-area .chat-btn-icon { min-height: 40px; padding: 6px 10px; font-size: 16px; }
         }
         /* ===== CUSTOM SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 5px; }
@@ -931,17 +1001,17 @@
         <div class="signout-icon" id="signOutBtnMine" style="justify-content:center;margin-top:16px;text-align:center;background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:12px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><span id="signOutText">Sign Out</span></div>
     </div>
 
-    <!-- ===== SERVICE PAGE ===== -->
+    <!-- ===== SERVICE PAGE - IMPROVED CHAT ===== -->
     <div id="servicePage" class="page">
         <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-headset"></i></div><div class="luxury-brand" id="customerServiceText">Customer Service</div></div><div class="refresh-btn" id="refreshServiceBtn" style="background:rgba(0,0,0,0.5);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
         <div class="chat-container">
             <div class="chat-messages" id="customerChatMessages"></div>
             <div class="chat-input-area">
-                <button class="emoji-btn" id="customerEmojiBtn" style="background:rgba(212,175,55,0.2);border:none;border-radius:40px;padding:10px 16px;cursor:pointer;color:var(--lux-gold);"><i class="far fa-smile"></i></button>
-                <input type="text" class="input-lux" id="customerChatInput" placeholder="Type a message..." style="margin-bottom:0;">
-                <button class="upload-chat-btn" id="customerUploadBtn" style="background:rgba(212,175,55,0.2);border:none;border-radius:40px;padding:10px 16px;cursor:pointer;color:var(--lux-gold);"><i class="fas fa-image"></i></button>
+                <button class="chat-btn-icon" id="customerEmojiBtn" title="Emoji"><i class="far fa-smile"></i></button>
+                <input type="text" class="input-lux" id="customerChatInput" placeholder="Type a message..." style="margin-bottom:0; flex:1;">
+                <button class="chat-btn-icon" id="customerUploadBtn" title="Upload Image"><i class="fas fa-image"></i></button>
                 <input type="file" id="customerChatImageInput" accept="image/*" style="display:none;">
-                <button class="btn-lux" id="customerSendBtn" style="width:auto;padding:10px 24px;"><span id="sendText">Send</span></button>
+                <button class="btn-lux" id="customerSendBtn" style="width:auto;padding:12px 28px;"><span id="sendText">Send</span></button>
             </div>
         </div>
     </div>
@@ -958,7 +1028,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
@@ -1038,7 +1108,8 @@
             pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order before starting a new one.",
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save", cancel: "Cancel",
-            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!"
+            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!",
+            referralEarned: "Referral Bonus Earned!"
         },
         th: {
             heroTitle: "LUXCY", heroSubtitle: "สัมผัสการเดินทางสุดหรูพร้อมรับรายได้ทุกวัน",
@@ -1076,7 +1147,8 @@
             pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้นก่อนเริ่มใหม่",
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก", cancel: "ยกเลิก",
-            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!"
+            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!",
+            referralEarned: "ได้รับโบนัสแนะนำ!"
         },
         es: {
             heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones diarias.",
@@ -1114,7 +1186,8 @@
             pendingOrderWarning: "Orden pendiente!", pendingOrderMessage: "Complete su orden pendiente antes de comenzar una nueva.",
             okay: "Aceptar", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar", cancel: "Cancelar",
-            bonusOrder: "¡ORDEN BONUS!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!"
+            bonusOrder: "¡ORDEN BONUS!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
+            referralEarned: "¡Bonificación por Referido!"
         },
         uk: {
             heroTitle: "LUXCY", heroSubtitle: "Розкішні подорожі з щоденним заробітком.",
@@ -1152,7 +1225,8 @@
             pendingOrderWarning: "Незавершене замовлення!", pendingOrderMessage: "Будь ласка, завершіть поточне замовлення.",
             okay: "Гаразд", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса USDT TRC20", copy: "Копіювати",
             uploadPhoto: "Завантажити фото", save: "Зберегти", cancel: "Скасувати",
-            bonusOrder: "БОНУСНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!"
+            bonusOrder: "БОНУСНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
+            referralEarned: "Реферальний бонус!"
         },
         ru: {
             heroTitle: "LUXCY", heroSubtitle: "Роскошные путешествия с ежедневным заработком.",
@@ -1190,7 +1264,8 @@
             pendingOrderWarning: "Незавершенный заказ!", pendingOrderMessage: "Пожалуйста, завершите текущий заказ.",
             okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес USDT TRC20", copy: "Копировать",
             uploadPhoto: "Загрузить фото", save: "Сохранить", cancel: "Отмена",
-            bonusOrder: "БОНУСНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!"
+            bonusOrder: "БОНУСНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
+            referralEarned: "Реферальный бонус!"
         }
     };
 
@@ -1236,6 +1311,53 @@
         if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
+
+    // ==================== REFERRAL COMMISSION SYSTEM ====================
+    async function processReferralCommission(userId, profitAmount) {
+        if (profitAmount <= 0) return;
+        try {
+            // Get the user who earned the profit
+            const userRef = doc(db, "users", userId);
+            const userSnap = await getDoc(userRef);
+            if (!userSnap.exists()) return;
+            const userData = userSnap.data();
+            const superiorUsername = userData.superior;
+            if (!superiorUsername) return;
+
+            // Find the superior user by username
+            const q = query(collection(db, "users"), where("username", "==", superiorUsername));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) return;
+            const superiorDoc = snapshot.docs[0];
+            const superiorId = superiorDoc.id;
+            const superiorData = superiorDoc.data();
+
+            // Calculate 10% referral bonus
+            const referralBonus = profitAmount * 0.1;
+
+            // Update superior's balance and referral earnings
+            await updateDoc(doc(db, "users", superiorId), {
+                balance: increment(referralBonus),
+                referralEarnings: increment(referralBonus),
+                totalCommission: increment(referralBonus)
+            });
+
+            // Also update the user's currentUser object if it's the same session
+            if (currentUser && currentUser.id === superiorId) {
+                currentUser.balance = (currentUser.balance || 0) + referralBonus;
+                currentUser.referralEarnings = (currentUser.referralEarnings || 0) + referralBonus;
+                currentUser.totalCommission = (currentUser.totalCommission || 0) + referralBonus;
+                await saveCurrentUser();
+                updateUI();
+            }
+
+            const dict = translations[currentLang] || translations.en;
+            showLiveFeedback(`🎁 ${dict.referralEarned} +S/ ${referralBonus.toFixed(4)} from referral!`, false);
+
+        } catch (error) {
+            console.error("Referral commission error:", error);
+        }
+    }
 
     // ==================== FIREBASE HELPERS ====================
     async function saveOrderToHistory(userId, orderData) {
@@ -1307,12 +1429,9 @@
             snapshot.forEach(doc => ads.push({ id: doc.id, ...doc.data() }));
             popupAdsCache = ads;
             const activeAds = ads.filter(a => a.isActive !== false);
-            // Show only one popup per session (per user)
             const shownKey = `popup_shown_${currentUser.id}`;
             const alreadyShown = sessionStorage.getItem(shownKey);
             if (alreadyShown) return;
-            
-            // Pick first active ad
             const ad = activeAds[0];
             if (ad) {
                 sessionStorage.setItem(shownKey, 'true');
@@ -1587,7 +1706,7 @@
         }
     }
 
-    // ==================== ORDER SYSTEM WITH INJECTION ====================
+    // ==================== ORDER SYSTEM WITH INJECTION + REFERRAL ====================
     async function getRandomOrderTemplate() {
         let orders = await loadCustomOrders();
         if(orders.length === 0) return { id: 0, name: "Default Order", image: null, price: 10 };
@@ -1710,6 +1829,10 @@
                         await saveCurrentUser();
                         currentOrder = null;
                         updateUI();
+                        
+                        // Process referral commission for the superior
+                        await processReferralCommission(currentUser.id, profitEarned);
+                        
                         if (currentOrder?.isInjection) showLiveFeedback(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`, false);
                         else showLiveFeedback(`Order Completed! +S/ ${profitEarned.toFixed(4)}`, false);
                         let dailyLimit = currentUser.tasks.total;
@@ -1886,7 +2009,6 @@
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 showLiveFeedback(`Welcome back, ${username}`);
                 startChatSubscription();
-                // Check for popup ads after login
                 await checkAndShowPopupAds();
             } else alert("Invalid credentials");
         } catch(e) { alert("Login failed"); }
@@ -1955,9 +2077,10 @@
         if (unsubscribeWithdrawals) unsubscribeWithdrawals();
         if (unsubscribeChat) unsubscribeChat();
         if (unsubscribeInjections) unsubscribeInjections();
+        const userId = currentUser?.id;
         currentUser = null;
         localStorage.removeItem("currentUserId");
-        sessionStorage.removeItem(`popup_shown_${currentUser?.id}`);
+        if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
         showPage("landing");
         showLiveFeedback("Signed out");
     }
@@ -1982,11 +2105,75 @@
         document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : alert("Login first");
         document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
 
-        document.getElementById("customerSendBtn").onclick = async () => { const input = document.getElementById("customerChatInput"); const text = input.value.trim(); if(text) { await sendChatMessage(text); input.value = ''; } };
-        document.getElementById("customerChatInput").addEventListener('keypress', async (e) => { if(e.key === 'Enter') { const input = document.getElementById("customerChatInput"); const text = input.value.trim(); if(text) { await sendChatMessage(text); input.value = ''; } } });
-        document.getElementById("customerEmojiBtn").onclick = () => { const picker = document.createElement('div'); picker.style.cssText = 'position:absolute;bottom:80px;background:#1a1e26;padding:8px;border-radius:12px;z-index:10000;border:1px solid var(--lux-gold)'; const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐']; emojis.forEach(e => { const s = document.createElement('span'); s.style.cssText = 'cursor:pointer;font-size:24px;margin:4px'; s.innerText = e; s.onclick = () => { document.getElementById("customerChatInput").value += e; picker.remove(); }; picker.appendChild(s); }); document.body.appendChild(picker); setTimeout(() => window.addEventListener('click', function close(e) { if(!picker.contains(e.target)) { picker.remove(); window.removeEventListener('click', close); } }), 100); };
+        // Improved chat event listeners
+        document.getElementById("customerSendBtn").onclick = async () => {
+            const input = document.getElementById("customerChatInput");
+            const text = input.value.trim();
+            if(text) {
+                await sendChatMessage(text);
+                input.value = '';
+                input.focus();
+            }
+        };
+        document.getElementById("customerChatInput").addEventListener('keypress', async (e) => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                const input = document.getElementById("customerChatInput");
+                const text = input.value.trim();
+                if(text) {
+                    await sendChatMessage(text);
+                    input.value = '';
+                    input.focus();
+                }
+            }
+        });
+        document.getElementById("customerEmojiBtn").onclick = () => {
+            const input = document.getElementById("customerChatInput");
+            const picker = document.createElement('div');
+            picker.style.cssText = 'position:absolute;bottom:80px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--lux-gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
+            const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
+            emojis.forEach(e => {
+                const s = document.createElement('span');
+                s.style.cssText = 'cursor:pointer;font-size:28px;padding:6px;border-radius:8px;transition:0.2s;';
+                s.innerText = e;
+                s.onmouseenter = () => s.style.background = 'rgba(212,175,55,0.2)';
+                s.onmouseleave = () => s.style.background = 'transparent';
+                s.onclick = () => {
+                    input.value += e;
+                    input.focus();
+                    picker.remove();
+                };
+                picker.appendChild(s);
+            });
+            const rect = document.getElementById("customerEmojiBtn").getBoundingClientRect();
+            picker.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
+            picker.style.left = (rect.left - 20) + 'px';
+            document.body.appendChild(picker);
+            setTimeout(() => {
+                const closePicker = (e) => {
+                    if (!picker.contains(e.target) && e.target.id !== 'customerEmojiBtn') {
+                        picker.remove();
+                        document.removeEventListener('click', closePicker);
+                    }
+                };
+                document.addEventListener('click', closePicker);
+            }, 100);
+        };
         document.getElementById("customerUploadBtn").onclick = () => document.getElementById("customerChatImageInput").click();
-        document.getElementById("customerChatImageInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { try { const compressed = await compressImage(file, 400, 400, 0.6); await sendChatMessage('', compressed); } catch { const reader = new FileReader(); reader.onload = async ev => { await sendChatMessage('', ev.target.result); }; reader.readAsDataURL(file); } } };
+        document.getElementById("customerChatImageInput").onchange = async (e) => {
+            const file = e.target.files[0];
+            if(file) {
+                try {
+                    const compressed = await compressImage(file, 400, 400, 0.6);
+                    await sendChatMessage('', compressed);
+                } catch {
+                    const reader = new FileReader();
+                    reader.onload = async ev => { await sendChatMessage('', ev.target.result); };
+                    reader.readAsDataURL(file);
+                }
+                e.target.value = '';
+            }
+        };
 
         document.getElementById("mineProfilePhoto").onclick = () => { if(currentUser) showUploadPhotoModal(); };
     });
