@@ -13,15 +13,15 @@
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
             --gold-dark: #C9A03D;
-            --gold-glow: rgba(212,175,55,0.15);
+            --gold-glow: rgba(212,175,55,0.12);
             --bg: #080a0e;
-            --card: rgba(16,20,30,0.82);
-            --border: rgba(212,175,55,0.2);
+            --card: rgba(16,20,30,0.78);
+            --border: rgba(212,175,55,0.15);
             --text: rgba(255,255,255,0.92);
-            --muted: rgba(255,255,255,0.45);
+            --muted: rgba(255,255,255,0.4);
             --shadow: 0 8px 40px rgba(0,0,0,0.5);
-            --radius: 18px;
-            --glass: blur(16px);
+            --radius: 16px;
+            --glass: blur(14px);
             --gradient: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
         }
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -35,11 +35,11 @@
         .admin-wrap { display:flex; height:100vh; }
         /* ===== SIDEBAR - Premium Glass ===== */
         .sidebar {
-            width:250px;
+            width:220px;
             background:var(--card);
             backdrop-filter:var(--glass);
             border-right:1px solid var(--border);
-            padding:18px 12px;
+            padding:16px 10px;
             overflow-y:auto;
             display:flex;
             flex-direction:column;
@@ -51,25 +51,25 @@
         .sidebar-brand {
             display:flex;
             align-items:center;
-            gap:10px;
-            padding:0 6px 16px 6px;
+            gap:8px;
+            padding:0 6px 14px 6px;
             border-bottom:1px solid var(--border);
-            margin-bottom:12px;
+            margin-bottom:10px;
         }
         .sidebar-brand .icon {
-            width:38px; height:38px;
+            width:34px; height:34px;
             background:var(--gradient);
-            border-radius:12px;
+            border-radius:10px;
             display:flex;
             align-items:center;
             justify-content:center;
-            font-size:18px;
+            font-size:16px;
             color:#0a0c10;
-            box-shadow:0 4px 20px rgba(212,175,55,0.2);
+            box-shadow:0 4px 15px rgba(212,175,55,0.12);
         }
         .sidebar-brand .name {
             font-family:'Playfair Display',serif;
-            font-size:20px;
+            font-size:18px;
             font-weight:700;
             background:var(--gradient);
             -webkit-background-clip:text;
@@ -77,8 +77,8 @@
             color:transparent;
             letter-spacing:1px;
         }
-        .sidebar-brand .badge-dot {
-            width:8px; height:8px;
+        .sidebar-brand .dot {
+            width:6px; height:6px;
             background:#10b981;
             border-radius:50%;
             display:inline-block;
@@ -86,48 +86,47 @@
         }
         @keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
         .nav-item {
-            padding:10px 14px;
-            margin:2px 0;
-            border-radius:12px;
+            padding:8px 12px;
+            margin:1px 0;
+            border-radius:10px;
             cursor:pointer;
             color:var(--muted);
-            transition:all 0.25s;
+            transition:all 0.2s;
             display:flex;
             align-items:center;
-            gap:12px;
+            gap:10px;
             font-weight:500;
             font-size:13px;
             border-left:2px solid transparent;
         }
-        .nav-item:hover { color:var(--text); background:rgba(212,175,55,0.04); }
+        .nav-item:hover { color:var(--text); background:rgba(212,175,55,0.03); }
         .nav-item.active {
             color:var(--gold);
-            background:rgba(212,175,55,0.06);
+            background:rgba(212,175,55,0.04);
             border-left-color:var(--gold);
-            box-shadow:inset 0 0 30px rgba(212,175,55,0.02);
         }
-        .nav-item i { width:20px; text-align:center; font-size:15px; }
+        .nav-item i { width:18px; text-align:center; font-size:14px; }
         .nav-item .count {
             margin-left:auto;
-            background:rgba(212,175,55,0.12);
-            padding:1px 10px;
+            background:rgba(212,175,55,0.06);
+            padding:0 8px;
             border-radius:30px;
-            font-size:10px;
+            font-size:9px;
             color:var(--gold);
             font-weight:600;
         }
         .nav-divider {
             border:none;
             border-top:1px solid var(--border);
-            margin:10px 0;
+            margin:8px 0;
         }
         /* ===== MAIN ===== */
         .main {
             flex:1;
-            padding:18px 24px;
+            padding:16px 20px;
             overflow-y:auto;
-            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.03) 0%, transparent 60%),
-                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.02) 0%, transparent 50%),
+            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.02) 0%, transparent 60%),
+                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.015) 0%, transparent 50%),
                      var(--bg);
         }
         .main::-webkit-scrollbar { width:4px; }
@@ -138,52 +137,59 @@
             background:var(--card);
             backdrop-filter:var(--glass);
             border-radius:var(--radius);
-            padding:20px;
-            margin-bottom:18px;
+            padding:16px;
+            margin-bottom:14px;
             border:1px solid var(--border);
             box-shadow:var(--shadow);
-            transition:0.3s;
+            transition:0.25s;
         }
         .card-glass:hover {
-            border-color:rgba(212,175,55,0.35);
-            box-shadow:0 12px 48px rgba(0,0,0,0.4);
+            border-color:rgba(212,175,55,0.25);
+            box-shadow:0 12px 48px rgba(0,0,0,0.35);
         }
         .card-glass .title {
-            font-size:18px;
+            font-size:17px;
             font-weight:700;
             color:var(--gold);
-            margin-bottom:14px;
+            margin-bottom:12px;
             display:flex;
             align-items:center;
-            gap:10px;
+            gap:8px;
         }
-        .card-glass .title i { font-size:16px; }
+        .card-glass .title i { font-size:15px; }
         /* ===== BUTTONS ===== */
         .btn-gold {
             background:var(--gradient);
             border:none;
-            padding:8px 20px;
+            padding:6px 16px;
             border-radius:40px;
             font-weight:700;
             color:#0a120e;
             cursor:pointer;
-            transition:0.3s;
-            font-size:13px;
-            box-shadow:0 4px 20px rgba(212,175,55,0.15);
+            transition:0.25s;
+            font-size:12px;
+            box-shadow:0 4px 15px rgba(212,175,55,0.1);
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
         }
-        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 30px rgba(212,175,55,0.25); }
-        .btn-gold-sm { padding:4px 14px; font-size:11px; }
+        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 25px rgba(212,175,55,0.18); }
+        .btn-gold:active { transform:scale(0.97); }
+        .btn-gold-sm { padding:4px 12px; font-size:11px; }
         .btn-ghost {
             background:transparent;
             border:1px solid var(--border);
             color:var(--text);
-            padding:6px 16px;
+            padding:5px 14px;
             border-radius:40px;
             cursor:pointer;
-            transition:0.3s;
+            transition:0.25s;
             font-size:12px;
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
         }
-        .btn-ghost:hover { border-color:var(--gold); color:var(--gold); background:rgba(212,175,55,0.03); }
+        .btn-ghost:hover { border-color:var(--gold); color:var(--gold); background:rgba(212,175,55,0.02); }
         .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; border:none; }
         .btn-danger:hover { transform:scale(1.02); }
         .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; }
@@ -194,82 +200,97 @@
         .btn-info:hover { transform:scale(1.02); }
         /* ===== INPUTS ===== */
         .input-glass {
-            background:rgba(0,0,0,0.35);
+            background:rgba(0,0,0,0.3);
             border:1px solid var(--border);
-            padding:8px 14px;
-            border-radius:12px;
+            padding:7px 12px;
+            border-radius:10px;
             color:#fff;
             width:100%;
             font-size:13px;
             outline:none;
-            transition:0.3s;
+            transition:0.25s;
         }
-        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.06); }
+        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.04); }
         .input-glass::placeholder { color:var(--muted); }
         select.input-glass { appearance:none; }
+        textarea.input-glass { resize:vertical; min-height:50px; }
+        .pw-wrap { position:relative; }
+        .pw-wrap .input-glass { padding-right:40px; }
+        .pw-toggle {
+            position:absolute;
+            right:12px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:none;
+            color:var(--gold);
+            cursor:pointer;
+            font-size:14px;
+        }
         /* ===== TABLES ===== */
         .table-wrap { overflow-x:auto; }
         table { width:100%; border-collapse:collapse; font-size:13px; }
-        th { text-align:left; padding:10px 8px; color:var(--gold); font-weight:600; border-bottom:1px solid var(--border); }
-        td { padding:10px 8px; border-bottom:1px solid rgba(255,255,255,0.03); vertical-align:middle; }
-        tr:hover td { background:rgba(212,175,55,0.02); }
+        th { text-align:left; padding:8px 6px; color:var(--gold); font-weight:600; border-bottom:1px solid var(--border); }
+        td { padding:8px 6px; border-bottom:1px solid rgba(255,255,255,0.02); vertical-align:middle; }
+        tr:hover td { background:rgba(212,175,55,0.01); }
         /* ===== STATUS BADGES ===== */
         .badge-status {
-            padding:2px 12px;
+            padding:2px 10px;
             border-radius:30px;
-            font-size:10px;
+            font-size:9px;
             font-weight:600;
             display:inline-block;
         }
-        .badge-pending { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
-        .badge-approved { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
-        .badge-rejected { background:rgba(220,38,38,0.12); color:#dc2626; border:1px solid rgba(220,38,38,0.2); }
-        .badge-active { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
-        .badge-inactive { background:rgba(220,38,38,0.12); color:#dc2626; border:1px solid rgba(220,38,38,0.2); }
-        .badge-online { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
-        .badge-offline { background:rgba(255,255,255,0.04); color:var(--muted); border:1px solid var(--border); }
+        .badge-pending { background:rgba(245,158,11,0.08); color:#f59e0b; border:1px solid rgba(245,158,11,0.12); }
+        .badge-approved { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
+        .badge-rejected { background:rgba(220,38,38,0.08); color:#dc2626; border:1px solid rgba(220,38,38,0.12); }
+        .badge-active { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
+        .badge-inactive { background:rgba(220,38,38,0.08); color:#dc2626; border:1px solid rgba(220,38,38,0.12); }
+        .badge-online { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
+        .badge-offline { background:rgba(255,255,255,0.02); color:var(--muted); border:1px solid var(--border); }
         /* ===== VIP BADGES ===== */
-        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 10px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
+        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; display:inline-block; }
         .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
         .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
         .vip-4 { background:var(--gradient); color:#0a120e; }
-        /* ===== INJECTION HISTORY ITEM ===== */
+        /* ===== INJECTION ITEM ===== */
         .inj-item {
-            background:rgba(0,0,0,0.15);
-            padding:10px 14px;
-            border-radius:12px;
-            margin-bottom:8px;
+            background:rgba(0,0,0,0.08);
+            padding:8px 12px;
+            border-radius:10px;
+            margin-bottom:6px;
             border-left:3px solid var(--gold);
-            transition:0.3s;
+            transition:0.25s;
         }
-        .inj-item:hover { background:rgba(0,0,0,0.25); }
+        .inj-item:hover { background:rgba(0,0,0,0.16); }
         /* ===== MODAL ===== */
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.92);
             display:flex; align-items:center; justify-content:center;
             z-index:2000; backdrop-filter:blur(14px);
+            padding:16px;
         }
         .modal-box {
             background:var(--card);
             backdrop-filter:var(--glass);
             border-radius:var(--radius);
-            padding:24px;
-            width:92%; max-width:520px;
+            padding:20px;
+            width:92%; max-width:480px;
             max-height:85vh; overflow-y:auto;
             border:1px solid var(--gold);
             box-shadow:var(--shadow);
         }
         .modal-box .modal-title {
-            font-size:20px; font-weight:700; color:var(--gold);
-            margin-bottom:14px; display:flex; align-items:center; gap:10px;
+            font-size:17px; font-weight:700; color:var(--gold);
+            margin-bottom:12px; display:flex; align-items:center; gap:8px;
         }
         /* ===== CHAT ===== */
         .chat-wrap {
             display:flex;
             flex-direction:column;
-            height:55vh;
-            background:rgba(0,0,0,0.15);
+            height:50vh;
+            background:rgba(0,0,0,0.08);
             border-radius:var(--radius);
             overflow:hidden;
             border:1px solid var(--border);
@@ -277,64 +298,65 @@
         .chat-msgs {
             flex:1;
             overflow-y:auto;
-            padding:14px;
+            padding:12px;
             display:flex;
             flex-direction:column;
-            gap:6px;
+            gap:5px;
         }
         .chat-msg {
             max-width:80%;
-            padding:8px 14px;
-            border-radius:16px;
+            padding:6px 12px;
+            border-radius:14px;
             font-size:13px;
             line-height:1.4;
+            word-break:break-word;
         }
         .chat-msg.sent {
             align-self:flex-end;
             background:var(--gradient);
             color:#0a120e;
-            border-bottom-right-radius:4px;
+            border-bottom-right-radius:3px;
         }
         .chat-msg.received {
             align-self:flex-start;
-            background:rgba(255,255,255,0.04);
+            background:rgba(255,255,255,0.03);
             border:1px solid var(--border);
-            border-bottom-left-radius:4px;
+            border-bottom-left-radius:3px;
         }
-        .chat-msg .time { font-size:9px; opacity:0.4; margin-top:3px; text-align:right; }
-        .chat-msg img { max-width:140px; max-height:100px; border-radius:8px; margin-top:4px; border:1px solid var(--gold); cursor:pointer; }
+        .chat-msg .time { font-size:8px; opacity:0.3; margin-top:2px; text-align:right; }
+        .chat-msg img { max-width:120px; max-height:80px; border-radius:6px; margin-top:3px; border:1px solid var(--gold); cursor:pointer; }
         .chat-input {
             display:flex;
-            gap:6px;
-            padding:10px 12px;
-            background:rgba(0,0,0,0.15);
+            gap:5px;
+            padding:8px 10px;
+            background:rgba(0,0,0,0.08);
             border-top:1px solid var(--border);
             align-items:center;
         }
-        .chat-input .input-glass { margin:0; flex:1; padding:8px 14px; font-size:13px; min-height:38px; }
-        .chat-input .btn-gold { width:auto; padding:8px 18px; font-size:13px; min-height:38px; }
+        .chat-input .input-glass { margin:0; flex:1; padding:6px 12px; font-size:12px; min-height:34px; }
+        .chat-input .btn-gold { width:auto; padding:6px 16px; font-size:12px; min-height:34px; }
         /* ===== RESPONSIVE ===== */
         @media(max-width:768px) {
-            .sidebar { width:100%; max-height:52px; flex-direction:row; overflow-x:auto; padding:6px 10px; border-right:none; border-bottom:1px solid var(--border); }
+            .sidebar { width:100%; max-height:48px; flex-direction:row; overflow-x:auto; padding:4px 8px; border-right:none; border-bottom:1px solid var(--border); }
             .sidebar-brand { display:none; }
-            .nav-item { white-space:nowrap; margin:0 3px; padding:6px 10px; font-size:12px; flex-shrink:0; border-left:none; }
+            .nav-item { white-space:nowrap; margin:0 2px; padding:4px 8px; font-size:11px; flex-shrink:0; border-left:none; }
             .nav-item .count { display:none; }
-            .main { padding:12px; }
-            .card-glass { padding:14px; }
-            .modal-box { padding:16px; }
+            .main { padding:10px; }
+            .card-glass { padding:12px; }
+            .modal-box { padding:14px; }
         }
         @media(max-width:480px) {
-            .main { padding:8px; }
-            .card-glass { padding:10px; }
+            .main { padding:6px; }
+            .card-glass { padding:8px; }
             .table-wrap { font-size:11px; }
-            th, td { padding:6px 4px; }
-            .btn-gold { font-size:11px; padding:6px 12px; }
+            th, td { padding:4px 3px; }
+            .btn-gold { font-size:10px; padding:4px 10px; }
         }
-        /* ===== LOGIN SCREEN ===== */
+        /* ===== LOGIN ===== */
         .login-screen {
             position:fixed; top:0; left:0; width:100%; height:100%;
-            background:radial-gradient(ellipse at 30% 30%, rgba(212,175,55,0.05) 0%, transparent 60%),
-                     radial-gradient(ellipse at 70% 70%, rgba(212,175,55,0.03) 0%, transparent 50%),
+            background:radial-gradient(ellipse at 30% 30%, rgba(212,175,55,0.04) 0%, transparent 60%),
+                     radial-gradient(ellipse at 70% 70%, rgba(212,175,55,0.02) 0%, transparent 50%),
                      var(--bg);
             display:flex; align-items:center; justify-content:center;
             z-index:3000;
@@ -342,66 +364,50 @@
         .login-box {
             background:var(--card);
             backdrop-filter:var(--glass);
-            padding:32px;
-            border-radius:28px;
-            width:400px;
+            padding:28px;
+            border-radius:24px;
+            width:380px;
             max-width:92%;
             border:1px solid var(--gold);
             box-shadow:var(--shadow);
         }
         .login-box .brand {
-            text-align:center; margin-bottom:24px;
+            text-align:center; margin-bottom:20px;
         }
         .login-box .brand .icon {
-            width:56px; height:56px;
+            width:50px; height:50px;
             background:var(--gradient);
-            border-radius:16px;
+            border-radius:14px;
             display:flex; align-items:center; justify-content:center;
-            margin:0 auto 10px;
-            font-size:28px;
+            margin:0 auto 8px;
+            font-size:24px;
             color:#0a0c10;
-            box-shadow:0 4px 30px rgba(212,175,55,0.15);
+            box-shadow:0 4px 25px rgba(212,175,55,0.1);
         }
         .login-box .brand .name {
             font-family:'Playfair Display',serif;
-            font-size:28px;
+            font-size:24px;
             font-weight:700;
             background:var(--gradient);
             -webkit-background-clip:text;
             background-clip:text;
             color:transparent;
         }
-        .login-box .brand .sub {
-            font-size:13px;
-            color:var(--muted);
-        }
-        .login-box .input-glass { margin-bottom:12px; }
-        .login-box .btn-gold { width:100%; padding:12px; }
-        .login-box .error { color:#dc2626; text-align:center; margin-top:10px; font-size:13px; }
-        .pw-toggle {
-            position:absolute;
-            right:14px;
-            top:50%;
-            transform:translateY(-50%);
-            cursor:pointer;
-            color:var(--gold);
-            font-size:15px;
-            background:none;
-            border:none;
-        }
-        .pw-wrap { position:relative; }
-        .pw-wrap .input-glass { padding-right:44px; }
+        .login-box .brand .sub { font-size:12px; color:var(--muted); }
+        .login-box .input-glass { margin-bottom:10px; }
+        .login-box .btn-gold { width:100%; padding:10px; justify-content:center; }
+        .login-box .error { color:#dc2626; text-align:center; margin-top:8px; font-size:12px; }
         /* ===== TOAST ===== */
         .toast-msg {
             position:fixed;
-            bottom:80px;
+            bottom:76px;
             left:50%;
             transform:translateX(-50%);
             background:rgba(30,42,36,0.92);
             backdrop-filter:blur(10px);
-            padding:8px 22px;
+            padding:6px 18px;
             border-radius:40px;
-            font-size:12px;
+            font-size:11px;
             z-index:100;
             border-left:3px solid var(--gold);
             font-weight:600;
@@ -415,36 +421,35 @@
         .live-indicator {
             position:fixed;
             bottom:20px;
-            right:20px;
-            background:rgba(16,185,129,0.85);
+            right:16px;
+            background:rgba(16,185,129,0.8);
             backdrop-filter:blur(8px);
             color:#fff;
-            padding:3px 12px;
+            padding:2px 10px;
             border-radius:30px;
-            font-size:9px;
+            font-size:8px;
             z-index:100;
             animation:pulse 1.5s infinite;
             display:none;
-            border:1px solid rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.02);
         }
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width:3px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
         /* ===== UTILITY ===== */
-        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-        .gap-1 { gap:6px; }
-        .mt-1 { margin-top:8px; }
-        .mb-1 { margin-bottom:8px; }
+        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
+        .gap-1 { gap:4px; }
+        .mt-1 { margin-top:6px; }
+        .mb-1 { margin-bottom:6px; }
         .text-gold { color:var(--gold); }
         .text-muted { color:var(--muted); }
         .text-center { text-align:center; }
         .w-full { width:100%; }
-        .img-preview { max-width:80px; max-height:80px; border-radius:8px; border:1px solid var(--gold); cursor:pointer; }
-        .img-preview-sm { max-width:60px; max-height:60px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
-        .online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+        .img-preview { max-width:70px; max-height:70px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
+        .img-preview-sm { max-width:50px; max-height:50px; border-radius:4px; border:1px solid var(--gold); cursor:pointer; }
+        .online-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:4px; }
         .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
         .online-dot.offline { background:var(--muted); }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
     </style>
 </head>
 <body>
@@ -475,7 +480,7 @@
             <div class="sidebar-brand">
                 <div class="icon"><i class="fas fa-crown"></i></div>
                 <div class="name">LUXCY</div>
-                <span class="badge-dot"></span>
+                <span class="dot"></span>
             </div>
             <div class="nav-item active" data-section="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</div>
             <div class="nav-item" data-section="members"><i class="fas fa-users"></i> Members <span class="count" id="memberCount">0</span></div>
@@ -488,8 +493,6 @@
             <div class="nav-item" data-section="agency"><i class="fas fa-user-tie"></i> Agencies</div>
             <div class="nav-item" data-section="settings"><i class="fas fa-paint-brush"></i> Settings</div>
             <div class="nav-item" data-section="popup"><i class="fas fa-ad"></i> Popup Ads</div>
-            <div class="nav-item" data-section="kyc"><i class="fas fa-id-card"></i> KYC</div>
-            <div class="nav-item" data-section="p2p"><i class="fas fa-exchange-alt"></i> P2P</div>
             <div class="nav-item" data-section="chat"><i class="fas fa-comment-dots"></i> Chat</div>
             <hr class="nav-divider">
             <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</div>
@@ -529,15 +532,13 @@
     let withdrawReqs = [];
     let loanReqs = [];
     let popupAds = [];
-    let kycReqs = [];
-    let p2pOrders = [];
-    let p2pRates = {};
     let admin = null;
     let currentSection = 'dashboard';
     let chatUser = null;
     let unsubChat = null;
     let unsubUsers = null;
     let unsubInjections = null;
+    let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf', minBalanceForOrder: 10 };
 
     // ===== HELPERS =====
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
@@ -546,15 +547,15 @@
         el.className = `toast-msg${err ? ' error' : ''}`;
         el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2500);
+        setTimeout(() => el.remove(), 2200);
     }
     function showLoader() {
         const l = document.createElement('div');
         l.id = 'loader';
-        l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(6px);font-size:20px;color:var(--gold);';
+        l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(6px);font-size:18px;color:var(--gold);';
         l.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Loading...';
         document.body.appendChild(l);
-        setTimeout(() => { const el = document.getElementById('loader'); if(el) el.remove(); }, 600);
+        setTimeout(() => { const el = document.getElementById('loader'); if(el) el.remove(); }, 500);
     }
     function getVIP(balance) {
         if (balance >= 1500) return 4;
@@ -565,6 +566,13 @@
     function getVipClass(lv) {
         return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4';
     }
+    function togglePw(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    }
+    window.togglePw = togglePw;
 
     // ===== AUTH =====
     async function login(username, password) {
@@ -648,13 +656,8 @@
             loanReqs = []; snap7.forEach(d => loanReqs.push({ id:d.id, ...d.data() }));
             const snap8 = await getDocs(collection(db,'popupAds'));
             popupAds = []; snap8.forEach(d => popupAds.push({ id:d.id, ...d.data() }));
-            const snap9 = await getDocs(collection(db,'kycRequests'));
-            kycReqs = []; snap9.forEach(d => kycReqs.push({ id:d.id, ...d.data() }));
-            const snap10 = await getDocs(collection(db,'p2pOrders'));
-            p2pOrders = []; snap10.forEach(d => p2pOrders.push({ id:d.id, ...d.data() }));
-            const r = await getDoc(doc(db,'systemSettings','p2pRates'));
-            if (r.exists()) p2pRates = r.data();
-            else p2pRates = { thb:{buy:34.5,sell:34,label:'THB'}, uah:{buy:41.2,sell:40.8,label:'UAH'}, rub:{buy:91.5,sell:90.8,label:'RUB'}, tjs:{buy:10.8,sell:10.5,label:'TJS'}, uzs:{buy:12750,sell:12650,label:'UZS'} };
+            const settings = await getDoc(doc(db,'systemSettings','main'));
+            if (settings.exists()) systemSettings = settings.data();
         } catch(e) { console.error(e); }
     }
 
@@ -664,11 +667,11 @@
         unsubUsers = onSnapshot(collection(db,'users'), (snap) => {
             users = [];
             snap.forEach(d => users.push({ id:d.id, ...d.data() }));
-            if (['dashboard','members','vip','injection','kyc'].includes(currentSection)) renderSection(currentSection);
+            if (['dashboard','members','vip','injection'].includes(currentSection)) renderSection(currentSection);
             document.getElementById('memberCount').textContent = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
             const ind = document.getElementById('liveIndicator');
             ind.style.display = 'flex';
-            setTimeout(() => { ind.style.display = 'none'; }, 1500);
+            setTimeout(() => { ind.style.display = 'none'; }, 1200);
         });
         if (unsubInjections) unsubInjections();
         unsubInjections = onSnapshot(collection(db,'injections'), (snap) => {
@@ -676,9 +679,21 @@
             snap.forEach(d => injections.push({ id:d.id, ...d.data() }));
             if (currentSection === 'injection') renderSection('injection');
         });
+        // Realtime recharge requests for live updates
+        onSnapshot(collection(db,'rechargeRequests'), (snap) => {
+            rechargeReqs = [];
+            snap.forEach(d => rechargeReqs.push({ id:d.id, ...d.data() }));
+            if (currentSection === 'recharge') renderSection('recharge');
+        });
+        // Realtime withdraw requests
+        onSnapshot(collection(db,'withdrawRequests'), (snap) => {
+            withdrawReqs = [];
+            snap.forEach(d => withdrawReqs.push({ id:d.id, ...d.data() }));
+            if (currentSection === 'withdraw') renderSection('withdraw');
+        });
     }
 
-    // ===== INJECTION FUNCTIONS =====
+    // ===== INJECTION =====
     window.showInjectionModal = (userId) => {
         const u = users.find(x => x.id === userId);
         if (!u) return;
@@ -687,25 +702,25 @@
         modal.innerHTML = `
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-syringe"></i> Inject for ${esc(u.username)}</div>
-                <p style="font-size:13px;color:var(--muted);">Balance: S/ ${(u.balance||0).toFixed(2)} | Orders: ${u.tasks?.completed||0}/${u.tasks?.total||0}</p>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Fixed Commission</label><input type="number" class="input-glass" id="injFixed" step="0.01" value="0"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:4px;"></div></div>
-                <div class="flex gap-1" style="margin-top:12px;">
+                <p style="font-size:12px;color:var(--muted);">Balance: S$ ${(u.balance||0).toFixed(2)} | Orders: ${u.tasks?.completed||0}/${u.tasks?.total||0}</p>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Fixed Commission</label><input type="number" class="input-glass" id="injFixed" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:3px;"></div></div>
+                <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-gold" id="injSubmit"><i class="fas fa-check"></i> Inject</button>
                     <button class="btn-ghost" id="injCancel">Cancel</button>
                 </div>
-                <div id="injStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="injStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
         document.getElementById('injImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('injPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
+                r.onload = ev => document.getElementById('injPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -735,7 +750,7 @@
                 };
                 await setDoc(doc(db,'injections',data.id), data);
                 document.getElementById('injStatus').innerHTML = '<span style="color:#10b981;">✅ Injected!</span>';
-                setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 800);
+                setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 700);
             };
             if (file) {
                 const r = new FileReader();
@@ -752,7 +767,7 @@
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> History: ${u?.username}</div>`;
-        if (!injs.length) html += `<p style="color:var(--muted);text-align:center;padding:16px;">No injections</p>`;
+        if (!injs.length) html += `<p style="color:var(--muted);text-align:center;padding:12px;">No injections</p>`;
         else {
             injs.sort((a,b) => b.taskNumber - a.taskNumber);
             injs.forEach(i => {
@@ -761,8 +776,8 @@
                         <div class="flex">
                             <div>
                                 <strong>#${i.taskNumber}: ${esc(i.orderName)}</strong>
-                                <div style="font-size:12px;color:var(--muted);">Extra: S/ ${i.extraAmount} | Rate: ${i.commissionRate}% | Fixed: S/ ${i.commission}</div>
-                                <div style="font-size:11px;color:var(--muted);">${i.used ? '✅ Used' : '⏳ Pending'}</div>
+                                <div style="font-size:11px;color:var(--muted);">Extra: S$ ${i.extraAmount} | Rate: ${i.commissionRate}% | Fixed: S$ ${i.commission}</div>
+                                <div style="font-size:10px;color:var(--muted);">${i.used ? '✅ Used' : '⏳ Pending'}</div>
                             </div>
                             <div class="flex gap-1">
                                 ${!i.used ? `<button class="btn-gold btn-gold-sm" onclick="window.editInjection('${i.id}')"><i class="fas fa-edit"></i></button>` : ''}
@@ -789,24 +804,24 @@
         modal.innerHTML = `
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-edit"></i> Edit #${inj.taskNumber} for ${u?.username}</div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:4px;">${inj.imageData ? `<img src="${inj.imageData}" style="max-width:60px;max-height:60px;border-radius:6px;border:1px solid var(--gold);">` : ''}</div></div>
-                <div class="flex gap-1" style="margin-top:12px;">
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:3px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
+                <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-gold" id="eSubmit"><i class="fas fa-save"></i> Update</button>
                     <button class="btn-ghost" id="eCancel">Cancel</button>
                 </div>
-                <div id="eStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="eStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
         document.getElementById('eImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('ePreview').innerHTML = `<img src="${ev.target.result}" style="max-width:60px;max-height:60px;border-radius:6px;border:1px solid var(--gold);">`;
+                r.onload = ev => document.getElementById('ePreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -828,13 +843,13 @@
                     data.imageData = ev.target.result;
                     await updateDoc(doc(db,'injections',id), data);
                     document.getElementById('eStatus').innerHTML = '<span style="color:#10b981;">✅ Updated!</span>';
-                    setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 800);
+                    setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 700);
                 };
                 r.readAsDataURL(file);
             } else {
                 await updateDoc(doc(db,'injections',id), data);
                 document.getElementById('eStatus').innerHTML = '<span style="color:#10b981;">✅ Updated!</span>';
-                setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 800);
+                setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 700);
             }
         };
         document.getElementById('eCancel').onclick = () => document.body.removeChild(modal);
@@ -868,8 +883,6 @@
             case 'agency': renderAgency(main); break;
             case 'settings': renderSettings(main); break;
             case 'popup': renderPopup(main); break;
-            case 'kyc': renderKYC(main); break;
-            case 'p2p': renderP2P(main); break;
             case 'chat': renderChat(main); break;
             default: main.innerHTML = '<div class="card-glass"><p>Section not found</p></div>';
         }
@@ -882,8 +895,7 @@
         const comm = users.reduce((s,u) => s + (u.totalCommission||0), 0);
         const rPend = rechargeReqs.filter(r => r.status === 'pending').length;
         const wPend = withdrawReqs.filter(w => w.status === 'pending').length;
-        const kPend = kycReqs.filter(k => k.status === 'pending').length;
-        const pPend = p2pOrders.filter(o => o.status === 'pending').length;
+        const lPend = loanReqs.filter(l => l.status === 'pending').length;
         const actA = agencies.filter(a => a.status === 'active').length;
         let vips = {1:0,2:0,3:0,4:0};
         users.forEach(u => { if (u.role !== 'admin' && u.role !== 'agency') { const lv = getVIP(u.balance||0); vips[lv]++; } });
@@ -891,20 +903,19 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
                 <div class="row g-2">
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Users</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${total}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Balance</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${bal.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Commission</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${comm.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Agencies</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${actA}/${agencies.length}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Users</div><div style="font-size:24px;font-weight:800;color:var(--gold);">${total}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Balance</div><div style="font-size:24px;font-weight:800;color:var(--gold);">S$ ${bal.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Commission</div><div style="font-size:24px;font-weight:800;color:var(--gold);">S$ ${comm.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--gold);">${actA}/${agencies.length}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Recharge</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(59,130,246,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Withdraw</div><div style="font-size:18px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">KYC</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${kPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">P2P</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${pPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(245,158,11,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(59,130,246,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(16,185,129,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.1);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:12px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.1);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">System Wallet</div><div style="font-size:12px;font-family:monospace;color:var(--gold);">${(systemSettings?.usdtWalletAddress||'Not set').substring(0,20)}...</div></div></div>
+                    <div class="col-6"><div style="background:rgba(0,0,0,0.06);padding:8px;border-radius:8px;"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
+                    <div class="col-6"><div style="background:rgba(0,0,0,0.06);padding:8px;border-radius:8px;"><div style="font-size:10px;color:var(--muted);">System Wallet</div><div style="font-size:11px;font-family:monospace;color:var(--gold);">${systemSettings.usdtWalletAddress.substring(0,18)}...</div></div></div>
                 </div>
             </div>
         `;
@@ -919,8 +930,8 @@
                     <div class="title"><i class="fas fa-users"></i> Members</div>
                     <button class="btn-gold btn-gold-sm" id="addMemberBtn"><i class="fas fa-plus"></i> Add</button>
                 </div>
-                <div class="flex" style="margin:10px 0;">
-                    <input class="input-glass" id="memberSearch" placeholder="Search..." style="flex:1;min-width:120px;">
+                <div class="flex" style="margin:8px 0;">
+                    <input class="input-glass" id="memberSearch" placeholder="Search..." style="flex:1;min-width:100px;">
                     <button class="btn-ghost" id="searchBtn">Search</button>
                     <button class="btn-ghost" id="resetSearch">Reset</button>
                 </div>
@@ -938,27 +949,27 @@
                 return s.includes(filter.toLowerCase());
             });
             const tbody = document.getElementById('memberTableBody');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">No members</td></tr>'; return; }
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">No members</td></tr>'; return; }
             tbody.innerHTML = filtered.map(u => {
                 const lv = getVIP(u.balance||0);
                 const vc = getVipClass(lv);
                 const isOnline = u.lastSeen && (Date.now() - u.lastSeen < 60000);
                 const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) : 'Never';
                 return `<tr>
-                    <td style="font-size:11px;color:var(--muted);">${u.id.substring(0,8)}</td>
-                    <td><strong>${esc(u.username)}</strong><br><span style="font-size:11px;color:var(--muted);">${u.email||''}</span></td>
-                    <td>S/ ${(u.balance||0).toFixed(2)}<br><span style="font-size:10px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
+                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
+                    <td><strong>${esc(u.username)}</strong><br><span style="font-size:10px;color:var(--muted);">${u.email||''}</span></td>
+                    <td>S$ ${(u.balance||0).toFixed(2)}<br><span style="font-size:9px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
                     <td><span class="${vc}">VIP ${lv}</span></td>
                     <td><span class="badge-status ${u.disabled ? 'badge-inactive' : 'badge-active'}">${u.disabled ? 'Disabled' : 'Active'}</span></td>
-                    <td style="font-size:12px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
+                    <td style="font-size:11px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
                     <td>
                         <div class="flex gap-1" style="flex-wrap:wrap;">
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupOrder('${u.id}')">📦</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupBalance('${u.id}')">💰</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeLogin('${u.id}')">🔑</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWithdraw('${u.id}')">💳</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.adjustCredit('${u.id}')">⭐</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWallet('${u.id}')">🏦</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
                             <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,${u.disabled ? '#10b981' : '#dc2626'},${u.disabled ? '#059669' : '#ef4444'});color:#fff;" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
                         </div>
                     </td>
@@ -1051,11 +1062,11 @@
                 <div class="pw-wrap"><input type="password" class="input-glass" id="amPass" placeholder="Login Password"><button class="pw-toggle" onclick="togglePw('amPass',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="amWpass" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('amWpass',this)"><i class="fas fa-eye"></i></button></div>
                 <input class="input-glass" id="amInvite" placeholder="Invitation Code (optional)">
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" id="amSubmit">Create</button>
                     <button class="btn-ghost" id="amCancel">Cancel</button>
                 </div>
-                <div id="amStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="amStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -1103,18 +1114,10 @@
             };
             await setDoc(doc(db,'users',data.id), data);
             document.getElementById('amStatus').innerHTML = '<span style="color:#10b981;">✅ Added!</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderSection('members'); }, 800);
+            setTimeout(() => { document.body.removeChild(modal); renderSection('members'); }, 700);
         };
         document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
     }
-
-    function togglePw(id, btn) {
-        const inp = document.getElementById(id);
-        const icon = btn.querySelector('i');
-        if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    }
-    window.togglePw = togglePw;
 
     // ===== VIP =====
     function renderVIP(main) {
@@ -1122,7 +1125,7 @@
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-star"></i> VIP Management</div>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;">
                     <span class="vip-1">VIP1 0.5%</span><span class="vip-2">VIP2 0.7%</span><span class="vip-3">VIP3 0.8%</span><span class="vip-4">VIP4 1.0%</span>
                 </div>
                 <div class="table-wrap">
@@ -1131,15 +1134,15 @@
                         <tbody>
                             ${customers.map(u => {
                                 const hasManual = u.manualVIPLevel && u.manualVIPLevel > 0;
-                                const lv = hasManual ? u.manualVIPLevel : getVIP(u.balance||0);
+                                const lv = hasManual ? u.manualVIPLevel : 1;
                                 const rate = (VIP_RATES[lv] * 100).toFixed(1);
                                 const vc = getVipClass(lv);
                                 return `<tr>
-                                    <td><strong>${esc(u.username)}</strong>${hasManual ? ' <span style="font-size:10px;color:#f59e0b;">(Manual)</span>' : ''}</td>
-                                    <td>S/ ${(u.balance||0).toFixed(2)}</td>
+                                    <td><strong>${esc(u.username)}</strong>${hasManual ? ' <span style="font-size:9px;color:#f59e0b;">(Manual)</span>' : ''}</td>
+                                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
                                     <td><span class="${vc}">VIP ${lv}</span></td>
                                     <td>${rate}%</td>
-                                    <td><select class="input-glass" style="width:auto;padding:4px 8px;font-size:12px;" id="vipSel_${u.id}">
+                                    <td><select class="input-glass" style="width:auto;padding:3px 6px;font-size:11px;" id="vipSel_${u.id}">
                                         ${[1,2,3,4].map(v => `<option value="${v}" ${lv===v?'selected':''}>VIP ${v}</option>`).join('')}
                                         <option value="0" ${!hasManual?'selected':''}>Auto</option>
                                     </select></td>
@@ -1177,10 +1180,10 @@
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
             <div class="card-glass">
-                <div class="title"><i class="fas fa-syringe"></i> Injection Management</div>
-                <div class="flex" style="margin:10px 0;">
-                    <input class="input-glass" id="injSearchPhone" placeholder="Phone" style="flex:1;min-width:100px;">
-                    <input class="input-glass" id="injSearchEmail" placeholder="Email" style="flex:1;min-width:100px;">
+                <div class="title"><i class="fas fa-syringe"></i> Injection</div>
+                <div class="flex" style="margin:8px 0;">
+                    <input class="input-glass" id="injSearchPhone" placeholder="Phone" style="flex:1;min-width:80px;">
+                    <input class="input-glass" id="injSearchEmail" placeholder="Email" style="flex:1;min-width:80px;">
                     <button class="btn-ghost" id="injSearchBtn">Search</button>
                     <button class="btn-ghost" id="injResetBtn">Reset</button>
                 </div>
@@ -1195,15 +1198,15 @@
         function renderInjTable(p='', e='') {
             const filtered = customers.filter(u => (p === '' || (u.phone||'').includes(p)) && (e === '' || (u.email||'').toLowerCase().includes(e.toLowerCase())));
             const tbody = document.getElementById('injTableBody');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">No users</td></tr>'; return; }
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">No users</td></tr>'; return; }
             tbody.innerHTML = filtered.map(u => `
                 <tr>
-                    <td style="font-size:11px;color:var(--muted);">${u.id.substring(0,8)}</td>
+                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
                     <td><strong>${esc(u.username)}</strong></td>
                     <td>${u.phone||'-'}</td>
                     <td>${u.email||'-'}</td>
                     <td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td>
-                    <td>S/ ${(u.balance||0).toFixed(2)}</td>
+                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
                     <td>
                         <div class="flex gap-1">
                             <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.showInjectionModal('${u.id}')"><i class="fas fa-syringe"></i></button>
@@ -1223,14 +1226,14 @@
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-plus-circle"></i> Custom Orders</div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-                    <input class="input-glass" id="ordName" placeholder="Order Name" style="flex:1;min-width:120px;">
-                    <input class="input-glass" id="ordPrice" placeholder="Price" type="number" step="0.01" style="width:120px;">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+                    <input class="input-glass" id="ordName" placeholder="Order Name" style="flex:1;min-width:100px;">
+                    <input class="input-glass" id="ordPrice" placeholder="Price" type="number" step="0.01" style="width:100px;">
                     <input type="file" id="ordImg" accept="image/*" style="display:none;">
                     <button class="btn-ghost" id="ordUploadBtn"><i class="fas fa-image"></i> Image</button>
                     <button class="btn-gold" id="ordAddBtn">Add</button>
                 </div>
-                <div id="ordPreview" style="margin-bottom:8px;"></div>
+                <div id="ordPreview" style="margin-bottom:6px;"></div>
                 <div id="ordList"></div>
             </div>
         `;
@@ -1238,7 +1241,7 @@
         document.getElementById('ordImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('ordPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
+                r.onload = ev => document.getElementById('ordPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -1269,12 +1272,12 @@
     function renderOrderList() {
         const container = document.getElementById('ordList');
         if (!container) return;
-        if (!customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:12px;">No orders</p>'; return; }
+        if (!customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:10px;">No orders</p>'; return; }
         container.innerHTML = customOrders.map((o,i) => `
-            <div class="flex" style="padding:8px 12px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:6px;border:1px solid var(--border);">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    ${o.image ? `<img src="${o.image}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--gold);">` : '<i class="fas fa-box" style="color:var(--gold);"></i>'}
-                    <div><strong>${esc(o.name)}</strong> <span style="color:var(--muted);font-size:12px;">S/ ${o.price}</span></div>
+            <div class="flex" style="padding:6px 10px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:4px;border:1px solid var(--border);">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    ${o.image ? `<img src="${o.image}" class="img-preview-sm">` : '<i class="fas fa-box" style="color:var(--gold);"></i>'}
+                    <div><strong>${esc(o.name)}</strong> <span style="color:var(--muted);font-size:11px;">S$ ${o.price}</span></div>
                 </div>
                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteOrder('${o.id}')"><i class="fas fa-trash"></i></button>
             </div>
@@ -1295,19 +1298,19 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-coins"></i> Recharge Requests</div>
                 ${rechargeReqs.length ? rechargeReqs.map(r => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(r.userName)}</strong> <span class="badge-status ${r.status==='pending'?'badge-pending':r.status==='approved'?'badge-approved':'badge-rejected'}">${r.status}</span></div>
-                        <div style="font-size:13px;">Amount: S/ ${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
+                        <div style="font-size:12px;">Amount: S$ ${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
                         ${r.receiptImage ? `<img src="${r.receiptImage}" class="img-preview" onclick="window.open(this.src)">` : ''}
                         ${r.status === 'pending' ? `
-                            <div class="flex gap-1" style="margin-top:6px;">
+                            <div class="flex gap-1" style="margin-top:4px;">
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveRecharge('${r.id}')"><i class="fas fa-check"></i> Approve</button>
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectRecharge('${r.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
-                        ${r.adminNote ? `<div style="font-size:12px;color:var(--muted);">Note: ${r.adminNote}</div>` : ''}
+                        ${r.adminNote ? `<div style="font-size:11px;color:var(--muted);">Note: ${r.adminNote}</div>` : ''}
                     </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No requests</p>'}
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:12px;">No requests</p>'}
             </div>
         `;
     }
@@ -1319,7 +1322,7 @@
         if (u) {
             await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + r.amount });
             await updateDoc(doc(db,'rechargeRequests',id), { status: 'approved' });
-            toast(`✅ S/ ${r.amount} approved`);
+            toast(`✅ S$ ${r.amount} approved`);
             renderSection('recharge');
         }
     };
@@ -1333,7 +1336,7 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-times-circle" style="color:#dc2626;"></i> Reject Recharge</div>
                 <textarea class="input-glass" id="rejNote" placeholder="Reason..." rows="2"></textarea>
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" id="rejSubmit">Reject</button>
                     <button class="btn-ghost" id="rejCancel">Cancel</button>
                 </div>
@@ -1356,19 +1359,19 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</div>
                 ${withdrawReqs.length ? withdrawReqs.map(w => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(w.userName)}</strong> <span class="badge-status ${w.status==='pending'?'badge-pending':w.status==='approved'?'badge-approved':'badge-rejected'}">${w.status}</span></div>
-                        <div style="font-size:13px;">Amount: S/ ${w.amount} | Wallet: ${w.walletAddress}</div>
-                        <div style="font-size:12px;color:var(--muted);">${new Date(w.timestamp).toLocaleString()}</div>
+                        <div style="font-size:12px;">Amount: S$ ${w.amount} | Wallet: ${w.walletAddress}</div>
+                        <div style="font-size:11px;color:var(--muted);">${new Date(w.timestamp).toLocaleString()}</div>
                         ${w.status === 'pending' ? `
-                            <div class="flex gap-1" style="margin-top:6px;">
+                            <div class="flex gap-1" style="margin-top:4px;">
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveWithdraw('${w.id}')"><i class="fas fa-check"></i> Approve</button>
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectWithdraw('${w.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
-                        ${w.adminNote ? `<div style="font-size:12px;color:var(--muted);">Note: ${w.adminNote}</div>` : ''}
+                        ${w.adminNote ? `<div style="font-size:11px;color:var(--muted);">Note: ${w.adminNote}</div>` : ''}
                     </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No requests</p>'}
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:12px;">No requests</p>'}
             </div>
         `;
     }
@@ -1390,7 +1393,7 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-times-circle" style="color:#dc2626;"></i> Reject Withdraw</div>
                 <textarea class="input-glass" id="rejWNote" placeholder="Reason..." rows="2"></textarea>
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" id="rejWSubmit">Reject</button>
                     <button class="btn-ghost" id="rejWCancel">Cancel</button>
                 </div>
@@ -1415,23 +1418,23 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-heart"></i> Loan Requests</div>
                 ${loanReqs.length ? loanReqs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map(l => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(l.userName)}</strong> <span class="badge-status ${l.status==='pending'?'badge-pending':l.status==='approved'?'badge-approved':'badge-rejected'}">${l.status}</span></div>
-                        <div style="font-size:13px;">Amount: S/ ${l.amount} | Doc: ${l.docType}</div>
-                        <div style="font-size:12px;color:var(--muted);">${new Date(l.timestamp).toLocaleString()}</div>
-                        <div class="flex gap-1" style="flex-wrap:wrap;margin-top:4px;">
+                        <div style="font-size:12px;">Amount: S$ ${l.amount} | Doc: ${l.docType}</div>
+                        <div style="font-size:11px;color:var(--muted);">${new Date(l.timestamp).toLocaleString()}</div>
+                        <div class="flex gap-1" style="flex-wrap:wrap;margin-top:3px;">
                             ${l.bankImage ? `<img src="${l.bankImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
                             ${l.frontImage ? `<img src="${l.frontImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
                             ${l.backImage ? `<img src="${l.backImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
                         </div>
                         ${l.status === 'pending' ? `
-                            <div class="flex gap-1" style="margin-top:6px;">
+                            <div class="flex gap-1" style="margin-top:4px;">
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveLoan('${l.id}')"><i class="fas fa-check"></i> Approve</button>
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectLoan('${l.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
                     </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No requests</p>'}
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:12px;">No requests</p>'}
             </div>
         `;
     }
@@ -1443,7 +1446,7 @@
         if (u) {
             await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + l.amount });
             await updateDoc(doc(db,'loanRequests',id), { status: 'approved' });
-            toast(`✅ Loan S/ ${l.amount} approved`);
+            toast(`✅ Loan S$ ${l.amount} approved`);
             renderSection('loans');
         }
     };
@@ -1464,7 +1467,7 @@
                     <button class="btn-gold btn-gold-sm" id="addAgencyBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
                 ${agencies.length ? agencies.map(a => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex">
                             <div><strong style="color:var(--gold);">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'badge-active':'badge-inactive'}">${a.status}</span></div>
                             <div class="flex gap-1">
@@ -1476,10 +1479,10 @@
                                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteAgency('${a.id}')"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
-                        <div style="font-size:12px;color:var(--muted);">Email: ${a.email||'N/A'} | Created: ${new Date(a.createdAt).toLocaleString()}</div>
-                        <div style="font-size:11px;color:var(--muted);">Permissions: ${Object.entries(a.permissions||{}).filter(([k,v])=>v).map(([k])=>k.replace('can','')).join(', ')}</div>
+                        <div style="font-size:11px;color:var(--muted);">Email: ${a.email||'N/A'} | Created: ${new Date(a.createdAt).toLocaleString()}</div>
+                        <div style="font-size:10px;color:var(--muted);">Permissions: ${Object.entries(a.permissions||{}).filter(([k,v])=>v).map(([k])=>k.replace('can','')).join(', ')}</div>
                     </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No agencies</p>'}
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:12px;">No agencies</p>'}
             </div>
         `;
         document.getElementById('addAgencyBtn').onclick = showAddAgency;
@@ -1493,9 +1496,9 @@
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box" style="text-align:center;">
-                <div style="font-size:13px;color:var(--muted);">Access Code for ${esc(a.username)}</div>
-                <div style="font-size:36px;font-weight:800;color:var(--gold);letter-spacing:4px;padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;margin:12px 0;">${code}</div>
-                <div style="font-size:11px;color:#f59e0b;"><i class="fas fa-clock"></i> Valid for 5 minutes</div>
+                <div style="font-size:12px;color:var(--muted);">Access Code for ${esc(a.username)}</div>
+                <div style="font-size:32px;font-weight:800;color:var(--gold);letter-spacing:4px;padding:10px;background:rgba(0,0,0,0.08);border-radius:10px;margin:10px 0;">${code}</div>
+                <div style="font-size:10px;color:#f59e0b;"><i class="fas fa-clock"></i> Valid for 5 minutes</div>
                 <button class="btn-gold" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button>
                 <button class="btn-ghost" id="codeClose">Close</button>
             </div>
@@ -1514,11 +1517,11 @@
                 <div class="modal-title"><i class="fas fa-key"></i> Change Password</div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="apwNew" placeholder="New Password"><button class="pw-toggle" onclick="togglePw('apwNew',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="apwConfirm" placeholder="Confirm"><button class="pw-toggle" onclick="togglePw('apwConfirm',this)"><i class="fas fa-eye"></i></button></div>
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" id="apwSubmit">Update</button>
                     <button class="btn-ghost" id="apwCancel">Cancel</button>
                 </div>
-                <div id="apwStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="apwStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -1529,7 +1532,7 @@
             if (p1 !== p2) { document.getElementById('apwStatus').innerHTML = '<span style="color:#dc2626;">Passwords do not match</span>'; return; }
             await updateDoc(doc(db,'agencies',id), { password: p1 });
             document.getElementById('apwStatus').innerHTML = '<span style="color:#10b981;">✅ Updated</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 800);
+            setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 700);
         };
         document.getElementById('apwCancel').onclick = () => document.body.removeChild(modal);
     };
@@ -1561,20 +1564,20 @@
                 <input class="input-glass" id="aaEmail" placeholder="Email">
                 <div class="pw-wrap"><input type="password" class="input-glass" id="aaPass" placeholder="Password"><button class="pw-toggle" onclick="togglePw('aaPass',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="aaConfirm" placeholder="Confirm"><button class="pw-toggle" onclick="togglePw('aaConfirm',this)"><i class="fas fa-eye"></i></button></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Permissions</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:4px;font-size:12px;">
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Permissions</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:3px;font-size:11px;">
                         ${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `
-                            <label style="background:rgba(0,0,0,0.15);padding:2px 10px;border-radius:20px;border:1px solid var(--border);">
+                            <label style="background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:20px;border:1px solid var(--border);">
                                 <input type="checkbox" id="aa_${p}" ${p!=='Settings'?'checked':''}> ${p}
                             </label>
                         `).join('')}
                     </div>
                 </div>
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" id="aaSubmit">Create</button>
                     <button class="btn-ghost" id="aaCancel">Cancel</button>
                 </div>
-                <div id="aaStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="aaStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -1608,19 +1611,18 @@
             };
             await setDoc(doc(db,'agencies',data.id), data);
             document.getElementById('aaStatus').innerHTML = '<span style="color:#10b981;">✅ Created</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 800);
+            setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 700);
         };
         document.getElementById('aaCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ===== SETTINGS (simplified) =====
-    let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf' };
+    // ===== SETTINGS =====
     function renderSettings(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-paint-brush"></i> Settings</div>
-                <div style="margin-bottom:8px;"><label style="font-size:13px;color:var(--gold);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
-                <div style="margin-bottom:8px;"><label style="font-size:13px;color:var(--gold);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--gold);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--gold);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
                 <button class="btn-gold" id="setSave">Save Settings</button>
             </div>
         `;
@@ -1644,7 +1646,7 @@
                 </div>
                 <div id="popList">
                     ${popupAds.length ? popupAds.map(p => `
-                        <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                        <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                             <div class="flex">
                                 <div><strong style="color:var(--gold);">${esc(p.title||'Untitled')}</strong> <span class="badge-status ${p.isActive!==false?'badge-active':'badge-inactive'}">${p.isActive!==false?'Active':'Inactive'}</span></div>
                                 <div class="flex gap-1">
@@ -1653,9 +1655,9 @@
                                 </div>
                             </div>
                             ${p.imageData ? `<img src="${p.imageData}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
-                            <div style="font-size:12px;color:var(--muted);">${p.subtitle||''}</div>
+                            <div style="font-size:11px;color:var(--muted);">${p.subtitle||''}</div>
                         </div>
-                    `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No popup ads</p>'}
+                    `).join('') : '<p style="color:var(--muted);text-align:center;padding:12px;">No popup ads</p>'}
                 </div>
             </div>
         `;
@@ -1685,23 +1687,23 @@
                 <input class="input-glass" id="popTitle" placeholder="Title" value="${esc(existing?.title||'')}">
                 <textarea class="input-glass" id="popSub" placeholder="Subtitle / Message" rows="2">${esc(existing?.subtitle||'')}</textarea>
                 <input type="file" class="input-glass" id="popImg" accept="image/*">
-                <div id="popPreview" style="margin-top:4px;">${existing?.imageData ? `<img src="${existing.imageData}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">` : ''}</div>
+                <div id="popPreview" style="margin-top:3px;">${existing?.imageData ? `<img src="${existing.imageData}" class="img-preview-sm">` : ''}</div>
                 <select class="input-glass" id="popActive">
                     <option value="true" ${existing?.isActive!==false?'selected':''}>Active</option>
                     <option value="false" ${existing?.isActive===false?'selected':''}>Inactive</option>
                 </select>
-                <div class="flex gap-1" style="margin-top:10px;">
+                <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-gold" id="popSubmit">${isEdit ? 'Update' : 'Create'}</button>
                     <button class="btn-ghost" id="popCancel">Cancel</button>
                 </div>
-                <div id="popStatus" style="text-align:center;margin-top:8px;font-size:13px;"></div>
+                <div id="popStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
         document.getElementById('popImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('popPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
+                r.onload = ev => document.getElementById('popPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -1723,7 +1725,7 @@
                     popupAds.push({ ...data, id });
                     status.innerHTML = '<span style="color:#10b981;">✅ Created</span>';
                 }
-                setTimeout(() => { document.body.removeChild(modal); renderSection('popup'); }, 800);
+                setTimeout(() => { document.body.removeChild(modal); renderSection('popup'); }, 700);
             };
             if (file) {
                 const r = new FileReader();
@@ -1734,149 +1736,21 @@
         document.getElementById('popCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ===== KYC =====
-    function renderKYC(main) {
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-id-card"></i> KYC Requests</div>
-                ${kycReqs.length ? kycReqs.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt)).map(k => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
-                        <div class="flex"><strong style="color:var(--gold);">${esc(k.username)}</strong> <span class="badge-status ${k.status==='pending'?'badge-pending':k.status==='approved'?'badge-approved':'badge-rejected'}">${k.status}</span></div>
-                        <div style="font-size:12px;color:var(--muted);">${k.docType} | ${new Date(k.submittedAt).toLocaleString()}</div>
-                        <div class="flex gap-1" style="flex-wrap:wrap;margin-top:4px;">
-                            ${k.frontImage ? `<img src="${k.frontImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
-                            ${k.backImage ? `<img src="${k.backImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
-                        </div>
-                        ${k.status === 'pending' ? `
-                            <div class="flex gap-1" style="margin-top:6px;">
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveKYC('${k.id}')"><i class="fas fa-check"></i> Approve</button>
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectKYC('${k.id}')"><i class="fas fa-times"></i> Reject</button>
-                            </div>
-                        ` : ''}
-                        ${k.reviewedAt ? `<div style="font-size:11px;color:var(--muted);">Reviewed: ${new Date(k.reviewedAt).toLocaleString()}</div>` : ''}
-                    </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No KYC requests</p>'}
-            </div>
-        `;
-    }
-
-    window.approveKYC = async (id) => {
-        const k = kycReqs.find(x => x.id === id);
-        if (!k || k.status !== 'pending') return;
-        await updateDoc(doc(db,'kycRequests',id), { status: 'approved', reviewedAt: new Date().toISOString() });
-        toast(`✅ KYC approved for ${k.username}`);
-        renderSection('kyc');
-    };
-
-    window.rejectKYC = async (id) => {
-        const k = kycReqs.find(x => x.id === id);
-        if (!k || k.status !== 'pending') return;
-        await updateDoc(doc(db,'kycRequests',id), { status: 'rejected', reviewedAt: new Date().toISOString() });
-        toast(`❌ KYC rejected for ${k.username}`);
-        renderSection('kyc');
-    };
-
-    // ===== P2P =====
-    function renderP2P(main) {
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-exchange-alt"></i> P2P Orders</div>
-                ${p2pOrders.length ? p2pOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(o => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
-                        <div class="flex"><strong style="color:var(--gold);">${esc(o.username)}</strong> <span class="badge-status ${o.status==='pending'?'badge-pending':o.status==='completed'?'badge-approved':'badge-rejected'}">${o.status}</span></div>
-                        <div style="font-size:13px;">${o.type} ${o.amount} USDT @ ${o.rate} ${o.currency.toUpperCase()} | Total: ${(o.amount*o.rate).toFixed(2)} ${o.currency.toUpperCase()}</div>
-                        <div style="font-size:12px;color:var(--muted);">${new Date(o.createdAt).toLocaleString()}</div>
-                        ${o.adminBankDetails ? `<div style="font-size:12px;color:#10b981;">Bank: ${o.adminBankDetails.bankName} | Acc: ${o.adminBankDetails.accountNumber}</div>` : ''}
-                        ${o.receiptImage ? `<img src="${o.receiptImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
-                        ${o.status === 'pending' ? `
-                            <div class="flex gap-1" style="margin-top:6px;">
-                                ${!o.adminBankDetails ? `<button class="btn-gold btn-gold-sm" onclick="window.processP2P('${o.id}')"><i class="fas fa-edit"></i> Provide Bank</button>` : ''}
-                                ${o.adminBankDetails && o.receiptImage ? `<button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.completeP2P('${o.id}')"><i class="fas fa-check"></i> Complete</button>` : ''}
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.cancelP2P('${o.id}')"><i class="fas fa-times"></i> Cancel</button>
-                            </div>
-                        ` : ''}
-                    </div>
-                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No P2P orders</p>'}
-            </div>
-        `;
-    }
-
-    window.processP2P = (id) => {
-        const o = p2pOrders.find(x => x.id === id);
-        if (!o) return;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-edit"></i> Bank Details for ${esc(o.username)}</div>
-                <input class="input-glass" id="p2pBank" placeholder="Bank Name">
-                <input class="input-glass" id="p2pAcc" placeholder="Account Number">
-                <input class="input-glass" id="p2pName" placeholder="Account Name">
-                <div class="flex gap-1" style="margin-top:10px;">
-                    <button class="btn-gold" id="p2pSubmit">Submit</button>
-                    <button class="btn-ghost" id="p2pCancel">Cancel</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('p2pSubmit').onclick = async () => {
-            const bank = document.getElementById('p2pBank').value.trim();
-            const acc = document.getElementById('p2pAcc').value.trim();
-            const name = document.getElementById('p2pName').value.trim();
-            if (!bank || !acc || !name) { toast('All fields required', true); return; }
-            await updateDoc(doc(db,'p2pOrders',id), {
-                status: 'pending',
-                adminBankDetails: { bankName: bank, accountNumber: acc, accountName: name },
-                processedAt: new Date().toISOString()
-            });
-            document.body.removeChild(modal);
-            toast('Bank details sent');
-            renderSection('p2p');
-        };
-        document.getElementById('p2pCancel').onclick = () => document.body.removeChild(modal);
-    };
-
-    window.completeP2P = async (id) => {
-        const o = p2pOrders.find(x => x.id === id);
-        if (!o) return;
-        if (!o.receiptImage) { toast('No receipt uploaded', true); return; }
-        await updateDoc(doc(db,'p2pOrders',id), { status: 'completed', completedAt: new Date().toISOString() });
-        if (o.type === 'buy') {
-            const u = users.find(x => x.id === o.userId);
-            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + o.amount });
-        }
-        toast('P2P completed');
-        renderSection('p2p');
-    };
-
-    window.cancelP2P = async (id) => {
-        if (!confirm('Cancel this P2P order?')) return;
-        const o = p2pOrders.find(x => x.id === id);
-        if (!o) return;
-        await updateDoc(doc(db,'p2pOrders',id), { status: 'cancelled', cancelledAt: new Date().toISOString() });
-        if (o.type === 'sell') {
-            const u = users.find(x => x.id === o.userId);
-            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + o.amount });
-        }
-        toast('Cancelled');
-        renderSection('p2p');
-    };
-
     // ===== CHAT =====
     function renderChat(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-comment-dots"></i> Customer Chat</div>
-                <select class="input-glass" id="chatSelect" style="margin-bottom:8px;">
+                <select class="input-glass" id="chatSelect" style="margin-bottom:6px;">
                     <option value="">-- Select Customer --</option>
                     ${customers.map(u => `<option value="${esc(u.username)}">${esc(u.username)} (${u.email||''})</option>`).join('')}
                 </select>
                 <div class="chat-wrap">
                     <div class="chat-msgs" id="chatMsgs"></div>
                     <div class="chat-input">
-                        <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:8px 14px;font-size:13px;min-height:38px;">
-                        <button class="btn-gold" id="chatSend" style="width:auto;padding:8px 18px;font-size:13px;min-height:38px;">Send</button>
+                        <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:6px 12px;font-size:12px;min-height:34px;">
+                        <button class="btn-gold" id="chatSend" style="width:auto;padding:6px 16px;font-size:12px;min-height:34px;">Send</button>
                     </div>
                 </div>
             </div>
@@ -1884,7 +1758,7 @@
         document.getElementById('chatSelect').onchange = function() {
             chatUser = this.value;
             if (chatUser) {
-                document.getElementById('chatMsgs').innerHTML = '<div style="text-align:center;padding:12px;color:var(--muted);">Loading...</div>';
+                document.getElementById('chatMsgs').innerHTML = '<div style="text-align:center;padding:10px;color:var(--muted);">Loading...</div>';
                 if (unsubChat) unsubChat();
                 const q = query(collection(db,'chatMessages'), orderBy('id','asc'));
                 unsubChat = onSnapshot(q, (snap) => {
@@ -1902,7 +1776,7 @@
                             ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
                             <div class="time">${m.time||''}</div>
                         </div>
-                    `).join('') : '<div style="text-align:center;padding:12px;color:var(--muted);">No messages</div>';
+                    `).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages</div>';
                     container.scrollTop = container.scrollHeight;
                 });
             }
@@ -1961,15 +1835,6 @@
         })();
     }
 
-    // ===== SYSTEM SETTINGS FOR DASHBOARD =====
-    // Load system settings for dashboard
-    (async () => {
-        const s = await getDoc(doc(db,'systemSettings','main'));
-        if (s.exists()) systemSettings = s.data();
-    })();
-
-    // ===== UPDATE LAST SEEN FOR MEMBERS =====
-    // Users' lastSeen is updated when they login, we just display it
     console.log('LUXCY Admin Panel loaded');
 </script>
 </body>

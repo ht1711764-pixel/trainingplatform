@@ -2,114 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>LUXCY | Travel & Earnings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <title>LUXCY | Luxury Travel & Earnings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         :root {
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
             --gold-dark: #C9A03D;
-            --bg: #0a0c10;
-            --card: rgba(20,25,35,0.75);
-            --border: rgba(212,175,55,0.2);
-            --text: rgba(255,255,255,0.9);
-            --muted: rgba(255,255,255,0.45);
-            --shadow: 0 8px 32px rgba(0,0,0,0.3);
-            --radius: 20px;
+            --bg: #080a0e;
+            --card: rgba(16,20,30,0.78);
+            --border: rgba(212,175,55,0.18);
+            --text: rgba(255,255,255,0.92);
+            --muted: rgba(255,255,255,0.4);
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --radius: 18px;
+            --glass: blur(14px);
+            --gradient: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
             font-family:'Inter',sans-serif;
             background:var(--bg);
             color:var(--text);
             min-height:100vh;
             overflow-x:hidden;
+            padding-bottom:70px;
         }
         .app {
-            background:radial-gradient(ellipse at 20% 50%,rgba(212,175,55,0.06) 0%,transparent 60%),
-                     radial-gradient(ellipse at 80% 20%,rgba(212,175,55,0.04) 0%,transparent 50%),
+            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.04) 0%, transparent 60%),
+                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.02) 0%, transparent 50%),
                      var(--bg);
             min-height:100vh;
             overflow-y:auto;
-            padding-bottom:70px;
+            padding:0 12px 20px;
         }
-        .page { display:none; padding:14px 12px 20px; }
-        .active-page { display:block; animation:fade .3s ease; }
-        @keyframes fade { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-        /* Header */
+        .page { display:none; padding:10px 0 20px; }
+        .active-page { display:block; animation:fadeIn .35s ease; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
         .header {
-            background:var(--card);
-            backdrop-filter:blur(12px);
-            border-radius:40px;
-            padding:8px 14px;
-            margin-bottom:14px;
             display:flex;
             justify-content:space-between;
             align-items:center;
-            border:1px solid var(--border);
-            box-shadow:var(--shadow);
+            padding:12px 4px 14px;
+            border-bottom:1px solid var(--border);
+            margin-bottom:14px;
         }
-        .logo { display:flex; align-items:center; gap:8px; }
+        .logo-area { display:flex; align-items:center; gap:10px; }
         .logo-icon {
-            width:36px; height:36px;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
+            width:38px; height:38px;
+            background:var(--gradient);
             border-radius:12px;
-            display:flex; align-items:center; justify-content:center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:18px;
+            color:#0a0c10;
+            box-shadow:0 4px 20px rgba(212,175,55,0.15);
+            flex-shrink:0;
         }
-        .logo-icon i { font-size:18px; color:#0a0c10; }
         .logo-text {
             font-size:18px; font-weight:800;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
-            -webkit-background-clip:text; background-clip:text; color:transparent;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            letter-spacing:0.5px;
         }
         .header-actions { display:flex; gap:8px; }
         .icon-btn {
-            background:rgba(0,0,0,0.25);
+            background:rgba(255,255,255,0.03);
             border:1px solid var(--border);
             border-radius:40px;
             padding:6px 12px;
             cursor:pointer;
             color:var(--gold);
-            transition:0.3s;
             font-size:13px;
+            transition:0.25s;
+            display:flex;
+            align-items:center;
+            gap:6px;
         }
-        .icon-btn:hover { background:rgba(212,175,55,0.08); }
-        /* Cards */
-        .card-glass {
+        .icon-btn:hover { background:rgba(212,175,55,0.04); border-color:rgba(212,175,55,0.3); }
+        .icon-btn span { font-size:12px; font-weight:500; }
+
+        .card {
             background:var(--card);
-            backdrop-filter:blur(12px);
+            backdrop-filter:var(--glass);
             border-radius:var(--radius);
             padding:16px;
             margin-bottom:14px;
             border:1px solid var(--border);
             box-shadow:var(--shadow);
-            transition:0.3s;
+            transition:0.25s;
         }
-        .card-glass:hover { border-color:rgba(212,175,55,0.35); }
+        .card:hover { border-color:rgba(212,175,55,0.3); }
+
         .btn-gold {
-            background:linear-gradient(135deg,var(--gold),var(--gold-light),var(--gold-dark));
+            background:var(--gradient);
             border:none;
             padding:10px 18px;
             border-radius:40px;
             font-weight:700;
             color:#0a120e;
             cursor:pointer;
-            transition:0.3s;
-            width:100%;
+            transition:0.25s;
             font-size:14px;
-            box-shadow:0 4px 15px rgba(212,175,55,0.15);
+            width:100%;
+            box-shadow:0 4px 20px rgba(212,175,55,0.12);
+            text-align:center;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
         }
-        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 25px rgba(212,175,55,0.2); }
+        .btn-gold:active { transform:scale(0.97); }
+        .btn-gold:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
         .btn-outline {
             background:transparent;
-            border:2px solid var(--gold);
+            border:1.5px solid var(--gold);
             color:var(--gold-light);
-            font-weight:600;
+            box-shadow:none;
         }
-        .btn-outline:hover { background:rgba(212,175,55,0.05); }
+        .btn-outline:active { background:rgba(212,175,55,0.04); }
+        .btn-sm { padding:6px 14px; font-size:12px; width:auto; }
+        .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; }
+        .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; }
+
         .input-glass {
             background:rgba(0,0,0,0.3);
             border:1px solid var(--border);
@@ -119,39 +140,63 @@
             color:#fff;
             font-size:14px;
             outline:none;
-            transition:0.3s;
+            transition:0.25s;
             margin-bottom:10px;
         }
-        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.08); }
+        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.06); }
         .input-glass::placeholder { color:var(--muted); }
-        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-        .text-gold { color:var(--gold); }
-        .text-muted { color:var(--muted); font-size:13px; }
-        /* VIP Badges */
-        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 10px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
+        .pw-wrap { position:relative; }
+        .pw-wrap .input-glass { padding-right:44px; }
+        .pw-toggle {
+            position:absolute;
+            right:14px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:none;
+            color:var(--gold);
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 12px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
         .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
         .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
-        .vip-4 { background:linear-gradient(135deg,var(--gold),var(--gold-dark)); color:#0a120e; }
-        /* Balance */
+        .vip-4 { background:var(--gradient); color:#0a120e; }
+
         .balance-box {
             background:var(--card);
-            backdrop-filter:blur(12px);
-            border-radius:24px;
+            backdrop-filter:var(--glass);
+            border-radius:20px;
             padding:18px 20px;
             border:1px solid var(--gold);
             box-shadow:var(--shadow);
             position:relative;
             overflow:hidden;
         }
-        .balance-box .amount {
-            font-size:38px; font-weight:800;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
-            -webkit-background-clip:text; background-clip:text; color:transparent;
+        .balance-box::before {
+            content:'';
+            position:absolute;
+            top:-40%;
+            right:-20%;
+            width:60%;
+            height:60%;
+            background:radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 70%);
+            pointer-events:none;
         }
-        /* Bottom Nav */
+        .balance-box .amount {
+            font-size:36px; font-weight:800;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            letter-spacing:1px;
+        }
+        .balance-box .label { font-size:12px; color:var(--muted); }
+
         .bottom-nav {
             background:rgba(5,8,6,0.94);
-            backdrop-filter:blur(12px);
+            backdrop-filter:var(--glass);
             border-top:1px solid var(--border);
             display:flex;
             justify-content:space-around;
@@ -159,7 +204,8 @@
             padding:6px 8px 14px;
             position:fixed;
             bottom:0;
-            width:100%;
+            left:0;
+            right:0;
             z-index:30;
         }
         .nav-item {
@@ -171,21 +217,24 @@
             color:var(--muted);
             cursor:pointer;
             font-weight:600;
-            transition:0.3s;
+            transition:0.25s;
             padding:4px 8px;
             border-radius:12px;
+            border:none;
+            background:transparent;
+            -webkit-tap-highlight-color:transparent;
         }
-        .nav-item i { font-size:18px; background:linear-gradient(135deg,var(--gold),var(--gold-light)); -webkit-background-clip:text; background-clip:text; color:transparent; opacity:0.4; transition:0.3s; }
-        .nav-item.active { color:var(--gold); background:rgba(212,175,55,0.04); }
+        .nav-item i { font-size:20px; background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent; opacity:0.35; transition:0.25s; }
+        .nav-item.active { color:var(--gold); }
         .nav-item.active i { opacity:1; transform:scale(1.05); }
-        .nav-item:hover { color:var(--gold); }
+        .nav-item:active { transform:scale(0.92); }
         .hidden-nav { display:none !important; }
-        /* Chat */
+
         .chat-box {
             display:flex;
             flex-direction:column;
-            height:calc(100vh - 190px);
-            background:rgba(0,0,0,0.15);
+            height:calc(100vh - 180px);
+            background:rgba(0,0,0,0.12);
             border-radius:var(--radius);
             overflow:hidden;
             border:1px solid var(--border);
@@ -197,66 +246,69 @@
             display:flex;
             flex-direction:column;
             gap:6px;
+            -webkit-overflow-scrolling:touch;
         }
         .chat-msg {
-            max-width:80%;
+            max-width:82%;
             padding:8px 14px;
             border-radius:16px;
             font-size:14px;
             line-height:1.4;
+            word-break:break-word;
         }
         .chat-msg.sent {
             align-self:flex-end;
-            background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+            background:var(--gradient);
             color:#0a120e;
             border-bottom-right-radius:4px;
         }
         .chat-msg.received {
             align-self:flex-start;
-            background:rgba(255,255,255,0.05);
+            background:rgba(255,255,255,0.04);
             border:1px solid var(--border);
             border-bottom-left-radius:4px;
         }
-        .chat-msg .time { font-size:9px; opacity:0.4; margin-top:4px; text-align:right; }
+        .chat-msg .time { font-size:9px; opacity:0.35; margin-top:3px; text-align:right; }
         .chat-msg img { max-width:140px; max-height:100px; border-radius:8px; margin-top:4px; border:1px solid var(--gold); cursor:pointer; }
         .chat-input {
             display:flex;
             gap:6px;
             padding:10px 12px;
-            background:rgba(0,0,0,0.15);
+            background:rgba(0,0,0,0.12);
             border-top:1px solid var(--border);
             align-items:center;
+            flex-wrap:wrap;
         }
-        .chat-input .input-glass { margin:0; flex:1; padding:8px 14px; font-size:13px; min-height:38px; }
-        .chat-input .btn-gold { width:auto; padding:8px 18px; font-size:13px; min-height:38px; }
+        .chat-input .input-glass { margin:0; flex:1; padding:8px 14px; font-size:13px; min-height:40px; border-radius:40px; }
+        .chat-input .btn-gold { width:auto; padding:8px 18px; font-size:13px; min-height:40px; }
         .chat-input .chat-btn {
-            background:rgba(212,175,55,0.06);
+            background:rgba(212,175,55,0.04);
             border:1px solid var(--border);
             border-radius:40px;
             padding:6px 12px;
             cursor:pointer;
             color:var(--gold);
-            min-height:38px;
+            min-height:40px;
             display:flex;
             align-items:center;
             justify-content:center;
             font-size:16px;
-            transition:0.3s;
+            transition:0.2s;
         }
-        .chat-input .chat-btn:hover { background:rgba(212,175,55,0.08); }
-        /* Order */
+        .chat-input .chat-btn:active { background:rgba(212,175,55,0.08); }
+
         .order-card {
             background:var(--card);
-            backdrop-filter:blur(12px);
+            backdrop-filter:var(--glass);
             border-radius:var(--radius);
             padding:16px;
             border:1px solid var(--gold);
             margin-bottom:14px;
         }
-        .order-card.injection { border-color:#f59e0b; box-shadow:0 0 25px rgba(245,158,11,0.08); }
+        .order-card.injection { border-color:#f59e0b; box-shadow:0 0 25px rgba(245,158,11,0.04); }
         .order-img {
-            width:100%; height:130px;
-            background:rgba(0,0,0,0.15);
+            width:100%; height:120px;
+            background:rgba(0,0,0,0.12);
             border-radius:14px;
             display:flex;
             align-items:center;
@@ -265,7 +317,7 @@
             overflow:hidden;
             border:1px solid var(--border);
         }
-        .order-img i { font-size:36px; color:var(--gold); }
+        .order-img i { font-size:32px; color:var(--gold); }
         .order-img img { width:100%; height:100%; object-fit:contain; }
         .injection-badge {
             background:linear-gradient(135deg,#f59e0b,#ea580c);
@@ -279,8 +331,9 @@
         }
         @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
         .stars { display:flex; gap:6px; cursor:pointer; margin-top:6px; flex-wrap:wrap; }
-        .stars i { font-size:20px; color:rgba(255,255,255,0.1); transition:0.3s; }
-        .stars i.active { color:#F5B042; text-shadow:0 0 15px rgba(245,176,66,0.15); }
+        .stars i { font-size:20px; color:rgba(255,255,255,0.08); transition:0.2s; }
+        .stars i.active { color:#F5B042; text-shadow:0 0 15px rgba(245,176,66,0.1); }
+        .stars i:active { transform:scale(0.85); }
         .progress {
             background:rgba(255,255,255,0.04);
             border-radius:16px;
@@ -288,75 +341,57 @@
             overflow:hidden;
         }
         .progress-fill {
-            background:linear-gradient(90deg,var(--gold),var(--gold-light));
+            background:var(--gradient);
             height:100%;
             width:0%;
             transition:width 0.5s;
         }
         .invite-code {
             font-size:18px; font-weight:800; letter-spacing:2px;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
-            -webkit-background-clip:text; background-clip:text; color:transparent;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
         }
-        .kyc-badge {
-            padding:3px 12px;
-            border-radius:30px;
-            font-size:11px;
-            font-weight:700;
-            display:inline-block;
-        }
-        .kyc-none { background:rgba(255,255,255,0.04); color:var(--muted); border:1px solid var(--border); }
-        .kyc-pending { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid #f59e0b; }
-        .kyc-approved { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid #10b981; }
-        .kyc-rejected { background:rgba(220,38,38,0.12); color:#dc2626; border:1px solid #dc2626; }
+
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.92);
             display:flex; align-items:center; justify-content:center;
-            z-index:1000; backdrop-filter:blur(12px);
+            z-index:1000; backdrop-filter:blur(14px);
+            padding:16px;
         }
         .modal-box {
             background:var(--card);
-            backdrop-filter:blur(12px);
-            border-radius:28px;
+            backdrop-filter:var(--glass);
+            border-radius:24px;
             padding:20px;
-            width:92%;
-            max-width:480px;
+            width:100%; max-width:440px;
             max-height:85vh;
             overflow-y:auto;
             border:1px solid var(--gold);
             box-shadow:var(--shadow);
+            -webkit-overflow-scrolling:touch;
+        }
+        .modal-title {
+            font-size:18px; font-weight:700; color:var(--gold);
+            margin-bottom:14px; display:flex; align-items:center; gap:10px;
         }
         .upload-area {
             border:2px dashed var(--border);
             border-radius:14px;
             padding:12px;
             text-align:center;
-            background:rgba(0,0,0,0.08);
+            background:rgba(0,0,0,0.04);
             cursor:pointer;
             margin-bottom:10px;
             color:var(--muted);
-            transition:0.3s;
+            transition:0.2s;
             font-size:13px;
         }
-        .upload-area:hover { border-color:var(--gold); background:rgba(212,175,55,0.02); }
-        .live-feed {
-            background:rgba(0,0,0,0.08);
-            border-radius:16px;
-            padding:12px;
-            max-height:150px;
-            overflow-y:auto;
-            border:1px solid rgba(212,175,55,0.04);
-        }
-        .feed-item {
-            padding:6px 0;
-            border-bottom:1px solid rgba(212,175,55,0.03);
-            font-size:12px;
-            color:var(--text);
-        }
-        .feed-item:last-child { border:none; }
+        .upload-area:active { border-color:var(--gold); background:rgba(212,175,55,0.02); }
         .wallet-box {
-            background:rgba(0,0,0,0.15);
+            background:rgba(0,0,0,0.12);
             padding:12px;
             border-radius:14px;
             border:1px solid var(--gold);
@@ -370,12 +405,14 @@
         .wallet-box .addr {
             font-family:monospace;
             font-size:12px;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
-            -webkit-background-clip:text; background-clip:text; color:transparent;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
             word-break:break-all;
         }
         .copy-btn {
-            background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+            background:var(--gradient);
             color:#0a120e;
             border:none;
             padding:6px 16px;
@@ -383,11 +420,11 @@
             font-weight:700;
             font-size:12px;
             cursor:pointer;
-            transition:0.3s;
+            transition:0.2s;
         }
-        .copy-btn:hover { transform:scale(1.02); }
+        .copy-btn:active { transform:scale(0.95); }
         .history-item {
-            background:rgba(0,0,0,0.06);
+            background:rgba(0,0,0,0.04);
             border-radius:12px;
             padding:10px;
             margin-bottom:8px;
@@ -401,11 +438,13 @@
             cursor:pointer;
             padding:6px 12px;
             border-radius:12px;
-            background:rgba(0,0,0,0.08);
+            background:rgba(0,0,0,0.04);
             border:1px solid var(--border);
-            transition:0.3s;
+            transition:0.2s;
+            -webkit-tap-highlight-color:transparent;
         }
-        .lang-opt:hover, .lang-opt.active { border-color:var(--gold); background:rgba(212,175,55,0.03); }
+        .lang-opt.active { border-color:var(--gold); background:rgba(212,175,55,0.02); }
+        .lang-opt:active { transform:scale(0.95); }
         .lang-opt .name { font-size:11px; color:var(--text); }
         .stats-grid {
             display:grid;
@@ -414,20 +453,22 @@
             margin:12px 0;
         }
         .stat-card {
-            background:rgba(0,0,0,0.06);
-            border-radius:16px;
+            background:rgba(0,0,0,0.04);
+            border-radius:14px;
             padding:12px;
             text-align:center;
             border:1px solid rgba(212,175,55,0.04);
         }
         .stat-card .val {
-            font-size:20px; font-weight:800;
-            background:linear-gradient(135deg,var(--gold),var(--gold-light));
-            -webkit-background-clip:text; background-clip:text; color:transparent;
+            font-size:18px; font-weight:800;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
         }
-        .stat-card .lbl { font-size:12px; color:var(--muted); }
+        .stat-card .lbl { font-size:11px; color:var(--muted); }
         .back-btn {
-            background:rgba(0,0,0,0.15);
+            background:rgba(0,0,0,0.12);
             border:1px solid var(--border);
             border-radius:40px;
             padding:6px 16px;
@@ -436,31 +477,50 @@
             display:inline-flex;
             align-items:center;
             gap:6px;
-            margin-bottom:14px;
+            margin-bottom:12px;
             font-size:13px;
-            transition:0.3s;
+            transition:0.2s;
         }
-        .back-btn:hover { background:rgba(212,175,55,0.03); }
-        /* Responsive */
-        @media(max-width:768px){
-            .page { padding:10px 8px 20px; }
-            .balance-box .amount { font-size:30px; }
-            .btn-gold { font-size:13px; padding:8px 14px; }
-            .stats-grid { gap:8px; }
-            .stat-card .val { font-size:17px; }
+        .back-btn:active { transform:scale(0.96); }
+        .live-feed {
+            background:rgba(0,0,0,0.04);
+            border-radius:14px;
+            padding:12px;
+            max-height:140px;
+            overflow-y:auto;
+            border:1px solid rgba(212,175,55,0.03);
+            -webkit-overflow-scrolling:touch;
         }
-        @media(max-width:480px){
-            .logo-text { font-size:15px; }
-            .balance-box .amount { font-size:26px; }
-            .nav-item { font-size:7px; padding:2px 6px; }
-            .nav-item i { font-size:16px; }
-            .bottom-nav { padding:4px 6px 12px; }
+        .feed-item {
+            padding:6px 0;
+            border-bottom:1px solid rgba(212,175,55,0.03);
+            font-size:12px;
+            color:var(--text);
         }
-        ::-webkit-scrollbar { width:3px; }
-        ::-webkit-scrollbar-track { background:#1a1e26; }
-        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+        .feed-item:last-child { border:none; }
+        .toast-msg {
+            position:fixed;
+            bottom:80px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(30,42,36,0.92);
+            backdrop-filter:blur(10px);
+            padding:8px 20px;
+            border-radius:40px;
+            font-size:12px;
+            z-index:100;
+            border-left:3px solid var(--gold);
+            font-weight:600;
+            color:#fff;
+            box-shadow:0 4px 20px rgba(0,0,0,0.3);
+            max-width:92%;
+            text-align:center;
+        }
+        .toast-msg.error { background:rgba(220,38,38,0.92); border-left-color:#dc2626; }
         .live-indicator {
-            position:fixed; bottom:76px; right:12px;
+            position:fixed;
+            bottom:76px;
+            right:12px;
             background:rgba(16,185,129,0.85);
             backdrop-filter:blur(8px);
             color:#fff;
@@ -470,8 +530,49 @@
             z-index:100;
             animation:pulse 1.5s infinite;
             display:none;
-            border:1px solid rgba(255,255,255,0.04);
+            border:1px solid rgba(255,255,255,0.03);
         }
+        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+        .gap-1 { gap:6px; }
+        .mt-1 { margin-top:8px; }
+        .mb-1 { margin-bottom:8px; }
+        .text-gold { color:var(--gold); }
+        .text-muted { color:var(--muted); }
+        .text-center { text-align:center; }
+        .w-full { width:100%; }
+        .img-preview { max-width:80px; max-height:80px; border-radius:8px; border:1px solid var(--gold); cursor:pointer; }
+        .img-preview-sm { max-width:60px; max-height:60px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
+        .online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+        .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
+        .online-dot.offline { background:var(--muted); }
+
+        @media(max-width:480px){
+            .app { padding:0 8px 20px; }
+            .header { padding:10px 2px 12px; }
+            .logo-text { font-size:16px; }
+            .logo-icon { width:34px; height:34px; font-size:16px; }
+            .balance-box .amount { font-size:28px; }
+            .card { padding:14px; }
+            .btn-gold { font-size:13px; padding:8px 14px; }
+            .stats-grid { gap:8px; }
+            .stat-card .val { font-size:16px; }
+            .bottom-nav { padding:4px 6px 12px; }
+            .nav-item i { font-size:18px; }
+            .nav-item { font-size:7px; padding:2px 6px; }
+        }
+        @media(max-width:380px){
+            .balance-box .amount { font-size:24px; }
+            .btn-gold { font-size:12px; padding:6px 12px; }
+            .card { padding:12px; }
+            .stat-card .val { font-size:14px; }
+            .modal-box { padding:16px; }
+        }
+        @media(min-width:768px){
+            .app { max-width:520px; margin:0 auto; }
+        }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
     </style>
 </head>
 <body>
@@ -481,36 +582,36 @@
     <!-- ===== LANDING ===== -->
     <div id="pageLanding" class="page active-page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="brandName">LUXCY</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="brandName">LUXCY</div></div>
             <div class="header-actions">
                 <div class="icon-btn" id="companyInfoBtn"><i class="fas fa-info-circle"></i> <span id="aboutText">About</span></div>
             </div>
         </div>
         <div id="logoContainer" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;"></div>
-        <div class="card-glass" style="padding:28px 20px;text-align:center;border-color:var(--gold);">
-            <div style="display:inline-block;background:rgba(212,175,55,0.06);border:1px solid var(--border);border-radius:40px;padding:2px 14px;font-size:11px;font-weight:600;color:var(--gold);margin-bottom:12px;letter-spacing:1px;">PREMIUM</div>
-            <h1 style="font-size:40px;font-weight:800;background:linear-gradient(135deg,var(--gold-light),var(--gold),var(--gold-dark));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px;" id="heroTitle">LUXCY</h1>
-            <p style="font-size:14px;color:var(--text);max-width:400px;margin:0 auto 24px;line-height:1.5;" id="heroSubtitle">Travel & earn daily commissions.</p>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
-                <div class="card-glass" style="padding:14px 8px;text-align:center;margin:0;"><i class="fas fa-plane" style="font-size:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s1">Flights</div><div style="font-size:10px;color:var(--muted);" id="s1d">Worldwide</div></div>
-                <div class="card-glass" style="padding:14px 8px;text-align:center;margin:0;"><i class="fas fa-hotel" style="font-size:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s2">Hotels</div><div style="font-size:10px;color:var(--muted);" id="s2d">Luxury deals</div></div>
-                <div class="card-glass" style="padding:14px 8px;text-align:center;margin:0;"><i class="fas fa-train" style="font-size:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s3">Trains</div><div style="font-size:10px;color:var(--muted);" id="s3d">Premium</div></div>
-                <div class="card-glass" style="padding:14px 8px;text-align:center;margin:0;"><i class="fas fa-tasks" style="font-size:28px;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s4">Tasks</div><div style="font-size:10px;color:var(--muted);" id="s4d">Earn up to 1%</div></div>
+        <div class="card" style="padding:24px 16px;text-align:center;border-color:var(--gold);">
+            <div style="display:inline-block;background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:40px;padding:2px 14px;font-size:10px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:1px;">PREMIUM</div>
+            <h1 style="font-size:34px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;" id="heroTitle">LUXCY</h1>
+            <p style="font-size:14px;color:var(--text);max-width:400px;margin:0 auto 20px;line-height:1.5;" id="heroSubtitle">Travel & earn daily commissions.</p>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;">
+                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-plane" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s1">Flights</div><div style="font-size:9px;color:var(--muted);" id="s1d">Worldwide</div></div>
+                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-hotel" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s2">Hotels</div><div style="font-size:9px;color:var(--muted);" id="s2d">Luxury deals</div></div>
+                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-train" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s3">Trains</div><div style="font-size:9px;color:var(--muted);" id="s3d">Premium</div></div>
+                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-tasks" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s4">Tasks</div><div style="font-size:9px;color:var(--muted);" id="s4d">Earn up to 1%</div></div>
             </div>
-            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-                <button class="btn-gold" id="landingLoginBtn" style="width:auto;padding:10px 32px;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
-                <button class="btn-gold btn-outline" id="landingRegisterBtn" style="width:auto;padding:10px 32px;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn-gold" id="landingLoginBtn" style="width:auto;padding:10px 28px;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
+                <button class="btn-gold btn-outline" id="landingRegisterBtn" style="width:auto;padding:10px 28px;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
             </div>
         </div>
-        <div class="card-glass" id="companySection">
-            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;">
-                <div style="width:50px;height:50px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border-radius:16px;display:flex;align-items:center;justify-content:center;" id="companyLogo"><i class="fas fa-globe-asia" style="font-size:28px;color:#0a0c10;"></i></div>
-                <div><div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;" id="companyNameText">LUXCY</div><div style="font-size:12px;color:var(--muted);" id="companyTaglineText">Global Travel & Earning</div></div>
+        <div class="card" id="companySection">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
+                <div style="width:44px;height:44px;background:var(--gradient);border-radius:14px;display:flex;align-items:center;justify-content:center;" id="companyLogo"><i class="fas fa-globe-asia" style="font-size:24px;color:#0a0c10;"></i></div>
+                <div><div style="font-size:18px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="companyNameText">LUXCY</div><div style="font-size:12px;color:var(--muted);" id="companyTaglineText">Global Travel & Earning</div></div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0;">
-                <div style="text-align:center;padding:10px;background:rgba(0,0,0,0.04);border-radius:16px;"><div style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat1">50M+</div><div style="font-size:11px;color:var(--muted);" id="stat1l">Customers</div></div>
-                <div style="text-align:center;padding:10px;background:rgba(0,0,0,0.04);border-radius:16px;"><div style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat2">200+</div><div style="font-size:11px;color:var(--muted);" id="stat2l">Countries</div></div>
-                <div style="text-align:center;padding:10px;background:rgba(0,0,0,0.04);border-radius:16px;"><div style="font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat3">1M+</div><div style="font-size:11px;color:var(--muted);" id="stat3l">Daily</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;">
+                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat1">50M+</div><div style="font-size:10px;color:var(--muted);" id="stat1l">Customers</div></div>
+                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat2">200+</div><div style="font-size:10px;color:var(--muted);" id="stat2l">Countries</div></div>
+                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat3">1M+</div><div style="font-size:10px;color:var(--muted);" id="stat3l">Daily</div></div>
             </div>
             <div style="font-size:13px;color:var(--text);line-height:1.6;" id="companyDesc"><p>LUXCY is a premier travel and task platform.</p></div>
         </div>
@@ -519,21 +620,21 @@
     <!-- ===== LOGIN ===== -->
     <div id="pageLogin" class="page">
         <div class="back-btn" id="backFromLogin"><i class="fas fa-arrow-left"></i> <span id="backLoginText">Back</span></div>
-        <div style="text-align:center;margin:12px 0 20px;">
-            <div class="logo-icon" style="width:56px;height:56px;margin:0 auto 10px;font-size:28px;"><i class="fas fa-crown"></i></div>
-            <div style="font-size:30px;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;background-clip:text;color:transparent;" id="loginWebsiteName">LUXCY</div>
-            <div style="font-size:13px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
+        <div style="text-align:center;margin:10px 0 18px;">
+            <div class="logo-icon" style="width:52px;height:52px;margin:0 auto 8px;font-size:24px;"><i class="fas fa-crown"></i></div>
+            <div style="font-size:26px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="loginWebsiteName">LUXCY</div>
+            <div style="font-size:12px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
         </div>
-        <div class="card-glass">
+        <div class="card">
             <input type="text" class="input-glass" id="loginUsername" placeholder="Username">
-            <div style="position:relative;">
-                <input type="password" class="input-glass" id="loginPass" placeholder="Password" style="padding-right:44px;">
-                <i class="fas fa-eye" onclick="togglePass('loginPass',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);font-size:15px;"></i>
+            <div class="pw-wrap">
+                <input type="password" class="input-glass" id="loginPass" placeholder="Password">
+                <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
             </div>
             <button class="btn-gold" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnText">Login</span></button>
-            <div class="flex" style="margin-top:12px;">
-                <span style="font-size:13px;color:var(--muted);" id="forgotText">Forgot Password?</span>
-                <span id="goRegisterBtn" style="color:var(--gold);font-weight:700;cursor:pointer;font-size:14px;">Register →</span>
+            <div class="flex" style="margin-top:10px;">
+                <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
+                <span id="goRegisterBtn" style="color:var(--gold);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
         </div>
     </div>
@@ -541,61 +642,61 @@
     <!-- ===== REGISTER ===== -->
     <div id="pageRegister" class="page">
         <div class="back-btn" id="backFromRegister"><i class="fas fa-arrow-left"></i> <span id="backRegText">Back</span></div>
-        <div style="text-align:center;margin-bottom:14px;"><h2 style="color:var(--gold);font-size:22px;" id="regTitle">Create Account</h2></div>
-        <div class="card-glass">
+        <div style="text-align:center;margin-bottom:12px;"><h2 style="color:var(--gold);font-size:20px;" id="regTitle">Create Account</h2></div>
+        <div class="card">
             <input class="input-glass" id="regUsername" placeholder="Username">
             <input class="input-glass" id="regEmail" placeholder="Email">
             <input class="input-glass" id="regPhone" placeholder="Phone">
-            <div style="position:relative;"><input type="password" class="input-glass" id="regPass" placeholder="Login Password" style="padding-right:44px;"><i class="fas fa-eye" onclick="togglePass('regPass',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);font-size:15px;"></i></div>
-            <div style="position:relative;"><input type="password" class="input-glass" id="regConfirm" placeholder="Confirm Password" style="padding-right:44px;"><i class="fas fa-eye" onclick="togglePass('regConfirm',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);font-size:15px;"></i></div>
-            <div style="position:relative;"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password" style="padding-right:44px;"><i class="fas fa-eye" onclick="togglePass('regWithdraw',this)" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);font-size:15px;"></i></div>
+            <div class="pw-wrap"><input type="password" class="input-glass" id="regPass" placeholder="Login Password"><button class="pw-toggle" onclick="togglePw('regPass',this)"><i class="fas fa-eye"></i></button></div>
+            <div class="pw-wrap"><input type="password" class="input-glass" id="regConfirm" placeholder="Confirm Password"><button class="pw-toggle" onclick="togglePw('regConfirm',this)"><i class="fas fa-eye"></i></button></div>
+            <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
             <input class="input-glass" id="regInvite" placeholder="Invitation Code (Required)">
             <button class="btn-gold" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
-            <div style="text-align:center;margin-top:12px;font-size:14px;" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--gold);font-weight:700;cursor:pointer;">Login</span></div>
+            <div style="text-align:center;margin-top:10px;font-size:13px;" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--gold);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
 
     <!-- ===== HOME ===== -->
     <div id="pageHome" class="page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="homeBrand">LUXCY</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="homeBrand">LUXCY</div></div>
             <div class="header-actions">
                 <div class="icon-btn" id="refreshHome"><i class="fas fa-sync-alt"></i></div>
                 <div class="icon-btn" id="signOutHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
             </div>
         </div>
-        <div class="flex" style="margin-bottom:10px;">
-            <div><span style="color:var(--muted);font-size:13px;" id="welcomeText">Welcome</span> <strong style="color:var(--gold);font-size:17px;" id="homeName">---</strong></div>
-            <div><span style="color:var(--muted);font-size:13px;" id="vipLabel">VIP</span> <strong id="homeVip" class="text-gold">VIP 1</strong></div>
+        <div class="flex" style="margin-bottom:8px;">
+            <div><span style="color:var(--muted);font-size:12px;" id="welcomeText">Welcome</span> <strong style="color:var(--gold);font-size:16px;" id="homeName">---</strong></div>
+            <div><span style="color:var(--muted);font-size:12px;" id="vipLabel">VIP</span> <strong id="homeVip" class="text-gold">VIP 1</strong></div>
         </div>
         <div class="balance-box">
-            <div style="color:var(--muted);font-size:12px;" id="balanceLabel">Account Balance</div>
-            <div class="amount" id="balanceAmount">S/ 0.00</div>
-            <div class="flex" style="margin-top:6px;">
-                <span style="font-size:12px;color:var(--text);"><i class="fas fa-chart-line"></i> <span id="rateLabel">Rate</span>: <span id="commRate">0.5%</span></span>
-                <span style="font-size:12px;color:var(--text);"><i class="fas fa-calendar-day"></i> <span id="todayLabel">Today</span>: <span id="todayCount">0</span>/<span id="dailyMax">0</span></span>
+            <div class="label" id="balanceLabel">Account Balance</div>
+            <div class="amount" id="balanceAmount">S$ 0.00</div>
+            <div class="flex" style="margin-top:4px;">
+                <span style="font-size:11px;color:var(--text);"><i class="fas fa-chart-line"></i> <span id="rateLabel">Rate</span>: <span id="commRate">0.5%</span></span>
+                <span style="font-size:11px;color:var(--text);"><i class="fas fa-calendar-day"></i> <span id="todayLabel">Today</span>: <span id="todayCount">0</span>/<span id="dailyMax">0</span></span>
             </div>
         </div>
-        <div class="card-glass">
+        <div class="card">
             <div class="flex">
-                <div><span style="color:var(--muted);font-size:12px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:18px;" id="todayEarn">S/ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:12px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">S/ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:12px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">S/ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:17px;" id="todayEarn">S$ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">S$ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">S$ 0.00</strong></div>
             </div>
         </div>
-        <div class="flex" style="gap:10px;margin-bottom:12px;">
+        <div class="flex" style="gap:8px;margin-bottom:10px;">
             <button class="btn-gold" id="rechargeBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:13px;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button>
             <button class="btn-gold" id="withdrawBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:13px;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button>
         </div>
-        <div class="card-glass" style="text-align:center;border-color:var(--border);">
-            <div style="color:var(--muted);font-size:12px;" id="refLabel">Referral Code</div>
+        <div class="card" style="text-align:center;border-color:var(--border);">
+            <div style="color:var(--muted);font-size:11px;" id="refLabel">Referral Code</div>
             <div class="invite-code" id="refCode">------</div>
         </div>
-        <div style="display:flex;gap:8px;font-size:11px;color:var(--muted);margin:10px 0;flex-wrap:wrap;justify-content:center;">
+        <div style="display:flex;gap:6px;font-size:10px;color:var(--muted);margin:8px 0;flex-wrap:wrap;justify-content:center;">
             <span>VIP1 (0.5%)</span><span>VIP2 (0.7%)</span><span>VIP3 (0.8%)</span><span>VIP4 (1.0%)</span>
         </div>
         <div class="live-feed">
-            <div style="color:var(--gold);font-size:13px;margin-bottom:6px;"><i class="fas fa-fire"></i> <span id="liveLabel">Live Updates</span></div>
+            <div style="color:var(--gold);font-size:12px;margin-bottom:6px;"><i class="fas fa-fire"></i> <span id="liveLabel">Live Updates</span></div>
             <div id="feedList"></div>
         </div>
     </div>
@@ -603,10 +704,10 @@
     <!-- ===== WORK ===== -->
     <div id="pageWork" class="page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-briefcase"></i></div><div class="logo-text" id="workTitle">Tasks</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-briefcase"></i></div><div class="logo-text" id="workTitle">Tasks</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshWork"><i class="fas fa-sync-alt"></i></div></div>
         </div>
-        <div class="card-glass">
+        <div class="card">
             <div class="flex"><strong style="font-size:14px;" id="progressLabel">Task Progress</strong><span class="text-gold" id="taskCounter">0/0</span></div>
             <div class="progress" style="margin:8px 0;"><div class="progress-fill" id="taskFill"></div></div>
             <button class="btn-gold" id="startOrderBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button>
@@ -617,58 +718,49 @@
     <!-- ===== ORDERS ===== -->
     <div id="pageOrders" class="page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-clipboard-list"></i></div><div class="logo-text" id="orderTitle">History</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-clipboard-list"></i></div><div class="logo-text" id="orderTitle">History</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshOrders"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div id="ordersList"></div>
     </div>
 
-    <!-- ===== PROFILE ===== -->
+    <!-- ===== PROFILE (KYC removed) ===== -->
     <div id="pageProfile" class="page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-user"></i></div><div class="logo-text" id="profileTitle">Profile</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-user"></i></div><div class="logo-text" id="profileTitle">Profile</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshProfile"><i class="fas fa-sync-alt"></i></div></div>
         </div>
-        <div class="card-glass">
-            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
-                <div id="profileAvatar" style="width:80px;height:80px;border-radius:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;cursor:pointer;box-shadow:0 0 0 3px rgba(212,175,55,0.06);"><i class="fas fa-user-circle" style="font-size:44px;color:#0a120e;"></i></div>
-                <div><strong style="color:var(--gold);font-size:20px;" id="profileName">---</strong><div style="margin-top:4px;"><span id="profileVip">VIP 1</span></div><div style="font-size:13px;color:var(--muted);margin-top:4px;">⭐ <span id="creditLabel">Credit</span>: <span id="creditScore" style="color:var(--gold);font-weight:700;">0</span></div></div>
+        <div class="card">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                <div id="profileAvatar" style="width:72px;height:72px;border-radius:36px;background:var(--gradient);display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;cursor:pointer;box-shadow:0 0 0 3px rgba(212,175,55,0.04);flex-shrink:0;"><i class="fas fa-user-circle" style="font-size:40px;color:#0a120e;"></i></div>
+                <div><strong style="color:var(--gold);font-size:20px;" id="profileName">---</strong><div style="margin-top:4px;"><span id="profileVip">VIP 1</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px;">⭐ <span id="creditLabel">Credit</span>: <span id="creditScore" style="color:var(--gold);font-weight:600;">0</span></div></div>
             </div>
         </div>
         <div class="stats-grid">
-            <div class="stat-card"><div class="val" id="pTotalAssets">S/ 0.00</div><div class="lbl" id="pAssetsLabel">Total Assets</div></div>
+            <div class="stat-card"><div class="val" id="pTotalAssets">S$ 0.00</div><div class="lbl" id="pAssetsLabel">Total Assets</div></div>
             <div class="stat-card"><div class="val" id="pTodayOrders">0</div><div class="lbl" id="pOrdersLabel">Today's Orders</div></div>
-            <div class="stat-card"><div class="val" id="pTodayEarn">S/ 0.0000</div><div class="lbl" id="pEarnLabel">Today's Earnings</div></div>
-            <div class="stat-card"><div class="val" id="pTotalComm">S/ 0.0000</div><div class="lbl" id="pCommLabel">Total Commission</div></div>
+            <div class="stat-card"><div class="val" id="pTodayEarn">S$ 0.0000</div><div class="lbl" id="pEarnLabel">Today's Earnings</div></div>
+            <div class="stat-card"><div class="val" id="pTotalComm">S$ 0.0000</div><div class="lbl" id="pCommLabel">Total Commission</div></div>
         </div>
-        <div class="card-glass">
-            <div class="flex">
-                <div><span style="font-size:13px;color:var(--muted);" id="kycLabel">KYC</span></div>
-                <div id="kycStatus"><span class="kyc-badge kyc-none">Not Verified</span></div>
-            </div>
-            <div id="kycAction" style="margin-top:8px;">
-                <button class="btn-gold btn-outline" id="kycApplyBtn" style="font-size:13px;"><i class="fas fa-id-card"></i> <span id="kycApplyText">Apply KYC</span></button>
-            </div>
-        </div>
-        <div class="flex" style="gap:10px;margin-bottom:12px;">
+        <div class="flex" style="gap:8px;margin-bottom:10px;">
             <button class="btn-gold" id="depositBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;width:48%;font-size:13px;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
             <button class="btn-gold" id="withdrawProfileBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;width:48%;font-size:13px;"><i class="fas fa-minus-circle"></i> <span id="withdrawProfileText">Withdraw</span></button>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
             <button class="btn-gold btn-outline" id="bindWalletBtn" style="font-size:13px;"><i class="fas fa-link"></i> <span id="bindWalletText">Bind Wallet</span></button>
             <button class="btn-gold btn-outline" id="personalDetailsBtn" style="font-size:13px;"><i class="fas fa-id-card"></i> <span id="personalText">Personal Details</span></button>
             <button class="btn-gold btn-outline" id="loanBtn" style="font-size:13px;"><i class="fas fa-hand-holding-usd"></i> <span id="loanText">Loan Service</span></button>
         </div>
-        <div class="flex" style="gap:8px;margin-bottom:12px;">
-            <button class="btn-gold btn-outline" id="rechargeHistoryBtn" style="flex:1;font-size:12px;"><i class="fas fa-history"></i> <span id="rechargeHistText">Recharge</span></button>
-            <button class="btn-gold btn-outline" id="withdrawHistoryBtn" style="flex:1;font-size:12px;"><i class="fas fa-list"></i> <span id="withdrawHistText">Withdraw</span></button>
+        <div class="flex" style="gap:8px;margin-bottom:10px;">
+            <button class="btn-gold btn-outline" id="rechargeHistoryBtn" style="flex:1;font-size:11px;"><i class="fas fa-history"></i> <span id="rechargeHistText">Recharge</span></button>
+            <button class="btn-gold btn-outline" id="withdrawHistoryBtn" style="flex:1;font-size:11px;"><i class="fas fa-list"></i> <span id="withdrawHistText">Withdraw</span></button>
         </div>
-        <div class="card-glass">
-            <div class="flex"><span style="font-size:13px;color:var(--muted);"><i class="fas fa-wallet"></i> <span id="walletLabel">Wallet</span>:</span><span id="walletDisplay" style="font-size:13px;">Not set</span></div>
+        <div class="card">
+            <div class="flex"><span style="font-size:12px;color:var(--muted);"><i class="fas fa-wallet"></i> <span id="walletLabel">Wallet</span>:</span><span id="walletDisplay" style="font-size:12px;">Not set</span></div>
         </div>
-        <div class="card-glass" style="margin-top:12px;">
-            <div style="text-align:center;font-size:13px;color:var(--gold);margin-bottom:8px;"><i class="fas fa-globe"></i> <span id="langLabel">Language</span></div>
-            <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;" id="langSelector">
+        <div class="card" style="margin-top:10px;">
+            <div style="text-align:center;font-size:12px;color:var(--gold);margin-bottom:8px;"><i class="fas fa-globe"></i> <span id="langLabel">Language</span></div>
+            <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;" id="langSelector">
                 <div class="lang-opt" data-lang="en"><span>🇺🇸</span><span class="name">English</span></div>
                 <div class="lang-opt" data-lang="th"><span>🇹🇭</span><span class="name">Thai</span></div>
                 <div class="lang-opt" data-lang="es"><span>🇪🇸</span><span class="name">Spanish</span></div>
@@ -682,28 +774,28 @@
     <!-- ===== SERVICE ===== -->
     <div id="pageService" class="page">
         <div class="header">
-            <div class="logo"><div class="logo-icon"><i class="fas fa-headset"></i></div><div class="logo-text" id="serviceTitle">Support</div></div>
+            <div class="logo-area"><div class="logo-icon"><i class="fas fa-headset"></i></div><div class="logo-text" id="serviceTitle">Support</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshService"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="chat-box">
             <div class="chat-msgs" id="chatMessages"></div>
             <div class="chat-input">
                 <button class="chat-btn" id="emojiBtn"><i class="far fa-smile"></i></button>
-                <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:8px 14px;font-size:13px;min-height:38px;">
+                <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:8px 14px;font-size:13px;min-height:40px;">
                 <button class="chat-btn" id="uploadChatBtn"><i class="fas fa-image"></i></button>
                 <input type="file" id="chatFileInput" accept="image/*" style="display:none;">
-                <button class="btn-gold" id="sendChatBtn" style="width:auto;padding:8px 18px;font-size:13px;min-height:38px;"><span id="sendText">Send</span></button>
+                <button class="btn-gold" id="sendChatBtn" style="width:auto;padding:8px 18px;font-size:13px;min-height:40px;"><span id="sendText">Send</span></button>
             </div>
         </div>
     </div>
 
     <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav hidden-nav" id="bottomNav">
-        <div class="nav-item" data-page="home"><i class="fas fa-home"></i><span id="navHome">Home</span></div>
-        <div class="nav-item" data-page="work"><i class="fas fa-briefcase"></i><span id="navWork">Work</span></div>
-        <div class="nav-item" data-page="orders"><i class="fas fa-clipboard-list"></i><span id="navOrders">Orders</span></div>
-        <div class="nav-item" data-page="profile"><i class="fas fa-user"></i><span id="navProfile">Profile</span></div>
-        <div class="nav-item" data-page="service"><i class="fas fa-headset"></i><span id="navService">Service</span></div>
+        <button class="nav-item" data-page="home"><i class="fas fa-home"></i><span id="navHome">Home</span></button>
+        <button class="nav-item" data-page="work"><i class="fas fa-briefcase"></i><span id="navWork">Work</span></button>
+        <button class="nav-item" data-page="orders"><i class="fas fa-clipboard-list"></i><span id="navOrders">Orders</span></button>
+        <button class="nav-item" data-page="profile"><i class="fas fa-user"></i><span id="navProfile">Profile</span></button>
+        <button class="nav-item" data-page="service"><i class="fas fa-headset"></i><span id="navService">Service</span></button>
     </div>
 </div>
 
@@ -730,17 +822,16 @@
     let unsubUser = null, unsubChat = null, unsubInjections = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
+    let lastSeenInterval = null;
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
-    function getVIP(balance) {
-        if (balance >= 1500) return 4;
-        if (balance >= 500) return 3;
-        if (balance >= 100) return 2;
+    function getVIP(user) {
+        if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel;
         return 1;
     }
-    function getRate(user) { return VIP_RATES[getVIP(user?.balance||0)]; }
+    function getRate(user) { return VIP_RATES[getVIP(user)] || 0.005; }
     function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
-    function esc(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
+    function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
 
     // ===== TRANSLATIONS =====
     const t = {
@@ -772,9 +863,7 @@
             uploadPhoto:"Upload Photo", save:"Save", cancel:"Cancel",
             bonusOrder:"BONUS ORDER!", injectionMsg:"Special commission order from admin!",
             referralEarned:"Referral Bonus Earned!",
-            kycApply:"Apply KYC", kycStatus:"KYC Status", kycVerified:"Verified", kycPending:"Pending", kycRejected:"Rejected", kycNone:"Not Verified",
-            kycDoc:"Document Type", kycFront:"Front Side", kycBack:"Back Side", kycSubmit:"Submit KYC",
-            kycWaiting:"Waiting for admin review..."
+            rechargeWaiting:"Please wait, we are checking your payment."
         },
         th: {
             heroTitle:"LUXCY", heroSubtitle:"เดินทางและรับรายได้ทุกวัน",
@@ -804,9 +893,7 @@
             uploadPhoto:"อัปโหลดรูป", save:"บันทึก", cancel:"ยกเลิก",
             bonusOrder:"ออเดอร์พิเศษ!", injectionMsg:"ออเดอร์คอมมิชชั่นพิเศษ!",
             referralEarned:"ได้รับโบนัสแนะนำ!",
-            kycApply:"ยืนยัน KYC", kycStatus:"สถานะ KYC", kycVerified:"ยืนยันแล้ว", kycPending:"รอตรวจสอบ", kycRejected:"ถูกปฏิเสธ", kycNone:"ยังไม่ยืนยัน",
-            kycDoc:"ประเภทเอกสาร", kycFront:"ด้านหน้า", kycBack:"ด้านหลัง", kycSubmit:"ส่ง KYC",
-            kycWaiting:"รอผู้ดูแลตรวจสอบ..."
+            rechargeWaiting:"กรุณารอสักครู่ เรากำลังตรวจสอบการชำระเงินของคุณ"
         },
         es: {
             heroTitle:"LUXCY", heroSubtitle:"Viaja y gana comisiones diarias.",
@@ -836,9 +923,7 @@
             uploadPhoto:"Subir Foto", save:"Guardar", cancel:"Cancelar",
             bonusOrder:"ORDEN BONUS!", injectionMsg:"Orden especial del admin!",
             referralEarned:"Bono por Referido!",
-            kycApply:"Solicitar KYC", kycStatus:"Estado KYC", kycVerified:"Verificado", kycPending:"Pendiente", kycRejected:"Rechazado", kycNone:"No Verificado",
-            kycDoc:"Tipo Documento", kycFront:"Frente", kycBack:"Reverso", kycSubmit:"Enviar KYC",
-            kycWaiting:"Esperando revisión..."
+            rechargeWaiting:"Por favor espere, estamos verificando su pago."
         },
         uk: {
             heroTitle:"LUXCY", heroSubtitle:"Подорожуйте та заробляйте щодня.",
@@ -868,9 +953,7 @@
             uploadPhoto:"Завантажити фото", save:"Зберегти", cancel:"Скасувати",
             bonusOrder:"БОНУСНЕ ЗАМОВЛЕННЯ!", injectionMsg:"Спеціальне замовлення від адміна!",
             referralEarned:"Реферальний бонус!",
-            kycApply:"Подати KYC", kycStatus:"Статус KYC", kycVerified:"Підтверджено", kycPending:"На перевірці", kycRejected:"Відхилено", kycNone:"Не підтверджено",
-            kycDoc:"Тип документа", kycFront:"Лицьова", kycBack:"Зворотна", kycSubmit:"Надіслати",
-            kycWaiting:"Очікується перевірка..."
+            rechargeWaiting:"Будь ласка, зачекайте, ми перевіряємо ваш платіж."
         },
         ru: {
             heroTitle:"LUXCY", heroSubtitle:"Путешествуйте и зарабатывайте ежедневно.",
@@ -900,9 +983,7 @@
             uploadPhoto:"Загрузить фото", save:"Сохранить", cancel:"Отмена",
             bonusOrder:"БОНУСНЫЙ ЗАКАЗ!", injectionMsg:"Специальный заказ от админа!",
             referralEarned:"Реферальный бонус!",
-            kycApply:"Подать KYC", kycStatus:"Статус KYC", kycVerified:"Подтвержден", kycPending:"На проверке", kycRejected:"Отклонен", kycNone:"Не подтвержден",
-            kycDoc:"Тип документа", kycFront:"Лицевая", kycBack:"Обратная", kycSubmit:"Отправить",
-            kycWaiting:"Ожидается проверка..."
+            rechargeWaiting:"Пожалуйста, подождите, мы проверяем ваш платеж."
         }
     };
 
@@ -933,8 +1014,6 @@
             yourBalance:d.yourBalance, needAdditional:d.needAdditional, rechargeNow:d.rechargeNow,
             close:d.close, submit:d.submit, cancel:d.cancel, uploadReceipt:d.uploadReceipt,
             enterAmount:d.enterAmount, noRecords:d.noRecords,
-            kycApply:d.kycApply, kycStatus:d.kycStatus, kycVerified:d.kycVerified, kycPending:d.kycPending, kycRejected:d.kycRejected, kycNone:d.kycNone,
-            kycDoc:d.kycDoc, kycFront:d.kycFront, kycBack:d.kycBack, kycSubmit:d.kycSubmit, kycWaiting:d.kycWaiting,
             navHome:d.navHome, navWork:d.navWork, navOrders:d.navOrders, navProfile:d.navProfile, navService:d.navService
         };
         for (const [id, val] of Object.entries(map)) {
@@ -944,19 +1023,27 @@
         if (user) updateUI();
     }
 
-    window.togglePass = function(id, el) {
-        const i = document.getElementById(id);
-        if (i.type === 'password') { i.type='text'; el.classList.remove('fa-eye'); el.classList.add('fa-eye-slash'); }
-        else { i.type='password'; el.classList.remove('fa-eye-slash'); el.classList.add('fa-eye'); }
+    window.togglePw = function(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    };
+
+    document.getElementById('loginToggle').onclick = function() {
+        const inp = document.getElementById('loginPass');
+        const icon = this.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
     // ===== HELPERS =====
-    function showFeedback(msg, err=false) {
-        const fb = document.createElement('div');
-        fb.style.cssText = `position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:${err?'rgba(220,38,38,0.92)':'rgba(30,42,36,0.92)'};backdrop-filter:blur(10px);padding:8px 20px;border-radius:40px;font-size:12px;z-index:100;border-left:3px solid var(--gold);font-weight:600;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.3);max-width:92%;text-align:center;`;
-        fb.innerHTML = `<i class="fas ${err?'fa-exclamation-triangle':'fa-circle-check'}"></i> ${msg}`;
-        document.body.appendChild(fb);
-        setTimeout(() => fb.remove(), 2500);
+    function toast(msg, err=false) {
+        const el = document.createElement('div');
+        el.className = `toast-msg${err ? ' error' : ''}`;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
     }
 
     function compress(file, max=400, q=0.5) {
@@ -1006,110 +1093,8 @@
                 updateUI();
             }
             const d = t[lang] || t.en;
-            showFeedback(`🎁 ${d.referralEarned} +S/ ${bonus.toFixed(4)}`);
+            toast(`🎁 ${d.referralEarned} +S$ ${bonus.toFixed(4)}`);
         } catch(e) { console.error("Referral error:", e); }
-    }
-
-    // ===== KYC =====
-    async function getKyc(userId) {
-        try {
-            const q = query(collection(db, "kycRequests"), where("userId", "==", userId), orderBy("submittedAt", "desc"));
-            const snap = await getDocs(q);
-            if (!snap.empty) return { id: snap.docs[0].id, ...snap.docs[0].data() };
-            return null;
-        } catch { return null; }
-    }
-
-    async function applyKyc(docType, front, back) {
-        if (!user) return;
-        const data = {
-            userId: user.id, username: user.username, docType, frontImage: front, backImage: back,
-            status: 'pending', submittedAt: new Date().toISOString()
-        };
-        const id = Date.now().toString();
-        await setDoc(doc(db, "kycRequests", id), { ...data, id });
-        showFeedback("KYC submitted! Waiting for admin.");
-        await updateKycUI();
-    }
-
-    async function updateKycUI() {
-        if (!user) return;
-        const kyc = await getKyc(user.id);
-        const statusEl = document.getElementById("kycStatus");
-        const actionEl = document.getElementById("kycAction");
-        if (!statusEl) return;
-        const d = t[lang] || t.en;
-        if (!kyc) {
-            statusEl.innerHTML = `<span class="kyc-badge kyc-none">${d.kycNone}</span>`;
-            if (actionEl) actionEl.innerHTML = `<button class="btn-gold btn-outline" id="kycApplyBtn" style="font-size:13px;"><i class="fas fa-id-card"></i> ${d.kycApply}</button>`;
-            document.getElementById("kycApplyBtn")?.addEventListener('click', showKycModal);
-            return;
-        }
-        const map = {
-            pending: { cls: 'kyc-pending', label: d.kycPending },
-            approved: { cls: 'kyc-approved', label: d.kycVerified },
-            rejected: { cls: 'kyc-rejected', label: d.kycRejected }
-        };
-        const info = map[kyc.status] || map.pending;
-        statusEl.innerHTML = `<span class="kyc-badge ${info.cls}">${info.label}</span>`;
-        if (kyc.status === 'pending') {
-            if (actionEl) actionEl.innerHTML = `<div style="text-align:center;padding:4px;color:#f59e0b;font-size:13px;"><i class="fas fa-clock"></i> ${d.kycWaiting}</div>`;
-        } else if (kyc.status === 'approved') {
-            if (actionEl) actionEl.innerHTML = `<div style="text-align:center;padding:4px;color:#10b981;font-size:13px;"><i class="fas fa-check-circle"></i> ${d.kycVerified}</div>`;
-        } else if (kyc.status === 'rejected') {
-            if (actionEl) actionEl.innerHTML = `<div><button class="btn-gold btn-outline" id="kycRetryBtn" style="font-size:13px;width:auto;padding:6px 18px;"><i class="fas fa-redo"></i> ${d.kycApply}</button></div>`;
-            document.getElementById("kycRetryBtn")?.addEventListener('click', showKycModal);
-        }
-    }
-
-    function showKycModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <h2 style="color:var(--gold);text-align:center;margin-bottom:14px;font-size:20px;"><i class="fas fa-id-card"></i> ${d.kycApply}</h2>
-                <div style="margin-bottom:8px;"><label style="color:var(--gold);font-size:13px;">${d.kycDoc}</label>
-                    <select id="kycDocSelect" class="input-glass">
-                        <option value="nrc">NRC</option>
-                        <option value="driver">Driver License</option>
-                        <option value="passport">Passport</option>
-                    </select>
-                </div>
-                <div class="upload-area" id="kycFrontArea"><i class="fas fa-upload"></i> ${d.kycFront}<input type="file" id="kycFrontInput" accept="image/*" style="display:none;"></div>
-                <div id="kycFrontPreview"></div>
-                <div class="upload-area" id="kycBackArea"><i class="fas fa-upload"></i> ${d.kycBack}<input type="file" id="kycBackInput" accept="image/*" style="display:none;"></div>
-                <div id="kycBackPreview"></div>
-                <button class="btn-gold" id="kycSubmitBtn">${d.kycSubmit}</button>
-                <button class="btn-gold btn-outline" id="kycCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-                <div id="kycMsg" style="text-align:center;margin-top:8px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        let frontData=null, backData=null;
-        modal.querySelector("#kycFrontArea").onclick = () => modal.querySelector("#kycFrontInput").click();
-        modal.querySelector("#kycFrontInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                frontData = await compress(e.target.files[0], 400, 0.5);
-                modal.querySelector("#kycFrontPreview").innerHTML = `<img src="${frontData}" style="max-width:100%;max-height:100px;border-radius:8px;border:1px solid var(--gold);margin-top:6px;">`;
-            }
-        };
-        modal.querySelector("#kycBackArea").onclick = () => modal.querySelector("#kycBackInput").click();
-        modal.querySelector("#kycBackInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                backData = await compress(e.target.files[0], 400, 0.5);
-                modal.querySelector("#kycBackPreview").innerHTML = `<img src="${backData}" style="max-width:100%;max-height:100px;border-radius:8px;border:1px solid var(--gold);margin-top:6px;">`;
-            }
-        };
-        modal.querySelector("#kycSubmitBtn").onclick = async () => {
-            if (!frontData || !backData) {
-                modal.querySelector("#kycMsg").innerHTML = '<span style="color:#dc2626;">Please upload both sides.</span>';
-                return;
-            }
-            await applyKyc(modal.querySelector("#kycDocSelect").value, frontData, backData);
-            document.body.removeChild(modal);
-        };
-        modal.querySelector("#kycCancelBtn").onclick = () => document.body.removeChild(modal);
     }
 
     // ===== SAVE USER =====
@@ -1120,6 +1105,19 @@
         delete clean.pendingInjections;
         await setDoc(doc(db, "users", user.id), clean, { merge: true });
         localStorage.setItem('uid', user.id);
+        await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+    }
+
+    // ===== UPDATE LAST SEEN =====
+    function startLastSeenUpdate() {
+        if (lastSeenInterval) clearInterval(lastSeenInterval);
+        lastSeenInterval = setInterval(async () => {
+            if (user) {
+                try {
+                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+                } catch(e) { /* silent */ }
+            }
+        }, 30000);
     }
 
     // ===== ORDERS =====
@@ -1154,7 +1152,7 @@
                 pendingInjections = injs;
                 await saveUser();
                 const d = t[lang] || t.en;
-                showFeedback(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
+                toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
                 if (document.getElementById('pageWork').classList.contains('active-page')) refreshWork();
             }
         });
@@ -1202,62 +1200,105 @@
         });
     }
 
-    // ===== MODALS =====
+    // ===== RECHARGE MODAL (with amount buttons & receipt preview) =====
     function showRechargeModal() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);text-align:center;font-size:20px;margin-bottom:12px;"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</h2>
+                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
                 <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:12px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
                     <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
                 </div>
                 <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <div class="upload-area" style="padding:8px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
-                    <div id="receiptPreview"></div>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="500">500</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="1000">1000</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="1500">1500</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="2000">2000</button>
                 </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
+                    <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
+                </div>
+                <div id="receiptPreview" style="text-align:center;margin:6px 0;"></div>
                 <button class="btn-gold" id="rechargeSubmitBtn">${d.submit}</button>
                 <button class="btn-gold btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
                 <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
-        let receiptData = null;
+
+        // Copy wallet
         modal.querySelector("#copyWalletBtn").onclick = () => {
             navigator.clipboard.writeText('TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf');
-            showFeedback("Copied!");
+            toast("Copied!");
         };
+
+        // Amount quick buttons
+        modal.querySelectorAll('[data-amt]').forEach(btn => {
+            btn.onclick = function() {
+                modal.querySelector("#rechargeAmt").value = this.dataset.amt;
+                modal.querySelectorAll('[data-amt]').forEach(b => b.style.borderColor = 'var(--border)');
+                this.style.borderColor = 'var(--gold)';
+            };
+        });
+
+        // Receipt upload with preview
+        let receiptData = null;
         modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
         modal.querySelector("#receiptInput").onchange = async (e) => {
             if (e.target.files[0]) {
-                receiptData = await compress(e.target.files[0], 400, 0.4);
-                modal.querySelector("#receiptPreview").innerHTML = `<img src="${receiptData}" style="max-width:100px;max-height:80px;border-radius:8px;border:1px solid var(--gold);margin-top:4px;">`;
+                receiptData = await compress(e.target.files[0], 600, 0.6);
+                const preview = modal.querySelector("#receiptPreview");
+                preview.innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--gold);box-shadow:0 0 30px rgba(212,175,55,0.05);">`;
+                preview.style.display = 'block';
             }
         };
+
+        // Submit
         modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
             const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
-            if (isNaN(amt) || amt < 1) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`; return; }
-            if (!receiptData) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`; return; }
+            if (isNaN(amt) || amt < 1) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
+                return;
+            }
+            if (!receiptData) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
+                return;
+            }
+            // Show waiting message
+            modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#f59e0b;"><i class="fas fa-clock"></i> ${d.rechargeWaiting}</span>`;
+            modal.querySelector("#rechargeSubmitBtn").disabled = true;
+
             await setDoc(doc(db, "rechargeRequests", Date.now().toString()), {
-                id: Date.now().toString(), userId: user.id, userName: user.username,
-                amount: amt, receiptImage: receiptData, status: 'pending', timestamp: new Date().toISOString()
+                id: Date.now().toString(),
+                userId: user.id,
+                userName: user.username,
+                amount: amt,
+                receiptImage: receiptData,
+                status: 'pending',
+                timestamp: new Date().toISOString()
             });
-            document.body.removeChild(modal);
-            showFeedback("Recharge submitted!");
+
+            setTimeout(() => {
+                document.body.removeChild(modal);
+                toast(d.rechargeWaiting || "Please wait, we are checking your payment.");
+            }, 800);
         };
+
         modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== WITHDRAW =====
     function showWithdrawModal() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);text-align:center;font-size:20px;margin-bottom:12px;"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</h2>
+                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
                 <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
                 <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
                 <button class="btn-gold" id="withdrawSubmitBtn">${d.submit}</button>
@@ -1280,19 +1321,20 @@
                 amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString()
             });
             document.body.removeChild(modal);
-            showFeedback("Withdraw submitted!");
+            toast("Withdraw submitted!");
         };
         modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== HISTORY =====
     function showHistory(title, items, type) {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        let html = `<div class="modal-box"><h2 style="color:var(--gold);font-size:20px;margin-bottom:12px;">${title}</h2>`;
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
         if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
         else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:12px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: S/ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);margin-top:4px;">`:''}${item.adminNote?`<div style="font-size:12px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: S$ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
         });
         html += `<button class="btn-gold" id="historyCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
@@ -1300,13 +1342,14 @@
         modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== BIND WALLET =====
     function showBindWallet() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);font-size:20px;margin-bottom:12px;">${d.bindWallet}</h2>
+                <div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div>
                 <input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}">
                 <button class="btn-gold" id="bindWalletSave">${d.submit}</button>
                 <button class="btn-gold btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button>
@@ -1318,26 +1361,27 @@
             await saveUser();
             updateUI();
             document.body.removeChild(modal);
-            showFeedback("Wallet updated!");
+            toast("Wallet updated!");
         };
         modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== PERSONAL DETAILS =====
     function showPersonalDetails() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);font-size:20px;margin-bottom:12px;">${d.personalDetails}</h2>
+                <div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div>
                 <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="profilePreview" style="width:100px;height:100px;border-radius:50px;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user" style="font-size:48px;color:#0a120e;"></i>'}</div>
+                    <div id="profilePreview" style="width:90px;height:90px;border-radius:45px;background:var(--gradient);display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user" style="font-size:40px;color:#0a120e;"></i>'}</div>
                 </div>
-                <button class="btn-gold btn-outline" id="uploadPhotoBtn" style="font-size:13px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
+                <button class="btn-gold btn-outline" id="uploadPhotoBtn" style="font-size:12px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
                 <div style="margin-top:10px;">
-                    <div class="flex" style="font-size:14px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
-                    <div class="flex" style="font-size:14px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>S/ ${(user?.balance||0).toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:14px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>S$ ${(user?.balance||0).toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
                 </div>
                 <button class="btn-gold" id="detailsClose" style="margin-top:12px;">${d.close}</button>
             </div>
@@ -1350,15 +1394,16 @@
         modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== UPLOAD PHOTO =====
     function showUploadPhoto() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);font-size:20px;text-align:center;margin-bottom:12px;">${d.uploadPhoto}</h2>
+                <div class="modal-title"><i class="fas fa-camera"></i> ${d.uploadPhoto}</div>
                 <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="uploadPreview" style="width:120px;height:120px;border-radius:60px;background:linear-gradient(135deg,var(--gold),var(--gold-light));display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:56px;color:#0a120e;"></i>'}</div>
+                    <div id="uploadPreview" style="width:100px;height:100px;border-radius:50px;background:var(--gradient);display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:48px;color:#0a120e;"></i>'}</div>
                 </div>
                 <div class="upload-area" id="photoUploadArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadPhoto}<input type="file" id="photoInput" accept="image/*" style="display:none;"></div>
                 <button class="btn-gold" id="photoSave">${d.save}</button>
@@ -1381,28 +1426,29 @@
                 updateUI();
             }
             document.body.removeChild(modal);
-            showFeedback("Photo updated!");
+            toast("Photo updated!");
         };
         modal.querySelector("#photoCancel").onclick = () => document.body.removeChild(modal);
     }
 
+    // ===== LOAN =====
     function showLoanModal() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);font-size:20px;text-align:center;margin-bottom:12px;">${d.loanService}</h2>
+                <div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div>
                 <div class="upload-area" id="loanBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="loanBankInput" accept="image/*" style="display:none;"></div>
                 <div id="loanBankPreview"></div>
                 <div style="display:flex;gap:8px;margin:8px 0;">
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanFrontArea"><i class="fas fa-upload"></i> ${d.kycFront}<input type="file" id="loanFrontInput" accept="image/*" style="display:none;"></div>
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanBackArea"><i class="fas fa-upload"></i> ${d.kycBack}<input type="file" id="loanBackInput" accept="image/*" style="display:none;"></div>
+                    <div class="upload-area" style="flex:1;padding:8px;" id="loanFrontArea"><i class="fas fa-upload"></i> Front Side<input type="file" id="loanFrontInput" accept="image/*" style="display:none;"></div>
+                    <div class="upload-area" style="flex:1;padding:8px;" id="loanBackArea"><i class="fas fa-upload"></i> Back Side<input type="file" id="loanBackInput" accept="image/*" style="display:none;"></div>
                 </div>
                 <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
-                    <div class="doc-opt" data-type="nrc" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(212,175,55,0.06);border:1px solid var(--gold);color:var(--gold-light);font-size:13px;">NRC</div>
-                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:13px;">Driver</div>
-                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:13px;">Passport</div>
+                    <div class="doc-opt" data-type="nrc" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(212,175,55,0.04);border:1px solid var(--gold);color:var(--gold-light);font-size:12px;">NRC</div>
+                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:12px;">Driver</div>
+                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:12px;">Passport</div>
                 </div>
                 <input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount">
                 <button class="btn-gold" id="loanSubmit">${d.submit}</button>
@@ -1416,13 +1462,13 @@
         modal.querySelectorAll('.doc-opt').forEach(el => {
             el.onclick = function() {
                 modal.querySelectorAll('.doc-opt').forEach(o => { o.style.background='rgba(0,0,0,0.04)'; o.style.border='1px solid var(--border)'; o.style.color='var(--muted)'; });
-                this.style.background='rgba(212,175,55,0.06)'; this.style.border='1px solid var(--gold)'; this.style.color='var(--gold-light)';
+                this.style.background='rgba(212,175,55,0.04)'; this.style.border='1px solid var(--gold)'; this.style.color='var(--gold-light)';
                 docType = this.dataset.type;
             };
         });
         modal.querySelector("#loanBankArea").onclick = () => modal.querySelector("#loanBankInput").click();
         modal.querySelector("#loanBankInput").onchange = async (e) => {
-            if (e.target.files[0]) { bankData = await compress(e.target.files[0], 400, 0.4); modal.querySelector("#loanBankPreview").innerHTML = `<img src="${bankData}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);margin-top:4px;">`; }
+            if (e.target.files[0]) { bankData = await compress(e.target.files[0], 400, 0.4); modal.querySelector("#loanBankPreview").innerHTML = `<img src="${bankData}" class="img-preview-sm">`; }
         };
         modal.querySelector("#loanFrontArea").onclick = () => modal.querySelector("#loanFrontInput").click();
         modal.querySelector("#loanFrontInput").onchange = async (e) => {
@@ -1442,7 +1488,7 @@
                 status: 'pending', timestamp: new Date().toISOString()
             });
             document.body.removeChild(modal);
-            showFeedback("Loan submitted!");
+            toast("Loan submitted!");
         };
         modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
     }
@@ -1461,10 +1507,10 @@
         if (isInj && o.injectionDetails) {
             injHtml = `
                 <div style="background:rgba(245,158,11,0.04);border-radius:12px;padding:8px;margin:8px 0;font-size:13px;">
-                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">S/ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ S/ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--gold-light);font-weight:700;">S/ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ S/ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">S$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ S$ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--gold-light);font-weight:700;">S$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ S$ ${o.netCommission.toFixed(4)}</span></div>
                 </div>
             `;
         }
@@ -1472,38 +1518,38 @@
             <div class="order-card ${isInj ? 'injection' : ''}">
                 ${badge}
                 <div class="order-img">${img}</div>
-                <h3 style="color:var(--gold-light);font-size:18px;">${o.name}</h3>
-                <div style="font-size:13px;color:var(--muted);">#${o.orderNumber}</div>
+                <h3 style="color:var(--gold-light);font-size:17px;">${o.name}</h3>
+                <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
                 ${injHtml}
                 ${!injHtml ? `
-                    <div class="flex" style="font-size:14px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">S/ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:14px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">S$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ S$ ${o.netCommission.toFixed(4)}</span></div>
                 ` : ''}
-                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:14px;">
+                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
                     <span style="color:var(--muted);">${d.afterBalance}</span>
-                    <strong style="color:var(--gold-light);font-size:17px;">S/ ${after.toFixed(2)}</strong>
+                    <strong style="color:var(--gold-light);font-size:16px;">S$ ${after.toFixed(2)}</strong>
                 </div>
                 ${!insufficient ? `
                     <div style="margin-top:10px;">
-                        <div style="color:var(--gold);font-size:13px;">${d.serviceQuality}</div>
+                        <div style="color:var(--gold);font-size:12px;">${d.serviceQuality}</div>
                         <div class="stars" data-cat="service"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
                     </div>
                     <div style="margin-top:6px;">
-                        <div style="color:var(--gold);font-size:13px;">${d.productQuality}</div>
+                        <div style="color:var(--gold);font-size:12px;">${d.productQuality}</div>
                         <div class="stars" data-cat="quality"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
                     </div>
                     <div style="margin-top:6px;">
-                        <div style="color:var(--gold);font-size:13px;">${d.salesExperience}</div>
+                        <div style="color:var(--gold);font-size:12px;">${d.salesExperience}</div>
                         <div class="stars" data-cat="sales"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
                     </div>
-                    <button class="btn-gold" id="submitOrderBtn" style="margin-top:12px;font-size:14px;">${d.submitComplete}</button>
+                    <button class="btn-gold" id="submitOrderBtn" style="margin-top:10px;font-size:14px;">${d.submitComplete}</button>
                 ` : `
-                    <div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.06);border-radius:12px;border:1px solid rgba(220,38,38,0.12);">
+                    <div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);">
                         <strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong>
                         <div style="font-size:13px;margin-top:4px;">
-                            <div>💰 ${d.orderAmount}: S/ ${o.amount.toFixed(2)}</div>
-                            <div>💵 ${d.yourBalance}: S/ ${(user.balance||0).toFixed(2)}</div>
-                            <div>🔴 ${d.needAdditional}: S/ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
+                            <div>💰 ${d.orderAmount}: S$ ${o.amount.toFixed(2)}</div>
+                            <div>💵 ${d.yourBalance}: S$ ${(user.balance||0).toFixed(2)}</div>
+                            <div>🔴 ${d.needAdditional}: S$ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
                         </div>
                         <button class="btn-gold" id="rechargeFromOrder" style="margin-top:8px;background:#10b981;color:#fff;font-size:13px;">${d.rechargeNow}</button>
                     </div>
@@ -1532,7 +1578,7 @@
                 submitBtn.onclick = async function() {
                     if (this.disabled) return;
                     if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) {
-                        alert("Please provide all ratings.");
+                        toast("Please provide all ratings.", true);
                         return;
                     }
                     this.disabled = true;
@@ -1554,7 +1600,7 @@
                         order = null;
                         updateUI();
                         await processReferral(user.id, profit);
-                        showFeedback(`✅ +S/ ${profit.toFixed(4)}`);
+                        toast(`✅ +S$ ${profit.toFixed(4)}`);
                         const limit = user.tasks.total || 0;
                         const done = user.tasks.completed || 0;
                         if (done >= limit && limit > 0) {
@@ -1562,7 +1608,7 @@
                         } else {
                             await loadNextOrder();
                         }
-                    } catch(e) { console.error(e); alert("Error: "+e.message); }
+                    } catch(e) { console.error(e); toast("Error: "+e.message, true); }
                     this.disabled = false;
                     this.innerHTML = d.submitComplete;
                 };
@@ -1583,7 +1629,7 @@
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
         if ((user.balance||0) < minBal) {
-            document.getElementById('orderDisplay').innerHTML = `<div class="card-glass" style="border-color:#f59e0b;text-align:center;padding:20px;"><span style="color:#f59e0b;">⚠️ Insufficient balance. Please recharge.</span></div>`;
+            document.getElementById('orderDisplay').innerHTML = `<div class="card" style="border-color:#f59e0b;text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ Insufficient balance. Please recharge.</span></div>`;
             return;
         }
         const nextTask = (user.tasks?.completed||0) + 1;
@@ -1607,7 +1653,7 @@
             net = inj.commission > 0 ? inj.commission : (inj.commissionRate > 0 ? amount * (inj.commissionRate/100) : amount * rate);
             isInj = true;
             const d = t[lang] || t.en;
-            showFeedback(`🎉 ${d.bonusOrder} ${d.injectionMsg}`);
+            toast(`🎉 ${d.bonusOrder} ${d.injectionMsg}`);
         } else {
             const pct = 0.53 + Math.random() * 0.26;
             amount = parseFloat((balance * pct).toFixed(2));
@@ -1654,49 +1700,45 @@
         const d = t[lang] || t.en;
         const orders = await getOrders(user.id);
         const balance = user.balance||0;
-        const vip = getVIP(balance);
+        const vip = getVIP(user);
         const rate = getRate(user);
         const limit = user.tasks?.total||0;
         const done = user.tasks?.completed||0;
         const vipClass = getVipClass(vip);
 
         document.getElementById('homeName').innerText = user.username;
-        document.getElementById('balanceAmount').innerText = `S/ ${balance.toFixed(2)}`;
+        document.getElementById('balanceAmount').innerText = `S$ ${balance.toFixed(2)}`;
         document.getElementById('todayCount').innerText = done;
         document.getElementById('dailyMax').innerText = limit;
-        document.getElementById('todayEarn').innerText = `S/ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('totalComm').innerText = `S/ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('todayEarn').innerText = `S$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('totalComm').innerText = `S$ ${(user.totalCommission||0).toFixed(4)}`;
         document.getElementById('commRate').innerText = `${(rate*100).toFixed(1)}%`;
         document.getElementById('homeVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
         document.getElementById('refCode').innerText = user.invitationCode||'------';
         document.getElementById('profileName').innerText = user.username;
         document.getElementById('profileVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
         document.getElementById('creditScore').innerText = user.creditScore||100;
-        document.getElementById('pTotalAssets').innerText = `S/ ${balance.toFixed(2)}`;
+        document.getElementById('pTotalAssets').innerText = `S$ ${balance.toFixed(2)}`;
         document.getElementById('pTodayOrders').innerText = done;
-        document.getElementById('pTodayEarn').innerText = `S/ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('pTotalComm').innerText = `S/ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('pTodayEarn').innerText = `S$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('pTotalComm').innerText = `S$ ${(user.totalCommission||0).toFixed(4)}`;
         document.getElementById('walletDisplay').innerText = user.walletAddress||'Not set';
         document.getElementById('taskCounter').innerText = `${done}/${limit}`;
         document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
 
-        // Avatar
         const av = document.getElementById('profileAvatar');
         if (av) {
-            av.innerHTML = user.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:44px;color:#0a120e;"></i>';
+            av.innerHTML = user.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:40px;color:#0a120e;"></i>';
         }
 
-        // Orders history
         const completed = orders.filter(o => o.status === 'completed');
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
-            <div class="card-glass">
-                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--gold);font-size:12px;">${d.completed}</span></div>
-                <div style="font-size:13px;">Amount: S/ ${o.amount?.toFixed(2)||0} | Profit: +S/ ${(o.profit||0).toFixed(4)}</div>
+            <div class="card">
+                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--gold);font-size:11px;">${d.completed}</span></div>
+                <div style="font-size:13px;">Amount: S$ ${o.amount?.toFixed(2)||0} | Profit: +S$ ${(o.profit||0).toFixed(4)}</div>
                 <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
             </div>
-        `).join('') : `<div class="card-glass"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
-
-        await updateKycUI();
+        `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
     }
 
     // ===== LIVE FEED =====
@@ -1710,7 +1752,7 @@
         function add() {
             const item = document.createElement('div');
             item.className = 'feed-item';
-            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--gold);"></i> <strong>${randName()}</strong> earned <span style="color:var(--gold);">+S/ ${randComm().toLocaleString()}</span>`;
+            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--gold);"></i> <strong>${randName()}</strong> earned <span style="color:var(--gold);">+S$ ${randComm().toLocaleString()}</span>`;
             container.prepend(item);
             if (container.children.length > 5) container.removeChild(container.lastChild);
         }
@@ -1727,7 +1769,6 @@
                 user = { id: snap.id, ...data };
                 if (!user.orders) user.orders = [];
                 if (!user.tasks) user.tasks = { completed:0, total:0 };
-                // Check injections
                 const injSnap = await getDocs(query(collection(db, "injections"), where("userId","==",uid), where("used","==",false)));
                 pendingInjections = [];
                 injSnap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
@@ -1791,15 +1832,15 @@
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
-        if (!username || !password) { alert('Enter username and password.'); return; }
+        if (!username || !password) { toast('Enter username and password.', true); return; }
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         try {
             const q = query(collection(db, "users"), where("username","==",username), where("password","==",password));
             const snap = await getDocs(q);
-            if (snap.empty) { alert('Invalid credentials.'); this.disabled=false; this.innerHTML='Login'; return; }
+            if (snap.empty) { toast('Invalid credentials.', true); this.disabled=false; this.innerHTML='Login'; return; }
             const data = snap.docs[0].data();
-            if (data.disabled) { alert('Account disabled.'); this.disabled=false; this.innerHTML='Login'; return; }
+            if (data.disabled) { toast('Account disabled.', true); this.disabled=false; this.innerHTML='Login'; return; }
             user = { id: snap.docs[0].id, ...data };
             if (!user.orders) user.orders = [];
             if (!user.tasks) user.tasks = { completed:0, total:0 };
@@ -1807,12 +1848,15 @@
             subscribeUser(user.id);
             subscribeInjections(user.id);
             subscribeChat();
+            startLastSeenUpdate();
             updateUI();
             const last = localStorage.getItem('lastPage');
             showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-            showFeedback(`Welcome, ${username}`);
-            await updateKycUI();
-        } catch(e) { alert('Login failed: '+e.message); }
+            toast(`Welcome, ${username}`);
+        } catch(e) {
+            toast('Login failed: '+e.message, true);
+            console.error('Login error:', e);
+        }
         this.disabled = false;
         this.innerHTML = 'Login';
     };
@@ -1825,12 +1869,12 @@
         const confirm = document.getElementById('regConfirm').value;
         const withdraw = document.getElementById('regWithdraw').value;
         const invite = document.getElementById('regInvite').value.trim();
-        if (!username || !email || !pass || !withdraw || !invite) { alert('All fields required.'); return; }
-        if (pass !== confirm) { alert('Passwords do not match.'); return; }
+        if (!username || !email || !pass || !withdraw || !invite) { toast('All fields required.', true); return; }
+        if (pass !== confirm) { toast('Passwords do not match.', true); return; }
         const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
-        if (!exist.empty) { alert('Username exists.'); return; }
+        if (!exist.empty) { toast('Username exists.', true); return; }
         const ref = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
-        if (ref.empty) { alert('Invalid invitation code.'); return; }
+        if (ref.empty) { toast('Invalid invitation code.', true); return; }
         const referrer = ref.docs[0].data();
         user = {
             id: Date.now().toString(),
@@ -1851,16 +1895,17 @@
             disabled: false,
             walletAddress: null,
             currentOrderObj: null,
-            role: 'customer'
+            role: 'customer',
+            lastSeen: Date.now()
         };
         await setDoc(doc(db, "users", user.id), user);
         subscribeUser(user.id);
         subscribeInjections(user.id);
         subscribeChat();
+        startLastSeenUpdate();
         updateUI();
         showPage('home');
-        showFeedback('Registration successful!');
-        await updateKycUI();
+        toast('Registration successful!');
     };
 
     // ===== SIGN OUT =====
@@ -1869,6 +1914,7 @@
         if (unsubChat) unsubChat();
         if (unsubInjections) unsubInjections();
         if (feedInterval) clearInterval(feedInterval);
+        if (lastSeenInterval) clearInterval(lastSeenInterval);
         const uid = user?.id;
         user = null;
         order = null;
@@ -1876,7 +1922,7 @@
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
         showPage('landing');
-        showFeedback('Signed out.');
+        toast('Signed out.');
     }
     document.getElementById('signOutHome').onclick = signOut;
     document.getElementById('signOutProfile').onclick = signOut;
@@ -1884,18 +1930,18 @@
     // ===== REFRESH =====
     document.querySelectorAll('.icon-btn').forEach(el => {
         if (el.id && el.id.startsWith('refresh')) {
-            el.onclick = () => { updateUI(); showFeedback('Refreshed!'); };
+            el.onclick = () => { updateUI(); toast('Refreshed!'); };
         }
     });
 
-    // ===== OTHER BUTTONS =====
-    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : alert('Login first.');
-    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : alert('Login first.');
-    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : alert('Login first.');
-    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : alert('Login first.');
-    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : alert('Login first.');
-    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : alert('Login first.');
-    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : alert('Login first.');
+    // ===== BUTTONS =====
+    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
+    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
+    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
     document.getElementById('rechargeHistoryBtn').onclick = async () => {
         if (!user) return;
         const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
@@ -1911,11 +1957,11 @@
 
     // ===== START ORDER =====
     document.getElementById('startOrderBtn').onclick = async () => {
-        if (!user) { alert('Login first.'); return; }
+        if (!user) { toast('Login first.', true); return; }
         const limit = user.tasks?.total || 0;
         const done = user.tasks?.completed || 0;
-        if (limit === 0) { alert('No orders assigned by admin.'); return; }
-        if (done >= limit) { alert('All orders completed!'); return; }
+        if (limit === 0) { toast('No orders assigned by admin.', true); return; }
+        if (done >= limit) { toast('All orders completed!', true); return; }
         if (user.currentOrderObj && !user.currentOrderObj.completed) {
             const d = t[lang] || t.en;
             const modal = document.createElement('div');
@@ -1940,7 +1986,7 @@
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
         if ((user.balance||0) < minBal) {
-            alert(`Minimum balance S/ ${minBal} required.`);
+            toast(`Minimum balance S$ ${minBal} required.`, true);
             return;
         }
         await loadNextOrder();
@@ -2002,7 +2048,7 @@
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
-                <h2 style="color:var(--gold);font-size:20px;text-align:center;">${d.companyTitle}</h2>
+                <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
                 <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--gold);"></i></div>
                 <div style="color:var(--text);font-size:14px;line-height:1.6;">LUXCY is a premier travel and task platform.</div>
                 <div style="background:rgba(0,0,0,0.04);border-radius:12px;padding:12px;margin:12px 0;"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text);">To provide seamless travel experiences and financial freedom.</p></div>
@@ -2031,8 +2077,8 @@
                 let html = '';
                 for (let i=1; i<=5; i++) {
                     const url = logos[`logo${i}`];
-                    if (url) html += `<div style="width:60px;height:60px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`;
-                    else html += `<div style="width:60px;height:60px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);"><i class="fas fa-crown"></i></div>`;
+                    if (url) html += `<div style="width:56px;height:56px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`;
+                    else html += `<div style="width:56px;height:56px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);"><i class="fas fa-crown"></i></div>`;
                 }
                 container.innerHTML = html;
             }
@@ -2048,7 +2094,7 @@
                 if (d.companyDescription) document.getElementById('companyDesc').innerHTML = d.companyDescription;
                 if (d.companyLogo) {
                     const logo = document.getElementById('companyLogo');
-                    if (logo) logo.innerHTML = `<img src="${d.companyLogo}" style="width:40px;height:40px;object-fit:contain;">`;
+                    if (logo) logo.innerHTML = `<img src="${d.companyLogo}" style="width:36px;height:36px;object-fit:contain;">`;
                 }
                 if (d.stat1Number) document.getElementById('stat1').innerText = d.stat1Number;
                 if (d.stat2Number) document.getElementById('stat2').innerText = d.stat2Number;
@@ -2089,12 +2135,12 @@
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
         overlay.innerHTML = `
-            <div class="popup-card" style="background:var(--card);backdrop-filter:blur(12px);border-radius:28px;padding:24px;max-width:440px;width:92%;border:1px solid var(--gold);text-align:center;position:relative;box-shadow:var(--shadow);">
-                <button id="popupClose" style="position:absolute;top:8px;right:12px;background:rgba(255,255,255,0.04);border:none;color:#fff;font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
-                ${ad.imageData ? `<img src="${ad.imageData}" style="max-width:100%;max-height:200px;border-radius:12px;margin-bottom:12px;border:1px solid var(--border);">` : ''}
-                <div style="font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;">${esc(ad.title||'Special Offer')}</div>
-                <div style="color:var(--text);font-size:14px;margin:8px 0 16px;">${esc(ad.subtitle||'')}</div>
-                <button class="btn-gold" id="popupAction" style="width:auto;padding:8px 28px;">${esc(ad.buttonText||'Close')}</button>
+            <div class="popup-card" style="background:var(--card);backdrop-filter:var(--glass);border-radius:24px;padding:20px;max-width:400px;width:92%;border:1px solid var(--gold);text-align:center;position:relative;box-shadow:var(--shadow);">
+                <button id="popupClose" style="position:absolute;top:6px;right:10px;background:rgba(255,255,255,0.04);border:none;color:#fff;font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
+                ${ad.imageData ? `<img src="${ad.imageData}" style="max-width:100%;max-height:180px;border-radius:12px;margin-bottom:10px;border:1px solid var(--border);">` : ''}
+                <div style="font-size:20px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;">${esc(ad.title||'Special Offer')}</div>
+                <div style="color:var(--text);font-size:14px;margin:6px 0 14px;">${esc(ad.subtitle||'')}</div>
+                <button class="btn-gold" id="popupAction" style="width:auto;padding:8px 24px;">${esc(ad.buttonText||'Close')}</button>
             </div>
         `;
         document.body.appendChild(overlay);
@@ -2124,10 +2170,10 @@
                     subscribeUser(user.id);
                     subscribeInjections(user.id);
                     subscribeChat();
+                    startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
                     showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-                    await updateKycUI();
                     await checkPopup();
                 } else showPage('landing');
             } else showPage('landing');
