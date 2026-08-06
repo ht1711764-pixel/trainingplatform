@@ -671,7 +671,7 @@
         </div>
         <div class="balance-box">
             <div class="label" id="balanceLabel">Account Balance</div>
-            <div class="amount" id="balanceAmount">S$ 0.00</div>
+            <div class="amount" id="balanceAmount">$ 0.00</div>
             <div class="flex" style="margin-top:4px;">
                 <span style="font-size:11px;color:var(--text);"><i class="fas fa-chart-line"></i> <span id="rateLabel">Rate</span>: <span id="commRate">0.5%</span></span>
                 <span style="font-size:11px;color:var(--text);"><i class="fas fa-calendar-day"></i> <span id="todayLabel">Today</span>: <span id="todayCount">0</span>/<span id="dailyMax">0</span></span>
@@ -679,9 +679,9 @@
         </div>
         <div class="card">
             <div class="flex">
-                <div><span style="color:var(--muted);font-size:11px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:17px;" id="todayEarn">S$ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:11px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">S$ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:11px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">S$ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:17px;" id="todayEarn">$ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">$ 0.00</strong></div>
+                <div><span style="color:var(--muted);font-size:11px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">$ 0.00</strong></div>
             </div>
         </div>
         <div class="flex" style="gap:8px;margin-bottom:10px;">
@@ -737,10 +737,10 @@
             </div>
         </div>
         <div class="stats-grid">
-            <div class="stat-card"><div class="val" id="pTotalAssets">S$ 0.00</div><div class="lbl" id="pAssetsLabel">Total Assets</div></div>
+            <div class="stat-card"><div class="val" id="pTotalAssets">$ 0.00</div><div class="lbl" id="pAssetsLabel">Total Assets</div></div>
             <div class="stat-card"><div class="val" id="pTodayOrders">0</div><div class="lbl" id="pOrdersLabel">Today's Orders</div></div>
-            <div class="stat-card"><div class="val" id="pTodayEarn">S$ 0.0000</div><div class="lbl" id="pEarnLabel">Today's Earnings</div></div>
-            <div class="stat-card"><div class="val" id="pTotalComm">S$ 0.0000</div><div class="lbl" id="pCommLabel">Total Commission</div></div>
+            <div class="stat-card"><div class="val" id="pTodayEarn">$ 0.0000</div><div class="lbl" id="pEarnLabel">Today's Earnings</div></div>
+            <div class="stat-card"><div class="val" id="pTotalComm">$ 0.0000</div><div class="lbl" id="pCommLabel">Total Commission</div></div>
         </div>
         <div class="flex" style="gap:8px;margin-bottom:10px;">
             <button class="btn-gold" id="depositBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;width:48%;font-size:13px;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
@@ -1093,7 +1093,7 @@
                 updateUI();
             }
             const d = t[lang] || t.en;
-            toast(`🎁 ${d.referralEarned} +S$ ${bonus.toFixed(4)}`);
+            toast(`🎁 ${d.referralEarned} +$ ${bonus.toFixed(4)}`);
         } catch(e) { console.error("Referral error:", e); }
     }
 
@@ -1334,7 +1334,7 @@
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
         if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
         else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: S$ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
         });
         html += `<button class="btn-gold" id="historyCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
@@ -1380,7 +1380,7 @@
                 <button class="btn-gold btn-outline" id="uploadPhotoBtn" style="font-size:12px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
                 <div style="margin-top:10px;">
                     <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>S$ ${(user?.balance||0).toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div>
                     <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
                 </div>
                 <button class="btn-gold" id="detailsClose" style="margin-top:12px;">${d.close}</button>
@@ -1507,10 +1507,10 @@
         if (isInj && o.injectionDetails) {
             injHtml = `
                 <div style="background:rgba(245,158,11,0.04);border-radius:12px;padding:8px;margin:8px 0;font-size:13px;">
-                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">S$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ S$ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--gold-light);font-weight:700;">S$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ S$ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ $ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ $ ${o.netCommission.toFixed(4)}</span></div>
                 </div>
             `;
         }
@@ -1522,12 +1522,12 @@
                 <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
                 ${injHtml}
                 ${!injHtml ? `
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">S$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ S$ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
                 ` : ''}
                 <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
                     <span style="color:var(--muted);">${d.afterBalance}</span>
-                    <strong style="color:var(--gold-light);font-size:16px;">S$ ${after.toFixed(2)}</strong>
+                    <strong style="color:var(--gold-light);font-size:16px;">$ ${after.toFixed(2)}</strong>
                 </div>
                 ${!insufficient ? `
                     <div style="margin-top:10px;">
@@ -1547,9 +1547,9 @@
                     <div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);">
                         <strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong>
                         <div style="font-size:13px;margin-top:4px;">
-                            <div>💰 ${d.orderAmount}: S$ ${o.amount.toFixed(2)}</div>
-                            <div>💵 ${d.yourBalance}: S$ ${(user.balance||0).toFixed(2)}</div>
-                            <div>🔴 ${d.needAdditional}: S$ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
+                            <div>💰 ${d.orderAmount}: $ ${o.amount.toFixed(2)}</div>
+                            <div>💵 ${d.yourBalance}: $ ${(user.balance||0).toFixed(2)}</div>
+                            <div>🔴 ${d.needAdditional}: $ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
                         </div>
                         <button class="btn-gold" id="rechargeFromOrder" style="margin-top:8px;background:#10b981;color:#fff;font-size:13px;">${d.rechargeNow}</button>
                     </div>
@@ -1600,7 +1600,7 @@
                         order = null;
                         updateUI();
                         await processReferral(user.id, profit);
-                        toast(`✅ +S$ ${profit.toFixed(4)}`);
+                        toast(`✅ +$ ${profit.toFixed(4)}`);
                         const limit = user.tasks.total || 0;
                         const done = user.tasks.completed || 0;
                         if (done >= limit && limit > 0) {
@@ -1707,21 +1707,21 @@
         const vipClass = getVipClass(vip);
 
         document.getElementById('homeName').innerText = user.username;
-        document.getElementById('balanceAmount').innerText = `S$ ${balance.toFixed(2)}`;
+        document.getElementById('balanceAmount').innerText = `$ ${balance.toFixed(2)}`;
         document.getElementById('todayCount').innerText = done;
         document.getElementById('dailyMax').innerText = limit;
-        document.getElementById('todayEarn').innerText = `S$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('totalComm').innerText = `S$ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('todayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('totalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
         document.getElementById('commRate').innerText = `${(rate*100).toFixed(1)}%`;
         document.getElementById('homeVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
         document.getElementById('refCode').innerText = user.invitationCode||'------';
         document.getElementById('profileName').innerText = user.username;
         document.getElementById('profileVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
         document.getElementById('creditScore').innerText = user.creditScore||100;
-        document.getElementById('pTotalAssets').innerText = `S$ ${balance.toFixed(2)}`;
+        document.getElementById('pTotalAssets').innerText = `$ ${balance.toFixed(2)}`;
         document.getElementById('pTodayOrders').innerText = done;
-        document.getElementById('pTodayEarn').innerText = `S$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('pTotalComm').innerText = `S$ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('pTodayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('pTotalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
         document.getElementById('walletDisplay').innerText = user.walletAddress||'Not set';
         document.getElementById('taskCounter').innerText = `${done}/${limit}`;
         document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
@@ -1735,7 +1735,7 @@
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
             <div class="card">
                 <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--gold);font-size:11px;">${d.completed}</span></div>
-                <div style="font-size:13px;">Amount: S$ ${o.amount?.toFixed(2)||0} | Profit: +S$ ${(o.profit||0).toFixed(4)}</div>
+                <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
                 <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
             </div>
         `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
@@ -1752,7 +1752,7 @@
         function add() {
             const item = document.createElement('div');
             item.className = 'feed-item';
-            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--gold);"></i> <strong>${randName()}</strong> earned <span style="color:var(--gold);">+S$ ${randComm().toLocaleString()}</span>`;
+            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--gold);"></i> <strong>${randName()}</strong> earned <span style="color:var(--gold);">+$ ${randComm().toLocaleString()}</span>`;
             container.prepend(item);
             if (container.children.length > 5) container.removeChild(container.lastChild);
         }
@@ -1986,7 +1986,7 @@
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
         if ((user.balance||0) < minBal) {
-            toast(`Minimum balance S$ ${minBal} required.`, true);
+            toast(`Minimum balance $ ${minBal} required.`, true);
             return;
         }
         await loadNextOrder();
