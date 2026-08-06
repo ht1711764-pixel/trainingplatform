@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>LUXCY | Luxury Travel & Earnings</title>
+    <title>LUXCY | Travel & Earnings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -822,7 +822,7 @@
     let unsubUser = null, unsubChat = null, unsubInjections = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
-    let lastSeenInterval = null;
+    let lastSeenInterval = null; // FIXED: declared here
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
@@ -833,7 +833,7 @@
     function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
 
-    // ===== TRANSLATIONS (simplified) =====
+    // ===== TRANSLATIONS =====
     const t = {
         en: {
             heroTitle:"LUXCY", heroSubtitle:"Travel & earn daily commissions.",
@@ -1105,16 +1105,18 @@
         delete clean.pendingInjections;
         await setDoc(doc(db, "users", user.id), clean, { merge: true });
         localStorage.setItem('uid', user.id);
-        // Update lastSeen - FIXED: using correct field name
+        // Update lastSeen - CORRECT field name
         await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
     }
 
-    // ===== UPDATE LAST SEEN PERIODICALLY =====
+    // ===== UPDATE LAST SEEN =====
     function startLastSeenUpdate() {
         if (lastSeenInterval) clearInterval(lastSeenInterval);
         lastSeenInterval = setInterval(async () => {
             if (user) {
-                await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+                try {
+                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+                } catch(e) { console.error('LastSeen update error:', e); }
             }
         }, 30000);
     }
