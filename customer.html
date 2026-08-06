@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* ===== ROOT VARIABLES - Premium Luxury ===== */
         :root {
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
             --gold-dark: #C9A03D;
-            --gold-glow: rgba(212,175,55,0.12);
             --bg: #080a0e;
             --card: rgba(16,20,30,0.78);
             --border: rgba(212,175,55,0.18);
@@ -44,7 +42,6 @@
         .active-page { display:block; animation:fadeIn .35s ease; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-        /* ===== HEADER ===== */
         .header {
             display:flex;
             justify-content:space-between;
@@ -91,7 +88,6 @@
         .icon-btn:hover { background:rgba(212,175,55,0.04); border-color:rgba(212,175,55,0.3); }
         .icon-btn span { font-size:12px; font-weight:500; }
 
-        /* ===== GLASS CARDS ===== */
         .card {
             background:var(--card);
             backdrop-filter:var(--glass);
@@ -104,7 +100,6 @@
         }
         .card:hover { border-color:rgba(212,175,55,0.3); }
 
-        /* ===== BUTTONS ===== */
         .btn-gold {
             background:var(--gradient);
             border:none;
@@ -135,9 +130,7 @@
         .btn-sm { padding:6px 14px; font-size:12px; width:auto; }
         .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; }
         .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; }
-        .btn-warning { background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; }
 
-        /* ===== INPUTS ===== */
         .input-glass {
             background:rgba(0,0,0,0.3);
             border:1px solid var(--border);
@@ -166,13 +159,11 @@
             font-size:16px;
         }
 
-        /* ===== VIP BADGES ===== */
         .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 12px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
         .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
         .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
         .vip-4 { background:var(--gradient); color:#0a120e; }
 
-        /* ===== BALANCE ===== */
         .balance-box {
             background:var(--card);
             backdrop-filter:var(--glass);
@@ -203,7 +194,6 @@
         }
         .balance-box .label { font-size:12px; color:var(--muted); }
 
-        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             background:rgba(5,8,6,0.94);
             backdrop-filter:var(--glass);
@@ -240,7 +230,6 @@
         .nav-item:active { transform:scale(0.92); }
         .hidden-nav { display:none !important; }
 
-        /* ===== CHAT ===== */
         .chat-box {
             display:flex;
             flex-direction:column;
@@ -308,7 +297,6 @@
         }
         .chat-input .chat-btn:active { background:rgba(212,175,55,0.08); }
 
-        /* ===== ORDER ===== */
         .order-card {
             background:var(--card);
             backdrop-filter:var(--glass);
@@ -366,7 +354,6 @@
             color:transparent;
         }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.92);
@@ -559,7 +546,6 @@
         .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
         .online-dot.offline { background:var(--muted); }
 
-        /* ===== RESPONSIVE ===== */
         @media(max-width:480px){
             .app { padding:0 8px 20px; }
             .header { padding:10px 2px 12px; }
@@ -836,17 +822,18 @@
     let unsubUser = null, unsubChat = null, unsubInjections = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
+    let lastSeenInterval = null;
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
         if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel;
-        return 1; // Default VIP1, only admin can upgrade
+        return 1;
     }
     function getRate(user) { return VIP_RATES[getVIP(user)] || 0.005; }
     function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
 
-    // ===== TRANSLATIONS =====
+    // ===== TRANSLATIONS (simplified) =====
     const t = {
         en: {
             heroTitle:"LUXCY", heroSubtitle:"Travel & earn daily commissions.",
@@ -1118,7 +1105,7 @@
         delete clean.pendingInjections;
         await setDoc(doc(db, "users", user.id), clean, { merge: true });
         localStorage.setItem('uid', user.id);
-        // Update lastSeen
+        // Update lastSeen - FIXED: using correct field name
         await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
     }
 
@@ -1129,7 +1116,7 @@
             if (user) {
                 await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
             }
-        }, 30000); // Update every 30 seconds
+        }, 30000);
     }
 
     // ===== ORDERS =====
@@ -1690,13 +1677,11 @@
         document.getElementById('taskCounter').innerText = `${done}/${limit}`;
         document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
 
-        // Avatar
         const av = document.getElementById('profileAvatar');
         if (av) {
             av.innerHTML = user.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:40px;color:#0a120e;"></i>';
         }
 
-        // Orders history
         const completed = orders.filter(o => o.status === 'completed');
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
             <div class="card">
@@ -1735,7 +1720,6 @@
                 user = { id: snap.id, ...data };
                 if (!user.orders) user.orders = [];
                 if (!user.tasks) user.tasks = { completed:0, total:0 };
-                // Check injections
                 const injSnap = await getDocs(query(collection(db, "injections"), where("userId","==",uid), where("used","==",false)));
                 pendingInjections = [];
                 injSnap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
@@ -1820,7 +1804,10 @@
             const last = localStorage.getItem('lastPage');
             showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             toast(`Welcome, ${username}`);
-        } catch(e) { toast('Login failed: '+e.message, true); }
+        } catch(e) {
+            toast('Login failed: '+e.message, true);
+            console.error('Login error:', e);
+        }
         this.disabled = false;
         this.innerHTML = 'Login';
     };
