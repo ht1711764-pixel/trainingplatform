@@ -13,12 +13,12 @@
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
             --gold-dark: #C9A03D;
-            --gold-glow: rgba(212,175,55,0.12);
+            --gold-glow: rgba(212,175,55,0.15);
             --bg: #080a0e;
             --card: rgba(16,20,30,0.82);
-            --border: rgba(212,175,55,0.18);
+            --border: rgba(212,175,55,0.2);
             --text: rgba(255,255,255,0.92);
-            --muted: rgba(255,255,255,0.4);
+            --muted: rgba(255,255,255,0.45);
             --shadow: 0 8px 40px rgba(0,0,0,0.5);
             --radius: 18px;
             --glass: blur(16px);
@@ -65,7 +65,7 @@
             justify-content:center;
             font-size:18px;
             color:#0a0c10;
-            box-shadow:0 4px 20px rgba(212,175,55,0.15);
+            box-shadow:0 4px 20px rgba(212,175,55,0.2);
         }
         .sidebar-brand .name {
             font-family:'Playfair Display',serif;
@@ -109,7 +109,7 @@
         .nav-item i { width:20px; text-align:center; font-size:15px; }
         .nav-item .count {
             margin-left:auto;
-            background:rgba(212,175,55,0.08);
+            background:rgba(212,175,55,0.12);
             padding:1px 10px;
             border-radius:30px;
             font-size:10px;
@@ -145,7 +145,7 @@
             transition:0.3s;
         }
         .card-glass:hover {
-            border-color:rgba(212,175,55,0.3);
+            border-color:rgba(212,175,55,0.35);
             box-shadow:0 12px 48px rgba(0,0,0,0.4);
         }
         .card-glass .title {
@@ -169,13 +169,9 @@
             cursor:pointer;
             transition:0.3s;
             font-size:13px;
-            box-shadow:0 4px 20px rgba(212,175,55,0.12);
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
+            box-shadow:0 4px 20px rgba(212,175,55,0.15);
         }
-        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 30px rgba(212,175,55,0.2); }
-        .btn-gold:active { transform:scale(0.97); }
+        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 30px rgba(212,175,55,0.25); }
         .btn-gold-sm { padding:4px 14px; font-size:11px; }
         .btn-ghost {
             background:transparent;
@@ -186,12 +182,8 @@
             cursor:pointer;
             transition:0.3s;
             font-size:12px;
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
         }
         .btn-ghost:hover { border-color:var(--gold); color:var(--gold); background:rgba(212,175,55,0.03); }
-        .btn-ghost:active { transform:scale(0.97); }
         .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; border:none; }
         .btn-danger:hover { transform:scale(1.02); }
         .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; }
@@ -212,23 +204,9 @@
             outline:none;
             transition:0.3s;
         }
-        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.05); }
+        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.06); }
         .input-glass::placeholder { color:var(--muted); }
         select.input-glass { appearance:none; }
-        textarea.input-glass { resize:vertical; min-height:60px; }
-        .pw-wrap { position:relative; }
-        .pw-wrap .input-glass { padding-right:44px; }
-        .pw-toggle {
-            position:absolute;
-            right:14px;
-            top:50%;
-            transform:translateY(-50%);
-            background:none;
-            border:none;
-            color:var(--gold);
-            cursor:pointer;
-            font-size:15px;
-        }
         /* ===== TABLES ===== */
         .table-wrap { overflow-x:auto; }
         table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -243,13 +221,13 @@
             font-weight:600;
             display:inline-block;
         }
-        .badge-pending { background:rgba(245,158,11,0.1); color:#f59e0b; border:1px solid rgba(245,158,11,0.15); }
-        .badge-approved { background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.15); }
-        .badge-rejected { background:rgba(220,38,38,0.1); color:#dc2626; border:1px solid rgba(220,38,38,0.15); }
-        .badge-active { background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.15); }
-        .badge-inactive { background:rgba(220,38,38,0.1); color:#dc2626; border:1px solid rgba(220,38,38,0.15); }
-        .badge-online { background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.15); }
-        .badge-offline { background:rgba(255,255,255,0.03); color:var(--muted); border:1px solid var(--border); }
+        .badge-pending { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+        .badge-approved { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+        .badge-rejected { background:rgba(220,38,38,0.12); color:#dc2626; border:1px solid rgba(220,38,38,0.2); }
+        .badge-active { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+        .badge-inactive { background:rgba(220,38,38,0.12); color:#dc2626; border:1px solid rgba(220,38,38,0.2); }
+        .badge-online { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+        .badge-offline { background:rgba(255,255,255,0.04); color:var(--muted); border:1px solid var(--border); }
         /* ===== VIP BADGES ===== */
         .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 10px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
         .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
@@ -257,21 +235,20 @@
         .vip-4 { background:var(--gradient); color:#0a120e; }
         /* ===== INJECTION HISTORY ITEM ===== */
         .inj-item {
-            background:rgba(0,0,0,0.12);
+            background:rgba(0,0,0,0.15);
             padding:10px 14px;
             border-radius:12px;
             margin-bottom:8px;
             border-left:3px solid var(--gold);
             transition:0.3s;
         }
-        .inj-item:hover { background:rgba(0,0,0,0.2); }
+        .inj-item:hover { background:rgba(0,0,0,0.25); }
         /* ===== MODAL ===== */
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.92);
             display:flex; align-items:center; justify-content:center;
             z-index:2000; backdrop-filter:blur(14px);
-            padding:16px;
         }
         .modal-box {
             background:var(--card);
@@ -284,7 +261,7 @@
             box-shadow:var(--shadow);
         }
         .modal-box .modal-title {
-            font-size:18px; font-weight:700; color:var(--gold);
+            font-size:20px; font-weight:700; color:var(--gold);
             margin-bottom:14px; display:flex; align-items:center; gap:10px;
         }
         /* ===== CHAT ===== */
@@ -292,7 +269,7 @@
             display:flex;
             flex-direction:column;
             height:55vh;
-            background:rgba(0,0,0,0.12);
+            background:rgba(0,0,0,0.15);
             border-radius:var(--radius);
             overflow:hidden;
             border:1px solid var(--border);
@@ -311,7 +288,6 @@
             border-radius:16px;
             font-size:13px;
             line-height:1.4;
-            word-break:break-word;
         }
         .chat-msg.sent {
             align-self:flex-end;
@@ -325,13 +301,13 @@
             border:1px solid var(--border);
             border-bottom-left-radius:4px;
         }
-        .chat-msg .time { font-size:9px; opacity:0.35; margin-top:3px; text-align:right; }
+        .chat-msg .time { font-size:9px; opacity:0.4; margin-top:3px; text-align:right; }
         .chat-msg img { max-width:140px; max-height:100px; border-radius:8px; margin-top:4px; border:1px solid var(--gold); cursor:pointer; }
         .chat-input {
             display:flex;
             gap:6px;
             padding:10px 12px;
-            background:rgba(0,0,0,0.12);
+            background:rgba(0,0,0,0.15);
             border-top:1px solid var(--border);
             align-items:center;
         }
@@ -367,7 +343,7 @@
             background:var(--card);
             backdrop-filter:var(--glass);
             padding:32px;
-            border-radius:24px;
+            border-radius:28px;
             width:400px;
             max-width:92%;
             border:1px solid var(--gold);
@@ -384,7 +360,7 @@
             margin:0 auto 10px;
             font-size:28px;
             color:#0a0c10;
-            box-shadow:0 4px 30px rgba(212,175,55,0.12);
+            box-shadow:0 4px 30px rgba(212,175,55,0.15);
         }
         .login-box .brand .name {
             font-family:'Playfair Display',serif;
@@ -400,8 +376,21 @@
             color:var(--muted);
         }
         .login-box .input-glass { margin-bottom:12px; }
-        .login-box .btn-gold { width:100%; padding:12px; justify-content:center; }
+        .login-box .btn-gold { width:100%; padding:12px; }
         .login-box .error { color:#dc2626; text-align:center; margin-top:10px; font-size:13px; }
+        .pw-toggle {
+            position:absolute;
+            right:14px;
+            top:50%;
+            transform:translateY(-50%);
+            cursor:pointer;
+            color:var(--gold);
+            font-size:15px;
+            background:none;
+            border:none;
+        }
+        .pw-wrap { position:relative; }
+        .pw-wrap .input-glass { padding-right:44px; }
         /* ===== TOAST ===== */
         .toast-msg {
             position:fixed;
@@ -436,8 +425,12 @@
             z-index:100;
             animation:pulse 1.5s infinite;
             display:none;
-            border:1px solid rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.04);
         }
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
         /* ===== UTILITY ===== */
         .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
         .gap-1 { gap:6px; }
@@ -452,10 +445,6 @@
         .online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
         .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
         .online-dot.offline { background:var(--muted); }
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width:3px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
     </style>
 </head>
 <body>
@@ -499,6 +488,8 @@
             <div class="nav-item" data-section="agency"><i class="fas fa-user-tie"></i> Agencies</div>
             <div class="nav-item" data-section="settings"><i class="fas fa-paint-brush"></i> Settings</div>
             <div class="nav-item" data-section="popup"><i class="fas fa-ad"></i> Popup Ads</div>
+            <div class="nav-item" data-section="kyc"><i class="fas fa-id-card"></i> KYC</div>
+            <div class="nav-item" data-section="p2p"><i class="fas fa-exchange-alt"></i> P2P</div>
             <div class="nav-item" data-section="chat"><i class="fas fa-comment-dots"></i> Chat</div>
             <hr class="nav-divider">
             <div class="nav-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</div>
@@ -538,13 +529,15 @@
     let withdrawReqs = [];
     let loanReqs = [];
     let popupAds = [];
+    let kycReqs = [];
+    let p2pOrders = [];
+    let p2pRates = {};
     let admin = null;
     let currentSection = 'dashboard';
     let chatUser = null;
     let unsubChat = null;
     let unsubUsers = null;
     let unsubInjections = null;
-    let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf', minBalanceForOrder: 10 };
 
     // ===== HELPERS =====
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
@@ -572,13 +565,6 @@
     function getVipClass(lv) {
         return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4';
     }
-    function togglePw(id, btn) {
-        const inp = document.getElementById(id);
-        const icon = btn.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    }
-    window.togglePw = togglePw;
 
     // ===== AUTH =====
     async function login(username, password) {
@@ -662,8 +648,13 @@
             loanReqs = []; snap7.forEach(d => loanReqs.push({ id:d.id, ...d.data() }));
             const snap8 = await getDocs(collection(db,'popupAds'));
             popupAds = []; snap8.forEach(d => popupAds.push({ id:d.id, ...d.data() }));
-            const settings = await getDoc(doc(db,'systemSettings','main'));
-            if (settings.exists()) systemSettings = settings.data();
+            const snap9 = await getDocs(collection(db,'kycRequests'));
+            kycReqs = []; snap9.forEach(d => kycReqs.push({ id:d.id, ...d.data() }));
+            const snap10 = await getDocs(collection(db,'p2pOrders'));
+            p2pOrders = []; snap10.forEach(d => p2pOrders.push({ id:d.id, ...d.data() }));
+            const r = await getDoc(doc(db,'systemSettings','p2pRates'));
+            if (r.exists()) p2pRates = r.data();
+            else p2pRates = { thb:{buy:34.5,sell:34,label:'THB'}, uah:{buy:41.2,sell:40.8,label:'UAH'}, rub:{buy:91.5,sell:90.8,label:'RUB'}, tjs:{buy:10.8,sell:10.5,label:'TJS'}, uzs:{buy:12750,sell:12650,label:'UZS'} };
         } catch(e) { console.error(e); }
     }
 
@@ -673,7 +664,7 @@
         unsubUsers = onSnapshot(collection(db,'users'), (snap) => {
             users = [];
             snap.forEach(d => users.push({ id:d.id, ...d.data() }));
-            if (['dashboard','members','vip','injection'].includes(currentSection)) renderSection(currentSection);
+            if (['dashboard','members','vip','injection','kyc'].includes(currentSection)) renderSection(currentSection);
             document.getElementById('memberCount').textContent = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
             const ind = document.getElementById('liveIndicator');
             ind.style.display = 'flex';
@@ -714,7 +705,7 @@
         document.getElementById('injImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('injPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
+                r.onload = ev => document.getElementById('injPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -803,7 +794,7 @@
                 <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
                 <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
                 <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
-                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:4px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
+                <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:4px;">${inj.imageData ? `<img src="${inj.imageData}" style="max-width:60px;max-height:60px;border-radius:6px;border:1px solid var(--gold);">` : ''}</div></div>
                 <div class="flex gap-1" style="margin-top:12px;">
                     <button class="btn-gold" id="eSubmit"><i class="fas fa-save"></i> Update</button>
                     <button class="btn-ghost" id="eCancel">Cancel</button>
@@ -815,7 +806,7 @@
         document.getElementById('eImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('ePreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
+                r.onload = ev => document.getElementById('ePreview').innerHTML = `<img src="${ev.target.result}" style="max-width:60px;max-height:60px;border-radius:6px;border:1px solid var(--gold);">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -877,6 +868,8 @@
             case 'agency': renderAgency(main); break;
             case 'settings': renderSettings(main); break;
             case 'popup': renderPopup(main); break;
+            case 'kyc': renderKYC(main); break;
+            case 'p2p': renderP2P(main); break;
             case 'chat': renderChat(main); break;
             default: main.innerHTML = '<div class="card-glass"><p>Section not found</p></div>';
         }
@@ -889,7 +882,8 @@
         const comm = users.reduce((s,u) => s + (u.totalCommission||0), 0);
         const rPend = rechargeReqs.filter(r => r.status === 'pending').length;
         const wPend = withdrawReqs.filter(w => w.status === 'pending').length;
-        const lPend = loanReqs.filter(l => l.status === 'pending').length;
+        const kPend = kycReqs.filter(k => k.status === 'pending').length;
+        const pPend = p2pOrders.filter(o => o.status === 'pending').length;
         const actA = agencies.filter(a => a.status === 'active').length;
         let vips = {1:0,2:0,3:0,4:0};
         users.forEach(u => { if (u.role !== 'admin' && u.role !== 'agency') { const lv = getVIP(u.balance||0); vips[lv]++; } });
@@ -897,19 +891,20 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
                 <div class="row g-2">
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.12);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Users</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${total}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.12);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Balance</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${bal.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.12);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Commission</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${comm.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.12);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Agencies</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${actA}/${agencies.length}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Users</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${total}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Balance</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${bal.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Commission</div><div style="font-size:28px;font-weight:800;color:var(--gold);">S/ ${comm.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.15);padding:14px;border-radius:12px;"><div style="font-size:11px;color:var(--muted);">Agencies</div><div style="font-size:28px;font-weight:800;color:var(--gold);">${actA}/${agencies.length}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-4"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Recharge</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(59,130,246,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Withdraw</div><div style="font-size:18px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(16,185,129,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Loans</div><div style="font-size:18px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
+                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Recharge</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
+                    <div class="col-3"><div style="background:rgba(59,130,246,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">Withdraw</div><div style="font-size:18px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
+                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">KYC</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${kPend}</div></div></div>
+                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:10px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--muted);">P2P</div><div style="font-size:18px;font-weight:700;color:#f59e0b;">${pPend}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.08);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:12px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.08);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">System Wallet</div><div style="font-size:12px;font-family:monospace;color:var(--gold);">${systemSettings.usdtWalletAddress.substring(0,20)}...</div></div></div>
+                    <div class="col-6"><div style="background:rgba(0,0,0,0.1);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:12px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
+                    <div class="col-6"><div style="background:rgba(0,0,0,0.1);padding:10px;border-radius:10px;"><div style="font-size:11px;color:var(--muted);">System Wallet</div><div style="font-size:12px;font-family:monospace;color:var(--gold);">${(systemSettings?.usdtWalletAddress||'Not set').substring(0,20)}...</div></div></div>
                 </div>
             </div>
         `;
@@ -958,12 +953,12 @@
                     <td style="font-size:12px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
                     <td>
                         <div class="flex gap-1" style="flex-wrap:wrap;">
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.setupOrder('${u.id}')">📦</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.setupBalance('${u.id}')">💰</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeLogin('${u.id}')">🔑</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeWithdraw('${u.id}')">💳</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.adjustCredit('${u.id}')">⭐</button>
+                            <button class="btn-gold btn-gold-sm" onclick="window.changeWallet('${u.id}')">🏦</button>
                             <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,${u.disabled ? '#10b981' : '#dc2626'},${u.disabled ? '#059669' : '#ef4444'});color:#fff;" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
                         </div>
                     </td>
@@ -1113,6 +1108,14 @@
         document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
     }
 
+    function togglePw(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    }
+    window.togglePw = togglePw;
+
     // ===== VIP =====
     function renderVIP(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
@@ -1128,7 +1131,7 @@
                         <tbody>
                             ${customers.map(u => {
                                 const hasManual = u.manualVIPLevel && u.manualVIPLevel > 0;
-                                const lv = hasManual ? u.manualVIPLevel : 1;
+                                const lv = hasManual ? u.manualVIPLevel : getVIP(u.balance||0);
                                 const rate = (VIP_RATES[lv] * 100).toFixed(1);
                                 const vc = getVipClass(lv);
                                 return `<tr>
@@ -1235,7 +1238,7 @@
         document.getElementById('ordImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('ordPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview">`;
+                r.onload = ev => document.getElementById('ordPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -1268,9 +1271,9 @@
         if (!container) return;
         if (!customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:12px;">No orders</p>'; return; }
         container.innerHTML = customOrders.map((o,i) => `
-            <div class="flex" style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:6px;border:1px solid var(--border);">
+            <div class="flex" style="padding:8px 12px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:6px;border:1px solid var(--border);">
                 <div style="display:flex;align-items:center;gap:10px;">
-                    ${o.image ? `<img src="${o.image}" class="img-preview-sm">` : '<i class="fas fa-box" style="color:var(--gold);"></i>'}
+                    ${o.image ? `<img src="${o.image}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--gold);">` : '<i class="fas fa-box" style="color:var(--gold);"></i>'}
                     <div><strong>${esc(o.name)}</strong> <span style="color:var(--muted);font-size:12px;">S/ ${o.price}</span></div>
                 </div>
                 <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteOrder('${o.id}')"><i class="fas fa-trash"></i></button>
@@ -1292,7 +1295,7 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-coins"></i> Recharge Requests</div>
                 ${rechargeReqs.length ? rechargeReqs.map(r => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(r.userName)}</strong> <span class="badge-status ${r.status==='pending'?'badge-pending':r.status==='approved'?'badge-approved':'badge-rejected'}">${r.status}</span></div>
                         <div style="font-size:13px;">Amount: S/ ${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
                         ${r.receiptImage ? `<img src="${r.receiptImage}" class="img-preview" onclick="window.open(this.src)">` : ''}
@@ -1353,7 +1356,7 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</div>
                 ${withdrawReqs.length ? withdrawReqs.map(w => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(w.userName)}</strong> <span class="badge-status ${w.status==='pending'?'badge-pending':w.status==='approved'?'badge-approved':'badge-rejected'}">${w.status}</span></div>
                         <div style="font-size:13px;">Amount: S/ ${w.amount} | Wallet: ${w.walletAddress}</div>
                         <div style="font-size:12px;color:var(--muted);">${new Date(w.timestamp).toLocaleString()}</div>
@@ -1412,7 +1415,7 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-heart"></i> Loan Requests</div>
                 ${loanReqs.length ? loanReqs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map(l => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(l.userName)}</strong> <span class="badge-status ${l.status==='pending'?'badge-pending':l.status==='approved'?'badge-approved':'badge-rejected'}">${l.status}</span></div>
                         <div style="font-size:13px;">Amount: S/ ${l.amount} | Doc: ${l.docType}</div>
                         <div style="font-size:12px;color:var(--muted);">${new Date(l.timestamp).toLocaleString()}</div>
@@ -1461,7 +1464,7 @@
                     <button class="btn-gold btn-gold-sm" id="addAgencyBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
                 ${agencies.length ? agencies.map(a => `
-                    <div style="padding:10px 14px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
                         <div class="flex">
                             <div><strong style="color:var(--gold);">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'badge-active':'badge-inactive'}">${a.status}</span></div>
                             <div class="flex gap-1">
@@ -1491,7 +1494,7 @@
         modal.innerHTML = `
             <div class="modal-box" style="text-align:center;">
                 <div style="font-size:13px;color:var(--muted);">Access Code for ${esc(a.username)}</div>
-                <div style="font-size:36px;font-weight:800;color:var(--gold);letter-spacing:4px;padding:12px;background:rgba(0,0,0,0.12);border-radius:12px;margin:12px 0;">${code}</div>
+                <div style="font-size:36px;font-weight:800;color:var(--gold);letter-spacing:4px;padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;margin:12px 0;">${code}</div>
                 <div style="font-size:11px;color:#f59e0b;"><i class="fas fa-clock"></i> Valid for 5 minutes</div>
                 <button class="btn-gold" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button>
                 <button class="btn-ghost" id="codeClose">Close</button>
@@ -1561,7 +1564,7 @@
                 <div style="margin:8px 0;"><label style="font-size:13px;color:var(--gold);">Permissions</label>
                     <div style="display:flex;flex-wrap:wrap;gap:4px;font-size:12px;">
                         ${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `
-                            <label style="background:rgba(0,0,0,0.08);padding:2px 10px;border-radius:20px;border:1px solid var(--border);">
+                            <label style="background:rgba(0,0,0,0.15);padding:2px 10px;border-radius:20px;border:1px solid var(--border);">
                                 <input type="checkbox" id="aa_${p}" ${p!=='Settings'?'checked':''}> ${p}
                             </label>
                         `).join('')}
@@ -1610,7 +1613,8 @@
         document.getElementById('aaCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ===== SETTINGS =====
+    // ===== SETTINGS (simplified) =====
+    let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf' };
     function renderSettings(main) {
         main.innerHTML = `
             <div class="card-glass">
@@ -1640,7 +1644,7 @@
                 </div>
                 <div id="popList">
                     ${popupAds.length ? popupAds.map(p => `
-                        <div style="padding:10px 14px;background:rgba(0,0,0,0.04);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                        <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
                             <div class="flex">
                                 <div><strong style="color:var(--gold);">${esc(p.title||'Untitled')}</strong> <span class="badge-status ${p.isActive!==false?'badge-active':'badge-inactive'}">${p.isActive!==false?'Active':'Inactive'}</span></div>
                                 <div class="flex gap-1">
@@ -1681,7 +1685,7 @@
                 <input class="input-glass" id="popTitle" placeholder="Title" value="${esc(existing?.title||'')}">
                 <textarea class="input-glass" id="popSub" placeholder="Subtitle / Message" rows="2">${esc(existing?.subtitle||'')}</textarea>
                 <input type="file" class="input-glass" id="popImg" accept="image/*">
-                <div id="popPreview" style="margin-top:4px;">${existing?.imageData ? `<img src="${existing.imageData}" class="img-preview-sm">` : ''}</div>
+                <div id="popPreview" style="margin-top:4px;">${existing?.imageData ? `<img src="${existing.imageData}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">` : ''}</div>
                 <select class="input-glass" id="popActive">
                     <option value="true" ${existing?.isActive!==false?'selected':''}>Active</option>
                     <option value="false" ${existing?.isActive===false?'selected':''}>Inactive</option>
@@ -1697,7 +1701,7 @@
         document.getElementById('popImg').onchange = function(e) {
             if (e.target.files[0]) {
                 const r = new FileReader();
-                r.onload = ev => document.getElementById('popPreview').innerHTML = `<img src="${ev.target.result}" class="img-preview-sm">`;
+                r.onload = ev => document.getElementById('popPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid var(--gold);">`;
                 r.readAsDataURL(e.target.files[0]);
             }
         };
@@ -1729,6 +1733,134 @@
         };
         document.getElementById('popCancel').onclick = () => document.body.removeChild(modal);
     }
+
+    // ===== KYC =====
+    function renderKYC(main) {
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-id-card"></i> KYC Requests</div>
+                ${kycReqs.length ? kycReqs.sort((a,b) => new Date(b.submittedAt) - new Date(a.submittedAt)).map(k => `
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                        <div class="flex"><strong style="color:var(--gold);">${esc(k.username)}</strong> <span class="badge-status ${k.status==='pending'?'badge-pending':k.status==='approved'?'badge-approved':'badge-rejected'}">${k.status}</span></div>
+                        <div style="font-size:12px;color:var(--muted);">${k.docType} | ${new Date(k.submittedAt).toLocaleString()}</div>
+                        <div class="flex gap-1" style="flex-wrap:wrap;margin-top:4px;">
+                            ${k.frontImage ? `<img src="${k.frontImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
+                            ${k.backImage ? `<img src="${k.backImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
+                        </div>
+                        ${k.status === 'pending' ? `
+                            <div class="flex gap-1" style="margin-top:6px;">
+                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveKYC('${k.id}')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectKYC('${k.id}')"><i class="fas fa-times"></i> Reject</button>
+                            </div>
+                        ` : ''}
+                        ${k.reviewedAt ? `<div style="font-size:11px;color:var(--muted);">Reviewed: ${new Date(k.reviewedAt).toLocaleString()}</div>` : ''}
+                    </div>
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No KYC requests</p>'}
+            </div>
+        `;
+    }
+
+    window.approveKYC = async (id) => {
+        const k = kycReqs.find(x => x.id === id);
+        if (!k || k.status !== 'pending') return;
+        await updateDoc(doc(db,'kycRequests',id), { status: 'approved', reviewedAt: new Date().toISOString() });
+        toast(`✅ KYC approved for ${k.username}`);
+        renderSection('kyc');
+    };
+
+    window.rejectKYC = async (id) => {
+        const k = kycReqs.find(x => x.id === id);
+        if (!k || k.status !== 'pending') return;
+        await updateDoc(doc(db,'kycRequests',id), { status: 'rejected', reviewedAt: new Date().toISOString() });
+        toast(`❌ KYC rejected for ${k.username}`);
+        renderSection('kyc');
+    };
+
+    // ===== P2P =====
+    function renderP2P(main) {
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-exchange-alt"></i> P2P Orders</div>
+                ${p2pOrders.length ? p2pOrders.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).map(o => `
+                    <div style="padding:10px 14px;background:rgba(0,0,0,0.06);border-radius:10px;margin-bottom:8px;border:1px solid var(--border);">
+                        <div class="flex"><strong style="color:var(--gold);">${esc(o.username)}</strong> <span class="badge-status ${o.status==='pending'?'badge-pending':o.status==='completed'?'badge-approved':'badge-rejected'}">${o.status}</span></div>
+                        <div style="font-size:13px;">${o.type} ${o.amount} USDT @ ${o.rate} ${o.currency.toUpperCase()} | Total: ${(o.amount*o.rate).toFixed(2)} ${o.currency.toUpperCase()}</div>
+                        <div style="font-size:12px;color:var(--muted);">${new Date(o.createdAt).toLocaleString()}</div>
+                        ${o.adminBankDetails ? `<div style="font-size:12px;color:#10b981;">Bank: ${o.adminBankDetails.bankName} | Acc: ${o.adminBankDetails.accountNumber}</div>` : ''}
+                        ${o.receiptImage ? `<img src="${o.receiptImage}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
+                        ${o.status === 'pending' ? `
+                            <div class="flex gap-1" style="margin-top:6px;">
+                                ${!o.adminBankDetails ? `<button class="btn-gold btn-gold-sm" onclick="window.processP2P('${o.id}')"><i class="fas fa-edit"></i> Provide Bank</button>` : ''}
+                                ${o.adminBankDetails && o.receiptImage ? `<button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.completeP2P('${o.id}')"><i class="fas fa-check"></i> Complete</button>` : ''}
+                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.cancelP2P('${o.id}')"><i class="fas fa-times"></i> Cancel</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No P2P orders</p>'}
+            </div>
+        `;
+    }
+
+    window.processP2P = (id) => {
+        const o = p2pOrders.find(x => x.id === id);
+        if (!o) return;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-edit"></i> Bank Details for ${esc(o.username)}</div>
+                <input class="input-glass" id="p2pBank" placeholder="Bank Name">
+                <input class="input-glass" id="p2pAcc" placeholder="Account Number">
+                <input class="input-glass" id="p2pName" placeholder="Account Name">
+                <div class="flex gap-1" style="margin-top:10px;">
+                    <button class="btn-gold" id="p2pSubmit">Submit</button>
+                    <button class="btn-ghost" id="p2pCancel">Cancel</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('p2pSubmit').onclick = async () => {
+            const bank = document.getElementById('p2pBank').value.trim();
+            const acc = document.getElementById('p2pAcc').value.trim();
+            const name = document.getElementById('p2pName').value.trim();
+            if (!bank || !acc || !name) { toast('All fields required', true); return; }
+            await updateDoc(doc(db,'p2pOrders',id), {
+                status: 'pending',
+                adminBankDetails: { bankName: bank, accountNumber: acc, accountName: name },
+                processedAt: new Date().toISOString()
+            });
+            document.body.removeChild(modal);
+            toast('Bank details sent');
+            renderSection('p2p');
+        };
+        document.getElementById('p2pCancel').onclick = () => document.body.removeChild(modal);
+    };
+
+    window.completeP2P = async (id) => {
+        const o = p2pOrders.find(x => x.id === id);
+        if (!o) return;
+        if (!o.receiptImage) { toast('No receipt uploaded', true); return; }
+        await updateDoc(doc(db,'p2pOrders',id), { status: 'completed', completedAt: new Date().toISOString() });
+        if (o.type === 'buy') {
+            const u = users.find(x => x.id === o.userId);
+            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + o.amount });
+        }
+        toast('P2P completed');
+        renderSection('p2p');
+    };
+
+    window.cancelP2P = async (id) => {
+        if (!confirm('Cancel this P2P order?')) return;
+        const o = p2pOrders.find(x => x.id === id);
+        if (!o) return;
+        await updateDoc(doc(db,'p2pOrders',id), { status: 'cancelled', cancelledAt: new Date().toISOString() });
+        if (o.type === 'sell') {
+            const u = users.find(x => x.id === o.userId);
+            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + o.amount });
+        }
+        toast('Cancelled');
+        renderSection('p2p');
+    };
 
     // ===== CHAT =====
     function renderChat(main) {
@@ -1829,6 +1961,15 @@
         })();
     }
 
+    // ===== SYSTEM SETTINGS FOR DASHBOARD =====
+    // Load system settings for dashboard
+    (async () => {
+        const s = await getDoc(doc(db,'systemSettings','main'));
+        if (s.exists()) systemSettings = s.data();
+    })();
+
+    // ===== UPDATE LAST SEEN FOR MEMBERS =====
+    // Users' lastSeen is updated when they login, we just display it
     console.log('LUXCY Admin Panel loaded');
 </script>
 </body>
