@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <title>LUXCY | Luxury Travel & Earnings</title>
+    <title>Trip.com | Luxury Travel & Earnings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -51,10 +51,11 @@
             margin-bottom:14px;
         }
         .logo-area { display:flex; align-items:center; gap:10px; }
-        .logo-icon {
-            width:38px; height:38px;
+        /* NEW LOGO STYLES FOR CUSTOMER */
+        .logo-plane {
+            width:40px; height:40px;
             background:var(--gradient);
-            border-radius:12px;
+            border-radius:14px;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -64,7 +65,7 @@
             flex-shrink:0;
         }
         .logo-text {
-            font-size:18px; font-weight:800;
+            font-size:20px; font-weight:800;
             background:var(--gradient);
             -webkit-background-clip:text;
             background-clip:text;
@@ -550,7 +551,7 @@
             .app { padding:0 8px 20px; }
             .header { padding:10px 2px 12px; }
             .logo-text { font-size:16px; }
-            .logo-icon { width:34px; height:34px; font-size:16px; }
+            .logo-plane { width:34px; height:34px; font-size:16px; }
             .balance-box .amount { font-size:28px; }
             .card { padding:14px; }
             .btn-gold { font-size:13px; padding:8px 14px; }
@@ -582,7 +583,7 @@
     <!-- ===== LANDING ===== -->
     <div id="pageLanding" class="page active-page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="brandName">LUXCY</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="brandName">Trip.com</div></div>
             <div class="header-actions">
                 <div class="icon-btn" id="companyInfoBtn"><i class="fas fa-info-circle"></i> <span id="aboutText">About</span></div>
             </div>
@@ -590,7 +591,7 @@
         <div id="logoContainer" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;"></div>
         <div class="card" style="padding:24px 16px;text-align:center;border-color:var(--gold);">
             <div style="display:inline-block;background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:40px;padding:2px 14px;font-size:10px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:1px;">PREMIUM</div>
-            <h1 style="font-size:34px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;" id="heroTitle">LUXCY</h1>
+            <h1 style="font-size:34px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;" id="heroTitle">Trip.com</h1>
             <p style="font-size:14px;color:var(--text);max-width:400px;margin:0 auto 20px;line-height:1.5;" id="heroSubtitle">Travel & earn daily commissions.</p>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;">
                 <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-plane" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s1">Flights</div><div style="font-size:9px;color:var(--muted);" id="s1d">Worldwide</div></div>
@@ -606,14 +607,14 @@
         <div class="card" id="companySection">
             <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
                 <div style="width:44px;height:44px;background:var(--gradient);border-radius:14px;display:flex;align-items:center;justify-content:center;" id="companyLogo"><i class="fas fa-globe-asia" style="font-size:24px;color:#0a0c10;"></i></div>
-                <div><div style="font-size:18px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="companyNameText">LUXCY</div><div style="font-size:12px;color:var(--muted);" id="companyTaglineText">Global Travel & Earning</div></div>
+                <div><div style="font-size:18px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="companyNameText">Trip.com</div><div style="font-size:12px;color:var(--muted);" id="companyTaglineText">Global Travel & Earning</div></div>
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;">
                 <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat1">50M+</div><div style="font-size:10px;color:var(--muted);" id="stat1l">Customers</div></div>
                 <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat2">200+</div><div style="font-size:10px;color:var(--muted);" id="stat2l">Countries</div></div>
                 <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat3">1M+</div><div style="font-size:10px;color:var(--muted);" id="stat3l">Daily</div></div>
             </div>
-            <div style="font-size:13px;color:var(--text);line-height:1.6;" id="companyDesc"><p>LUXCY is a premier travel and task platform.</p></div>
+            <div style="font-size:13px;color:var(--text);line-height:1.6;" id="companyDesc"><p>Trip.com is a premier travel and task platform.</p></div>
         </div>
     </div>
 
@@ -621,8 +622,8 @@
     <div id="pageLogin" class="page">
         <div class="back-btn" id="backFromLogin"><i class="fas fa-arrow-left"></i> <span id="backLoginText">Back</span></div>
         <div style="text-align:center;margin:10px 0 18px;">
-            <div class="logo-icon" style="width:52px;height:52px;margin:0 auto 8px;font-size:24px;"><i class="fas fa-crown"></i></div>
-            <div style="font-size:26px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="loginWebsiteName">LUXCY</div>
+            <div class="logo-plane" style="width:56px;height:56px;margin:0 auto 8px;font-size:24px;"><i class="fas fa-plane"></i></div>
+            <div style="font-size:26px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="loginWebsiteName">Trip.com</div>
             <div style="font-size:12px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
         </div>
         <div class="card">
@@ -659,7 +660,7 @@
     <!-- ===== HOME ===== -->
     <div id="pageHome" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-crown"></i></div><div class="logo-text" id="homeBrand">LUXCY</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="homeBrand">Trip.com</div></div>
             <div class="header-actions">
                 <div class="icon-btn" id="refreshHome"><i class="fas fa-sync-alt"></i></div>
                 <div class="icon-btn" id="signOutHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
@@ -704,7 +705,7 @@
     <!-- ===== WORK ===== -->
     <div id="pageWork" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-briefcase"></i></div><div class="logo-text" id="workTitle">Tasks</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="workTitle">Tasks</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshWork"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="card">
@@ -718,7 +719,7 @@
     <!-- ===== ORDERS ===== -->
     <div id="pageOrders" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-clipboard-list"></i></div><div class="logo-text" id="orderTitle">History</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="orderTitle">History</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshOrders"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div id="ordersList"></div>
@@ -727,7 +728,7 @@
     <!-- ===== PROFILE (KYC removed) ===== -->
     <div id="pageProfile" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-user"></i></div><div class="logo-text" id="profileTitle">Profile</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="profileTitle">Profile</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshProfile"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="card">
@@ -774,7 +775,7 @@
     <!-- ===== SERVICE ===== -->
     <div id="pageService" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-icon"><i class="fas fa-headset"></i></div><div class="logo-text" id="serviceTitle">Support</div></div>
+            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="serviceTitle">Support</div></div>
             <div class="header-actions"><div class="icon-btn" id="refreshService"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="chat-box">
@@ -836,7 +837,7 @@
     // ===== TRANSLATIONS =====
     const t = {
         en: {
-            heroTitle:"LUXCY", heroSubtitle:"Travel & earn daily commissions.",
+            heroTitle:"Trip.com", heroSubtitle:"Travel & earn daily commissions.",
             s1:"Flights", s1d:"Worldwide", s2:"Hotels", s2d:"Luxury deals", s3:"Trains", s3d:"Premium", s4:"Tasks", s4d:"Earn up to 1%",
             loginBtn:"Login", registerBtn:"Register", aboutText:"About",
             backLogin:"Back", backReg:"Back", loginTagline:"Premium Task Ecosystem", forgotText:"Forgot Password?",
@@ -857,7 +858,7 @@
             yourBalance:"Your Balance", needAdditional:"Need Additional", rechargeNow:"Recharge Now",
             close:"Close", submit:"Submit", cancel:"Cancel", uploadReceipt:"Upload receipt",
             enterAmount:"Enter valid amount", noRecords:"No records.",
-            companyTitle:"About LUXCY", mission:"Our Mission", vision:"Our Vision",
+            companyTitle:"About Trip.com", mission:"Our Mission", vision:"Our Vision",
             pendingOrder:"Pending Order!", pendingMsg:"Complete your current order first.",
             okay:"Okay", warning:"Warning", completed:"Completed", walletAddr:"USDT TRC20 Address", copy:"Copy",
             uploadPhoto:"Upload Photo", save:"Save", cancel:"Cancel",
@@ -866,7 +867,7 @@
             rechargeWaiting:"Please wait, we are checking your payment."
         },
         th: {
-            heroTitle:"LUXCY", heroSubtitle:"เดินทางและรับรายได้ทุกวัน",
+            heroTitle:"Trip.com", heroSubtitle:"เดินทางและรับรายได้ทุกวัน",
             s1:"เที่ยวบิน", s1d:"ทั่วโลก", s2:"โรงแรม", s2d:"ดีลสุดหรู", s3:"รถไฟ", s3d:"พรีเมียม", s4:"งาน", s4d:"รับถึง 1%",
             loginBtn:"เข้าสู่ระบบ", registerBtn:"สมัคร", aboutText:"เกี่ยวกับ",
             backLogin:"กลับ", backReg:"กลับ", loginTagline:"แพลตฟอร์มงานพรีเมียม", forgotText:"ลืมรหัสผ่าน?",
@@ -887,7 +888,7 @@
             yourBalance:"ยอดเงินของคุณ", needAdditional:"ต้องการเพิ่ม", rechargeNow:"เติมเงินตอนนี้",
             close:"ปิด", submit:"ส่ง", cancel:"ยกเลิก", uploadReceipt:"อัปโหลดหลักฐาน",
             enterAmount:"ใส่จำนวนเงิน", noRecords:"ไม่มีประวัติ",
-            companyTitle:"เกี่ยวกับ LUXCY", mission:"พันธกิจ", vision:"วิสัยทัศน์",
+            companyTitle:"เกี่ยวกับ Trip.com", mission:"พันธกิจ", vision:"วิสัยทัศน์",
             pendingOrder:"มีคำสั่งค้าง!", pendingMsg:"กรุณาทำคำสั่งปัจจุบันให้เสร็จ",
             okay:"ตกลง", warning:"คำเตือน", completed:"เสร็จสิ้น", walletAddr:"ที่อยู่ USDT TRC20", copy:"คัดลอก",
             uploadPhoto:"อัปโหลดรูป", save:"บันทึก", cancel:"ยกเลิก",
@@ -896,7 +897,7 @@
             rechargeWaiting:"กรุณารอสักครู่ เรากำลังตรวจสอบการชำระเงินของคุณ"
         },
         es: {
-            heroTitle:"LUXCY", heroSubtitle:"Viaja y gana comisiones diarias.",
+            heroTitle:"Trip.com", heroSubtitle:"Viaja y gana comisiones diarias.",
             s1:"Vuelos", s1d:"Mundial", s2:"Hoteles", s2d:"Ofertas de lujo", s3:"Trenes", s3d:"Premium", s4:"Tareas", s4d:"Gana hasta 1%",
             loginBtn:"Iniciar", registerBtn:"Registrar", aboutText:"Acerca",
             backLogin:"Volver", backReg:"Volver", loginTagline:"Ecosistema Premium", forgotText:"¿Olvidaste contraseña?",
@@ -917,7 +918,7 @@
             yourBalance:"Tu Saldo", needAdditional:"Necesitas", rechargeNow:"Recargar",
             close:"Cerrar", submit:"Enviar", cancel:"Cancelar", uploadReceipt:"Subir comprobante",
             enterAmount:"Monto válido", noRecords:"Sin registros",
-            companyTitle:"Sobre LUXCY", mission:"Misión", vision:"Visión",
+            companyTitle:"Sobre Trip.com", mission:"Misión", vision:"Visión",
             pendingOrder:"Orden pendiente!", pendingMsg:"Completa tu orden actual.",
             okay:"Aceptar", warning:"Advertencia", completed:"Completado", walletAddr:"Dirección USDT TRC20", copy:"Copiar",
             uploadPhoto:"Subir Foto", save:"Guardar", cancel:"Cancelar",
@@ -926,7 +927,7 @@
             rechargeWaiting:"Por favor espere, estamos verificando su pago."
         },
         uk: {
-            heroTitle:"LUXCY", heroSubtitle:"Подорожуйте та заробляйте щодня.",
+            heroTitle:"Trip.com", heroSubtitle:"Подорожуйте та заробляйте щодня.",
             s1:"Авіа", s1d:"Світ", s2:"Готелі", s2d:"Найкращі пропозиції", s3:"Поїзди", s3d:"Преміум", s4:"Завдання", s4d:"Заробляйте до 1%",
             loginBtn:"Увійти", registerBtn:"Реєстрація", aboutText:"Про нас",
             backLogin:"Назад", backReg:"Назад", loginTagline:"Преміум платформа", forgotText:"Забули пароль?",
@@ -947,7 +948,7 @@
             yourBalance:"Ваш баланс", needAdditional:"Потрібно", rechargeNow:"Поповнити",
             close:"Закрити", submit:"Надіслати", cancel:"Скасувати", uploadReceipt:"Завантажити квитанцію",
             enterAmount:"Введіть суму", noRecords:"Немає записів",
-            companyTitle:"Про LUXCY", mission:"Місія", vision:"Бачення",
+            companyTitle:"Про Trip.com", mission:"Місія", vision:"Бачення",
             pendingOrder:"Незавершене замовлення!", pendingMsg:"Завершіть поточне замовлення.",
             okay:"Гаразд", warning:"Попередження", completed:"Завершено", walletAddr:"Адреса USDT TRC20", copy:"Копіювати",
             uploadPhoto:"Завантажити фото", save:"Зберегти", cancel:"Скасувати",
@@ -956,7 +957,7 @@
             rechargeWaiting:"Будь ласка, зачекайте, ми перевіряємо ваш платіж."
         },
         ru: {
-            heroTitle:"LUXCY", heroSubtitle:"Путешествуйте и зарабатывайте ежедневно.",
+            heroTitle:"Trip.com", heroSubtitle:"Путешествуйте и зарабатывайте ежедневно.",
             s1:"Авиа", s1d:"Мир", s2:"Отели", s2d:"Лучшие предложения", s3:"Поезда", s3d:"Премиум", s4:"Задачи", s4d:"Зарабатывайте до 1%",
             loginBtn:"Войти", registerBtn:"Регистрация", aboutText:"О нас",
             backLogin:"Назад", backReg:"Назад", loginTagline:"Премиум платформа", forgotText:"Забыли пароль?",
@@ -977,7 +978,7 @@
             yourBalance:"Ваш баланс", needAdditional:"Требуется", rechargeNow:"Пополнить",
             close:"Закрыть", submit:"Отправить", cancel:"Отмена", uploadReceipt:"Загрузить квитанцию",
             enterAmount:"Введите сумму", noRecords:"Нет записей",
-            companyTitle:"О LUXCY", mission:"Миссия", vision:"Видение",
+            companyTitle:"О Trip.com", mission:"Миссия", vision:"Видение",
             pendingOrder:"Незавершенный заказ!", pendingMsg:"Завершите текущий заказ.",
             okay:"Хорошо", warning:"Предупреждение", completed:"Завершено", walletAddr:"Адрес USDT TRC20", copy:"Копировать",
             uploadPhoto:"Загрузить фото", save:"Сохранить", cancel:"Отмена",
@@ -2050,7 +2051,7 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
                 <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--gold);"></i></div>
-                <div style="color:var(--text);font-size:14px;line-height:1.6;">LUXCY is a premier travel and task platform.</div>
+                <div style="color:var(--text);font-size:14px;line-height:1.6;">Trip.com is a premier travel and task platform.</div>
                 <div style="background:rgba(0,0,0,0.04);border-radius:12px;padding:12px;margin:12px 0;"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text);">To provide seamless travel experiences and financial freedom.</p></div>
                 <div style="background:rgba(0,0,0,0.04);border-radius:12px;padding:12px;margin:12px 0;"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-eye"></i> ${d.vision}</h4><p style="font-size:13px;color:var(--text);">To become the world's leading integrated travel and earning platform.</p></div>
                 <button class="btn-gold" id="companyClose">${d.close}</button>
@@ -2078,7 +2079,7 @@
                 for (let i=1; i<=5; i++) {
                     const url = logos[`logo${i}`];
                     if (url) html += `<div style="width:56px;height:56px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`;
-                    else html += `<div style="width:56px;height:56px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);"><i class="fas fa-crown"></i></div>`;
+                    else html += `<div style="width:56px;height:56px;background:var(--card);border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);"><i class="fas fa-plane"></i></div>`;
                 }
                 container.innerHTML = html;
             }
