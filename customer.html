@@ -7,9 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        /* ========================================= */
-        /* Website မြန်ဆန်စေရန် Local Variable Font ကြေညာခြင်း */
-        /* ========================================= */
         @font-face {
             font-family: 'Inter';
             src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -25,7 +22,6 @@
             font-display: swap;
         }
 
-        /* ===== LIGHT MINIMAL - Clean & Professional ===== */
         :root {
             --primary: #1a1a2e;
             --primary-light: #2d2d44;
@@ -65,7 +61,6 @@
         .active-page { display:block; }
         @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
-        /* ===== HEADER ===== */
         .header {
             display:flex;
             justify-content:space-between;
@@ -86,11 +81,7 @@
             color:#fff;
             flex-shrink:0;
         }
-        .logo-text {
-            font-size:20px; font-weight:800;
-            color:var(--primary);
-            letter-spacing:-0.5px;
-        }
+        .logo-text { font-size:20px; font-weight:800; color:var(--primary); letter-spacing:-0.5px; }
         .header-actions { display:flex; gap:6px; }
         .icon-btn {
             background:var(--bg-card);
@@ -108,7 +99,6 @@
         }
         .icon-btn:hover { border-color:var(--secondary); color:var(--secondary); transform:translateY(-1px); }
 
-        /* ===== CARDS ===== */
         .card {
             background:var(--bg-card);
             border-radius:var(--radius);
@@ -120,7 +110,6 @@
         }
         .card:hover { box-shadow:var(--shadow-hover); border-color:rgba(45,106,79,0.12); }
 
-        /* ===== BUTTONS ===== */
         .btn-primary {
             background:var(--secondary);
             border:none;
@@ -151,7 +140,6 @@
         .btn-outline:hover { background:rgba(45,106,79,0.04); transform:translateY(-2px); }
         .btn-sm { padding:8px 16px; font-size:12px; width:auto; }
         
-        /* ===== GOOGLE BUTTON ===== */
         .btn-google {
             background:#ffffff;
             border:1px solid var(--border);
@@ -174,7 +162,6 @@
         .btn-google:hover { border-color:var(--secondary); color:var(--text); transform:translateY(-1px); box-shadow:var(--shadow-hover); }
         .btn-google i { font-size:20px; color:#EA4335; }
 
-        /* ===== INPUTS ===== */
         .input-glass {
             background:var(--bg);
             border:1px solid var(--border);
@@ -203,13 +190,11 @@
             font-size:16px;
         }
 
-        /* ===== VIP BADGES ===== */
         .vip-1 { background:#e8e8ed; color:var(--text-secondary); padding:2px 14px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
         .vip-2 { background:#d4edda; color:#1e7e34; }
         .vip-3 { background:#cce5ff; color:#0f6b7a; }
         .vip-4 { background:linear-gradient(135deg,#D4AF37,#F5E7B2); color:#0a120e; }
 
-        /* ===== BALANCE BOX ===== */
         .balance-box {
             background:linear-gradient(135deg, var(--primary), var(--primary-light));
             border-radius:var(--radius);
@@ -228,14 +213,9 @@
             background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);
             pointer-events:none;
         }
-        .balance-box .amount {
-            font-size:36px; font-weight:800;
-            color:#fff;
-            letter-spacing:1px;
-        }
+        .balance-box .amount { font-size:36px; font-weight:800; color:#fff; letter-spacing:1px; }
         .balance-box .label { font-size:12px; color:rgba(255,255,255,0.5); letter-spacing:1px; text-transform:uppercase; }
 
-        /* ===== NAV ===== */
         .bottom-nav {
             background:var(--bg-card);
             border-top:1px solid var(--border);
@@ -271,7 +251,6 @@
         .nav-item:active { transform:scale(0.92); }
         .hidden-nav { display:none !important; }
 
-        /* ===== CHAT ===== */
         .chat-box {
             display:flex;
             flex-direction:column;
@@ -316,7 +295,6 @@
         .chat-input .input-glass { margin:0; flex:1; padding:10px 16px; font-size:13px; min-height:44px; border-radius:40px; }
         .chat-input .btn-primary { width:auto; padding:10px 20px; font-size:13px; min-height:44px; }
 
-        /* ===== ORDER CARD ===== */
         .order-card {
             background:var(--bg-card);
             border-radius:var(--radius);
@@ -350,7 +328,6 @@
         }
         @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
 
-        /* ===== MODAL ===== */
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.5);
@@ -368,16 +345,8 @@
             overflow-y:auto;
             box-shadow:0 20px 60px rgba(26,26,46,0.15);
         }
-        .modal-title {
-            font-size:20px; font-weight:700;
-            color:var(--primary);
-            margin-bottom:16px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-        }
+        .modal-title { font-size:20px; font-weight:700; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
 
-        /* ===== TOAST ===== */
         .toast-msg {
             position:fixed;
             bottom:80px;
@@ -396,7 +365,6 @@
         }
         .toast-msg.error { background:#dc2626; }
 
-        /* ===== RESPONSIVE ===== */
         @media(max-width:480px){
             .app { padding:0 10px 20px; }
             .header { padding:12px 0; }
@@ -409,14 +377,11 @@
             .nav-item i { font-size:18px; }
             .modal-box { padding:16px; }
         }
-        @media(min-width:768px){
-            .app { max-width:520px; margin:0 auto; }
-        }
+        @media(min-width:768px){ .app { max-width:520px; margin:0 auto; } }
         ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-track { background:transparent; }
         ::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
 
-        /* ===== COMMON ===== */
         .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
         .text-gold { color:var(--gold); }
         .text-muted { color:var(--muted); }
@@ -450,10 +415,7 @@
             text-align:center;
             border:1px solid var(--border);
         }
-        .stat-card .val {
-            font-size:20px; font-weight:800;
-            color:var(--primary);
-        }
+        .stat-card .val { font-size:20px; font-weight:800; color:var(--primary); }
         .stat-card .lbl { font-size:11px; color:var(--muted); }
         .live-feed {
             background:var(--bg);
@@ -470,25 +432,12 @@
             color:var(--text-secondary);
         }
         .feed-item:last-child { border:none; }
-        .invite-code {
-            font-size:20px; font-weight:800; letter-spacing:2px;
-            color:var(--secondary);
-        }
+        .invite-code { font-size:20px; font-weight:800; letter-spacing:2px; color:var(--secondary); }
         .stars { display:flex; gap:6px; cursor:pointer; margin-top:6px; flex-wrap:wrap; }
         .stars i { font-size:20px; color:rgba(26,26,46,0.08); transition:0.2s; }
         .stars i.active { color:#F5B042; }
-        .progress {
-            background:var(--bg);
-            border-radius:16px;
-            height:6px;
-            overflow:hidden;
-        }
-        .progress-fill {
-            background:var(--secondary);
-            height:100%;
-            width:0%;
-            transition:width 0.5s ease;
-        }
+        .progress { background:var(--bg); border-radius:16px; height:6px; overflow:hidden; }
+        .progress-fill { background:var(--secondary); height:100%; width:0%; transition:width 0.5s ease; }
         .wallet-box {
             background:var(--bg);
             padding:12px 16px;
@@ -501,12 +450,7 @@
             gap:8px;
             margin:10px 0;
         }
-        .wallet-box .addr {
-            font-family:monospace;
-            font-size:12px;
-            color:var(--secondary);
-            word-break:break-all;
-        }
+        .wallet-box .addr { font-family:monospace; font-size:12px; color:var(--secondary); word-break:break-all; }
         .copy-btn {
             background:var(--secondary);
             color:#fff;
@@ -620,14 +564,11 @@
                     <button class="btn-primary" id="landingLoginBtn" style="width:auto;padding:12px 32px;flex:1;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
                     <button class="btn-primary btn-outline" id="landingRegisterBtn" style="width:auto;padding:12px 32px;flex:1;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
                 </div>
-                
-                <!-- ========== GOOGLE BUTTON ON LANDING ========== -->
                 <div style="position:relative;margin:4px 0;width:100%;">
                     <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                     <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or continue with</span>
                 </div>
                 <button class="btn-google" id="landingGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-                <!-- =============================================== -->
             </div>
         </div>
         <div class="card" id="companySection">
@@ -861,7 +802,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
@@ -1937,8 +1878,8 @@
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
         
-        // Sign out from Firebase Auth
-        signOut(auth).then(() => {
+        // Sign out from Firebase Auth (renamed to firebaseSignOut to avoid conflict)
+        firebaseSignOut(auth).then(() => {
             console.log("Signed out from Firebase");
         }).catch((error) => {
             console.error("Sign out error:", error);
