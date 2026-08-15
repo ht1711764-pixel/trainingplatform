@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Trip.com Admin | Premium Control Panel</title>
+    <title>Trip.com Admin | Control Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <!-- ========================================= -->
+    /* Website မြန်ဆန်စေရန် Local Variable Font ကြေညာခြင်း (Customer နည်းတူ) */
+    /* ========================================= */
     <style>
         @font-face {
             font-family: 'Inter';
@@ -23,44 +26,52 @@
             font-display: swap;
         }
 
+        /* ===== LIGHT MINIMAL - Clean & Professional (Customer Style) ===== */
         :root {
+            --primary: #1a1a2e;
+            --primary-light: #2d2d44;
+            --secondary: #2d6a4f;
+            --secondary-light: #409f7a;
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
-            --gold-dark: #C9A03D;
-            --gold-glow: rgba(212,175,55,0.12);
-            --bg: #080a0e;
-            --card: rgba(16,20,30,0.78);
-            --border: rgba(212,175,55,0.15);
-            --text: rgba(255,255,255,0.92);
-            --muted: rgba(255,255,255,0.4);
-            --shadow: 0 8px 40px rgba(0,0,0,0.5);
+            --bg: #f8f9fa;
+            --bg-card: #ffffff;
+            --text: #1a1a2e;
+            --text-secondary: #4a4a5a;
+            --muted: #8a8a9a;
+            --border: rgba(26,26,46,0.08);
+            --shadow: 0 4px 24px rgba(26,26,46,0.06);
+            --shadow-hover: 0 8px 40px rgba(26,26,46,0.10);
             --radius: 16px;
-            --glass: blur(14px);
-            --gradient: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
             font-family:'Inter', sans-serif;
             background:var(--bg);
             color:var(--text);
-            height:100vh;
-            overflow:hidden;
+            min-height:100vh;
+            overflow-y:auto;
+            -webkit-font-smoothing:antialiased;
         }
-        .admin-wrap { display:flex; height:100vh; }
+        .admin-wrap { display:flex; min-height:100vh; }
         .sidebar {
             width:220px;
-            background:var(--card);
-            backdrop-filter:var(--glass);
+            background:var(--bg-card);
             border-right:1px solid var(--border);
             padding:16px 10px;
             overflow-y:auto;
             display:flex;
             flex-direction:column;
             flex-shrink:0;
+            height:100vh;
+            position:sticky; top:0;
+            box-shadow:var(--shadow);
         }
         .sidebar::-webkit-scrollbar { width:3px; }
         .sidebar::-webkit-scrollbar-track { background:transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+        .sidebar::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
         .sidebar-brand {
             display:flex;
             align-items:center;
@@ -71,25 +82,21 @@
         }
         .logo-plane {
             width:38px; height:38px;
-            background:var(--gradient);
+            background:var(--secondary);
             border-radius:12px;
             display:flex;
             align-items:center;
             justify-content:center;
             font-size:18px;
-            color:#0a0c10;
-            box-shadow:0 4px 15px rgba(212,175,55,0.12);
+            color:#fff;
+            box-shadow:0 4px 15px rgba(45,106,79,0.12);
             flex-shrink:0;
         }
         .logo-text-name {
-            font-family:'Playfair Display',serif;
             font-size:20px;
-            font-weight:700;
-            background:var(--gradient);
-            -webkit-background-clip:text;
-            background-clip:text;
-            color:transparent;
-            letter-spacing:1px;
+            font-weight:800;
+            color:var(--primary);
+            letter-spacing:-0.5px;
         }
         .sidebar-brand .dot {
             width:6px; height:6px;
@@ -104,8 +111,8 @@
             margin:1px 0;
             border-radius:10px;
             cursor:pointer;
-            color:var(--muted);
-            transition:all 0.2s;
+            color:var(--text-secondary);
+            transition:var(--transition);
             display:flex;
             align-items:center;
             gap:10px;
@@ -113,20 +120,21 @@
             font-size:13px;
             border-left:2px solid transparent;
         }
-        .nav-item:hover { color:var(--text); background:rgba(212,175,55,0.03); }
+        .nav-item:hover { background:rgba(45,106,79,0.02); color:var(--text); }
         .nav-item.active {
-            color:var(--gold);
-            background:rgba(212,175,55,0.04);
-            border-left-color:var(--gold);
+            color:var(--secondary);
+            background:rgba(45,106,79,0.04);
+            border-left-color:var(--secondary);
         }
-        .nav-item i { width:18px; text-align:center; font-size:14px; }
+        .nav-item i { width:18px; text-align:center; font-size:14px; color:var(--muted); }
+        .nav-item.active i { color:var(--secondary); }
         .nav-item .count {
             margin-left:auto;
-            background:rgba(212,175,55,0.06);
+            background:rgba(45,106,79,0.06);
             padding:0 8px;
             border-radius:30px;
             font-size:9px;
-            color:var(--gold);
+            color:var(--secondary);
             font-weight:600;
         }
         .nav-divider {
@@ -138,89 +146,84 @@
             flex:1;
             padding:16px 20px;
             overflow-y:auto;
-            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.02) 0%, transparent 60%),
-                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.015) 0%, transparent 50%),
-                     var(--bg);
+            background:var(--bg);
         }
         .main::-webkit-scrollbar { width:4px; }
         .main::-webkit-scrollbar-track { background:transparent; }
-        .main::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+        .main::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
         .card-glass {
-            background:var(--card);
-            backdrop-filter:var(--glass);
+            background:var(--bg-card);
             border-radius:var(--radius);
             padding:16px;
             margin-bottom:14px;
             border:1px solid var(--border);
             box-shadow:var(--shadow);
-            transition:0.25s;
+            transition:var(--transition);
         }
         .card-glass:hover {
-            border-color:rgba(212,175,55,0.25);
-            box-shadow:0 12px 48px rgba(0,0,0,0.35);
+            border-color:rgba(45,106,79,0.12);
+            box-shadow:var(--shadow-hover);
         }
         .card-glass .title {
             font-size:17px;
             font-weight:700;
-            color:var(--gold);
+            color:var(--primary);
             margin-bottom:12px;
             display:flex;
             align-items:center;
             gap:8px;
         }
-        .card-glass .title i { font-size:15px; }
-        .btn-gold {
-            background:var(--gradient);
+        .card-glass .title i { font-size:15px; color:var(--secondary); }
+        .btn-primary {
+            background:var(--secondary);
             border:none;
             padding:6px 16px;
             border-radius:40px;
-            font-weight:700;
-            color:#0a120e;
+            font-weight:600;
+            color:#fff;
             cursor:pointer;
-            transition:0.25s;
+            transition:var(--transition);
             font-size:12px;
-            box-shadow:0 4px 15px rgba(212,175,55,0.1);
+            box-shadow:0 4px 15px rgba(45,106,79,0.1);
             display:inline-flex;
             align-items:center;
             gap:5px;
         }
-        .btn-gold:hover { transform:scale(1.02); box-shadow:0 6px 25px rgba(212,175,55,0.18); }
-        .btn-gold:active { transform:scale(0.97); }
-        .btn-gold-sm { padding:4px 12px; font-size:11px; }
-        .btn-ghost {
+        .btn-primary:hover { background:var(--secondary-light); transform:translateY(-1px); box-shadow:0 6px 25px rgba(45,106,79,0.18); }
+        .btn-primary:active { transform:scale(0.97); }
+        .btn-primary-sm { padding:4px 12px; font-size:11px; }
+        .btn-outline {
             background:transparent;
             border:1px solid var(--border);
-            color:var(--text);
+            color:var(--text-secondary);
             padding:5px 14px;
             border-radius:40px;
             cursor:pointer;
-            transition:0.25s;
+            transition:var(--transition);
             font-size:12px;
             display:inline-flex;
             align-items:center;
             gap:5px;
         }
-        .btn-ghost:hover { border-color:var(--gold); color:var(--gold); background:rgba(212,175,55,0.02); }
-        .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; border:none; }
-        .btn-danger:hover { transform:scale(1.02); }
-        .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; }
-        .btn-success:hover { transform:scale(1.02); }
-        .btn-warning { background:linear-gradient(135deg,#f59e0b,#d97706); color:#fff; border:none; }
-        .btn-warning:hover { transform:scale(1.02); }
-        .btn-info { background:linear-gradient(135deg,#3b82f6,#2563eb); color:#fff; border:none; }
-        .btn-info:hover { transform:scale(1.02); }
+        .btn-outline:hover { border-color:var(--secondary); color:var(--secondary); background:rgba(45,106,79,0.02); }
+        .btn-danger { background:#dc2626; color:#fff; border:none; }
+        .btn-danger:hover { background:#ef4444; }
+        .btn-success { background:#10b981; color:#fff; border:none; }
+        .btn-success:hover { background:#059669; }
+        .btn-warning { background:#f59e0b; color:#fff; border:none; }
+        .btn-warning:hover { background:#d97706; }
         .input-glass {
-            background:rgba(0,0,0,0.3);
+            background:var(--bg);
             border:1px solid var(--border);
             padding:7px 12px;
             border-radius:10px;
-            color:#fff;
+            color:var(--text);
             width:100%;
             font-size:13px;
             outline:none;
-            transition:0.25s;
+            transition:var(--transition);
         }
-        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.04); }
+        .input-glass:focus { border-color:var(--secondary); box-shadow:0 0 0 3px rgba(45,106,79,0.06); }
         .input-glass::placeholder { color:var(--muted); }
         select.input-glass { appearance:none; }
         textarea.input-glass { resize:vertical; min-height:50px; }
@@ -233,15 +236,15 @@
             transform:translateY(-50%);
             background:none;
             border:none;
-            color:var(--gold);
+            color:var(--secondary);
             cursor:pointer;
             font-size:14px;
         }
         .table-wrap { overflow-x:auto; }
         table { width:100%; border-collapse:collapse; font-size:13px; }
-        th { text-align:left; padding:8px 6px; color:var(--gold); font-weight:600; border-bottom:1px solid var(--border); }
-        td { padding:8px 6px; border-bottom:1px solid rgba(255,255,255,0.02); vertical-align:middle; }
-        tr:hover td { background:rgba(212,175,55,0.01); }
+        th { text-align:left; padding:8px 6px; color:var(--text-secondary); font-weight:600; border-bottom:1px solid var(--border); }
+        td { padding:8px 6px; border-bottom:1px solid rgba(26,26,46,0.02); vertical-align:middle; }
+        tr:hover td { background:rgba(45,106,79,0.01); }
         .badge-status {
             padding:2px 10px;
             border-radius:30px;
@@ -255,46 +258,47 @@
         .badge-active { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
         .badge-inactive { background:rgba(220,38,38,0.08); color:#dc2626; border:1px solid rgba(220,38,38,0.12); }
         .badge-online { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
-        .badge-offline { background:rgba(255,255,255,0.02); color:var(--muted); border:1px solid var(--border); }
-        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; display:inline-block; }
-        .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
-        .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
-        .vip-4 { background:var(--gradient); color:#0a120e; }
+        .badge-offline { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
+        .vip-1 { background:#e8e8ed; color:var(--text-secondary); padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; display:inline-block; }
+        .vip-2 { background:#d4edda; color:#1e7e34; }
+        .vip-3 { background:#cce5ff; color:#0f6b7a; }
+        .vip-4 { background:linear-gradient(135deg,#D4AF37,#F5E7B2); color:#0a120e; }
         .inj-item {
-            background:rgba(0,0,0,0.08);
+            background:var(--bg);
             padding:8px 12px;
             border-radius:10px;
             margin-bottom:6px;
-            border-left:3px solid var(--gold);
-            transition:0.25s;
+            border-left:3px solid var(--secondary);
+            transition:var(--transition);
         }
-        .inj-item:hover { background:rgba(0,0,0,0.16); }
+        .inj-item:hover { background:rgba(45,106,79,0.02); }
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.92);
+            background:rgba(26,26,46,0.5);
+            backdrop-filter:blur(6px);
             display:flex; align-items:center; justify-content:center;
-            z-index:2000; backdrop-filter:blur(14px);
+            z-index:2000;
             padding:16px;
         }
         .modal-box {
-            background:var(--card);
-            backdrop-filter:var(--glass);
+            background:var(--bg-card);
             border-radius:var(--radius);
             padding:20px;
             width:92%; max-width:480px;
             max-height:85vh; overflow-y:auto;
-            border:1px solid var(--gold);
-            box-shadow:var(--shadow);
+            border:1px solid var(--secondary);
+            box-shadow:var(--shadow-hover);
         }
         .modal-box .modal-title {
-            font-size:17px; font-weight:700; color:var(--gold);
+            font-size:17px; font-weight:700; color:var(--primary);
             margin-bottom:12px; display:flex; align-items:center; gap:8px;
         }
+        .modal-box .modal-title i { color:var(--secondary); }
         .chat-wrap {
             display:flex;
             flex-direction:column;
             height:50vh;
-            background:rgba(0,0,0,0.08);
+            background:var(--bg);
             border-radius:var(--radius);
             overflow:hidden;
             border:1px solid var(--border);
@@ -317,30 +321,30 @@
         }
         .chat-msg.sent {
             align-self:flex-end;
-            background:var(--gradient);
-            color:#0a120e;
+            background:var(--secondary);
+            color:#fff;
             border-bottom-right-radius:3px;
         }
         .chat-msg.received {
             align-self:flex-start;
-            background:rgba(255,255,255,0.03);
+            background:var(--bg);
             border:1px solid var(--border);
             border-bottom-left-radius:3px;
         }
-        .chat-msg .time { font-size:8px; opacity:0.3; margin-top:2px; text-align:right; }
-        .chat-msg img { max-width:120px; max-height:80px; border-radius:6px; margin-top:3px; border:1px solid var(--gold); cursor:pointer; }
+        .chat-msg .time { font-size:8px; opacity:0.4; margin-top:2px; text-align:right; }
+        .chat-msg img { max-width:120px; max-height:80px; border-radius:6px; margin-top:3px; border:1px solid var(--secondary); cursor:pointer; }
         .chat-input {
             display:flex;
             gap:5px;
             padding:8px 10px;
-            background:rgba(0,0,0,0.08);
+            background:var(--bg-card);
             border-top:1px solid var(--border);
             align-items:center;
         }
         .chat-input .input-glass { margin:0; flex:1; padding:6px 12px; font-size:12px; min-height:34px; }
-        .chat-input .btn-gold { width:auto; padding:6px 16px; font-size:12px; min-height:34px; }
+        .chat-input .btn-primary { width:auto; padding:6px 16px; font-size:12px; min-height:34px; }
         @media(max-width:768px) {
-            .sidebar { width:100%; max-height:48px; flex-direction:row; overflow-x:auto; padding:4px 8px; border-right:none; border-bottom:1px solid var(--border); }
+            .sidebar { width:100%; max-height:48px; flex-direction:row; overflow-x:auto; padding:4px 8px; border-right:none; border-bottom:1px solid var(--border); height:auto; position:relative; }
             .sidebar-brand { display:none; }
             .nav-item { white-space:nowrap; margin:0 2px; padding:4px 8px; font-size:11px; flex-shrink:0; border-left:none; }
             .nav-item .count { display:none; }
@@ -353,75 +357,65 @@
             .card-glass { padding:8px; }
             .table-wrap { font-size:11px; }
             th, td { padding:4px 3px; }
-            .btn-gold { font-size:10px; padding:4px 10px; }
+            .btn-primary { font-size:10px; padding:4px 10px; }
         }
         .login-screen {
             position:fixed; top:0; left:0; width:100%; height:100%;
-            background:radial-gradient(ellipse at 30% 30%, rgba(212,175,55,0.04) 0%, transparent 60%),
-                     radial-gradient(ellipse at 70% 70%, rgba(212,175,55,0.02) 0%, transparent 50%),
-                     var(--bg);
+            background:var(--bg);
             display:flex; align-items:center; justify-content:center;
             z-index:3000;
         }
         .login-box {
-            background:var(--card);
-            backdrop-filter:var(--glass);
+            background:var(--bg-card);
             padding:28px;
             border-radius:24px;
             width:380px;
             max-width:92%;
-            border:1px solid var(--gold);
-            box-shadow:var(--shadow);
+            border:1px solid var(--secondary);
+            box-shadow:var(--shadow-hover);
         }
         .login-box .brand { text-align:center; margin-bottom:20px; }
         .login-box .brand .logo-plane {
             width:60px; height:60px;
-            background:var(--gradient);
+            background:var(--secondary);
             border-radius:16px;
             display:flex; align-items:center; justify-content:center;
             margin:0 auto 8px;
             font-size:26px;
-            color:#0a0c10;
-            box-shadow:0 4px 25px rgba(212,175,55,0.1);
+            color:#fff;
+            box-shadow:0 4px 25px rgba(45,106,79,0.1);
         }
         .login-box .brand .name {
-            font-family:'Playfair Display',serif;
             font-size:28px;
-            font-weight:700;
-            background:var(--gradient);
-            -webkit-background-clip:text;
-            background-clip:text;
-            color:transparent;
+            font-weight:800;
+            color:var(--primary);
         }
         .login-box .brand .sub { font-size:12px; color:var(--muted); }
         .login-box .input-glass { margin-bottom:10px; }
-        .login-box .btn-gold { width:100%; padding:10px; justify-content:center; }
+        .login-box .btn-primary { width:100%; padding:10px; justify-content:center; }
         .login-box .error { color:#dc2626; text-align:center; margin-top:8px; font-size:12px; }
         .toast-msg {
             position:fixed;
             bottom:76px;
             left:50%;
             transform:translateX(-50%);
-            background:rgba(30,42,36,0.92);
-            backdrop-filter:blur(10px);
+            background:var(--primary);
             padding:6px 18px;
             border-radius:40px;
             font-size:11px;
             z-index:100;
-            border-left:3px solid var(--gold);
             font-weight:600;
             color:#fff;
-            box-shadow:0 4px 20px rgba(0,0,0,0.3);
+            box-shadow:0 4px 20px rgba(26,26,46,0.15);
             max-width:92%;
             text-align:center;
         }
-        .toast-msg.error { background:rgba(220,38,38,0.92); border-left-color:#dc2626; }
+        .toast-msg.error { background:#dc2626; }
         .live-indicator {
             position:fixed;
             bottom:20px;
             right:16px;
             background:rgba(16,185,129,0.8);
-            backdrop-filter:blur(8px);
             color:#fff;
             padding:2px 10px;
             border-radius:30px;
@@ -429,24 +423,22 @@
             z-index:100;
             animation:pulse 1.5s infinite;
             display:none;
-            border:1px solid rgba(255,255,255,0.02);
         }
         .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
         .gap-1 { gap:4px; }
         .mt-1 { margin-top:6px; }
         .mb-1 { margin-bottom:6px; }
-        .text-gold { color:var(--gold); }
         .text-muted { color:var(--muted); }
         .text-center { text-align:center; }
         .w-full { width:100%; }
-        .img-preview { max-width:70px; max-height:70px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
-        .img-preview-sm { max-width:50px; max-height:50px; border-radius:4px; border:1px solid var(--gold); cursor:pointer; }
+        .img-preview { max-width:70px; max-height:70px; border-radius:6px; border:1px solid var(--secondary); cursor:pointer; }
+        .img-preview-sm { max-width:50px; max-height:50px; border-radius:4px; border:1px solid var(--secondary); cursor:pointer; }
         .online-dot { display:inline-block; width:6px; height:6px; border-radius:50%; margin-right:4px; }
         .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
         .online-dot.offline { background:var(--muted); }
         ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+        ::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
     </style>
 </head>
 <body>
@@ -456,14 +448,14 @@
         <div class="brand">
             <div class="logo-plane"><i class="fas fa-plane"></i></div>
             <div class="name">Trip.com</div>
-            <div class="sub">Premium Admin Panel</div>
+            <div class="sub">Admin Panel</div>
         </div>
         <input type="text" class="input-glass" id="loginUser" placeholder="Username">
         <div class="pw-wrap">
             <input type="password" class="input-glass" id="loginPass" placeholder="Password">
             <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
         </div>
-        <button class="btn-gold" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Login</button>
+        <button class="btn-primary" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Login</button>
         <div id="loginError" class="error"></div>
     </div>
 </div>
@@ -574,7 +566,7 @@
     function showLoader() {
         const l = document.createElement('div');
         l.id = 'loader';
-        l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(6px);font-size:18px;color:var(--gold);';
+        l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(26,26,46,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;backdrop-filter:blur(2px);font-size:18px;color:var(--secondary);';
         l.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Loading...';
         document.body.appendChild(l);
         setTimeout(() => { const el = document.getElementById('loader'); if(el) el.remove(); }, 500);
@@ -723,15 +715,15 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-syringe"></i> Inject for ${esc(u.username)}</div>
                 <p style="font-size:12px;color:var(--muted);">Balance: S$ ${(u.balance||0).toFixed(2)} | Orders: ${u.tasks?.completed||0}/${u.tasks?.total||0}</p>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Fixed Commission</label><input type="number" class="input-glass" id="injFixed" step="0.01" value="0"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:3px;"></div></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Fixed Commission</label><input type="number" class="input-glass" id="injFixed" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:3px;"></div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
-                    <button class="btn-gold" id="injSubmit"><i class="fas fa-check"></i> Inject</button>
-                    <button class="btn-ghost" id="injCancel">Cancel</button>
+                    <button class="btn-primary" id="injSubmit"><i class="fas fa-check"></i> Inject</button>
+                    <button class="btn-outline" id="injCancel">Cancel</button>
                 </div>
                 <div id="injStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -798,8 +790,8 @@
                                 <div style="font-size:10px;color:var(--muted);">${i.used ? '✅ Used' : '⏳ Pending'}</div>
                             </div>
                             <div class="flex gap-1">
-                                ${!i.used ? `<button class="btn-gold btn-gold-sm" onclick="window.editInjection('${i.id}')"><i class="fas fa-edit"></i></button>` : ''}
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteInjection('${i.id}','${userId}')"><i class="fas fa-trash"></i></button>
+                                ${!i.used ? `<button class="btn-primary btn-primary-sm" onclick="window.editInjection('${i.id}')"><i class="fas fa-edit"></i></button>` : ''}
+                                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.deleteInjection('${i.id}','${userId}')"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                         ${i.imageData ? `<img src="${i.imageData}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
@@ -807,7 +799,7 @@
                 `;
             });
         }
-        html += `<button class="btn-ghost w-full" id="histClose">Close</button></div>`;
+        html += `<button class="btn-outline w-full" id="histClose">Close</button></div>`;
         modal.innerHTML = html;
         document.body.appendChild(modal);
         document.getElementById('histClose').onclick = () => document.body.removeChild(modal);
@@ -822,15 +814,15 @@
         modal.innerHTML = `
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-edit"></i> Edit #${inj.taskNumber} for ${u?.username}</div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:3px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:3px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
-                    <button class="btn-gold" id="eSubmit"><i class="fas fa-save"></i> Update</button>
-                    <button class="btn-ghost" id="eCancel">Cancel</button>
+                    <button class="btn-primary" id="eSubmit"><i class="fas fa-save"></i> Update</button>
+                    <button class="btn-outline" id="eCancel">Cancel</button>
                 </div>
                 <div id="eStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -917,37 +909,37 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
                 <div class="row g-2">
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Users</div><div style="font-size:24px;font-weight:800;color:var(--gold);">${total}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Balance</div><div style="font-size:24px;font-weight:800;color:var(--gold);">S$ ${bal.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Commission</div><div style="font-size:24px;font-weight:800;color:var(--gold);">S$ ${comm.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:rgba(0,0,0,0.08);padding:12px;border-radius:10px;"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--gold);">${actA}/${agencies.length}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Users</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${total}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Balance</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${bal.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Commission</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${comm.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${actA}/${agencies.length}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-4"><div style="background:rgba(245,158,11,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(59,130,246,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(16,185,129,0.03);padding:8px;border-radius:8px;text-align:center;"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(245,158,11,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(245,158,11,0.08);"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(59,130,246,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(59,130,246,0.08);"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(16,185,129,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(16,185,129,0.08);"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.06);padding:8px;border-radius:8px;"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
-                    <div class="col-6"><div style="background:rgba(0,0,0,0.06);padding:8px;border-radius:8px;"><div style="font-size:10px;color:var(--muted);">System Wallet</div><div style="font-size:11px;font-family:monospace;color:var(--gold);">${systemSettings.usdtWalletAddress.substring(0,18)}...</div></div></div>
+                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
+                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">System Wallet</div><div style="font-size:11px;font-family:monospace;color:var(--secondary);">${systemSettings.usdtWalletAddress.substring(0,18)}...</div></div></div>
                 </div>
             </div>
         `;
     }
 
-    // ===== MEMBERS (Invitation Code Column Added) =====
+    // ===== MEMBERS =====
     function renderMembers(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
             <div class="card-glass">
                 <div class="flex">
                     <div class="title"><i class="fas fa-users"></i> Members</div>
-                    <button class="btn-gold btn-gold-sm" id="addMemberBtn"><i class="fas fa-plus"></i> Add</button>
+                    <button class="btn-primary btn-primary-sm" id="addMemberBtn"><i class="fas fa-plus"></i> Add</button>
                 </div>
                 <div class="flex" style="margin:8px 0;">
                     <input class="input-glass" id="memberSearch" placeholder="Search..." style="flex:1;min-width:100px;">
-                    <button class="btn-ghost" id="searchBtn">Search</button>
-                    <button class="btn-ghost" id="resetSearch">Reset</button>
+                    <button class="btn-outline" id="searchBtn">Search</button>
+                    <button class="btn-outline" id="resetSearch">Reset</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -971,21 +963,21 @@
                 const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Yangon' }) : 'Never';
                 return `<tr>
                     <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
-                    <td><strong>${esc(u.username)}</strong><br><span style="font-size:10px;color:var(--muted);">${u.email||''}</span></td>
-                    <td style="font-size:11px;color:var(--gold);font-weight:600;letter-spacing:0.5px;">${esc(u.invitationCode) || '-'}</td>
-                    <td>S$ ${(u.balance||0).toFixed(2)}<br><span style="font-size:9px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
+                    <td><strong style="color:var(--primary);">${esc(u.username)}</strong><br><span style="font-size:10px;color:var(--muted);">${u.email||''}</span></td>
+                    <td style="font-size:11px;color:var(--secondary);font-weight:600;letter-spacing:0.5px;">${esc(u.invitationCode) || '-'}</td>
+                    <td><strong>S$ ${(u.balance||0).toFixed(2)}</strong><br><span style="font-size:9px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
                     <td><span class="${vc}">VIP ${lv}</span></td>
                     <td><span class="badge-status ${u.disabled ? 'badge-inactive' : 'badge-active'}">${u.disabled ? 'Disabled' : 'Active'}</span></td>
                     <td style="font-size:11px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
                     <td>
                         <div class="flex gap-1" style="flex-wrap:wrap;">
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
-                            <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,${u.disabled ? '#10b981' : '#dc2626'},${u.disabled ? '#059669' : '#ef4444'});color:#fff;" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
+                            <button class="btn-primary btn-primary-sm" style="background:${u.disabled ? '#10b981' : '#dc2626'};" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
                         </div>
                     </td>
                 </tr>`;
@@ -1078,8 +1070,8 @@
                 <div class="pw-wrap"><input type="password" class="input-glass" id="amWpass" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('amWpass',this)"><i class="fas fa-eye"></i></button></div>
                 <input class="input-glass" id="amInvite" placeholder="Invitation Code (optional)">
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" id="amSubmit">Create</button>
-                    <button class="btn-ghost" id="amCancel">Cancel</button>
+                    <button class="btn-primary" id="amSubmit">Create</button>
+                    <button class="btn-outline" id="amCancel">Cancel</button>
                 </div>
                 <div id="amStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -1161,7 +1153,7 @@
                                         ${[1,2,3,4].map(v => `<option value="${v}" ${lv===v?'selected':''}>VIP ${v}</option>`).join('')}
                                         <option value="0" ${!hasManual?'selected':''}>Auto</option>
                                     </select></td>
-                                    <td><button class="btn-gold btn-gold-sm" onclick="window.applyVIP('${u.id}')">Apply</button></td>
+                                    <td><button class="btn-primary btn-primary-sm" onclick="window.applyVIP('${u.id}')">Apply</button></td>
                                 </tr>`;
                             }).join('')}
                         </tbody>
@@ -1199,8 +1191,8 @@
                 <div class="flex" style="margin:8px 0;">
                     <input class="input-glass" id="injSearchPhone" placeholder="Phone" style="flex:1;min-width:80px;">
                     <input class="input-glass" id="injSearchEmail" placeholder="Email" style="flex:1;min-width:80px;">
-                    <button class="btn-ghost" id="injSearchBtn">Search</button>
-                    <button class="btn-ghost" id="injResetBtn">Reset</button>
+                    <button class="btn-outline" id="injSearchBtn">Search</button>
+                    <button class="btn-outline" id="injResetBtn">Reset</button>
                 </div>
                 <div class="table-wrap">
                     <table>
@@ -1224,8 +1216,8 @@
                     <td>S$ ${(u.balance||0).toFixed(2)}</td>
                     <td>
                         <div class="flex gap-1">
-                            <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.showInjectionModal('${u.id}')"><i class="fas fa-syringe"></i></button>
-                            <button class="btn-gold btn-gold-sm" onclick="window.showInjectionHistory('${u.id}')"><i class="fas fa-history"></i></button>
+                            <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.showInjectionModal('${u.id}')"><i class="fas fa-syringe"></i></button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.showInjectionHistory('${u.id}')"><i class="fas fa-history"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -1245,8 +1237,8 @@
                     <input class="input-glass" id="ordName" placeholder="Order Name" style="flex:1;min-width:100px;">
                     <input class="input-glass" id="ordPrice" placeholder="Price" type="number" step="0.01" style="width:100px;">
                     <input type="file" id="ordImg" accept="image/*" style="display:none;">
-                    <button class="btn-ghost" id="ordUploadBtn"><i class="fas fa-image"></i> Image</button>
-                    <button class="btn-gold" id="ordAddBtn">Add</button>
+                    <button class="btn-outline" id="ordUploadBtn"><i class="fas fa-image"></i> Image</button>
+                    <button class="btn-primary" id="ordAddBtn">Add</button>
                 </div>
                 <div id="ordPreview" style="margin-bottom:6px;"></div>
                 <div id="ordList"></div>
@@ -1285,12 +1277,12 @@
         if (!container) return;
         if (!customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:10px;">No orders</p>'; return; }
         container.innerHTML = customOrders.map((o,i) => `
-            <div class="flex" style="padding:6px 10px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:4px;border:1px solid var(--border);">
+            <div class="flex" style="padding:6px 10px;background:var(--bg);border-radius:8px;margin-bottom:4px;border:1px solid var(--border);">
                 <div style="display:flex;align-items:center;gap:8px;">
-                    ${o.image ? `<img src="${o.image}" class="img-preview-sm">` : '<i class="fas fa-box" style="color:var(--gold);"></i>'}
+                    ${o.image ? `<img src="${o.image}" class="img-preview-sm">` : '<i class="fas fa-box" style="color:var(--secondary);"></i>'}
                     <div><strong>${esc(o.name)}</strong> <span style="color:var(--muted);font-size:11px;">S$ ${o.price}</span></div>
                 </div>
-                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteOrder('${o.id}')"><i class="fas fa-trash"></i></button>
+                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.deleteOrder('${o.id}')"><i class="fas fa-trash"></i></button>
             </div>
         `).join('');
     }
@@ -1309,14 +1301,14 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-coins"></i> Recharge Requests</div>
                 ${rechargeReqs.length ? rechargeReqs.map(r => `
-                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(r.userName)}</strong> <span class="badge-status ${r.status==='pending'?'badge-pending':r.status==='approved'?'badge-approved':'badge-rejected'}">${r.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
                         ${r.receiptImage ? `<img src="${r.receiptImage}" class="img-preview" onclick="window.open(this.src)">` : ''}
                         ${r.status === 'pending' ? `
                             <div class="flex gap-1" style="margin-top:4px;">
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveRecharge('${r.id}')"><i class="fas fa-check"></i> Approve</button>
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectRecharge('${r.id}')"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#10b981;color:#fff;" onclick="window.approveRecharge('${r.id}')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.rejectRecharge('${r.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
                         ${r.adminNote ? `<div style="font-size:11px;color:var(--muted);">Note: ${r.adminNote}</div>` : ''}
@@ -1348,8 +1340,8 @@
                 <div class="modal-title"><i class="fas fa-times-circle" style="color:#dc2626;"></i> Reject Recharge</div>
                 <textarea class="input-glass" id="rejNote" placeholder="Reason..." rows="2"></textarea>
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" id="rejSubmit">Reject</button>
-                    <button class="btn-ghost" id="rejCancel">Cancel</button>
+                    <button class="btn-primary" style="background:#dc2626;color:#fff;" id="rejSubmit">Reject</button>
+                    <button class="btn-outline" id="rejCancel">Cancel</button>
                 </div>
             </div>
         `;
@@ -1370,14 +1362,14 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</div>
                 ${withdrawReqs.length ? withdrawReqs.map(w => `
-                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(w.userName)}</strong> <span class="badge-status ${w.status==='pending'?'badge-pending':w.status==='approved'?'badge-approved':'badge-rejected'}">${w.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${w.amount} | Wallet: ${w.walletAddress}</div>
                         <div style="font-size:11px;color:var(--muted);">${new Date(w.timestamp).toLocaleString()}</div>
                         ${w.status === 'pending' ? `
                             <div class="flex gap-1" style="margin-top:4px;">
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveWithdraw('${w.id}')"><i class="fas fa-check"></i> Approve</button>
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectWithdraw('${w.id}')"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#10b981;color:#fff;" onclick="window.approveWithdraw('${w.id}')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.rejectWithdraw('${w.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
                         ${w.adminNote ? `<div style="font-size:11px;color:var(--muted);">Note: ${w.adminNote}</div>` : ''}
@@ -1405,8 +1397,8 @@
                 <div class="modal-title"><i class="fas fa-times-circle" style="color:#dc2626;"></i> Reject Withdraw</div>
                 <textarea class="input-glass" id="rejWNote" placeholder="Reason..." rows="2"></textarea>
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" id="rejWSubmit">Reject</button>
-                    <button class="btn-ghost" id="rejWCancel">Cancel</button>
+                    <button class="btn-primary" style="background:#dc2626;color:#fff;" id="rejWSubmit">Reject</button>
+                    <button class="btn-outline" id="rejWCancel">Cancel</button>
                 </div>
             </div>
         `;
@@ -1429,7 +1421,7 @@
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-heart"></i> Loan Requests</div>
                 ${loanReqs.length ? loanReqs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map(l => `
-                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(l.userName)}</strong> <span class="badge-status ${l.status==='pending'?'badge-pending':l.status==='approved'?'badge-approved':'badge-rejected'}">${l.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${l.amount} | Doc: ${l.docType}</div>
                         <div style="font-size:11px;color:var(--muted);">${new Date(l.timestamp).toLocaleString()}</div>
@@ -1440,8 +1432,8 @@
                         </div>
                         ${l.status === 'pending' ? `
                             <div class="flex gap-1" style="margin-top:4px;">
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.approveLoan('${l.id}')"><i class="fas fa-check"></i> Approve</button>
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.rejectLoan('${l.id}')"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#10b981;color:#fff;" onclick="window.approveLoan('${l.id}')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.rejectLoan('${l.id}')"><i class="fas fa-times"></i> Reject</button>
                             </div>
                         ` : ''}
                     </div>
@@ -1475,19 +1467,19 @@
             <div class="card-glass">
                 <div class="flex">
                     <div class="title"><i class="fas fa-user-tie"></i> Agencies</div>
-                    <button class="btn-gold btn-gold-sm" id="addAgencyBtn"><i class="fas fa-plus"></i> Create</button>
+                    <button class="btn-primary btn-primary-sm" id="addAgencyBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
                 ${agencies.length ? agencies.map(a => `
-                    <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
+                    <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex">
-                            <div><strong style="color:var(--gold);">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'badge-active':'badge-inactive'}">${a.status}</span></div>
+                            <div><strong style="color:var(--secondary);">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'badge-active':'badge-inactive'}">${a.status}</span></div>
                             <div class="flex gap-1">
-                                <button class="btn-gold btn-gold-sm" onclick="window.genCode('${a.id}')"><i class="fas fa-qrcode"></i></button>
+                                <button class="btn-primary btn-primary-sm" onclick="window.genCode('${a.id}')"><i class="fas fa-qrcode"></i></button>
                                 ${a.status === 'active' ? `
-                                    <button class="btn-gold btn-gold-sm" onclick="window.changeAgencyPw('${a.id}')"><i class="fas fa-key"></i></button>
-                                    <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.toggleAgency('${a.id}')"><i class="fas fa-lock"></i></button>
-                                ` : `<button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;" onclick="window.toggleAgency('${a.id}')"><i class="fas fa-lock-open"></i></button>`}
-                                <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deleteAgency('${a.id}')"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-primary btn-primary-sm" onclick="window.changeAgencyPw('${a.id}')"><i class="fas fa-key"></i></button>
+                                    <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.toggleAgency('${a.id}')"><i class="fas fa-lock"></i></button>
+                                ` : `<button class="btn-primary btn-primary-sm" style="background:#10b981;color:#fff;" onclick="window.toggleAgency('${a.id}')"><i class="fas fa-lock-open"></i></button>`}
+                                <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.deleteAgency('${a.id}')"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                         <div style="font-size:11px;color:var(--muted);">Email: ${a.email||'N/A'} | Created: ${new Date(a.createdAt).toLocaleString()}</div>
@@ -1508,10 +1500,10 @@
         modal.innerHTML = `
             <div class="modal-box" style="text-align:center;">
                 <div style="font-size:12px;color:var(--muted);">Access Code for ${esc(a.username)}</div>
-                <div style="font-size:32px;font-weight:800;color:var(--gold);letter-spacing:4px;padding:10px;background:rgba(0,0,0,0.08);border-radius:10px;margin:10px 0;">${code}</div>
+                <div style="font-size:32px;font-weight:800;color:var(--secondary);letter-spacing:4px;padding:10px;background:var(--bg);border-radius:10px;margin:10px 0;">${code}</div>
                 <div style="font-size:10px;color:#f59e0b;"><i class="fas fa-clock"></i> Valid for 5 minutes</div>
-                <button class="btn-gold" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button>
-                <button class="btn-ghost" id="codeClose">Close</button>
+                <button class="btn-primary" onclick="navigator.clipboard.writeText('${code}')"><i class="fas fa-copy"></i> Copy</button>
+                <button class="btn-outline" id="codeClose">Close</button>
             </div>
         `;
         document.body.appendChild(modal);
@@ -1529,8 +1521,8 @@
                 <div class="pw-wrap"><input type="password" class="input-glass" id="apwNew" placeholder="New Password"><button class="pw-toggle" onclick="togglePw('apwNew',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="apwConfirm" placeholder="Confirm"><button class="pw-toggle" onclick="togglePw('apwConfirm',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" id="apwSubmit">Update</button>
-                    <button class="btn-ghost" id="apwCancel">Cancel</button>
+                    <button class="btn-primary" id="apwSubmit">Update</button>
+                    <button class="btn-outline" id="apwCancel">Cancel</button>
                 </div>
                 <div id="apwStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -1575,18 +1567,18 @@
                 <input class="input-glass" id="aaEmail" placeholder="Email">
                 <div class="pw-wrap"><input type="password" class="input-glass" id="aaPass" placeholder="Password"><button class="pw-toggle" onclick="togglePw('aaPass',this)"><i class="fas fa-eye"></i></button></div>
                 <div class="pw-wrap"><input type="password" class="input-glass" id="aaConfirm" placeholder="Confirm"><button class="pw-toggle" onclick="togglePw('aaConfirm',this)"><i class="fas fa-eye"></i></button></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--gold);">Permissions</label>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Permissions</label>
                     <div style="display:flex;flex-wrap:wrap;gap:3px;font-size:11px;">
                         ${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `
-                            <label style="background:rgba(0,0,0,0.06);padding:2px 8px;border-radius:20px;border:1px solid var(--border);">
+                            <label style="background:var(--bg);padding:2px 8px;border-radius:20px;border:1px solid var(--border);">
                                 <input type="checkbox" id="aa_${p}" ${p!=='Settings'?'checked':''}> ${p}
                             </label>
                         `).join('')}
                     </div>
                 </div>
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" id="aaSubmit">Create</button>
-                    <button class="btn-ghost" id="aaCancel">Cancel</button>
+                    <button class="btn-primary" id="aaSubmit">Create</button>
+                    <button class="btn-outline" id="aaCancel">Cancel</button>
                 </div>
                 <div id="aaStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -1632,9 +1624,9 @@
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-paint-brush"></i> Settings</div>
-                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--gold);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
-                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--gold);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
-                <button class="btn-gold" id="setSave">Save Settings</button>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
+                <button class="btn-primary" id="setSave">Save Settings</button>
             </div>
         `;
         document.getElementById('setSave').onclick = async () => {
@@ -1653,16 +1645,16 @@
             <div class="card-glass">
                 <div class="flex">
                     <div class="title"><i class="fas fa-ad"></i> Popup Ads</div>
-                    <button class="btn-gold btn-gold-sm" id="popAddBtn"><i class="fas fa-plus"></i> Create</button>
+                    <button class="btn-primary btn-primary-sm" id="popAddBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
                 <div id="popList">
                     ${popupAds.length ? popupAds.map(p => `
-                        <div style="padding:8px 12px;background:rgba(0,0,0,0.04);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
+                        <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                             <div class="flex">
-                                <div><strong style="color:var(--gold);">${esc(p.title||'Untitled')}</strong> <span class="badge-status ${p.isActive!==false?'badge-active':'badge-inactive'}">${p.isActive!==false?'Active':'Inactive'}</span></div>
+                                <div><strong style="color:var(--secondary);">${esc(p.title||'Untitled')}</strong> <span class="badge-status ${p.isActive!==false?'badge-active':'badge-inactive'}">${p.isActive!==false?'Active':'Inactive'}</span></div>
                                 <div class="flex gap-1">
-                                    <button class="btn-gold btn-gold-sm" onclick="window.editPopup('${p.id}')"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-gold btn-gold-sm" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;" onclick="window.deletePopup('${p.id}')"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-primary btn-primary-sm" onclick="window.editPopup('${p.id}')"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.deletePopup('${p.id}')"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
                             ${p.imageData ? `<img src="${p.imageData}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
@@ -1704,8 +1696,8 @@
                     <option value="false" ${existing?.isActive===false?'selected':''}>Inactive</option>
                 </select>
                 <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-gold" id="popSubmit">${isEdit ? 'Update' : 'Create'}</button>
-                    <button class="btn-ghost" id="popCancel">Cancel</button>
+                    <button class="btn-primary" id="popSubmit">${isEdit ? 'Update' : 'Create'}</button>
+                    <button class="btn-outline" id="popCancel">Cancel</button>
                 </div>
                 <div id="popStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
             </div>
@@ -1759,7 +1751,7 @@
                     <div class="chat-msgs" id="chatMsgs"></div>
                     <div class="chat-input">
                         <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:6px 12px;font-size:12px;min-height:34px;">
-                        <button class="btn-gold" id="chatSend" style="width:auto;padding:6px 16px;font-size:12px;min-height:34px;">Send</button>
+                        <button class="btn-primary" id="chatSend" style="width:auto;padding:6px 16px;font-size:12px;min-height:34px;">Send</button>
                     </div>
                 </div>
             </div>
