@@ -6,11 +6,8 @@
     <title>Trip.com | Luxury Travel & Earnings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Google Font Link ကို ဖျက်ပြီး Local Variable Font နဲ့ အစားထိုးလိုက်ပြီ -->
     <style>
-        /* ========================================= */
-        /* Website မြန်ဆန်စေရန် Local Variable Font ကြေညာခြင်း */
-        /* ========================================= */
+
         @font-face {
             font-family: 'Inter';
             src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -48,7 +45,7 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
-            font-family:'Inter', sans-serif; /* Website တစ်ခုလုံးကို Local Inter Font နဲ့ ပြောင်းလိုက်ပြီ */
+            font-family:'Inter', sans-serif; 
             background:var(--bg);
             color:var(--text);
             min-height:100vh;
@@ -151,8 +148,29 @@
         }
         .btn-outline:hover { background:rgba(45,106,79,0.04); transform:translateY(-2px); }
         .btn-sm { padding:8px 16px; font-size:12px; width:auto; }
-        .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; }
-        .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; }
+        
+        /* ===== GOOGLE BUTTON ===== */
+        .btn-google {
+            background:#ffffff;
+            border:1px solid var(--border);
+            color:var(--text-secondary);
+            padding:12px 24px;
+            border-radius:40px;
+            font-weight:600;
+            cursor:pointer;
+            transition:var(--transition);
+            font-size:14px;
+            width:100%;
+            text-align:center;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            box-shadow:var(--shadow);
+            margin-top:8px;
+        }
+        .btn-google:hover { border-color:var(--secondary); color:var(--text); transform:translateY(-1px); box-shadow:var(--shadow-hover); }
+        .btn-google i { font-size:20px; color:#EA4335; }
 
         /* ===== INPUTS ===== */
         .input-glass {
@@ -595,9 +613,19 @@
                 <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-train" style="font-size:24px;color:var(--secondary);"></i><div style="font-size:12px;font-weight:600;color:var(--text);margin-top:6px;" id="s3">Trains</div><div style="font-size:9px;color:var(--muted);" id="s3d">Premium</div></div>
                 <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-tasks" style="font-size:24px;color:var(--secondary);"></i><div style="font-size:12px;font-weight:600;color:var(--text);margin-top:6px;" id="s4">Tasks</div><div style="font-size:9px;color:var(--muted);" id="s4d">Earn up to 1%</div></div>
             </div>
-            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-                <button class="btn-primary" id="landingLoginBtn" style="width:auto;padding:12px 32px;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
-                <button class="btn-primary btn-outline" id="landingRegisterBtn" style="width:auto;padding:12px 32px;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
+            <div style="display:flex;flex-direction:column;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px;">
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;width:100%;">
+                    <button class="btn-primary" id="landingLoginBtn" style="width:auto;padding:12px 32px;flex:1;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
+                    <button class="btn-primary btn-outline" id="landingRegisterBtn" style="width:auto;padding:12px 32px;flex:1;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
+                </div>
+                
+                <!-- ========== GOOGLE BUTTON ON LANDING ========== -->
+                <div style="position:relative;margin:4px 0;width:100%;">
+                    <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
+                    <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or continue with</span>
+                </div>
+                <button class="btn-google" id="landingGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
+                <!-- =============================================== -->
             </div>
         </div>
         <div class="card" id="companySection">
@@ -633,6 +661,14 @@
                 <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
                 <span id="goRegisterBtn" style="color:var(--secondary);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
+
+            <!-- ========== GOOGLE BUTTON ON LOGIN PAGE ========== -->
+            <div style="position:relative;margin:16px 0 8px;width:100%;">
+                <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
+            </div>
+            <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
+            <!-- ================================================= -->
         </div>
     </div>
 
@@ -647,8 +683,17 @@
             <div class="pw-wrap"><input type="password" class="input-glass" id="regPass" placeholder="Login Password"><button class="pw-toggle" onclick="togglePw('regPass',this)"><i class="fas fa-eye"></i></button></div>
             <div class="pw-wrap"><input type="password" class="input-glass" id="regConfirm" placeholder="Confirm Password"><button class="pw-toggle" onclick="togglePw('regConfirm',this)"><i class="fas fa-eye"></i></button></div>
             <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
-            <input class="input-glass" id="regInvite" placeholder="Invitation Code (Required)">
+            <input class="input-glass" id="regInvite" placeholder="Invitation Code (Optional)">
             <button class="btn-primary" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
+            
+            <!-- ========== GOOGLE BUTTON ON REGISTER PAGE ========== -->
+            <div style="position:relative;margin:16px 0 8px;width:100%;">
+                <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
+            </div>
+            <button class="btn-google" id="registerGoogleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
+            <!-- =================================================== -->
+            
             <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--muted);" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--secondary);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
@@ -814,6 +859,7 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
@@ -825,6 +871,8 @@
     };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
 
     // ===== GLOBALS =====
     let user = null;
@@ -915,7 +963,7 @@
         else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
-    // ===== TRANSLATIONS (Shortened for brevity) =====
+    // ===== TRANSLATIONS =====
     const t = {
         en: {
             heroTitle:"Trip.com", heroSubtitle:"Travel & earn daily commissions.",
@@ -975,14 +1023,79 @@
             submitComplete:d.submitComplete, processing:d.processing, insufficient:d.insufficient,
             yourBalance:d.yourBalance, needAdditional:d.needAdditional, rechargeNow:d.rechargeNow,
             close:d.close, submit:d.submit, cancel:d.cancel, uploadReceipt:d.uploadReceipt,
-            enterAmount:d.enterAmount, noRecords:d.noRecords,
-            navHome:d.navHome, navWork:d.navWork, navOrders:d.navOrders, navProfile:d.navProfile, navService:d.navService
+            enterAmount:d.enterAmount, noRecords:d.noRecords
         };
         for (const [id, val] of Object.entries(map)) {
             const el = document.getElementById(id);
             if (el) el.innerText = val;
         }
         if (user) updateUI();
+    }
+
+    // ===== AUTH HELPERS =====
+    async function handleGoogleLogin() {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const gUser = result.user;
+            const email = gUser.email;
+            const username = email.split('@')[0]; // Gmail username from email
+            
+            // Check if user already exists in Firestore
+            const userRef = doc(db, "users", gUser.uid);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists()) {
+                user = { id: gUser.uid, ...userSnap.data() };
+                toast(`Welcome back, ${user.username}`);
+            } else {
+                // Create NEW user automatically (No Invitation Code needed)
+                const newUser = {
+                    id: gUser.uid,
+                    username: username,
+                    email: email,
+                    phone: '',
+                    password: '', // Empty for Google Users
+                    withdrawPassword: '',
+                    balance: 0,
+                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
+                    superior: null,
+                    referralEarnings: 0,
+                    regTime: new Date().toISOString(),
+                    tasks: { completed:0, total:0 },
+                    orders: [],
+                    todayOrders: 0,
+                    todayEarnings: 0,
+                    totalCommission: 0,
+                    creditScore: 100,
+                    disabled: false,
+                    walletAddress: null,
+                    currentOrderObj: null,
+                    role: 'customer',
+                    lastSeen: Date.now(),
+                    authProvider: 'google'
+                };
+                await setDoc(userRef, newUser);
+                user = { id: gUser.uid, ...newUser };
+                toast(`Welcome, ${username}! Account created.`);
+            }
+            await finalizeLogin(user);
+        } catch (error) {
+            console.error("Google Login Error:", error);
+            toast("Google Login failed: " + error.message, true);
+        }
+    }
+
+    async function finalizeLogin(u) {
+        if (!u.orders) u.orders = [];
+        if (!u.tasks) u.tasks = { completed:0, total:0 };
+        await saveUser();
+        subscribeUser(u.id);
+        subscribeInjections(u.id);
+        subscribeChat();
+        startLastSeenUpdate();
+        updateUI();
+        const last = localStorage.getItem('lastPage');
+        showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
     }
 
     // ===== SAVE USER =====
@@ -1710,7 +1823,15 @@
         };
     });
 
-    // ===== LOGIN / REGISTER =====
+    // ===== EVENT LISTENERS =====
+
+    // Landing Page Google
+    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
+    // Login Page Google
+    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
+    // Register Page Google
+    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
+
     document.getElementById('landingLoginBtn').onclick = () => showPage('login');
     document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
     document.getElementById('backFromLogin').onclick = () => showPage('landing');
@@ -1758,13 +1879,16 @@
         const confirm = document.getElementById('regConfirm').value;
         const withdraw = document.getElementById('regWithdraw').value;
         const invite = document.getElementById('regInvite').value.trim();
-        if (!username || !email || !pass || !withdraw || !invite) { toast('All fields required.', true); return; }
+        if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
         if (pass !== confirm) { toast('Passwords do not match.', true); return; }
         const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
         if (!exist.empty) { toast('Username exists.', true); return; }
-        const ref = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
-        if (ref.empty) { toast('Invalid invitation code.', true); return; }
-        const referrer = ref.docs[0].data();
+        let ref = null;
+        if (invite) {
+            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
+            if (refCheck.empty) { toast('Invalid invitation code.', true); return; }
+            ref = refCheck.docs[0].data().username;
+        }
         user = {
             id: Date.now().toString(),
             username, email, phone,
@@ -1772,7 +1896,7 @@
             withdrawPassword: withdraw,
             balance: 0,
             invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-            superior: referrer.username,
+            superior: ref,
             referralEarnings: 0,
             regTime: new Date().toISOString(),
             tasks: { completed:0, total:0 },
@@ -1810,6 +1934,14 @@
         pendingInjections = [];
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+        
+        // Sign out from Firebase Auth
+        signOut(auth).then(() => {
+            console.log("Signed out from Firebase");
+        }).catch((error) => {
+            console.error("Sign out error:", error);
+        });
+
         showPage('landing');
         toast('Signed out.');
     }
@@ -2046,6 +2178,32 @@
     subscribeSettings();
     startFeed();
 
+    // Listen for Auth State Change (Auto Login / Token Refresh)
+    onAuthStateChanged(auth, async (gUser) => {
+        if (gUser) {
+            // If user is logged in via Google, but not yet loaded in our system
+            const snap = await getDoc(doc(db, "users", gUser.uid));
+            if (snap.exists() && !user) {
+                const data = snap.data();
+                if (!data.disabled) {
+                    user = { id: snap.id, ...data };
+                    if (!user.orders) user.orders = [];
+                    if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    subscribeUser(user.id);
+                    subscribeInjections(user.id);
+                    subscribeChat();
+                    startLastSeenUpdate();
+                    updateUI();
+                    const last = localStorage.getItem('lastPage');
+                    showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+                    await checkPopup();
+                }
+            }
+        } else {
+            // No Google User found
+        }
+    });
+
     const saved = localStorage.getItem('uid');
     if (saved) {
         (async () => {
@@ -2071,4 +2229,3 @@
 </script>
 </body>
 </html>
-```
