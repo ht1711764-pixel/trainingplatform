@@ -2,24 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Trip.com | Luxury Travel & Earnings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ===== DARK LUXURY - Premium Glassmorphism ===== */
         :root {
             --gold: #D4AF37;
             --gold-light: #F5E7B2;
             --gold-dark: #C9A03D;
+            --gold-glow: rgba(212,175,55,0.08);
             --bg: #080a0e;
-            --card: rgba(16,20,30,0.78);
-            --border: rgba(212,175,55,0.18);
+            --bg-secondary: #0d0f16;
+            --card: rgba(16,20,30,0.65);
+            --card-hover: rgba(20,26,40,0.78);
+            --border: rgba(212,175,55,0.12);
+            --border-hover: rgba(212,175,55,0.25);
             --text: rgba(255,255,255,0.92);
-            --muted: rgba(255,255,255,0.4);
-            --shadow: 0 8px 32px rgba(0,0,0,0.4);
-            --radius: 18px;
-            --glass: blur(14px);
+            --text-secondary: rgba(255,255,255,0.6);
+            --muted: rgba(255,255,255,0.3);
+            --shadow: 0 8px 48px rgba(0,0,0,0.6);
+            --shadow-hover: 0 12px 64px rgba(0,0,0,0.8);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --glass: blur(16px);
             --gradient: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
+            --gradient-dark: linear-gradient(135deg, #C9A03D, #B8952E, #A8842A);
         }
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
@@ -31,40 +40,43 @@
             padding-bottom:70px;
         }
         .app {
-            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.04) 0%, transparent 60%),
-                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.02) 0%, transparent 50%),
+            background:radial-gradient(ellipse at 20% 30%, rgba(212,175,55,0.03) 0%, transparent 60%),
+                     radial-gradient(ellipse at 80% 70%, rgba(212,175,55,0.015) 0%, transparent 50%),
                      var(--bg);
             min-height:100vh;
-            overflow-y:auto;
-            padding:0 12px 20px;
+            padding:0 14px 20px;
         }
-        .page { display:none; padding:10px 0 20px; }
-        .active-page { display:block; animation:fadeIn .35s ease; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+        .page { display:none; padding:10px 0 20px; animation:fadeIn .4s ease; }
+        .active-page { display:block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
 
+        /* ===== HEADER ===== */
         .header {
             display:flex;
             justify-content:space-between;
             align-items:center;
-            padding:12px 4px 14px;
+            padding:14px 4px 16px;
             border-bottom:1px solid var(--border);
-            margin-bottom:14px;
+            margin-bottom:16px;
         }
-        .logo-area { display:flex; align-items:center; gap:10px; }
-        .logo-plane {
-            width:40px; height:40px;
+        .logo-area { display:flex; align-items:center; gap:12px; }
+        .logo-icon {
+            width:44px; height:44px;
             background:var(--gradient);
             border-radius:14px;
             display:flex;
             align-items:center;
             justify-content:center;
-            font-size:18px;
+            font-size:20px;
             color:#0a0c10;
-            box-shadow:0 4px 20px rgba(212,175,55,0.15);
+            box-shadow:0 4px 24px rgba(212,175,55,0.12);
             flex-shrink:0;
         }
         .logo-text {
-            font-size:20px; font-weight:800;
+            font-family:'Playfair Display',serif;
+            font-size:22px;
+            font-weight:700;
             background:var(--gradient);
             -webkit-background-clip:text;
             background-clip:text;
@@ -73,130 +85,130 @@
         }
         .header-actions { display:flex; gap:8px; }
         .icon-btn {
-            background:rgba(255,255,255,0.03);
+            background:rgba(255,255,255,0.02);
             border:1px solid var(--border);
             border-radius:40px;
-            padding:6px 12px;
+            padding:6px 14px;
             cursor:pointer;
             color:var(--gold);
             font-size:13px;
-            transition:0.25s;
+            transition:0.3s;
             display:flex;
             align-items:center;
             gap:6px;
+            backdrop-filter:var(--glass);
         }
-        .icon-btn:hover { background:rgba(212,175,55,0.04); border-color:rgba(212,175,55,0.3); }
+        .icon-btn:hover { background:rgba(212,175,55,0.04); border-color:var(--border-hover); transform:translateY(-1px); }
         .icon-btn span { font-size:12px; font-weight:500; }
 
+        /* ===== CARDS ===== */
         .card {
             background:var(--card);
             backdrop-filter:var(--glass);
+            -webkit-backdrop-filter:var(--glass);
             border-radius:var(--radius);
-            padding:16px;
-            margin-bottom:14px;
+            padding:18px 20px;
+            margin-bottom:16px;
             border:1px solid var(--border);
             box-shadow:var(--shadow);
-            transition:0.25s;
+            transition:all 0.35s ease;
         }
-        .card:hover { border-color:rgba(212,175,55,0.3); }
+        .card:hover {
+            border-color:var(--border-hover);
+            box-shadow:var(--shadow-hover);
+            background:var(--card-hover);
+        }
 
+        /* ===== BUTTONS ===== */
         .btn-gold {
             background:var(--gradient);
             border:none;
-            padding:10px 18px;
+            padding:12px 24px;
             border-radius:40px;
             font-weight:700;
             color:#0a120e;
             cursor:pointer;
-            transition:0.25s;
+            transition:all 0.3s ease;
             font-size:14px;
             width:100%;
-            box-shadow:0 4px 20px rgba(212,175,55,0.12);
+            box-shadow:0 4px 24px rgba(212,175,55,0.08);
             text-align:center;
             display:inline-flex;
             align-items:center;
             justify-content:center;
             gap:8px;
+            letter-spacing:0.3px;
         }
+        .btn-gold:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(212,175,55,0.15); }
         .btn-gold:active { transform:scale(0.97); }
-        .btn-gold:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+        .btn-gold:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
         .btn-outline {
             background:transparent;
             border:1.5px solid var(--gold);
             color:var(--gold-light);
             box-shadow:none;
         }
-        .btn-outline:active { background:rgba(212,175,55,0.04); }
-        .btn-sm { padding:6px 14px; font-size:12px; width:auto; }
+        .btn-outline:hover { background:rgba(212,175,55,0.04); color:var(--gold); }
+        .btn-sm { padding:8px 16px; font-size:12px; width:auto; }
         .btn-success { background:linear-gradient(135deg,#10b981,#059669); color:#fff; }
+        .btn-success:hover { box-shadow:0 8px 32px rgba(16,185,129,0.2); }
         .btn-danger { background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; }
+        .btn-danger:hover { box-shadow:0 8px 32px rgba(220,38,38,0.2); }
 
+        /* ===== INPUTS ===== */
         .input-glass {
-            background:rgba(0,0,0,0.3);
+            background:rgba(255,255,255,0.02);
             border:1px solid var(--border);
-            padding:10px 16px;
+            padding:12px 18px;
             border-radius:40px;
             width:100%;
             color:#fff;
             font-size:14px;
             outline:none;
-            transition:0.25s;
+            transition:all 0.3s ease;
             margin-bottom:10px;
-        }
-        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,175,55,0.06); }
-        .input-glass::placeholder { color:var(--muted); }
-        .pw-wrap { position:relative; }
-        .pw-wrap .input-glass { padding-right:44px; }
-        .pw-toggle {
-            position:absolute;
-            right:14px;
-            top:50%;
-            transform:translateY(-50%);
-            background:none;
-            border:none;
-            color:var(--gold);
-            cursor:pointer;
-            font-size:16px;
-        }
-
-        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 12px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
-        .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
-        .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
-        .vip-4 { background:var(--gradient); color:#0a120e; }
-
-        .balance-box {
-            background:var(--card);
             backdrop-filter:var(--glass);
-            border-radius:20px;
-            padding:18px 20px;
+        }
+        .input-glass:focus { border-color:var(--gold); box-shadow:0 0 0 4px rgba(212,175,55,0.04); }
+        .input-glass::placeholder { color:var(--muted); }
+
+        /* ===== BALANCE BOX ===== */
+        .balance-box {
+            background:linear-gradient(135deg, rgba(212,175,55,0.04), rgba(212,175,55,0.01));
+            backdrop-filter:var(--glass);
+            border-radius:var(--radius);
+            padding:22px 24px;
             border:1px solid var(--gold);
-            box-shadow:var(--shadow);
+            box-shadow:var(--shadow), inset 0 1px 0 rgba(212,175,55,0.04);
             position:relative;
             overflow:hidden;
         }
         .balance-box::before {
             content:'';
             position:absolute;
-            top:-40%;
-            right:-20%;
-            width:60%;
-            height:60%;
-            background:radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 70%);
+            top:-50%;
+            right:-30%;
+            width:70%;
+            height:70%;
+            background:radial-gradient(circle,rgba(212,175,55,0.03) 0%,transparent 70%);
             pointer-events:none;
         }
         .balance-box .amount {
-            font-size:36px; font-weight:800;
+            font-size:40px; font-weight:800;
             background:var(--gradient);
             -webkit-background-clip:text;
             background-clip:text;
             color:transparent;
             letter-spacing:1px;
+            font-family:'Playfair Display',serif;
         }
-        .balance-box .label { font-size:12px; color:var(--muted); }
+        .balance-box .label { font-size:12px; color:var(--text-secondary); letter-spacing:1px; text-transform:uppercase; }
 
+        /* ===== NAV ===== */
         .bottom-nav {
-            background:rgba(5,8,6,0.94);
+            background:rgba(5,8,6,0.92);
             backdrop-filter:var(--glass);
+            -webkit-backdrop-filter:var(--glass);
             border-top:1px solid var(--border);
             display:flex;
             justify-content:space-around;
@@ -214,46 +226,58 @@
             align-items:center;
             gap:2px;
             font-size:8px;
-            color:var(--muted);
+            color:var(--text-secondary);
             cursor:pointer;
             font-weight:600;
-            transition:0.25s;
+            transition:all 0.3s ease;
             padding:4px 8px;
             border-radius:12px;
             border:none;
             background:transparent;
-            -webkit-tap-highlight-color:transparent;
+            position:relative;
         }
-        .nav-item i { font-size:20px; background:var(--gradient); -webkit-background-clip:text; background-clip:text; color:transparent; opacity:0.35; transition:0.25s; }
+        .nav-item i { font-size:20px; transition:all 0.3s ease; color:var(--muted); }
         .nav-item.active { color:var(--gold); }
-        .nav-item.active i { opacity:1; transform:scale(1.05); }
+        .nav-item.active i { color:var(--gold); transform:scale(1.05); }
+        .nav-item::after {
+            content:'';
+            position:absolute;
+            top:-6px;
+            left:50%;
+            transform:translateX(-50%);
+            width:0;
+            height:2px;
+            background:var(--gradient);
+            border-radius:4px;
+            transition:all 0.3s ease;
+        }
+        .nav-item.active::after { width:20px; }
         .nav-item:active { transform:scale(0.92); }
         .hidden-nav { display:none !important; }
 
+        /* ===== VIP BADGES ===== */
+        .vip-1 { background:linear-gradient(135deg,#6c757d,#495057); color:#fff; padding:2px 14px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
+        .vip-2 { background:linear-gradient(135deg,#28a745,#1e7e34); color:#fff; }
+        .vip-3 { background:linear-gradient(135deg,#17a2b8,#0f6b7a); color:#fff; }
+        .vip-4 { background:var(--gradient); color:#0a120e; }
+
+        /* ===== CHAT ===== */
         .chat-box {
             display:flex;
             flex-direction:column;
             height:calc(100vh - 180px);
-            background:rgba(0,0,0,0.12);
+            background:rgba(255,255,255,0.01);
             border-radius:var(--radius);
             overflow:hidden;
             border:1px solid var(--border);
         }
-        .chat-msgs {
-            flex:1;
-            overflow-y:auto;
-            padding:12px;
-            display:flex;
-            flex-direction:column;
-            gap:6px;
-            -webkit-overflow-scrolling:touch;
-        }
+        .chat-msgs { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:6px; }
         .chat-msg {
             max-width:82%;
-            padding:8px 14px;
+            padding:10px 16px;
             border-radius:16px;
             font-size:14px;
-            line-height:1.4;
+            line-height:1.5;
             word-break:break-word;
         }
         .chat-msg.sent {
@@ -268,61 +292,46 @@
             border:1px solid var(--border);
             border-bottom-left-radius:4px;
         }
-        .chat-msg .time { font-size:9px; opacity:0.35; margin-top:3px; text-align:right; }
+        .chat-msg .time { font-size:9px; opacity:0.3; margin-top:4px; text-align:right; }
         .chat-msg img { max-width:140px; max-height:100px; border-radius:8px; margin-top:4px; border:1px solid var(--gold); cursor:pointer; }
         .chat-input {
             display:flex;
             gap:6px;
             padding:10px 12px;
-            background:rgba(0,0,0,0.12);
+            background:rgba(255,255,255,0.01);
             border-top:1px solid var(--border);
             align-items:center;
             flex-wrap:wrap;
         }
-        .chat-input .input-glass { margin:0; flex:1; padding:8px 14px; font-size:13px; min-height:40px; border-radius:40px; }
-        .chat-input .btn-gold { width:auto; padding:8px 18px; font-size:13px; min-height:40px; }
-        .chat-input .chat-btn {
-            background:rgba(212,175,55,0.04);
-            border:1px solid var(--border);
-            border-radius:40px;
-            padding:6px 12px;
-            cursor:pointer;
-            color:var(--gold);
-            min-height:40px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:16px;
-            transition:0.2s;
-        }
-        .chat-input .chat-btn:active { background:rgba(212,175,55,0.08); }
+        .chat-input .input-glass { margin:0; flex:1; padding:10px 16px; font-size:13px; min-height:44px; border-radius:40px; }
+        .chat-input .btn-gold { width:auto; padding:10px 20px; font-size:13px; min-height:44px; }
 
+        /* ===== ORDER CARD ===== */
         .order-card {
             background:var(--card);
             backdrop-filter:var(--glass);
             border-radius:var(--radius);
-            padding:16px;
+            padding:18px 20px;
             border:1px solid var(--gold);
-            margin-bottom:14px;
+            margin-bottom:16px;
         }
-        .order-card.injection { border-color:#f59e0b; box-shadow:0 0 25px rgba(245,158,11,0.04); }
+        .order-card.injection { border-color:#f59e0b; box-shadow:0 0 40px rgba(245,158,11,0.04); }
         .order-img {
             width:100%; height:120px;
-            background:rgba(0,0,0,0.12);
+            background:rgba(255,255,255,0.01);
             border-radius:14px;
             display:flex;
             align-items:center;
             justify-content:center;
-            margin-bottom:12px;
+            margin-bottom:14px;
             overflow:hidden;
             border:1px solid var(--border);
         }
-        .order-img i { font-size:32px; color:var(--gold); }
         .order-img img { width:100%; height:100%; object-fit:contain; }
         .injection-badge {
             background:linear-gradient(135deg,#f59e0b,#ea580c);
             color:#fff;
-            padding:2px 10px;
+            padding:2px 12px;
             border-radius:16px;
             font-size:10px;
             font-weight:700;
@@ -330,69 +339,176 @@
             animation:pulse 1.5s infinite;
         }
         @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
-        .stars { display:flex; gap:6px; cursor:pointer; margin-top:6px; flex-wrap:wrap; }
-        .stars i { font-size:20px; color:rgba(255,255,255,0.08); transition:0.2s; }
-        .stars i.active { color:#F5B042; text-shadow:0 0 15px rgba(245,176,66,0.1); }
-        .stars i:active { transform:scale(0.85); }
-        .progress {
-            background:rgba(255,255,255,0.04);
-            border-radius:16px;
-            height:5px;
-            overflow:hidden;
-        }
-        .progress-fill {
-            background:var(--gradient);
-            height:100%;
-            width:0%;
-            transition:width 0.5s;
-        }
-        .invite-code {
-            font-size:18px; font-weight:800; letter-spacing:2px;
-            background:var(--gradient);
-            -webkit-background-clip:text;
-            background-clip:text;
-            color:transparent;
-        }
 
+        /* ===== MODAL ===== */
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.92);
             display:flex; align-items:center; justify-content:center;
-            z-index:1000; backdrop-filter:blur(14px);
+            z-index:1000; backdrop-filter:blur(18px);
             padding:16px;
         }
         .modal-box {
             background:var(--card);
             backdrop-filter:var(--glass);
             border-radius:24px;
-            padding:20px;
+            padding:24px;
             width:100%; max-width:440px;
             max-height:85vh;
             overflow-y:auto;
             border:1px solid var(--gold);
-            box-shadow:var(--shadow);
-            -webkit-overflow-scrolling:touch;
+            box-shadow:var(--shadow-hover);
         }
         .modal-title {
-            font-size:18px; font-weight:700; color:var(--gold);
-            margin-bottom:14px; display:flex; align-items:center; gap:10px;
+            font-size:20px; font-weight:700;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            margin-bottom:16px; display:flex; align-items:center; gap:10px;
+            font-family:'Playfair Display',serif;
         }
-        .upload-area {
-            border:2px dashed var(--border);
+
+        /* ===== TOAST ===== */
+        .toast-msg {
+            position:fixed;
+            bottom:80px;
+            left:50%;
+            transform:translateX(-50%);
+            background:rgba(16,20,30,0.92);
+            backdrop-filter:blur(12px);
+            padding:10px 24px;
+            border-radius:40px;
+            font-size:13px;
+            z-index:100;
+            border-left:3px solid var(--gold);
+            font-weight:500;
+            color:#fff;
+            box-shadow:0 8px 32px rgba(0,0,0,0.4);
+            max-width:92%;
+            text-align:center;
+        }
+        .toast-msg.error { background:rgba(220,38,38,0.92); border-left-color:#dc2626; }
+
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:480px){
+            .app { padding:0 8px 20px; }
+            .header { padding:10px 2px 14px; }
+            .logo-text { font-size:18px; }
+            .logo-icon { width:38px; height:38px; font-size:17px; }
+            .balance-box .amount { font-size:32px; }
+            .card { padding:14px 16px; }
+            .btn-gold { font-size:13px; padding:10px 16px; }
+            .bottom-nav { padding:4px 6px 12px; }
+            .nav-item i { font-size:18px; }
+            .modal-box { padding:16px; }
+        }
+        @media(min-width:768px){
+            .app { max-width:520px; margin:0 auto; }
+        }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+
+        /* ===== ADDITIONAL GLASS EFFECTS ===== */
+        .glass-tag {
+            background:rgba(212,175,55,0.04);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:2px 16px;
+            font-size:10px;
+            font-weight:600;
+            color:var(--gold);
+            letter-spacing:1px;
+            display:inline-block;
+        }
+        .stats-grid {
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:10px;
+            margin:12px 0;
+        }
+        .stat-card {
+            background:rgba(255,255,255,0.01);
+            border-radius:14px;
+            padding:14px;
+            text-align:center;
+            border:1px solid var(--border);
+            backdrop-filter:var(--glass);
+        }
+        .stat-card .val {
+            font-size:20px; font-weight:800;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            font-family:'Playfair Display',serif;
+        }
+        .stat-card .lbl { font-size:11px; color:var(--text-secondary); }
+        .live-feed {
+            background:rgba(255,255,255,0.01);
             border-radius:14px;
             padding:12px;
-            text-align:center;
-            background:rgba(0,0,0,0.04);
-            cursor:pointer;
-            margin-bottom:10px;
-            color:var(--muted);
-            transition:0.2s;
-            font-size:13px;
+            max-height:140px;
+            overflow-y:auto;
+            border:1px solid var(--border);
         }
-        .upload-area:active { border-color:var(--gold); background:rgba(212,175,55,0.02); }
+        .feed-item {
+            padding:6px 0;
+            border-bottom:1px solid rgba(212,175,55,0.03);
+            font-size:12px;
+            color:var(--text);
+        }
+        .feed-item:last-child { border:none; }
+        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+        .text-gold { color:var(--gold); }
+        .text-muted { color:var(--text-secondary); }
+        .text-center { text-align:center; }
+        .mt-1 { margin-top:8px; }
+        .mb-1 { margin-bottom:8px; }
+        .w-full { width:100%; }
+        .img-preview { max-width:70px; max-height:70px; border-radius:8px; border:1px solid var(--gold); cursor:pointer; }
+        .img-preview-sm { max-width:50px; max-height:50px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
+        .live-indicator {
+            position:fixed;
+            bottom:76px;
+            right:12px;
+            background:rgba(16,185,129,0.8);
+            backdrop-filter:blur(8px);
+            color:#fff;
+            padding:3px 12px;
+            border-radius:30px;
+            font-size:9px;
+            z-index:100;
+            animation:pulse 1.5s infinite;
+            display:none;
+        }
+        .invite-code {
+            font-size:20px; font-weight:800; letter-spacing:2px;
+            background:var(--gradient);
+            -webkit-background-clip:text;
+            background-clip:text;
+            color:transparent;
+            font-family:'Playfair Display',serif;
+        }
+        .stars { display:flex; gap:6px; cursor:pointer; margin-top:6px; flex-wrap:wrap; }
+        .stars i { font-size:20px; color:rgba(255,255,255,0.06); transition:0.2s; }
+        .stars i.active { color:#F5B042; text-shadow:0 0 20px rgba(245,176,66,0.1); }
+        .progress {
+            background:rgba(255,255,255,0.02);
+            border-radius:16px;
+            height:6px;
+            overflow:hidden;
+        }
+        .progress-fill {
+            background:var(--gradient);
+            height:100%;
+            width:0%;
+            transition:width 0.5s ease;
+        }
         .wallet-box {
-            background:rgba(0,0,0,0.12);
-            padding:12px;
+            background:rgba(255,255,255,0.01);
+            padding:12px 16px;
             border-radius:14px;
             border:1px solid var(--gold);
             display:flex;
@@ -415,7 +531,7 @@
             background:var(--gradient);
             color:#0a120e;
             border:none;
-            padding:6px 16px;
+            padding:6px 18px;
             border-radius:40px;
             font-weight:700;
             font-size:12px;
@@ -423,165 +539,59 @@
             transition:0.2s;
         }
         .copy-btn:active { transform:scale(0.95); }
-        .history-item {
-            background:rgba(0,0,0,0.04);
-            border-radius:12px;
-            padding:10px;
-            margin-bottom:8px;
-            border-left:3px solid var(--gold);
+        .back-btn {
+            background:rgba(255,255,255,0.02);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:8px 18px;
+            cursor:pointer;
+            color:var(--gold);
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-bottom:12px;
+            font-size:13px;
+            transition:0.3s;
+            backdrop-filter:var(--glass);
         }
+        .back-btn:hover { border-color:var(--gold); background:rgba(212,175,55,0.02); }
         .lang-opt {
             display:flex;
             flex-direction:column;
             align-items:center;
             gap:3px;
             cursor:pointer;
-            padding:6px 12px;
+            padding:6px 14px;
             border-radius:12px;
-            background:rgba(0,0,0,0.04);
+            background:rgba(255,255,255,0.01);
             border:1px solid var(--border);
             transition:0.2s;
-            -webkit-tap-highlight-color:transparent;
         }
         .lang-opt.active { border-color:var(--gold); background:rgba(212,175,55,0.02); }
-        .lang-opt:active { transform:scale(0.95); }
-        .lang-opt .name { font-size:11px; color:var(--text); }
-        .stats-grid {
-            display:grid;
-            grid-template-columns:repeat(2,1fr);
-            gap:10px;
-            margin:12px 0;
-        }
-        .stat-card {
-            background:rgba(0,0,0,0.04);
+        .lang-opt .name { font-size:11px; color:var(--text-secondary); }
+        .upload-area {
+            border:2px dashed var(--border);
             border-radius:14px;
-            padding:12px;
+            padding:14px;
             text-align:center;
-            border:1px solid rgba(212,175,55,0.04);
-        }
-        .stat-card .val {
-            font-size:18px; font-weight:800;
-            background:var(--gradient);
-            -webkit-background-clip:text;
-            background-clip:text;
-            color:transparent;
-        }
-        .stat-card .lbl { font-size:11px; color:var(--muted); }
-        .back-btn {
-            background:rgba(0,0,0,0.12);
-            border:1px solid var(--border);
-            border-radius:40px;
-            padding:6px 16px;
+            background:rgba(255,255,255,0.01);
             cursor:pointer;
-            color:var(--gold);
-            display:inline-flex;
-            align-items:center;
-            gap:6px;
-            margin-bottom:12px;
-            font-size:13px;
+            margin-bottom:10px;
+            color:var(--text-secondary);
             transition:0.2s;
+            font-size:13px;
         }
-        .back-btn:active { transform:scale(0.96); }
-        .live-feed {
-            background:rgba(0,0,0,0.04);
-            border-radius:14px;
-            padding:12px;
-            max-height:140px;
-            overflow-y:auto;
-            border:1px solid rgba(212,175,55,0.03);
-            -webkit-overflow-scrolling:touch;
-        }
-        .feed-item {
-            padding:6px 0;
-            border-bottom:1px solid rgba(212,175,55,0.03);
-            font-size:12px;
-            color:var(--text);
-        }
-        .feed-item:last-child { border:none; }
-        .toast-msg {
-            position:fixed;
-            bottom:80px;
-            left:50%;
-            transform:translateX(-50%);
-            background:rgba(30,42,36,0.92);
-            backdrop-filter:blur(10px);
-            padding:8px 20px;
-            border-radius:40px;
-            font-size:12px;
-            z-index:100;
+        .upload-area:hover { border-color:var(--gold); background:rgba(212,175,55,0.01); }
+        .history-item {
+            background:rgba(255,255,255,0.01);
+            border-radius:12px;
+            padding:10px 14px;
+            margin-bottom:8px;
             border-left:3px solid var(--gold);
-            font-weight:600;
-            color:#fff;
-            box-shadow:0 4px 20px rgba(0,0,0,0.3);
-            max-width:92%;
-            text-align:center;
         }
-        .toast-msg.error { background:rgba(220,38,38,0.92); border-left-color:#dc2626; }
-        .live-indicator {
-            position:fixed;
-            bottom:76px;
-            right:12px;
-            background:rgba(16,185,129,0.85);
-            backdrop-filter:blur(8px);
-            color:#fff;
-            padding:3px 10px;
-            border-radius:30px;
-            font-size:9px;
-            z-index:100;
-            animation:pulse 1.5s infinite;
-            display:none;
-            border:1px solid rgba(255,255,255,0.03);
-        }
-        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-        .gap-1 { gap:6px; }
-        .mt-1 { margin-top:8px; }
-        .mb-1 { margin-bottom:8px; }
-        .text-gold { color:var(--gold); }
-        .text-muted { color:var(--muted); }
-        .text-center { text-align:center; }
-        .w-full { width:100%; }
-        .img-preview { max-width:80px; max-height:80px; border-radius:8px; border:1px solid var(--gold); cursor:pointer; }
-        .img-preview-sm { max-width:60px; max-height:60px; border-radius:6px; border:1px solid var(--gold); cursor:pointer; }
         .online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
         .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
         .online-dot.offline { background:var(--muted); }
-
-        /* Lazy Loading for images */
-        .lazy-image {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .lazy-image.loaded {
-            opacity: 1;
-        }
-
-        @media(max-width:480px){
-            .app { padding:0 8px 20px; }
-            .header { padding:10px 2px 12px; }
-            .logo-text { font-size:16px; }
-            .logo-plane { width:34px; height:34px; font-size:16px; }
-            .balance-box .amount { font-size:28px; }
-            .card { padding:14px; }
-            .btn-gold { font-size:13px; padding:8px 14px; }
-            .stats-grid { gap:8px; }
-            .stat-card .val { font-size:16px; }
-            .bottom-nav { padding:4px 6px 12px; }
-            .nav-item i { font-size:18px; }
-            .nav-item { font-size:7px; padding:2px 6px; }
-        }
-        @media(max-width:380px){
-            .balance-box .amount { font-size:24px; }
-            .btn-gold { font-size:12px; padding:6px 12px; }
-            .card { padding:12px; }
-            .stat-card .val { font-size:14px; }
-            .modal-box { padding:16px; }
-        }
-        @media(min-width:768px){
-            .app { max-width:520px; margin:0 auto; }
-        }
-        ::-webkit-scrollbar { width:3px; }
-        ::-webkit-scrollbar-track { background:transparent; }
-        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
     </style>
 </head>
 <body>
@@ -591,48 +601,51 @@
     <!-- ===== LANDING ===== -->
     <div id="pageLanding" class="page active-page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="brandName">Trip.com</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="brandName">Trip.com</div>
+            </div>
             <div class="header-actions">
                 <div class="icon-btn" id="companyInfoBtn"><i class="fas fa-info-circle"></i> <span id="aboutText">About</span></div>
             </div>
         </div>
         <div id="logoContainer" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;"></div>
-        <div class="card" style="padding:24px 16px;text-align:center;border-color:var(--gold);">
-            <div style="display:inline-block;background:rgba(212,175,55,0.04);border:1px solid var(--border);border-radius:40px;padding:2px 14px;font-size:10px;font-weight:600;color:var(--gold);margin-bottom:10px;letter-spacing:1px;">PREMIUM</div>
-            <h1 style="font-size:34px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;" id="heroTitle">Trip.com</h1>
-            <p style="font-size:14px;color:var(--text);max-width:400px;margin:0 auto 20px;line-height:1.5;" id="heroSubtitle">Travel & earn daily commissions.</p>
+        <div class="card" style="padding:28px 20px;text-align:center;border-color:var(--gold);">
+            <div class="glass-tag" style="margin-bottom:12px;">PREMIUM</div>
+            <h1 style="font-size:38px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:8px;font-family:'Playfair Display',serif;" id="heroTitle">Trip.com</h1>
+            <p style="font-size:14px;color:var(--text-secondary);max-width:400px;margin:0 auto 20px;line-height:1.6;" id="heroSubtitle">Travel & earn daily commissions.</p>
             <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;">
-                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-plane" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s1">Flights</div><div style="font-size:9px;color:var(--muted);" id="s1d">Worldwide</div></div>
-                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-hotel" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s2">Hotels</div><div style="font-size:9px;color:var(--muted);" id="s2d">Luxury deals</div></div>
-                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-train" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s3">Trains</div><div style="font-size:9px;color:var(--muted);" id="s3d">Premium</div></div>
-                <div class="card" style="padding:12px 6px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-tasks" style="font-size:24px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:11px;font-weight:600;color:var(--gold-light);margin-top:4px;" id="s4">Tasks</div><div style="font-size:9px;color:var(--muted);" id="s4d">Earn up to 1%</div></div>
+                <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-plane" style="font-size:28px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:6px;" id="s1">Flights</div><div style="font-size:9px;color:var(--text-secondary);" id="s1d">Worldwide</div></div>
+                <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-hotel" style="font-size:28px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:6px;" id="s2">Hotels</div><div style="font-size:9px;color:var(--text-secondary);" id="s2d">Luxury deals</div></div>
+                <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-train" style="font-size:28px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:6px;" id="s3">Trains</div><div style="font-size:9px;color:var(--text-secondary);" id="s3d">Premium</div></div>
+                <div class="card" style="padding:14px 8px;text-align:center;margin:0;border:1px solid var(--border);"><i class="fas fa-tasks" style="font-size:28px;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;"></i><div style="font-size:12px;font-weight:600;color:var(--gold-light);margin-top:6px;" id="s4">Tasks</div><div style="font-size:9px;color:var(--text-secondary);" id="s4d">Earn up to 1%</div></div>
             </div>
-            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-                <button class="btn-gold" id="landingLoginBtn" style="width:auto;padding:10px 28px;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
-                <button class="btn-gold btn-outline" id="landingRegisterBtn" style="width:auto;padding:10px 28px;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn-gold" id="landingLoginBtn" style="width:auto;padding:12px 32px;"><i class="fas fa-sign-in-alt"></i> <span id="loginBtn">Login</span></button>
+                <button class="btn-gold btn-outline" id="landingRegisterBtn" style="width:auto;padding:12px 32px;"><i class="fas fa-user-plus"></i> <span id="registerBtn">Register</span></button>
             </div>
         </div>
         <div class="card" id="companySection">
-            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;">
-                <div style="width:44px;height:44px;background:var(--gradient);border-radius:14px;display:flex;align-items:center;justify-content:center;" id="companyLogo"><i class="fas fa-globe-asia" style="font-size:24px;color:#0a0c10;"></i></div>
-                <div><div style="font-size:18px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="companyNameText">Trip.com</div><div style="font-size:12px;color:var(--muted);" id="companyTaglineText">Global Travel & Earning</div></div>
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
+                <div style="width:48px;height:48px;background:var(--gradient);border-radius:14px;display:flex;align-items:center;justify-content:center;" id="companyLogo"><i class="fas fa-globe-asia" style="font-size:26px;color:#0a0c10;"></i></div>
+                <div><div style="font-size:20px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="companyNameText">Trip.com</div><div style="font-size:12px;color:var(--text-secondary);" id="companyTaglineText">Global Travel & Earning</div></div>
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;">
-                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat1">50M+</div><div style="font-size:10px;color:var(--muted);" id="stat1l">Customers</div></div>
-                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat2">200+</div><div style="font-size:10px;color:var(--muted);" id="stat2l">Countries</div></div>
-                <div style="text-align:center;padding:8px;background:rgba(0,0,0,0.04);border-radius:14px;"><div style="font-size:22px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="stat3">1M+</div><div style="font-size:10px;color:var(--muted);" id="stat3l">Daily</div></div>
+                <div style="text-align:center;padding:10px;background:rgba(255,255,255,0.01);border-radius:14px;border:1px solid var(--border);"><div style="font-size:24px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="stat1">50M+</div><div style="font-size:10px;color:var(--text-secondary);" id="stat1l">Customers</div></div>
+                <div style="text-align:center;padding:10px;background:rgba(255,255,255,0.01);border-radius:14px;border:1px solid var(--border);"><div style="font-size:24px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="stat2">200+</div><div style="font-size:10px;color:var(--text-secondary);" id="stat2l">Countries</div></div>
+                <div style="text-align:center;padding:10px;background:rgba(255,255,255,0.01);border-radius:14px;border:1px solid var(--border);"><div style="font-size:24px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="stat3">1M+</div><div style="font-size:10px;color:var(--text-secondary);" id="stat3l">Daily</div></div>
             </div>
-            <div style="font-size:13px;color:var(--text);line-height:1.6;" id="companyDesc"><p>Trip.com is a premier travel and task platform.</p></div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;" id="companyDesc"><p>Trip.com is a premier travel and task platform.</p></div>
         </div>
     </div>
 
     <!-- ===== LOGIN ===== -->
     <div id="pageLogin" class="page">
         <div class="back-btn" id="backFromLogin"><i class="fas fa-arrow-left"></i> <span id="backLoginText">Back</span></div>
-        <div style="text-align:center;margin:10px 0 18px;">
-            <div class="logo-plane" style="width:56px;height:56px;margin:0 auto 8px;font-size:24px;"><i class="fas fa-plane"></i></div>
-            <div style="font-size:26px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;" id="loginWebsiteName">Trip.com</div>
-            <div style="font-size:12px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
+        <div style="text-align:center;margin:10px 0 20px;">
+            <div class="logo-icon" style="width:64px;height:64px;margin:0 auto 10px;font-size:28px;"><i class="fas fa-plane"></i></div>
+            <div style="font-size:28px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">Trip.com</div>
+            <div style="font-size:12px;color:var(--text-secondary);" id="loginTagline">Premium Task Ecosystem</div>
         </div>
         <div class="card">
             <input type="text" class="input-glass" id="loginUsername" placeholder="Username">
@@ -641,8 +654,8 @@
                 <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
             </div>
             <button class="btn-gold" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnText">Login</span></button>
-            <div class="flex" style="margin-top:10px;">
-                <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
+            <div class="flex" style="margin-top:12px;">
+                <span style="font-size:12px;color:var(--text-secondary);" id="forgotText">Forgot Password?</span>
                 <span id="goRegisterBtn" style="color:var(--gold);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
         </div>
@@ -651,7 +664,7 @@
     <!-- ===== REGISTER ===== -->
     <div id="pageRegister" class="page">
         <div class="back-btn" id="backFromRegister"><i class="fas fa-arrow-left"></i> <span id="backRegText">Back</span></div>
-        <div style="text-align:center;margin-bottom:12px;"><h2 style="color:var(--gold);font-size:20px;" id="regTitle">Create Account</h2></div>
+        <div style="text-align:center;margin-bottom:14px;"><h2 style="background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:22px;font-family:'Playfair Display',serif;" id="regTitle">Create Account</h2></div>
         <div class="card">
             <input class="input-glass" id="regUsername" placeholder="Username">
             <input class="input-glass" id="regEmail" placeholder="Email">
@@ -661,47 +674,50 @@
             <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
             <input class="input-glass" id="regInvite" placeholder="Invitation Code (Required)">
             <button class="btn-gold" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
-            <div style="text-align:center;margin-top:10px;font-size:13px;" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--gold);font-weight:600;cursor:pointer;">Login</span></div>
+            <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--text-secondary);" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--gold);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
 
     <!-- ===== HOME ===== -->
     <div id="pageHome" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="homeBrand">Trip.com</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="homeBrand">Trip.com</div>
+            </div>
             <div class="header-actions">
                 <div class="icon-btn" id="refreshHome"><i class="fas fa-sync-alt"></i></div>
                 <div class="icon-btn" id="signOutHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
             </div>
         </div>
-        <div class="flex" style="margin-bottom:8px;">
-            <div><span style="color:var(--muted);font-size:12px;" id="welcomeText">Welcome</span> <strong style="color:var(--gold);font-size:16px;" id="homeName">---</strong></div>
-            <div><span style="color:var(--muted);font-size:12px;" id="vipLabel">VIP</span> <strong id="homeVip" class="text-gold">VIP 1</strong></div>
+        <div class="flex" style="margin-bottom:10px;">
+            <div><span style="color:var(--text-secondary);font-size:12px;" id="welcomeText">Welcome</span> <strong style="color:var(--gold);font-size:18px;" id="homeName">---</strong></div>
+            <div><span style="color:var(--text-secondary);font-size:12px;" id="vipLabel">VIP</span> <strong id="homeVip" class="text-gold">VIP 1</strong></div>
         </div>
         <div class="balance-box">
             <div class="label" id="balanceLabel">Account Balance</div>
             <div class="amount" id="balanceAmount">$ 0.00</div>
-            <div class="flex" style="margin-top:4px;">
-                <span style="font-size:11px;color:var(--text);"><i class="fas fa-chart-line"></i> <span id="rateLabel">Rate</span>: <span id="commRate">0.5%</span></span>
-                <span style="font-size:11px;color:var(--text);"><i class="fas fa-calendar-day"></i> <span id="todayLabel">Today</span>: <span id="todayCount">0</span>/<span id="dailyMax">0</span></span>
+            <div class="flex" style="margin-top:6px;">
+                <span style="font-size:11px;color:var(--text-secondary);"><i class="fas fa-chart-line"></i> <span id="rateLabel">Rate</span>: <span id="commRate">0.5%</span></span>
+                <span style="font-size:11px;color:var(--text-secondary);"><i class="fas fa-calendar-day"></i> <span id="todayLabel">Today</span>: <span id="todayCount">0</span>/<span id="dailyMax">0</span></span>
             </div>
         </div>
         <div class="card">
             <div class="flex">
-                <div><span style="color:var(--muted);font-size:11px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:17px;" id="todayEarn">$ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:11px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">$ 0.00</strong></div>
-                <div><span style="color:var(--muted);font-size:11px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">$ 0.00</strong></div>
+                <div><span style="color:var(--text-secondary);font-size:11px;" id="todayEarnLabel">Today's Earnings</span><br><strong class="text-gold" style="font-size:18px;" id="todayEarn">$ 0.00</strong></div>
+                <div><span style="color:var(--text-secondary);font-size:11px;" id="yesterdayLabel">Yesterday</span><br><strong class="text-gold" id="yesterdayEarn">$ 0.00</strong></div>
+                <div><span style="color:var(--text-secondary);font-size:11px;" id="totalCommLabel">Total Commission</span><br><strong class="text-gold" id="totalComm">$ 0.00</strong></div>
             </div>
         </div>
-        <div class="flex" style="gap:8px;margin-bottom:10px;">
+        <div class="flex" style="gap:10px;margin-bottom:12px;">
             <button class="btn-gold" id="rechargeBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-size:13px;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button>
             <button class="btn-gold" id="withdrawBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:13px;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button>
         </div>
         <div class="card" style="text-align:center;border-color:var(--border);">
-            <div style="color:var(--muted);font-size:11px;" id="refLabel">Referral Code</div>
+            <div style="color:var(--text-secondary);font-size:11px;" id="refLabel">Referral Code</div>
             <div class="invite-code" id="refCode">------</div>
         </div>
-        <div style="display:flex;gap:6px;font-size:10px;color:var(--muted);margin:8px 0;flex-wrap:wrap;justify-content:center;">
+        <div style="display:flex;gap:6px;font-size:10px;color:var(--text-secondary);margin:8px 0;flex-wrap:wrap;justify-content:center;">
             <span>VIP1 (0.5%)</span><span>VIP2 (0.7%)</span><span>VIP3 (0.8%)</span><span>VIP4 (1.0%)</span>
         </div>
         <div class="live-feed">
@@ -713,12 +729,15 @@
     <!-- ===== WORK ===== -->
     <div id="pageWork" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="workTitle">Tasks</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="workTitle">Tasks</div>
+            </div>
             <div class="header-actions"><div class="icon-btn" id="refreshWork"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="card">
             <div class="flex"><strong style="font-size:14px;" id="progressLabel">Task Progress</strong><span class="text-gold" id="taskCounter">0/0</span></div>
-            <div class="progress" style="margin:8px 0;"><div class="progress-fill" id="taskFill"></div></div>
+            <div class="progress" style="margin:10px 0;"><div class="progress-fill" id="taskFill"></div></div>
             <button class="btn-gold" id="startOrderBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button>
         </div>
         <div id="orderDisplay"></div>
@@ -727,7 +746,10 @@
     <!-- ===== ORDERS ===== -->
     <div id="pageOrders" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="orderTitle">History</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="orderTitle">History</div>
+            </div>
             <div class="header-actions"><div class="icon-btn" id="refreshOrders"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div id="ordersList"></div>
@@ -736,13 +758,16 @@
     <!-- ===== PROFILE ===== -->
     <div id="pageProfile" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="profileTitle">Profile</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="profileTitle">Profile</div>
+            </div>
             <div class="header-actions"><div class="icon-btn" id="refreshProfile"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="card">
             <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                <div id="profileAvatar" style="width:72px;height:72px;border-radius:36px;background:var(--gradient);display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;cursor:pointer;box-shadow:0 0 0 3px rgba(212,175,55,0.04);flex-shrink:0;"><i class="fas fa-user-circle" style="font-size:40px;color:#0a120e;"></i></div>
-                <div><strong style="color:var(--gold);font-size:20px;" id="profileName">---</strong><div style="margin-top:4px;"><span id="profileVip">VIP 1</span></div><div style="font-size:12px;color:var(--muted);margin-top:4px;">⭐ <span id="creditLabel">Credit</span>: <span id="creditScore" style="color:var(--gold);font-weight:600;">0</span></div></div>
+                <div id="profileAvatar" style="width:80px;height:80px;border-radius:40px;background:var(--gradient);display:flex;align-items:center;justify-content:center;border:3px solid var(--gold);overflow:hidden;cursor:pointer;box-shadow:0 0 0 4px rgba(212,175,55,0.04);flex-shrink:0;"><i class="fas fa-user-circle" style="font-size:44px;color:#0a120e;"></i></div>
+                <div><strong style="color:var(--gold);font-size:22px;font-family:'Playfair Display',serif;" id="profileName">---</strong><div style="margin-top:4px;"><span id="profileVip">VIP 1</span></div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">⭐ <span id="creditLabel">Credit</span>: <span id="creditScore" style="color:var(--gold);font-weight:600;">0</span></div></div>
             </div>
         </div>
         <div class="stats-grid">
@@ -751,21 +776,21 @@
             <div class="stat-card"><div class="val" id="pTodayEarn">$ 0.0000</div><div class="lbl" id="pEarnLabel">Today's Earnings</div></div>
             <div class="stat-card"><div class="val" id="pTotalComm">$ 0.0000</div><div class="lbl" id="pCommLabel">Total Commission</div></div>
         </div>
-        <div class="flex" style="gap:8px;margin-bottom:10px;">
+        <div class="flex" style="gap:10px;margin-bottom:12px;">
             <button class="btn-gold" id="depositBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;width:48%;font-size:13px;"><i class="fas fa-plus-circle"></i> <span id="depositText">Deposit</span></button>
             <button class="btn-gold" id="withdrawProfileBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;width:48%;font-size:13px;"><i class="fas fa-minus-circle"></i> <span id="withdrawProfileText">Withdraw</span></button>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
             <button class="btn-gold btn-outline" id="bindWalletBtn" style="font-size:13px;"><i class="fas fa-link"></i> <span id="bindWalletText">Bind Wallet</span></button>
             <button class="btn-gold btn-outline" id="personalDetailsBtn" style="font-size:13px;"><i class="fas fa-id-card"></i> <span id="personalText">Personal Details</span></button>
             <button class="btn-gold btn-outline" id="loanBtn" style="font-size:13px;"><i class="fas fa-hand-holding-usd"></i> <span id="loanText">Loan Service</span></button>
         </div>
-        <div class="flex" style="gap:8px;margin-bottom:10px;">
+        <div class="flex" style="gap:8px;margin-bottom:12px;">
             <button class="btn-gold btn-outline" id="rechargeHistoryBtn" style="flex:1;font-size:11px;"><i class="fas fa-history"></i> <span id="rechargeHistText">Recharge</span></button>
             <button class="btn-gold btn-outline" id="withdrawHistoryBtn" style="flex:1;font-size:11px;"><i class="fas fa-list"></i> <span id="withdrawHistText">Withdraw</span></button>
         </div>
         <div class="card">
-            <div class="flex"><span style="font-size:12px;color:var(--muted);"><i class="fas fa-wallet"></i> <span id="walletLabel">Wallet</span>:</span><span id="walletDisplay" style="font-size:12px;">Not set</span></div>
+            <div class="flex"><span style="font-size:12px;color:var(--text-secondary);"><i class="fas fa-wallet"></i> <span id="walletLabel">Wallet</span>:</span><span id="walletDisplay" style="font-size:12px;">Not set</span></div>
         </div>
         <div class="card" style="margin-top:10px;">
             <div style="text-align:center;font-size:12px;color:var(--gold);margin-bottom:8px;"><i class="fas fa-globe"></i> <span id="langLabel">Language</span></div>
@@ -777,23 +802,26 @@
                 <div class="lang-opt" data-lang="ru"><span>🇷🇺</span><span class="name">Russian</span></div>
             </div>
         </div>
-        <div class="icon-btn" id="signOutProfile" style="justify-content:center;text-align:center;width:100%;padding:10px;margin-top:10px;"><span id="signOutText">Sign Out</span></div>
+        <div class="icon-btn" id="signOutProfile" style="justify-content:center;text-align:center;width:100%;padding:12px;margin-top:10px;"><span id="signOutText">Sign Out</span></div>
     </div>
 
     <!-- ===== SERVICE ===== -->
     <div id="pageService" class="page">
         <div class="header">
-            <div class="logo-area"><div class="logo-plane"><i class="fas fa-plane"></i></div><div class="logo-text" id="serviceTitle">Support</div></div>
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fas fa-plane"></i></div>
+                <div class="logo-text" id="serviceTitle">Support</div>
+            </div>
             <div class="header-actions"><div class="icon-btn" id="refreshService"><i class="fas fa-sync-alt"></i></div></div>
         </div>
         <div class="chat-box">
             <div class="chat-msgs" id="chatMessages"></div>
             <div class="chat-input">
                 <button class="chat-btn" id="emojiBtn"><i class="far fa-smile"></i></button>
-                <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:8px 14px;font-size:13px;min-height:40px;">
+                <input type="text" class="input-glass" id="chatInput" placeholder="Type..." style="margin:0;flex:1;padding:10px 16px;font-size:13px;min-height:44px;">
                 <button class="chat-btn" id="uploadChatBtn"><i class="fas fa-image"></i></button>
                 <input type="file" id="chatFileInput" accept="image/*" style="display:none;">
-                <button class="btn-gold" id="sendChatBtn" style="width:auto;padding:8px 18px;font-size:13px;min-height:40px;"><span id="sendText">Send</span></button>
+                <button class="btn-gold" id="sendChatBtn" style="width:auto;padding:10px 20px;font-size:13px;min-height:44px;"><span id="sendText">Send</span></button>
             </div>
         </div>
     </div>
@@ -842,7 +870,7 @@
     function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
 
-    // ===== IMAGE COMPRESSION (Base64 Optimization) =====
+    // ===== IMAGE COMPRESSION =====
     function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -851,7 +879,6 @@
                 img.onload = function() {
                     let width = img.width;
                     let height = img.height;
-                    
                     if (width > maxWidth || height > maxHeight) {
                         if (width > height) {
                             height = Math.round(height * maxWidth / width);
@@ -861,7 +888,6 @@
                             height = maxHeight;
                         }
                     }
-                    
                     const canvas = document.createElement('canvas');
                     canvas.width = width;
                     canvas.height = height;
@@ -877,23 +903,27 @@
         });
     }
 
-    // Lazy Loading for images
-    function observeLazyImages() {
-        if (!('IntersectionObserver' in window)) return;
-        const images = document.querySelectorAll('img[data-src]');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.add('loaded');
-                    img.removeAttribute('data-src');
-                    observer.unobserve(img);
-                }
-            });
-        });
-        images.forEach(img => observer.observe(img));
+    function toast(msg, err=false) {
+        const el = document.createElement('div');
+        el.className = `toast-msg${err ? ' error' : ''}`;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
     }
+
+    window.togglePw = function(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    };
+
+    document.getElementById('loginToggle').onclick = function() {
+        const inp = document.getElementById('loginPass');
+        const icon = this.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    };
 
     // ===== TRANSLATIONS =====
     const t = {
@@ -1085,29 +1115,6 @@
         if (user) updateUI();
     }
 
-    window.togglePw = function(id, btn) {
-        const inp = document.getElementById(id);
-        const icon = btn.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    };
-
-    document.getElementById('loginToggle').onclick = function() {
-        const inp = document.getElementById('loginPass');
-        const icon = this.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    };
-
-    // ===== HELPERS =====
-    function toast(msg, err=false) {
-        const el = document.createElement('div');
-        el.className = `toast-msg${err ? ' error' : ''}`;
-        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
-    }
-
     // ===== SAVE USER =====
     async function saveUser() {
         if (!user) return;
@@ -1119,7 +1126,6 @@
         await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
     }
 
-    // ===== UPDATE LAST SEEN =====
     function startLastSeenUpdate() {
         if (lastSeenInterval) clearInterval(lastSeenInterval);
         lastSeenInterval = setInterval(async () => {
@@ -1131,7 +1137,6 @@
         }, 30000);
     }
 
-    // ===== ORDERS =====
     async function getOrders(userId) {
         const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(100)));
         const orders = [];
@@ -1150,7 +1155,6 @@
         return orders;
     }
 
-    // ===== INJECTIONS =====
     function subscribeInjections(userId) {
         if (unsubInjections) unsubInjections();
         const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
@@ -1173,7 +1177,6 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== CHAT =====
     function subscribeChat() {
         if (unsubChat) unsubChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
@@ -1221,15 +1224,15 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
                 <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
+                    <div><div style="color:var(--text-secondary);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
                     <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
                 </div>
                 <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="500">500</button>
-                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="1000">1000</button>
-                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="1500">1500</button>
-                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.06);border:1px solid var(--border);color:var(--text);" data-amt="2000">2000</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.04);border:1px solid var(--border);color:var(--text);" data-amt="500">500</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.04);border:1px solid var(--border);color:var(--text);" data-amt="1000">1000</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.04);border:1px solid var(--border);color:var(--text);" data-amt="1500">1500</button>
+                    <button class="btn-gold btn-sm" style="width:auto;flex:1;background:rgba(212,175,55,0.04);border:1px solid var(--border);color:var(--text);" data-amt="2000">2000</button>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
                     <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
@@ -1339,9 +1342,9 @@
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
-        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
+        if (items.length === 0) html += `<p style="color:var(--text-secondary);text-align:center;padding:16px;">${d.noRecords}</p>`;
         else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--text-secondary);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--text-secondary);">Note: ${item.adminNote}</div>`:''}</div>`;
         });
         html += `<button class="btn-gold" id="historyCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
@@ -1386,9 +1389,9 @@
                 </div>
                 <button class="btn-gold btn-outline" id="uploadPhotoBtn" style="font-size:12px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
                 <div style="margin-top:10px;">
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--text-secondary);">Credit:</span><span>${user?.creditScore||100}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--text-secondary);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--text-secondary);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
                 </div>
                 <button class="btn-gold" id="detailsClose" style="margin-top:12px;">${d.close}</button>
             </div>
@@ -1401,7 +1404,7 @@
         modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
     }
 
-    // ===== UPLOAD PHOTO (Base64 with Compression) =====
+    // ===== UPLOAD PHOTO =====
     function showUploadPhoto() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
@@ -1454,8 +1457,8 @@
                 </div>
                 <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
                     <div class="doc-opt" data-type="nrc" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(212,175,55,0.04);border:1px solid var(--gold);color:var(--gold-light);font-size:12px;">NRC</div>
-                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:12px;">Driver</div>
-                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(0,0,0,0.04);border:1px solid var(--border);color:var(--muted);font-size:12px;">Passport</div>
+                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(255,255,255,0.01);border:1px solid var(--border);color:var(--text-secondary);font-size:12px;">Driver</div>
+                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(255,255,255,0.01);border:1px solid var(--border);color:var(--text-secondary);font-size:12px;">Passport</div>
                 </div>
                 <input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount">
                 <button class="btn-gold" id="loanSubmit">${d.submit}</button>
@@ -1468,7 +1471,7 @@
         let docType = 'nrc';
         modal.querySelectorAll('.doc-opt').forEach(el => {
             el.onclick = function() {
-                modal.querySelectorAll('.doc-opt').forEach(o => { o.style.background='rgba(0,0,0,0.04)'; o.style.border='1px solid var(--border)'; o.style.color='var(--muted)'; });
+                modal.querySelectorAll('.doc-opt').forEach(o => { o.style.background='rgba(255,255,255,0.01)'; o.style.border='1px solid var(--border)'; o.style.color='var(--text-secondary)'; });
                 this.style.background='rgba(212,175,55,0.04)'; this.style.border='1px solid var(--gold)'; this.style.color='var(--gold-light)';
                 docType = this.dataset.type;
             };
@@ -1514,10 +1517,10 @@
         if (isInj && o.injectionDetails) {
             injHtml = `
                 <div style="background:rgba(245,158,11,0.04);border-radius:12px;padding:8px;margin:8px 0;font-size:13px;">
-                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ $ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ $ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex"><span style="color:var(--text-secondary);">Original:</span><span class="text-gold">$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--text-secondary);">Added:</span><span class="text-gold">+ $ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--text-secondary);">Total:</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex"><span style="color:var(--text-secondary);">Commission:</span><span class="text-gold" style="font-size:16px;">+ $ ${o.netCommission.toFixed(4)}</span></div>
                 </div>
             `;
         }
@@ -1525,15 +1528,15 @@
             <div class="order-card ${isInj ? 'injection' : ''}">
                 ${badge}
                 <div class="order-img">${img}</div>
-                <h3 style="color:var(--gold-light);font-size:17px;">${o.name}</h3>
-                <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
+                <h3 style="color:var(--gold-light);font-size:17px;font-family:'Playfair Display',serif;">${o.name}</h3>
+                <div style="font-size:12px;color:var(--text-secondary);">#${o.orderNumber}</div>
                 ${injHtml}
                 ${!injHtml ? `
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--text-secondary);">${d.orderAmount}</span><span style="color:var(--gold-light);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                    <div class="flex" style="font-size:13px;"><span style="color:var(--text-secondary);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
                 ` : ''}
                 <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
-                    <span style="color:var(--muted);">${d.afterBalance}</span>
+                    <span style="color:var(--text-secondary);">${d.afterBalance}</span>
                     <strong style="color:var(--gold-light);font-size:16px;">$ ${after.toFixed(2)}</strong>
                 </div>
                 ${!insufficient ? `
@@ -1742,12 +1745,9 @@
             <div class="card">
                 <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--gold);font-size:11px;">${d.completed}</span></div>
                 <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
-                <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
+                <div style="font-size:11px;color:var(--text-secondary);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
             </div>
-        `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
-        
-        // Apply lazy loading
-        observeLazyImages();
+        `).join('') : `<div class="card"><div style="color:var(--text-secondary);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
     }
 
     // ===== LIVE FEED =====
@@ -1979,7 +1979,7 @@
                 <div class="modal-box" style="text-align:center;">
                     <div style="font-size:48px;color:#dc2626;margin-bottom:12px;"><i class="fas fa-exclamation-triangle"></i></div>
                     <h3 style="color:#dc2626;font-size:20px;">⚠️ ${d.warning}</h3>
-                    <p style="color:var(--text);font-size:14px;margin:12px 0;">${d.pendingMsg}</p>
+                    <p style="color:var(--text-secondary);font-size:14px;margin:12px 0;">${d.pendingMsg}</p>
                     <button class="btn-gold" id="pendingOk">${d.okay}</button>
                 </div>
             `;
@@ -2059,9 +2059,9 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
                 <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--gold);"></i></div>
-                <div style="color:var(--text);font-size:14px;line-height:1.6;">Trip.com is a premier travel and task platform.</div>
-                <div style="background:rgba(0,0,0,0.04);border-radius:12px;padding:12px;margin:12px 0;"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text);">To provide seamless travel experiences and financial freedom.</p></div>
-                <div style="background:rgba(0,0,0,0.04);border-radius:12px;padding:12px;margin:12px 0;"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-eye"></i> ${d.vision}</h4><p style="font-size:13px;color:var(--text);">To become the world's leading integrated travel and earning platform.</p></div>
+                <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
+                <div style="background:rgba(255,255,255,0.01);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text-secondary);">To provide seamless travel experiences and financial freedom.</p></div>
+                <div style="background:rgba(255,255,255,0.01);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--gold);font-size:15px;"><i class="fas fa-eye"></i> ${d.vision}</h4><p style="font-size:13px;color:var(--text-secondary);">To become the world's leading integrated travel and earning platform.</p></div>
                 <button class="btn-gold" id="companyClose">${d.close}</button>
             </div>
         `;
@@ -2144,11 +2144,11 @@
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
         overlay.innerHTML = `
-            <div class="popup-card" style="background:var(--card);backdrop-filter:var(--glass);border-radius:24px;padding:20px;max-width:400px;width:92%;border:1px solid var(--gold);text-align:center;position:relative;box-shadow:var(--shadow);">
-                <button id="popupClose" style="position:absolute;top:6px;right:10px;background:rgba(255,255,255,0.04);border:none;color:#fff;font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
+            <div class="popup-card" style="background:var(--card);backdrop-filter:var(--glass);border-radius:24px;padding:20px;max-width:400px;width:92%;border:1px solid var(--gold);text-align:center;position:relative;box-shadow:var(--shadow-hover);">
+                <button id="popupClose" style="position:absolute;top:6px;right:10px;background:rgba(255,255,255,0.02);border:none;color:var(--text-secondary);font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
                 ${ad.imageData ? `<img src="${ad.imageData}" style="max-width:100%;max-height:180px;border-radius:12px;margin-bottom:10px;border:1px solid var(--border);">` : ''}
-                <div style="font-size:20px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;">${esc(ad.title||'Special Offer')}</div>
-                <div style="color:var(--text);font-size:14px;margin:6px 0 14px;">${esc(ad.subtitle||'')}</div>
+                <div style="font-size:20px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;">${esc(ad.title||'Special Offer')}</div>
+                <div style="color:var(--text-secondary);font-size:14px;margin:6px 0 14px;">${esc(ad.subtitle||'')}</div>
                 <button class="btn-gold" id="popupAction" style="width:auto;padding:8px 24px;">${esc(ad.buttonText||'Close')}</button>
             </div>
         `;
