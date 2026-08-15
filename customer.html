@@ -99,6 +99,38 @@
         }
         .icon-btn:hover { border-color:var(--secondary); color:var(--secondary); transform:translateY(-1px); }
 
+        /* ===== NOTIFICATION BELL ===== */
+        .notification-btn {
+            position:relative;
+            background:var(--bg-card);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:6px 14px;
+            cursor:pointer;
+            color:var(--text-secondary);
+            font-size:13px;
+            transition:var(--transition);
+            display:flex;
+            align-items:center;
+            gap:6px;
+            box-shadow:var(--shadow);
+        }
+        .notification-btn:hover { border-color:var(--secondary); color:var(--secondary); transform:translateY(-1px); }
+        .notification-badge {
+            position:absolute;
+            top:-6px;
+            right:-6px;
+            background:#dc2626;
+            color:#fff;
+            border-radius:50%;
+            font-size:9px;
+            font-weight:700;
+            padding:2px 5px;
+            min-width:18px;
+            text-align:center;
+            display:none;
+        }
+
         .card {
             background:var(--bg-card);
             border-radius:var(--radius);
@@ -649,6 +681,10 @@
                 <div class="logo-text" id="homeBrand">Trip.com</div>
             </div>
             <div class="header-actions">
+                <div class="notification-btn" id="notificationBtn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span id="notifBadge" class="notification-badge">0</span>
+                </div>
                 <div class="icon-btn" id="refreshHome"><i class="fas fa-sync-alt"></i></div>
                 <div class="icon-btn" id="signOutHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
             </div>
@@ -822,10 +858,11 @@
     let order = null;
     let ratings = { service: 0, quality: 0, sales: 0 };
     let feedInterval = null;
-    let unsubUser = null, unsubChat = null, unsubInjections = null;
+    let unsubUser = null, unsubChat = null, unsubInjections = null, unsubNotifications = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
+    let allChatMessages = [];
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
@@ -868,13 +905,12 @@
         });
     }
 
-    // ===== CACHE HELPER =====
     function getCache(key) {
         const cached = localStorage.getItem(key);
         if (cached) {
             try {
                 const data = JSON.parse(cached);
-                if (Date.now() - data.timestamp < 30000) return data.data; // 30 sec cache
+                if (Date.now() - data.timestamp < 30000) return data.data;
             } catch(e) { /* ignore */ }
         }
         return null;
@@ -981,9 +1017,8 @@
             const result = await signInWithPopup(auth, googleProvider);
             const gUser = result.user;
             const email = gUser.email;
-            const username = email.split('@')[0]; // Gmail username from email
+            const username = email.split('@')[0]; 
             
-            // Check if user already exists in Firestore
             const userRef = doc(db, "users", gUser.uid);
             const userSnap = await getDoc(userRef);
             
@@ -991,13 +1026,12 @@
                 user = { id: gUser.uid, ...userSnap.data() };
                 toast(`Welcome back, ${user.username}`);
             } else {
-                // Create NEW user automatically (No Invitation Code needed)
                 const newUser = {
                     id: gUser.uid,
                     username: username,
                     email: email,
                     phone: '',
-                    password: '', // Empty for Google Users
+                    password: '',
                     withdrawPassword: '',
                     balance: 0,
                     invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
@@ -1035,6 +1069,7 @@
         subscribeUser(u.id);
         subscribeInjections(u.id);
         subscribeChat();
+        subscribeNotifications(); // Subscribe to Admin notifications
         startLastSeenUpdate();
         updateUI();
         const last = localStorage.getItem('lastPage');
@@ -1060,7 +1095,7 @@
                     await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
                 } catch(e) { /* silent */ }
             }
-        }, 60000); // 1 minute
+        }, 60000);
     }
 
     // ===== ORDERS =====
@@ -1112,29 +1147,138 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== CHAT =====
+    // ===== NOTIFICATIONS (New System) =====
+    function subscribeNotifications() {
+        if (unsubNotifications) unsubNotifications();
+        if (!user) return;
+        
+        // Listen for messages sent FROM admin TO this user
+        const q = query(collection(db, "chatMessages"), 
+            where("from", "==", "admin"), 
+            where("to", "==", user.username),
+            orderBy("id", "asc")
+        );
+        
+        unsubNotifications = onSnapshot(q, (snap) => {
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                // If this message hasn't been read yet
+                if (!m.read) {
+                    newCount++;
+                }
+                msgs.push(m);
+            });
+
+            // Update badge
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) {
+                badge.innerText = newCount;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+
+            // Store unread messages globally to show in modal
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        });
+    }
+
+    // Show Notification Modal (Clicking Bell)
+    document.getElementById('notificationBtn').onclick = async () => {
+        if (!user) return;
+        const d = t[lang] || t.en;
+        const msgs = window.__unreadAdminMessages || [];
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>
+        `;
+        if (msgs.length === 0) {
+            html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
+        } else {
+            msgs.sort((a,b) => a.id - b.id);
+            msgs.forEach(m => {
+                html += `
+                    <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;">
+                        <div><strong style="color:var(--secondary);">Admin:</strong> ${esc(m.text||'')}</div>
+                        ${m.image ? `<img src="${m.image}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
+                        <div class="time">${m.time||''}</div>
+                    </div>
+                `;
+            });
+        }
+        html += `
+            <button class="btn-primary" id="notifCloseBtn">${d.close}</button>
+            </div>
+        `;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+
+        // Mark all as read when closed
+        modal.querySelector('#notifCloseBtn').onclick = async () => {
+            document.body.removeChild(modal);
+            // Mark messages as read in database
+            if (msgs.length > 0) {
+                const batch = [];
+                msgs.forEach(m => {
+                    // Note: We need to find the exact doc ID. We use the ID field stored inside the doc.
+                    // Better approach: query just for the IDs, but for now we assume ID field matches.
+                    const q = query(collection(db, "chatMessages"), where("id", "==", m.id));
+                    batch.push(q);
+                });
+                // Simple approach: Update the read flag for each message
+                for (let m of msgs) {
+                    const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
+                    snap.forEach(d => {
+                        updateDoc(doc(db, "chatMessages", d.id), { read: true });
+                    });
+                }
+                // Hide badge
+                document.getElementById('notifBadge').style.display = 'none';
+                window.__unreadAdminMessages = [];
+            }
+        };
+    };
+
+    // ===== CHAT (Fixed for Admin/Customer History) =====
     function subscribeChat() {
         if (unsubChat) unsubChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
         unsubChat = onSnapshot(q, (snap) => {
-            if (!document.getElementById('pageService').classList.contains('active-page')) return;
+            // ONLY update if Service Page is active
+            const isServicePage = document.getElementById('pageService').classList.contains('active-page');
+            if (!isServicePage) return;
+
             const container = document.getElementById('chatMessages');
             if (!container || !user) return;
+            
+            // Store ALL messages related to this user
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
-                if ((m.to === 'admin' && m.from === user.username) || (m.from === 'admin' && m.to === user.username)) msgs.push(m);
+                // Criteria: (User sent to Admin) OR (Admin sent to User)
+                if ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username)) {
+                    msgs.push(m);
+                }
             });
             msgs.sort((a,b) => a.id - b.id);
-            container.innerHTML = '';
-            msgs.forEach(m => {
+            
+            // Render all messages
+            container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
-                const div = document.createElement('div');
-                div.className = `chat-msg ${isSent ? 'sent' : 'received'}`;
-                const text = esc(m.text||'');
-                div.innerHTML = `<div>${text}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${m.time||''}</div>`;
-                container.appendChild(div);
-            });
+                return `
+                    <div class="chat-msg ${isSent ? 'sent' : 'received'}">
+                        <div>${esc(m.text||'')}</div>
+                        ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
+                        <div class="time">${m.time||''}</div>
+                    </div>
+                `;
+            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
+            
             container.scrollTop = container.scrollHeight;
         });
     }
@@ -1147,7 +1291,8 @@
             to: 'admin',
             text: text||'',
             image: img,
-            time: new Date().toLocaleString('en-US', { timeZone:'Asia/Bangkok', hour12:false })
+            time: new Date().toLocaleString('en-US', { timeZone:'Asia/Bangkok', hour12:false }),
+            read: false // New field to track if admin has read it or not (optional for customer side)
         });
     }
 
@@ -1753,7 +1898,11 @@
         if (name === 'home' || name === 'profile') updateUI();
         if (name === 'work') { updateUI(); refreshWork(); }
         if (name === 'orders') updateUI();
-        if (name === 'service') { document.getElementById('chatMessages').innerHTML = ''; }
+        if (name === 'service') { 
+            // Trigger chat reload immediately
+            if (unsubChat) unsubChat();
+            subscribeChat(); 
+        }
         startFeed();
     }
 
@@ -1768,11 +1917,8 @@
 
     // ===== EVENT LISTENERS =====
 
-    // Landing Page Google
     document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
-    // Login Page Google
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-    // Register Page Google
     document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
 
     document.getElementById('landingLoginBtn').onclick = () => showPage('login');
@@ -1801,6 +1947,7 @@
             subscribeUser(user.id);
             subscribeInjections(user.id);
             subscribeChat();
+            subscribeNotifications();
             startLastSeenUpdate();
             updateUI();
             const last = localStorage.getItem('lastPage');
@@ -1858,6 +2005,7 @@
         subscribeUser(user.id);
         subscribeInjections(user.id);
         subscribeChat();
+        subscribeNotifications();
         startLastSeenUpdate();
         updateUI();
         showPage('home');
@@ -1869,6 +2017,7 @@
         if (unsubUser) unsubUser();
         if (unsubChat) unsubChat();
         if (unsubInjections) unsubInjections();
+        if (unsubNotifications) unsubNotifications();
         if (feedInterval) clearInterval(feedInterval);
         if (lastSeenInterval) clearInterval(lastSeenInterval);
         const uid = user?.id;
@@ -1878,7 +2027,6 @@
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
         
-        // Sign out from Firebase Auth (renamed to firebaseSignOut to avoid conflict)
         firebaseSignOut(auth).then(() => {
             console.log("Signed out from Firebase");
         }).catch((error) => {
@@ -2121,10 +2269,8 @@
     subscribeSettings();
     startFeed();
 
-    // Listen for Auth State Change (Auto Login / Token Refresh)
     onAuthStateChanged(auth, async (gUser) => {
         if (gUser) {
-            // If user is logged in via Google, but not yet loaded in our system
             const snap = await getDoc(doc(db, "users", gUser.uid));
             if (snap.exists() && !user) {
                 const data = snap.data();
@@ -2135,6 +2281,7 @@
                     subscribeUser(user.id);
                     subscribeInjections(user.id);
                     subscribeChat();
+                    subscribeNotifications();
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
@@ -2160,6 +2307,7 @@
                     subscribeUser(user.id);
                     subscribeInjections(user.id);
                     subscribeChat();
+                    subscribeNotifications();
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
