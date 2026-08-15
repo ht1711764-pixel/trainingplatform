@@ -862,7 +862,6 @@
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
-    let allChatMessages = [];
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
@@ -1163,15 +1162,16 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== NOTIFICATIONS (New System) =====
+    // ===== NOTIFICATIONS (FIXED: ONLY SHOW TYPE: NOTIFICATION) =====
     function subscribeNotifications() {
         if (unsubNotifications) unsubNotifications();
         if (!user) return;
         
-        // Listen for messages sent FROM admin TO this user
+        // Listen for messages sent FROM admin TO this user where type === 'notification'
         const q = query(collection(db, "chatMessages"), 
             where("from", "==", "admin"), 
             where("to", "==", user.username),
+            where("type", "==", "notification"), // <--- ONLY GET NOTIFICATIONS
             orderBy("id", "asc")
         );
         
@@ -1218,11 +1218,17 @@
         } else {
             msgs.sort((a,b) => a.id - b.id);
             msgs.forEach(m => {
+                // Parse the notification text to split title and body
+                const text = m.text || '';
+                const parts = text.split('\n\n');
+                const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
+                const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
+
                 html += `
-                    <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;">
-                        <div><strong style="color:var(--secondary);">Admin:</strong> ${esc(m.text||'')}</div>
-                        ${m.image ? `<img src="${m.image}" class="img-preview-sm" onclick="window.open(this.src)">` : ''}
-                        <div class="time">${m.time||''}</div>
+                    <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
+                        <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
+                        <div style="white-space:pre-wrap;">${esc(body)}</div>
+                        <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
                     </div>
                 `;
             });
@@ -1252,7 +1258,7 @@
         };
     };
 
-    // ===== CHAT (Fixed for Admin/Customer History) =====
+    // ===== CHAT (FIXED: ONLY SHOW STANDARD MESSAGES, IGNORE NOTIFICATIONS) =====
     function subscribeChat() {
         if (unsubChat) unsubChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
@@ -1264,12 +1270,13 @@
             const container = document.getElementById('chatMessages');
             if (!container || !user) return;
             
-            // Store ALL messages related to this user
+            // Store ALL messages related to this user EXCEPT notifications
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
                 // Criteria: (User sent to Admin) OR (Admin sent to User)
-                if ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username)) {
+                // AND type is NOT 'notification'
+                if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
                     msgs.push(m);
                 }
             });
@@ -1279,6 +1286,7 @@
             container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
                 // Use the user's local browser timezone for display
+                // m.time is stored in UTC, browser handles the conversion automatically when passed to Date()
                 const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
                 return `
                     <div class="chat-msg ${isSent ? 'sent' : 'received'}">
@@ -1295,15 +1303,16 @@
 
     async function sendChat(text, img=null) {
         if (!user) return;
-        // Save time as ISO string so it can be formatted to any local timezone later
+        // Save time as ISO string (UTC) so it can be formatted to any local timezone later
         await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
             id: Date.now()+Math.random(),
             from: user.username,
             to: 'admin',
             text: text||'',
             image: img,
-            time: new Date().toISOString(), 
-            read: false 
+            time: new Date().toISOString(), // UTC time
+            read: false,
+            type: 'message' // Standard chat message
         });
     }
 

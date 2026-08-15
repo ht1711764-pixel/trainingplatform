@@ -834,7 +834,6 @@
                 const lv = getVIP(u.balance||0);
                 const vc = getVipClass(lv);
                 const isOnline = u.lastSeen && (Date.now() - u.lastSeen < 60000);
-                // Format Last Seen Time in Asia/Bangkok
                 const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) : 'Never';
                 return `<tr>
                     <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
@@ -1659,7 +1658,7 @@
                 to: chatUser,
                 text: text,
                 image: null,
-                time: new Date().toLocaleString('en-US', { timeZone:'Asia/Bangkok', hour12:false }),
+                time: new Date().toISOString(),
                 read: false 
             });
             input.value = '';
@@ -1670,7 +1669,7 @@
         });
     }
 
-    // === NEW ADMIN NOTIFICATION SYSTEM ===
+    // === NEW ADMIN NOTIFICATION SYSTEM (FIXED TO BE SEPARATE FROM CHAT) ===
     function renderNotifications(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
@@ -1726,9 +1725,9 @@
                         to: target,
                         text: `[NOTIFICATION] ${title}\n\n${message}`,
                         image: null,
-                        time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }),
+                        time: new Date().toISOString(), // Save as UTC, display in customer's local time later
                         read: false,
-                        type: 'notification'
+                        type: 'notification' // <--- THIS IS THE KEY FIX: Mark it as a notification
                     });
                 }
 
