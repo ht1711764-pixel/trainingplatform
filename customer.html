@@ -942,6 +942,18 @@
         else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
+    // ===== GET IP ADDRESS FUNCTION =====
+    async function getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+            return null;
+        }
+    }
+
     // ===== TRANSLATIONS =====
     const t = {
         en: {
@@ -1026,6 +1038,9 @@
                 user = { id: gUser.uid, ...userSnap.data() };
                 toast(`Welcome back, ${user.username}`);
             } else {
+                // Fetch IP address for new users
+                const ip = await getClientIP();
+                
                 const newUser = {
                     id: gUser.uid,
                     username: username,
@@ -1049,7 +1064,8 @@
                     currentOrderObj: null,
                     role: 'customer',
                     lastSeen: Date.now(),
-                    authProvider: 'google'
+                    authProvider: 'google',
+                    regIP: ip // <--- Save IP
                 };
                 await setDoc(userRef, newUser);
                 user = { id: gUser.uid, ...newUser };
@@ -1069,7 +1085,7 @@
         subscribeUser(u.id);
         subscribeInjections(u.id);
         subscribeChat();
-        subscribeNotifications(); // Subscribe to Admin notifications
+        subscribeNotifications();
         startLastSeenUpdate();
         updateUI();
         const last = localStorage.getItem('lastPage');
@@ -1223,14 +1239,6 @@
             document.body.removeChild(modal);
             // Mark messages as read in database
             if (msgs.length > 0) {
-                const batch = [];
-                msgs.forEach(m => {
-                    // Note: We need to find the exact doc ID. We use the ID field stored inside the doc.
-                    // Better approach: query just for the IDs, but for now we assume ID field matches.
-                    const q = query(collection(db, "chatMessages"), where("id", "==", m.id));
-                    batch.push(q);
-                });
-                // Simple approach: Update the read flag for each message
                 for (let m of msgs) {
                     const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
                     snap.forEach(d => {
@@ -1270,11 +1278,13 @@
             // Render all messages
             container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
+                // Use the user's local browser timezone for display
+                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
                 return `
                     <div class="chat-msg ${isSent ? 'sent' : 'received'}">
                         <div>${esc(m.text||'')}</div>
                         ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
-                        <div class="time">${m.time||''}</div>
+                        <div class="time">${msgTime}</div>
                     </div>
                 `;
             }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
@@ -1285,14 +1295,15 @@
 
     async function sendChat(text, img=null) {
         if (!user) return;
+        // Save time as ISO string so it can be formatted to any local timezone later
         await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
             id: Date.now()+Math.random(),
             from: user.username,
             to: 'admin',
             text: text||'',
             image: img,
-            time: new Date().toLocaleString('en-US', { timeZone:'Asia/Bangkok', hour12:false }),
-            read: false // New field to track if admin has read it or not (optional for customer side)
+            time: new Date().toISOString(), 
+            read: false 
         });
     }
 
@@ -1979,6 +1990,10 @@
             if (refCheck.empty) { toast('Invalid invitation code.', true); return; }
             ref = refCheck.docs[0].data().username;
         }
+
+        // Fetch IP address for new users
+        const ip = await getClientIP();
+
         user = {
             id: Date.now().toString(),
             username, email, phone,
@@ -1999,7 +2014,8 @@
             walletAddress: null,
             currentOrderObj: null,
             role: 'customer',
-            lastSeen: Date.now()
+            lastSeen: Date.now(),
+            regIP: ip // <--- Save IP
         };
         await setDoc(doc(db, "users", user.id), user);
         subscribeUser(user.id);
