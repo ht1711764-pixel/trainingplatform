@@ -6,9 +6,6 @@
     <title>Trip.com Admin | Control Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-    </script>
     
     <style>
         /* ===== FONTS ===== */
@@ -45,10 +42,6 @@
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --skeleton-base: #e0e0e0;
             --skeleton-highlight: #f0f0f0;
-            --success: #10b981;
-            --danger: #dc2626;
-            --warning: #f59e0b;
-            --info: #3b82f6;
         }
 
         [data-theme="dark"] {
@@ -267,8 +260,6 @@
 
         .btn-danger { background:#dc2626; color:#fff; border:none; }
         .btn-success { background:#10b981; color:#fff; border:none; }
-        .btn-warning { background:#f59e0b; color:#fff; border:none; }
-        .btn-info { background:#3b82f6; color:#fff; border:none; }
 
         .btn-google {
             background:#ffffff;
@@ -351,9 +342,6 @@
         .badge-inactive { background:rgba(220,38,38,0.08); color:#dc2626; border:1px solid rgba(220,38,38,0.12); }
         .badge-online { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
         .badge-offline { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
-        .badge-healthy { background:rgba(16,185,129,0.08); color:#10b981; border:1px solid rgba(16,185,129,0.12); }
-        .badge-warning { background:rgba(245,158,11,0.08); color:#f59e0b; border:1px solid rgba(245,158,11,0.12); }
-        .badge-danger { background:rgba(220,38,38,0.08); color:#dc2626; border:1px solid rgba(220,38,38,0.12); }
 
         /* ===== VIP ===== */
         .vip-1 { background:#e8e8ed; color:var(--text-secondary); padding:2px 8px; border-radius:20px; font-size:9px; font-weight:700; display:inline-block; }
@@ -460,25 +448,6 @@
         .chat-input .input-glass { margin:0; flex:1; padding:6px 12px; font-size:12px; min-height:34px; }
         .chat-input .btn-primary { width:auto; padding:6px 16px; font-size:12px; min-height:34px; }
 
-        /* ===== SYSTEM HEALTH ===== */
-        .health-grid {
-            display:grid;
-            grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
-            gap:12px;
-            margin:10px 0;
-        }
-        .health-card {
-            background:var(--bg);
-            border-radius:var(--radius-sm);
-            padding:14px 16px;
-            border:1px solid var(--border);
-            text-align:center;
-        }
-        .health-card .status-icon { font-size:28px; margin-bottom:4px; }
-        .health-card .label { font-size:11px; color:var(--muted); }
-        .health-card .value { font-size:18px; font-weight:700; color:var(--primary); }
-        .health-card .sub { font-size:10px; color:var(--muted); margin-top:2px; }
-
         /* ===== RESPONSIVE ===== */
         @media(max-width:768px) {
             .sidebar {
@@ -507,7 +476,6 @@
             .card-glass { padding:12px; }
             .modal-box { padding:14px; }
             .chat-wrap { height:40vh; }
-            .health-grid { grid-template-columns:repeat(2, 1fr); }
         }
         @media(max-width:480px) {
             .main { padding:6px; }
@@ -515,7 +483,6 @@
             .table-wrap { font-size:11px; }
             th, td { padding:4px 3px; }
             .btn-primary { font-size:10px; padding:4px 10px; }
-            .health-grid { grid-template-columns:1fr 1fr; }
         }
 
         /* ===== LOGIN SCREEN ===== */
@@ -584,7 +551,6 @@
             text-align:center;
         }
         .toast-msg.error { background:#dc2626; }
-        .toast-msg.success { background:#10b981; }
 
         /* ===== LIVE INDICATOR ===== */
         .live-indicator {
@@ -608,10 +574,6 @@
         .mb-1 { margin-bottom:6px; }
         .text-muted { color:var(--muted); }
         .text-center { text-align:center; }
-        .text-success { color:var(--success); }
-        .text-danger { color:var(--danger); }
-        .text-warning { color:var(--warning); }
-        .text-info { color:var(--info); }
         .w-full { width:100%; }
 
         .img-preview {
@@ -655,35 +617,6 @@
         .skeleton-text.short { width: 60%; }
         .skeleton-circle { width: 50px; height: 50px; border-radius: 50%; }
         .skeleton-box { height: 80px; width: 100%; border-radius: 12px; }
-
-        /* ===== INACTIVE USERS LIST ===== */
-        .inactive-user-item {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            padding:8px 12px;
-            background:var(--bg);
-            border-radius:8px;
-            margin-bottom:4px;
-            border:1px solid var(--border);
-        }
-        .inactive-user-item .info {
-            display:flex;
-            flex-direction:column;
-            gap:2px;
-        }
-        .inactive-user-item .info .name {
-            font-weight:600;
-            color:var(--text);
-        }
-        .inactive-user-item .info .detail {
-            font-size:11px;
-            color:var(--muted);
-        }
-        .inactive-user-item .actions {
-            display:flex;
-            gap:4px;
-        }
     </style>
 </head>
 <body>
@@ -732,8 +665,6 @@
             <div class="nav-item" data-section="withdraw"><i class="fas fa-hand-holding-usd"></i> Withdraw</div>
             <div class="nav-item" data-section="loans"><i class="fas fa-hand-holding-heart"></i> Loans</div>
             <div class="nav-item" data-section="agency"><i class="fas fa-user-tie"></i> Agencies</div>
-            <div class="nav-item" data-section="inactive"><i class="fas fa-user-slash"></i> Inactive Users</div>
-            <div class="nav-item" data-section="health"><i class="fas fa-heartbeat"></i> System Health</div>
             <div class="nav-item" data-section="settings"><i class="fas fa-paint-brush"></i> Settings</div>
             <div class="nav-item" data-section="popup"><i class="fas fa-ad"></i> Popup Ads</div>
             <div class="nav-item" data-section="chat"><i class="fas fa-comment-dots"></i> Chat</div>
@@ -772,65 +703,7 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
-    // ============================================================
-    // ===== EMAILJS CONFIGURATION =====
-    // ============================================================
-    (function() {
-        emailjs.init({
-            publicKey: "3daY1DjX3ZHv92D67"
-        });
-    })();
-
-    // ============================================================
-    // ===== SEND EMAIL FUNCTIONS =====
-    // ============================================================
-    async function sendAdminEmail(templateId, toEmail, params) {
-        try {
-            const response = await emailjs.send(
-                "service_1b1cq1p",
-                templateId,
-                {
-                    to_email: toEmail,
-                    ...params
-                }
-            );
-            console.log('✅ Admin email sent:', response);
-            return true;
-        } catch (error) {
-            console.error('❌ Admin email error:', error);
-            return false;
-        }
-    }
-
-    // ===== WITHDRAWAL STATUS EMAIL =====
-    async function sendWithdrawalEmail(user, withdraw, status, note = '') {
-        const thailandTime = new Date().toLocaleString('en-US', {
-            timeZone: 'Asia/Bangkok',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-        
-        return await sendAdminEmail(
-            "template_order_confirmation",
-            user.email,
-            {
-                user_name: user.username,
-                amount: withdraw.amount.toFixed(2),
-                status: status,
-                wallet_address: withdraw.walletAddress || 'Not provided',
-                admin_note: note || 'No additional notes',
-                processed_date: thailandTime
-            }
-        );
-    }
-
-    // ============================================================
     // ===== GLOBALS =====
-    // ============================================================
     let users = [];
     let agencies = [];
     let injections = [];
@@ -846,14 +719,10 @@
     let unsubUsers = null;
     let unsubInjections = null;
     let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf', minBalanceForOrder: 10 };
-    let healthCheckInterval = null;
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
-    const INACTIVE_DAYS = 30; // Days of inactivity before marking as inactive
 
-    // ============================================================
     // ===== UTILITY FUNCTIONS =====
-    // ============================================================
     function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -888,10 +757,10 @@
 
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
     
-    function toast(msg, err=false, type='info') {
+    function toast(msg, err=false) {
         const el = document.createElement('div');
-        el.className = `toast-msg${err ? ' error' : ''}${type === 'success' ? ' success' : ''}`;
-        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : type === 'success' ? 'fa-check-circle' : 'fa-circle-check'}"></i> ${msg}`;
+        el.className = `toast-msg${err ? ' error' : ''}`;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 2200);
     }
@@ -924,16 +793,7 @@
     }
     window.togglePw = togglePw;
 
-    function isUserInactive(user) {
-        if (!user || user.disabled) return true;
-        const lastSeen = user.lastSeen || 0;
-        const daysInactive = (Date.now() - lastSeen) / (1000 * 60 * 60 * 24);
-        return daysInactive > INACTIVE_DAYS;
-    }
-
-    // ============================================================
     // ===== THEME TOGGLE =====
-    // ============================================================
     function toggleTheme() {
         const html = document.documentElement;
         const current = html.getAttribute('data-theme');
@@ -959,9 +819,7 @@
 
     document.getElementById('themeToggleSidebar').addEventListener('click', toggleTheme);
 
-    // ============================================================
     // ===== LOGIN =====
-    // ============================================================
     async function login(username, password) {
         const a = agencies.find(x => x.username === username && x.password === password && x.status === 'active');
         if (a) return { success:true, data:a, role:'agency', perms:a.permissions||{} };
@@ -1051,12 +909,10 @@
         return false;
     }
 
-    // ============================================================
     // ===== LOAD DATA =====
-    // ============================================================
     async function loadAllData() {
         try {
-            const snap1 = await getDocs(query(collection(db,'users'), limit(1000)));
+            const snap1 = await getDocs(query(collection(db,'users'), limit(500)));
             users = []; snap1.forEach(d => users.push({ id:d.id, ...d.data() }));
             const snap2 = await getDocs(collection(db,'agencies'));
             agencies = []; snap2.forEach(d => agencies.push({ id:d.id, ...d.data() }));
@@ -1077,15 +933,13 @@
         } catch(e) { console.error(e); }
     }
 
-    // ============================================================
     // ===== SUBSCRIPTIONS =====
-    // ============================================================
     function startSubscriptions() {
         if (unsubUsers) unsubUsers();
-        unsubUsers = onSnapshot(query(collection(db,'users'), limit(1000)), (snap) => {
+        unsubUsers = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
             users = [];
             snap.forEach(d => users.push({ id:d.id, ...d.data() }));
-            if (['dashboard','members','vip','injection','inactive','health'].includes(currentSection)) renderSection(currentSection);
+            if (['dashboard','members','vip','injection'].includes(currentSection)) renderSection(currentSection);
             document.getElementById('memberCount').textContent = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
             const ind = document.getElementById('liveIndicator');
             ind.style.display = 'flex';
@@ -1117,12 +971,6 @@
             snap.forEach(d => popupAds.push({ id:d.id, ...d.data() }));
             if (currentSection === 'popup') renderSection('popup');
         });
-        
-        // Health check interval
-        if (healthCheckInterval) clearInterval(healthCheckInterval);
-        healthCheckInterval = setInterval(() => {
-            if (currentSection === 'health') renderSection('health');
-        }, 30000);
     }
 
     // ============================================================
@@ -1311,8 +1159,6 @@
             case 'withdraw': renderWithdraw(main); break;
             case 'loans': renderLoans(main); break;
             case 'agency': renderAgency(main); break;
-            case 'inactive': renderInactiveUsers(main); break;
-            case 'health': renderSystemHealth(main); break;
             case 'settings': renderSettings(main); break;
             case 'popup': renderPopup(main); break;
             case 'chat': renderChat(main); break;
@@ -1323,19 +1169,15 @@
 
     // ===== DASHBOARD =====
     function renderDashboard(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-        const total = customers.length;
+        const total = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
         const bal = users.reduce((s,u) => s + (u.balance||0), 0);
         const comm = users.reduce((s,u) => s + (u.totalCommission||0), 0);
         const rPend = rechargeReqs.filter(r => r.status === 'pending').length;
         const wPend = withdrawReqs.filter(w => w.status === 'pending').length;
         const lPend = loanReqs.filter(l => l.status === 'pending').length;
         const actA = agencies.filter(a => a.status === 'active').length;
-        const inactive = customers.filter(u => isUserInactive(u)).length;
-        
         let vips = {1:0,2:0,3:0,4:0};
-        customers.forEach(u => { const lv = getVIP(u.balance||0); vips[lv]++; });
-        
+        users.forEach(u => { if (u.role !== 'admin' && u.role !== 'agency') { const lv = getVIP(u.balance||0); vips[lv]++; } });
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
@@ -1346,10 +1188,9 @@
                     <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${actA}/${agencies.length}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
-                    <div class="col-3"><div style="background:rgba(245,158,11,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(245,158,11,0.08);"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(59,130,246,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(59,130,246,0.08);"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(16,185,129,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(16,185,129,0.08);"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
-                    <div class="col-3"><div style="background:rgba(220,38,38,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(220,38,38,0.08);"><div style="font-size:10px;color:var(--muted);">Inactive</div><div style="font-size:16px;font-weight:700;color:#dc2626;">${inactive}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(245,158,11,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(245,158,11,0.08);"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(59,130,246,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(59,130,246,0.08);"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(16,185,129,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(16,185,129,0.08);"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
                 </div>
                 <div class="row g-2 mt-1">
                     <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
@@ -1393,10 +1234,9 @@
                 const vc = getVipClass(lv);
                 const isOnline = u.lastSeen && (Date.now() - u.lastSeen < 60000);
                 const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) : 'Never';
-                const isInactive = isUserInactive(u);
                 return `<tr>
                     <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
-                    <td><strong style="color:var(--primary);">${esc(u.username)}</strong>${isInactive ? ' <span style="font-size:9px;color:#dc2626;">(Inactive)</span>' : ''}</td>
+                    <td><strong style="color:var(--primary);">${esc(u.username)}</strong></td>
                     <td style="font-size:11px;color:var(--text-secondary);">${esc(u.email) || '-'}</td>
                     <td style="font-size:10px;color:var(--muted);">${esc(u.regIP) || '-'}</td>
                     <td style="font-size:11px;color:var(--secondary);font-weight:600;letter-spacing:0.5px;">${esc(u.invitationCode) || '-'}</td>
@@ -1816,31 +1656,20 @@
     window.approveWithdraw = async (id) => {
         const w = withdrawReqs.find(x => x.id === id);
         if (!w || w.status !== 'pending') return;
-        
-        // Update status
         await updateDoc(doc(db,'withdrawRequests',id), { status: 'approved' });
-        
-        // Send email to customer
-        const user = users.find(x => x.id === w.userId);
-        if (user) {
-            await sendWithdrawalEmail(user, w, 'approved');
-            toast(`✅ Withdraw approved. Email sent to ${user.email}`);
-        } else {
-            toast('✅ Withdraw approved');
-        }
+        toast('✅ Withdraw approved');
         renderSection('withdraw');
     };
 
     window.rejectWithdraw = (id) => {
         const w = withdrawReqs.find(x => x.id === id);
         if (!w) return;
-        
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-times-circle" style="color:#dc2626;"></i> Reject Withdraw</div>
-                <textarea class="input-glass" id="rejWNote" placeholder="Reason for rejection..." rows="2"></textarea>
+                <textarea class="input-glass" id="rejWNote" placeholder="Reason..." rows="2"></textarea>
                 <div class="flex gap-1" style="margin-top:8px;">
                     <button class="btn-primary" style="background:#dc2626;color:#fff;" id="rejWSubmit">Reject</button>
                     <button class="btn-outline" id="rejWCancel">Cancel</button>
@@ -1848,21 +1677,13 @@
             </div>
         `;
         document.body.appendChild(modal);
-        
         document.getElementById('rejWSubmit').onclick = async () => {
-            const note = document.getElementById('rejWNote').value || 'No reason provided';
+            const note = document.getElementById('rejWNote').value;
             await updateDoc(doc(db,'withdrawRequests',id), { status: 'rejected', adminNote: note });
-            
-            const user = users.find(x => x.id === w.userId);
-            if (user) {
-                // Return balance to user
-                await updateDoc(doc(db,'users',user.id), { balance: (user.balance||0) + w.amount });
-                // Send email
-                await sendWithdrawalEmail(user, w, 'rejected', note);
-                toast(`❌ Withdraw rejected. Email sent to ${user.email}`);
-            }
-            
+            const u = users.find(x => x.id === w.userId);
+            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + w.amount });
             document.body.removeChild(modal);
+            toast('Rejected');
             renderSection('withdraw');
         };
         document.getElementById('rejWCancel').onclick = () => document.body.removeChild(modal);
@@ -2072,210 +1893,27 @@
         document.getElementById('aaCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ============================================================
-    // ===== INACTIVE USERS =====
-    // ============================================================
-    function renderInactiveUsers(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-        const inactiveUsers = customers.filter(u => isUserInactive(u) && !u.disabled);
-        
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="flex">
-                    <div class="title"><i class="fas fa-user-slash"></i> Inactive Users</div>
-                    <div>
-                        <span style="font-size:12px;color:var(--muted);">${inactiveUsers.length} users inactive</span>
-                        ${inactiveUsers.length > 0 ? `<button class="btn-primary btn-primary-sm" id="deleteAllInactiveBtn" style="background:#dc2626;color:#fff;margin-left:8px;"><i class="fas fa-trash"></i> Delete All</button>` : ''}
-                    </div>
-                </div>
-                <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Users inactive for more than ${INACTIVE_DAYS} days (no activity).</p>
-                ${inactiveUsers.length ? inactiveUsers.map(u => {
-                    const daysInactive = Math.floor((Date.now() - (u.lastSeen || 0)) / (1000 * 60 * 60 * 24));
-                    return `
-                        <div class="inactive-user-item">
-                            <div class="info">
-                                <span class="name">${esc(u.username)}</span>
-                                <span class="detail">Email: ${esc(u.email) || 'N/A'} | Balance: S$ ${(u.balance||0).toFixed(2)} | Inactive for ${daysInactive} days</span>
-                            </div>
-                            <div class="actions">
-                                <button class="btn-primary btn-primary-sm" onclick="window.deleteUser('${u.id}')" style="background:#dc2626;color:#fff;"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    `;
-                }).join('') : '<p style="color:var(--muted);text-align:center;padding:16px;">No inactive users found.</p>'}
-            </div>
-        `;
-        
-        document.getElementById('deleteAllInactiveBtn')?.addEventListener('click', async () => {
-            if (!confirm(`Are you sure you want to delete all ${inactiveUsers.length} inactive users? This action cannot be undone!`)) return;
-            
-            let deleted = 0;
-            for (const u of inactiveUsers) {
-                try {
-                    await deleteDoc(doc(db, 'users', u.id));
-                    deleted++;
-                } catch(e) {
-                    console.error('Failed to delete user:', u.id, e);
-                }
-            }
-            toast(`✅ ${deleted} inactive users deleted successfully!`);
-            renderSection('inactive');
-        });
-    }
-
-    window.deleteUser = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        if (!confirm(`Are you sure you want to delete user "${u.username}"? This action cannot be undone!`)) return;
-        
-        try {
-            await deleteDoc(doc(db, 'users', id));
-            toast(`✅ User "${u.username}" deleted successfully!`);
-            renderSection('inactive');
-        } catch(e) {
-            toast(`❌ Failed to delete user: ${e.message}`, true);
-        }
-    };
-
-    // ============================================================
-    // ===== SYSTEM HEALTH =====
-    // ============================================================
-    function renderSystemHealth(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-        const totalUsers = customers.length;
-        const activeUsers = customers.filter(u => !isUserInactive(u)).length;
-        const inactiveUsers = totalUsers - activeUsers;
-        const totalBalance = customers.reduce((s, u) => s + (u.balance || 0), 0);
-        const totalCommission = customers.reduce((s, u) => s + (u.totalCommission || 0), 0);
-        const onlineUsers = customers.filter(u => u.lastSeen && (Date.now() - u.lastSeen < 60000)).length;
-        const pendingRecharge = rechargeReqs.filter(r => r.status === 'pending').length;
-        const pendingWithdraw = withdrawReqs.filter(w => w.status === 'pending').length;
-        const pendingLoans = loanReqs.filter(l => l.status === 'pending').length;
-        
-        // Database performance (estimated)
-        const dbHealth = (() => {
-            const total = totalUsers + agencies.length + injections.length + customOrders.length + rechargeReqs.length + withdrawReqs.length + loanReqs.length + popupAds.length;
-            if (total < 500) return { status: 'healthy', label: 'Excellent', color: '#10b981' };
-            if (total < 2000) return { status: 'healthy', label: 'Good', color: '#10b981' };
-            if (total < 5000) return { status: 'warning', label: 'Moderate', color: '#f59e0b' };
-            return { status: 'danger', label: 'High Load', color: '#dc2626' };
-        })();
-        
-        const serverStatus = {
-            status: 'online',
-            uptime: '99.9%',
-            responseTime: '120ms'
-        };
-        
-        // Error logs (simulated)
-        const errorLogs = [
-            { time: new Date(Date.now() - 1000 * 60 * 5).toLocaleString(), message: 'Slow query detected on users collection' },
-            { time: new Date(Date.now() - 1000 * 60 * 25).toLocaleString(), message: 'Rate limit hit on email service' },
-            { time: new Date(Date.now() - 1000 * 60 * 60 * 2).toLocaleString(), message: 'User authentication timeout' }
-        ];
-        
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-heartbeat"></i> System Health Monitor</div>
-                
-                <div class="health-grid">
-                    <div class="health-card">
-                        <div class="status-icon ${serverStatus.status === 'online' ? 'text-success' : 'text-danger'}"><i class="fas fa-server"></i></div>
-                        <div class="label">Server Status</div>
-                        <div class="value">${serverStatus.status.toUpperCase()}</div>
-                        <div class="sub">Uptime: ${serverStatus.uptime} | ${serverStatus.responseTime}</div>
-                    </div>
-                    <div class="health-card">
-                        <div class="status-icon ${dbHealth.status === 'healthy' ? 'text-success' : dbHealth.status === 'warning' ? 'text-warning' : 'text-danger'}"><i class="fas fa-database"></i></div>
-                        <div class="label">Database Performance</div>
-                        <div class="value">${dbHealth.label}</div>
-                        <div class="sub">${dbHealth.status === 'healthy' ? '✅ Optimal' : dbHealth.status === 'warning' ? '⚠️ Moderate' : '❌ High Load'}</div>
-                    </div>
-                    <div class="health-card">
-                        <div class="status-icon text-success"><i class="fas fa-users"></i></div>
-                        <div class="label">Users</div>
-                        <div class="value">${totalUsers}</div>
-                        <div class="sub">Active: ${activeUsers} | Inactive: ${inactiveUsers}</div>
-                    </div>
-                    <div class="health-card">
-                        <div class="status-icon text-info"><i class="fas fa-user-circle"></i></div>
-                        <div class="label">Online Now</div>
-                        <div class="value">${onlineUsers}</div>
-                        <div class="sub">${Math.round((onlineUsers / (totalUsers || 1)) * 100)}% of users</div>
-                    </div>
-                    <div class="health-card">
-                        <div class="status-icon text-warning"><i class="fas fa-clock"></i></div>
-                        <div class="label">Pending Requests</div>
-                        <div class="value">${pendingRecharge + pendingWithdraw + pendingLoans}</div>
-                        <div class="sub">R:${pendingRecharge} W:${pendingWithdraw} L:${pendingLoans}</div>
-                    </div>
-                    <div class="health-card">
-                        <div class="status-icon text-success"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="label">Total Balance</div>
-                        <div class="value">S$ ${totalBalance.toFixed(2)}</div>
-                        <div class="sub">Commission: S$ ${totalCommission.toFixed(2)}</div>
-                    </div>
-                </div>
-                
-                <div style="margin-top:12px;">
-                    <div style="font-weight:600;font-size:14px;color:var(--secondary);margin-bottom:6px;"><i class="fas fa-exclamation-triangle"></i> Recent Error Logs</div>
-                    ${errorLogs.map(log => `
-                        <div style="padding:4px 10px;background:rgba(220,38,38,0.04);border-radius:6px;margin-bottom:2px;border-left:3px solid #dc2626;font-size:12px;color:var(--text-secondary);">
-                            <span style="color:var(--muted);">[${log.time}]</span> ${log.message}
-                        </div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-                    <button class="btn-primary btn-sm" id="refreshHealth"><i class="fas fa-sync-alt"></i> Refresh</button>
-                    <button class="btn-outline btn-sm" id="clearLogs">Clear Logs</button>
-                </div>
-            </div>
-        `;
-        
-        document.getElementById('refreshHealth')?.addEventListener('click', () => {
-            renderSection('health');
-            toast('Health data refreshed!');
-        });
-        
-        document.getElementById('clearLogs')?.addEventListener('click', () => {
-            toast('Logs cleared (simulated)');
-        });
-    }
-
-    // ============================================================
     // ===== SETTINGS =====
-    // ============================================================
     function renderSettings(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-paint-brush"></i> Settings</div>
                 <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
                 <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
-                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">Inactive Days Threshold</label><input class="input-glass" id="setInactive" type="number" value="${INACTIVE_DAYS}" min="7" max="90"></div>
                 <button class="btn-primary" id="setSave">Save Settings</button>
             </div>
         `;
         document.getElementById('setSave').onclick = async () => {
             const wallet = document.getElementById('setWallet').value.trim();
             const min = parseFloat(document.getElementById('setMin').value) || 10;
-            const inactive = parseInt(document.getElementById('setInactive').value) || 30;
-            await setDoc(doc(db,'systemSettings','main'), { 
-                usdtWalletAddress: wallet, 
-                minBalanceForOrder: min,
-                inactiveDays: inactive
-            }, { merge: true });
+            await setDoc(doc(db,'systemSettings','main'), { usdtWalletAddress: wallet, minBalanceForOrder: min }, { merge: true });
             systemSettings.usdtWalletAddress = wallet;
             systemSettings.minBalanceForOrder = min;
-            // Update INACTIVE_DAYS constant (this requires page refresh)
-            localStorage.setItem('inactiveDays', inactive);
             toast('Settings saved!');
         };
     }
 
-    // ============================================================
     // ===== POPUP =====
-    // ============================================================
     function renderPopup(main) {
         main.innerHTML = `
             <div class="card-glass">
@@ -2373,9 +2011,7 @@
         document.getElementById('popCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ============================================================
     // ===== CHAT =====
-    // ============================================================
     function renderChat(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
@@ -2448,9 +2084,7 @@
         });
     }
 
-    // ============================================================
-    // ===== NOTIFICATIONS (System Announcements) =====
-    // ============================================================
+    // ===== NOTIFICATIONS (System Announcement) =====
     function renderNotifications(main) {
         const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
@@ -2507,7 +2141,7 @@
                         image: null,
                         time: new Date().toISOString(),
                         read: false,
-                        type: 'notification'
+                        type: 'notification'  // <-- THIS IS CRITICAL FOR CUSTOMER TO SHOW AS SYSTEM ANNOUNCEMENT
                     });
                 }
 
@@ -2540,7 +2174,6 @@
         if (unsubChat) unsubChat();
         if (unsubUsers) unsubUsers();
         if (unsubInjections) unsubInjections();
-        if (healthCheckInterval) clearInterval(healthCheckInterval);
         admin = null;
         sessionStorage.removeItem('adminSession');
         document.getElementById('adminPanel').style.display = 'none';
@@ -2559,14 +2192,6 @@
     // ============================================================
     loadTheme();
 
-    // Load inactive days from localStorage
-    const savedInactive = localStorage.getItem('inactiveDays');
-    if (savedInactive) {
-        // Update the constant (will be used in isUserInactive function)
-        // Note: Since const can't be reassigned, we use a variable
-        window.INACTIVE_DAYS = parseInt(savedInactive) || 30;
-    }
-
     if (checkSession()) {
         (async () => {
             await loadAllData();
@@ -2578,10 +2203,7 @@
         })();
     }
 
-    console.log('✅ Trip.com Admin Panel loaded successfully!');
-    console.log('📧 EmailJS configured with Public Key: 3daY1DjX3ZHv92D67');
-    console.log('📧 Service ID: service_1b1cq1p');
-    console.log('🔧 Inactive days threshold:', window.INACTIVE_DAYS || 30);
+    console.log('Trip.com Admin Panel loaded successfully!');
 </script>
 </body>
 </html>
