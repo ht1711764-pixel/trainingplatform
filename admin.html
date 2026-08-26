@@ -15,6 +15,13 @@
             font-style: normal;
             font-display: swap;
         }
+        @font-face {
+            font-family: 'Inter';
+            src: url('Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
 
         :root {
             --primary: #1a1a2e;
@@ -344,7 +351,6 @@
 </div>
 
 <div class="live-indicator" id="liveIndicator"><i class="fas fa-circle"></i> Live</div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
@@ -686,7 +692,7 @@
         `;
     }
 
-    // ---- MEMBERS ----
+    // ---- MEMBERS (With Delete Icon) ----
     function renderMembers(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -751,7 +757,7 @@
         document.getElementById('addMemberBtn').onclick = showAddMember;
     }
 
-    // ===== DELETE ACCOUNT =====
+    // ===== DELETE ACCOUNT (Cascading Delete) =====
     window.deleteAccount = async (id) => {
         if (!confirm('⚠️ Are you sure you want to permanently delete this account?\n\nAll data including:\n- User profile\n- Orders history\n- Balance\n- Recharge/Withdraw/Loan requests\n- Chat messages\n\nwill be lost FOREVER!')) return;
         try {
@@ -795,7 +801,7 @@
                 await deleteDoc(doc(db, "chatMessages", docSnap.id));
             }
             
-            // 7. Delete the user document itself
+            // 7. Delete the user document itself (Customer side will auto-logout)
             await deleteDoc(doc(db, "users", id));
             
             toast('✅ Account deleted successfully! All data removed.');
@@ -999,7 +1005,7 @@
         renderSection('vip');
     };
 
-    // ---- INJECTION (with Real-time History & Correct Data) ----
+    // ---- INJECTION (With Real-Time History) ----
     function renderInjection(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -1018,7 +1024,6 @@
                     </table>
                 </div>
             </div>
-
             <div class="card-glass">
                 <div class="title"><i class="fas fa-history"></i> Injection History (Real-time)</div>
                 <div id="injectionHistoryList" style="max-height:400px;overflow-y:auto;">
@@ -1051,7 +1056,7 @@
         document.getElementById('injSearchBtn').onclick = () => renderInjTable(document.getElementById('injSearchPhone').value, document.getElementById('injSearchEmail').value);
         document.getElementById('injResetBtn').onclick = () => { document.getElementById('injSearchPhone').value = ''; document.getElementById('injSearchEmail').value = ''; renderInjTable(); };
 
-        // ===== REAL-TIME INJECTION HISTORY =====
+        // ===== REAL-TIME INJECTION HISTORY (With Edit/Delete) =====
         const historyContainer = document.getElementById('injectionHistoryList');
         if (historyContainer) {
             onSnapshot(query(collection(db, 'injections'), orderBy('createdAt', 'desc'), limit(50)), (snap) => {
@@ -1069,8 +1074,12 @@
                             <div class="flex">
                                 <div>
                                     <strong>${esc(username)}</strong> - Task #${inj.taskNumber} (${inj.orderName || 'Premium'})
-                                    <div style="font-size:11px;color:var(--muted);">Extra Amount: $${inj.extraAmount || 0} | Commission: $${inj.commission || 0}</div>
+                                    <div style="font-size:11px;color:var(--muted);">Extra: $${inj.extraAmount || 0} | Commission: $${inj.commission || 0}</div>
                                     <div style="font-size:10px;">${inj.used ? '<span style="color:#dc2626;">Used</span>' : '<span style="color:#10b981;">Pending</span>'}</div>
+                                </div>
+                                <div class="flex gap-1">
+                                    ${!inj.used ? `<button class="btn-primary btn-primary-sm" onclick="window.editInjection('${inj.id}')"><i class="fas fa-edit"></i></button>` : ''}
+                                    <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.deleteInjection('${inj.id}','${inj.userId}')"><i class="fas fa-trash"></i></button>
                                 </div>
                                 <div style="font-size:10px;">${inj.createdAt ? new Date(inj.createdAt).toLocaleString() : ''}</div>
                             </div>
@@ -1095,9 +1104,9 @@
                 <div class="modal-title"><i class="fas fa-syringe"></i> Inject for ${esc(u.username)}</div>
                 <p style="font-size:12px;color:var(--muted);">Balance: S$ ${(u.balance||0).toFixed(2)} | Orders: ${u.tasks?.completed||0}/${u.tasks?.total||0}</p>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="injName" value="Lucky Premium Task"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount (Balance Added)</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="351"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Commission Amount</label><input type="number" class="input-glass" id="injCommission" step="0.01" value="66"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Fixed Commission</label><input type="number" class="input-glass" id="injCommission" step="0.01" value="0"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:3px;"></div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-primary" id="injSubmit"><i class="fas fa-check"></i> Inject</button>
@@ -1115,7 +1124,7 @@
         };
         document.getElementById('injSubmit').onclick = async function() {
             const task = parseInt(document.getElementById('injTask').value);
-            const name = document.getElementById('injName').value.trim() || 'Lucky Premium Task';
+            const name = document.getElementById('injName').value.trim() || 'Manual';
             const extra = parseFloat(document.getElementById('injExtra').value) || 0;
             const commission = parseFloat(document.getElementById('injCommission').value) || 0;
             const file = document.getElementById('injImg').files[0];
@@ -1131,7 +1140,6 @@
                     orderName: name,
                     extraAmount: extra,
                     commission: commission,
-                    commissionRate: 0,
                     imageData: img || null,
                     used: false,
                     createdAt: new Date().toISOString()
@@ -1193,8 +1201,8 @@
                 <div class="modal-title"><i class="fas fa-edit"></i> Edit #${inj.taskNumber} for ${u?.username}</div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Commission Amount</label><input type="number" class="input-glass" id="eCommission" step="0.01" value="${inj.commission}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Commission</label><input type="number" class="input-glass" id="eCommission" step="0.01" value="${inj.commission}"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:3px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-primary" id="eSubmit"><i class="fas fa-save"></i> Update</button>
