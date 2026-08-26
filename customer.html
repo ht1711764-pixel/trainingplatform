@@ -562,6 +562,45 @@
             animation:pulse 1.5s infinite;
             display:none;
         }
+
+        @keyframes spin {
+            0% { transform:rotate(0deg); }
+            100% { transform:rotate(360deg); }
+        }
+        .spinner-circle {
+            display:inline-block;
+            width:28px;
+            height:28px;
+            border:3px solid rgba(45,106,79,0.15);
+            border-radius:50%;
+            border-top-color:var(--secondary);
+            animation:spin 0.8s linear infinite;
+            margin-right:10px;
+            vertical-align:middle;
+        }
+        .checking-wrapper {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            padding:12px 0;
+            gap:8px;
+        }
+        .checking-wrapper .spinner-circle {
+            width:36px;
+            height:36px;
+            border-width:4px;
+        }
+        .checking-wrapper .checking-text {
+            font-size:15px;
+            font-weight:600;
+            color:var(--secondary);
+            letter-spacing:0.3px;
+        }
+        .checking-wrapper .checking-sub {
+            font-size:13px;
+            color:var(--muted);
+        }
     </style>
 </head>
 <body>
@@ -625,9 +664,9 @@
             <div style="font-size:12px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
         </div>
         <div class="card">
-            <input type="text" class="input-glass" id="loginUsername" placeholder="Username" value="lunaqueen">
+            <input type="text" class="input-glass" id="loginUsername" placeholder="Username">
             <div class="pw-wrap">
-                <input type="password" class="input-glass" id="loginPass" placeholder="Password" value="123456">
+                <input type="password" class="input-glass" id="loginPass" placeholder="Password">
                 <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
             </div>
             <button class="btn-primary" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnText">Login</span></button>
@@ -635,14 +674,11 @@
                 <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
                 <span id="goRegisterBtn" style="color:var(--secondary);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
-
-            <!-- ========== GOOGLE BUTTON ON LOGIN PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-            <!-- ================================================= -->
         </div>
     </div>
 
@@ -659,15 +695,11 @@
             <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
             <input class="input-glass" id="regInvite" placeholder="Invitation Code (Optional)">
             <button class="btn-primary" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
-            
-            <!-- ========== GOOGLE BUTTON ON REGISTER PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="registerGoogleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
-            <!-- =================================================== -->
-            
             <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--muted);" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--secondary);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
@@ -836,17 +868,20 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+    // ===== NEW CONFIG for tripnew-2026 =====
     const firebaseConfig = {
-        apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
-        authDomain: "tiktok-shop2026.firebaseapp.com",
-        projectId: "tiktok-shop2026",
-        storageBucket: "tiktok-shop2026.firebasestorage.app",
-        messagingSenderId: "319316492310",
-        appId: "1:319316492310:web:b6b4969543d00b993eb537"
+        apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
+        authDomain: "tripnew-2026.firebaseapp.com",
+        projectId: "tripnew-2026",
+        storageBucket: "tripnew-2026.firebasestorage.app",
+        messagingSenderId: "225456579056",
+        appId: "1:225456579056:web:10f984841bdb63c9c73d35",
+        measurementId: "G-J0MYZLMJT0"
     };
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -857,10 +892,15 @@
     let order = null;
     let ratings = { service: 0, quality: 0, sales: 0 };
     let feedInterval = null;
-    let unsubUser = null, unsubChat = null, unsubInjections = null, unsubNotifications = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
+    
+    // ===== UNSUBSCRIBERS =====
+    let unsubChat = null;
+    let unsubRecharge = null;
+    let unsubInjections = null;
+    let unsubNotifications = null;
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
@@ -1036,9 +1076,7 @@
                 user = { id: gUser.uid, ...userSnap.data() };
                 toast(`Welcome back, ${user.username}`);
             } else {
-                // Fetch IP address for new users
                 const ip = await getClientIP();
-                
                 const newUser = {
                     id: gUser.uid,
                     username: username,
@@ -1063,7 +1101,7 @@
                     role: 'customer',
                     lastSeen: Date.now(),
                     authProvider: 'google',
-                    regIP: ip // <--- Save IP
+                    regIP: ip
                 };
                 await setDoc(userRef, newUser);
                 user = { id: gUser.uid, ...newUser };
@@ -1080,10 +1118,11 @@
         if (!u.orders) u.orders = [];
         if (!u.tasks) u.tasks = { completed:0, total:0 };
         await saveUser();
-        subscribeUser(u.id);
-        subscribeInjections(u.id);
-        subscribeChat();
-        subscribeNotifications();
+        // Load data without real-time listeners
+        await loadUserData(u.id);
+        await loadInjections(u.id);
+        await loadRechargeStatus(u.id);
+        await loadNotifications();
         startLastSeenUpdate();
         updateUI();
         const last = localStorage.getItem('lastPage');
@@ -1112,16 +1151,39 @@
         }, 60000);
     }
 
+    // ===== LOAD USER DATA (No Real-time) =====
+    async function loadUserData(uid) {
+        try {
+            const snap = await getDoc(doc(db, "users", uid));
+            if (snap.exists()) {
+                const data = snap.data();
+                user = { id: snap.id, ...data };
+                if (!user.orders) user.orders = [];
+                if (!user.tasks) user.tasks = { completed:0, total:0 };
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.error('loadUserData error:', e);
+            return false;
+        }
+    }
+
     // ===== ORDERS =====
     async function getOrders(userId) {
         const cacheKey = `orders_${userId}`;
         const cached = getCache(cacheKey);
         if (cached) return cached;
-        const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
-        const orders = [];
-        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-        setCache(cacheKey, orders);
-        return orders;
+        try {
+            const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
+            const orders = [];
+            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+            setCache(cacheKey, orders);
+            return orders;
+        } catch (e) {
+            console.error('getOrders error:', e);
+            return [];
+        }
     }
 
     async function saveOrder(userId, data) {
@@ -1131,17 +1193,44 @@
     async function loadCustomOrders() {
         const cached = getCache('customOrders');
         if (cached) return cached;
-        const snap = await getDocs(collection(db, "customOrders"));
-        const orders = [];
-        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-        setCache('customOrders', orders);
-        return orders;
+        try {
+            const snap = await getDocs(collection(db, "customOrders"));
+            const orders = [];
+            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+            setCache('customOrders', orders);
+            return orders;
+        } catch (e) {
+            console.error('loadCustomOrders error:', e);
+            return [];
+        }
     }
 
-    // ===== INJECTIONS =====
-    function subscribeInjections(userId) {
-        if (unsubInjections) unsubInjections();
-        const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
+    // ===== INJECTIONS (Real-time on Work page) =====
+    async function loadInjections(uid) {
+        try {
+            const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
+            const snap = await getDocs(q);
+            pendingInjections = [];
+            snap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
+            if (pendingInjections.length) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                user.pendingInjections = pendingInjections;
+                await saveUser();
+            }
+            return pendingInjections;
+        } catch (e) {
+            console.error('loadInjections error:', e);
+            return [];
+        }
+    }
+
+    // Real-time injections (only when Work page is active)
+    function subscribeInjectionsRealtime(uid) {
+        if (unsubInjections) {
+            unsubInjections();
+            unsubInjections = null;
+        }
+        const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
         unsubInjections = onSnapshot(q, async (snap) => {
             const injs = [];
             snap.forEach(d => injs.push({ id: d.id, ...d.data() }));
@@ -1152,8 +1241,14 @@
                 await saveUser();
                 const d = t[lang] || t.en;
                 toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
-                if (document.getElementById('pageWork').classList.contains('active-page')) refreshWork();
+                refreshWork();
+            } else if (injs.length === 0 && user) {
+                pendingInjections = [];
+                user.pendingInjections = [];
+                await saveUser();
             }
+        }, (error) => {
+            console.error('subscribeInjectionsRealtime error:', error);
         });
     }
 
@@ -1161,32 +1256,27 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== NOTIFICATIONS (FIXED: ONLY SHOW TYPE: NOTIFICATION) =====
-    function subscribeNotifications() {
-        if (unsubNotifications) unsubNotifications();
+    // ===== NOTIFICATIONS (Real-time only when Home page is active) =====
+    function subscribeNotificationsRealtime() {
+        if (unsubNotifications) {
+            unsubNotifications();
+            unsubNotifications = null;
+        }
         if (!user) return;
-        
-        // Listen for messages sent FROM admin TO this user where type === 'notification'
         const q = query(collection(db, "chatMessages"), 
             where("from", "==", "admin"), 
             where("to", "==", user.username),
-            where("type", "==", "notification"), // <--- ONLY GET NOTIFICATIONS
+            where("type", "==", "notification"),
             orderBy("id", "asc")
         );
-        
         unsubNotifications = onSnapshot(q, (snap) => {
             let newCount = 0;
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
-                // If this message hasn't been read yet
-                if (!m.read) {
-                    newCount++;
-                }
+                if (!m.read) newCount++;
                 msgs.push(m);
             });
-
-            // Update badge
             const badge = document.getElementById('notifBadge');
             if (newCount > 0) {
                 badge.innerText = newCount;
@@ -1194,10 +1284,40 @@
             } else {
                 badge.style.display = 'none';
             }
-
-            // Store unread messages globally to show in modal
             window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        }, (error) => {
+            console.error('subscribeNotificationsRealtime error:', error);
         });
+    }
+
+    async function loadNotifications() {
+        if (!user) return;
+        try {
+            const q = query(collection(db, "chatMessages"), 
+                where("from", "==", "admin"), 
+                where("to", "==", user.username),
+                where("type", "==", "notification"),
+                orderBy("id", "asc")
+            );
+            const snap = await getDocs(q);
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (!m.read) newCount++;
+                msgs.push(m);
+            });
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) {
+                badge.innerText = newCount;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        } catch (e) {
+            console.error('loadNotifications error:', e);
+        }
     }
 
     // Show Notification Modal (Clicking Bell)
@@ -1217,12 +1337,10 @@
         } else {
             msgs.sort((a,b) => a.id - b.id);
             msgs.forEach(m => {
-                // Parse the notification text to split title and body
                 const text = m.text || '';
                 const parts = text.split('\n\n');
                 const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
                 const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
-
                 html += `
                     <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
                         <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
@@ -1238,11 +1356,8 @@
         `;
         modal.innerHTML = html;
         document.body.appendChild(modal);
-
-        // Mark all as read when closed
         modal.querySelector('#notifCloseBtn').onclick = async () => {
             document.body.removeChild(modal);
-            // Mark messages as read in database
             if (msgs.length > 0) {
                 for (let m of msgs) {
                     const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
@@ -1250,42 +1365,34 @@
                         updateDoc(doc(db, "chatMessages", d.id), { read: true });
                     });
                 }
-                // Hide badge
                 document.getElementById('notifBadge').style.display = 'none';
                 window.__unreadAdminMessages = [];
             }
         };
     };
 
-    // ===== CHAT (FIXED: ONLY SHOW STANDARD MESSAGES, IGNORE NOTIFICATIONS) =====
-    function subscribeChat() {
-        if (unsubChat) unsubChat();
+    // ===== CHAT (Real-time only when Service page is active) =====
+    function subscribeChatRealtime() {
+        if (unsubChat) {
+            unsubChat();
+            unsubChat = null;
+        }
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
         unsubChat = onSnapshot(q, (snap) => {
-            // ONLY update if Service Page is active
             const isServicePage = document.getElementById('pageService').classList.contains('active-page');
             if (!isServicePage) return;
-
             const container = document.getElementById('chatMessages');
             if (!container || !user) return;
-            
-            // Store ALL messages related to this user EXCEPT notifications
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
-                // Criteria: (User sent to Admin) OR (Admin sent to User)
-                // AND type is NOT 'notification'
                 if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
                     msgs.push(m);
                 }
             });
             msgs.sort((a,b) => a.id - b.id);
-            
-            // Render all messages
             container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
-                // Use the user's local browser timezone for display
-                // m.time is stored in UTC, browser handles the conversion automatically when passed to Date()
                 const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
                 return `
                     <div class="chat-msg ${isSent ? 'sent' : 'received'}">
@@ -1295,23 +1402,75 @@
                     </div>
                 `;
             }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
-            
             container.scrollTop = container.scrollHeight;
+        }, (error) => {
+            console.error('subscribeChatRealtime error:', error);
         });
     }
 
     async function sendChat(text, img=null) {
         if (!user) return;
-        // Save time as ISO string (UTC) so it can be formatted to any local timezone later
         await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
             id: Date.now()+Math.random(),
             from: user.username,
             to: 'admin',
             text: text||'',
             image: img,
-            time: new Date().toISOString(), // UTC time
+            time: new Date().toISOString(),
             read: false,
-            type: 'message' // Standard chat message
+            type: 'message'
+        });
+    }
+
+    // ===== RECHARGE (Real-time only when needed) =====
+    async function loadRechargeStatus(uid) {
+        try {
+            const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+            const snap = await getDocs(q);
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) {
+                        user.balance = (user.balance || 0) + data.amount;
+                        await saveUser();
+                        updateUI();
+                        toast(`✅ Recharge of $${data.amount} approved!`);
+                    }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                } else if (data.status === 'rejected' && !data.balanceAdded) {
+                    toast(`❌ Recharge of $${data.amount} was rejected.`);
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        } catch (e) {
+            console.error('loadRechargeStatus error:', e);
+        }
+    }
+
+    function subscribeRechargeRealtime(uid) {
+        if (unsubRecharge) {
+            unsubRecharge();
+            unsubRecharge = null;
+        }
+        const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+        unsubRecharge = onSnapshot(q, async (snap) => {
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) {
+                        user.balance = (user.balance || 0) + data.amount;
+                        await saveUser();
+                        updateUI();
+                        toast(`✅ Recharge of $${data.amount} approved!`);
+                    }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                } else if (data.status === 'rejected' && !data.balanceAdded) {
+                    toast(`❌ Recharge of $${data.amount} was rejected.`);
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        }, (error) => {
+            console.error('subscribeRechargeRealtime error:', error);
         });
     }
 
@@ -1324,7 +1483,7 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
                 <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
                     <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
                 </div>
                 <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
@@ -1338,15 +1497,15 @@
                     <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
                 </div>
                 <div id="receiptPreview" style="text-align:center;margin:6px 0;"></div>
+                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;min-height:50px;"></div>
                 <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
                 <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
 
         modal.querySelector("#copyWalletBtn").onclick = () => {
-            navigator.clipboard.writeText('TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf');
+            navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF');
             toast("Copied!");
         };
 
@@ -1369,7 +1528,7 @@
             }
         };
 
-        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
+        modal.querySelector("#rechargeSubmitBtn").onclick = async function() {
             const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
             if (isNaN(amt) || amt < 1) {
                 modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
@@ -1379,23 +1538,43 @@
                 modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
                 return;
             }
-            modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#f59e0b;"><i class="fas fa-clock"></i> ${d.rechargeWaiting}</span>`;
-            modal.querySelector("#rechargeSubmitBtn").disabled = true;
 
-            await setDoc(doc(db, "rechargeRequests", Date.now().toString()), {
-                id: Date.now().toString(),
-                userId: user.id,
-                userName: user.username,
-                amount: amt,
-                receiptImage: receiptData,
-                status: 'pending',
-                timestamp: new Date().toISOString()
-            });
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-circle" style="width:22px;height:22px;border-width:3px;"></span> Processing...';
 
-            setTimeout(() => {
-                document.body.removeChild(modal);
-                toast(d.rechargeWaiting || "Please wait, we are checking your payment.");
-            }, 800);
+            modal.querySelector("#rechargeMsg").innerHTML = `
+                <div class="checking-wrapper">
+                    <div class="spinner-circle"></div>
+                    <div class="checking-text">${d.rechargeWaiting}</div>
+                    <div class="checking-sub">⏳ This may take a moment</div>
+                </div>
+            `;
+
+            try {
+                const reqId = Date.now().toString();
+                await setDoc(doc(db, "rechargeRequests", reqId), {
+                    id: reqId,
+                    userId: user.id,
+                    userName: user.username,
+                    amount: amt,
+                    receiptImage: receiptData,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                });
+
+                // Start real-time listener for recharge after submitting
+                subscribeRechargeRealtime(user.id);
+
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                    toast(d.rechargeWaiting);
+                }, 2500);
+
+            } catch (e) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
+                this.disabled = false;
+                this.innerHTML = d.submit;
+            }
         };
 
         modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
@@ -1869,31 +2048,6 @@
         feedInterval = setInterval(add, 8000);
     }
 
-    // ===== SUBSCRIPTIONS =====
-    function subscribeUser(uid) {
-        if (unsubUser) unsubUser();
-        unsubUser = onSnapshot(doc(db, "users", uid), async (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                user = { id: snap.id, ...data };
-                if (!user.orders) user.orders = [];
-                if (!user.tasks) user.tasks = { completed:0, total:0 };
-                const injSnap = await getDocs(query(collection(db, "injections"), where("userId","==",uid), where("used","==",false)));
-                pendingInjections = [];
-                injSnap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
-                if (pendingInjections.length) {
-                    pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                    user.pendingInjections = pendingInjections;
-                    await saveUser();
-                }
-                updateUI();
-                const indicator = document.getElementById('liveIndicator');
-                indicator.style.display = 'flex';
-                setTimeout(() => { indicator.style.display = 'none'; }, 1500);
-            }
-        });
-    }
-
     // ===== NAVIGATION =====
     const pages = {
         landing: document.getElementById('pageLanding'),
@@ -1914,14 +2068,34 @@
         if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
         else bottomNav.classList.remove('hidden-nav');
         if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
-        if (name === 'home' || name === 'profile') updateUI();
-        if (name === 'work') { updateUI(); refreshWork(); }
-        if (name === 'orders') updateUI();
-        if (name === 'service') { 
-            // Trigger chat reload immediately
-            if (unsubChat) unsubChat();
-            subscribeChat(); 
+        
+        // ===== PAGE-BASED REAL-TIME SUBSCRIPTIONS =====
+        // Home page: notifications real-time
+        if (name === 'home' && user) {
+            subscribeNotificationsRealtime();
+            // Update UI
+            updateUI();
+            loadNotifications();
         }
+        // Work page: injections real-time + load order
+        if (name === 'work' && user) {
+            subscribeInjectionsRealtime(user.id);
+            updateUI();
+            refreshWork();
+        }
+        // Orders page: load orders
+        if (name === 'orders' && user) {
+            updateUI();
+        }
+        // Profile page: update UI
+        if (name === 'profile' && user) {
+            updateUI();
+        }
+        // Service page: chat real-time
+        if (name === 'service' && user) {
+            subscribeChatRealtime();
+        }
+        
         startFeed();
     }
 
@@ -1947,9 +2121,7 @@
     document.getElementById('goRegisterBtn').onclick = () => showPage('register');
     document.getElementById('goLoginFromReg').onclick = () => showPage('login');
 
-    // =============================================================
     // ===== LOGIN WITH FIRESTORE INDEX (COMPOUND QUERY) =====
-    // =============================================================
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
@@ -1963,8 +2135,6 @@
         this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         
         try {
-            // ===== FIRESTORE COMPOUND QUERY (INDEX REQUIRED) =====
-            // Index: username (Ascending) + password (Ascending)
             const q = query(
                 collection(db, "users"),
                 where("username", "==", username),
@@ -1980,8 +2150,6 @@
             }
             
             const data = snap.docs[0].data();
-            
-            // Check if account is disabled
             if (data.disabled) {
                 toast('Account disabled.', true);
                 this.disabled = false;
@@ -1989,16 +2157,15 @@
                 return;
             }
             
-            // Login successful
             user = { id: snap.docs[0].id, ...data };
             if (!user.orders) user.orders = [];
             if (!user.tasks) user.tasks = { completed:0, total:0 };
             
             await saveUser();
-            subscribeUser(user.id);
-            subscribeInjections(user.id);
-            subscribeChat();
-            subscribeNotifications();
+            await loadUserData(user.id);
+            await loadInjections(user.id);
+            await loadRechargeStatus(user.id);
+            await loadNotifications();
             startLastSeenUpdate();
             updateUI();
             
@@ -2007,7 +2174,6 @@
             toast(`Welcome, ${username}`);
             
         } catch (e) {
-            // If error occurs, it might be index not ready
             console.error('Login error:', e);
             if (e.message && e.message.includes('index')) {
                 toast('Firestore index is still building. Please wait 5-10 minutes.', true);
@@ -2039,9 +2205,7 @@
             ref = refCheck.docs[0].data().username;
         }
 
-        // Fetch IP address for new users
         const ip = await getClientIP();
-
         user = {
             id: Date.now().toString(),
             username, email, phone,
@@ -2063,13 +2227,14 @@
             currentOrderObj: null,
             role: 'customer',
             lastSeen: Date.now(),
-            regIP: ip // <--- Save IP
+            regIP: ip
         };
         await setDoc(doc(db, "users", user.id), user);
-        subscribeUser(user.id);
-        subscribeInjections(user.id);
-        subscribeChat();
-        subscribeNotifications();
+        await saveUser();
+        await loadUserData(user.id);
+        await loadInjections(user.id);
+        await loadRechargeStatus(user.id);
+        await loadNotifications();
         startLastSeenUpdate();
         updateUI();
         showPage('home');
@@ -2078,10 +2243,11 @@
 
     // ===== SIGN OUT =====
     function signOut() {
-        if (unsubUser) unsubUser();
-        if (unsubChat) unsubChat();
-        if (unsubInjections) unsubInjections();
-        if (unsubNotifications) unsubNotifications();
+        // Unsubscribe all real-time listeners
+        if (unsubChat) { unsubChat(); unsubChat = null; }
+        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
+        if (unsubInjections) { unsubInjections(); unsubInjections = null; }
+        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
         if (feedInterval) clearInterval(feedInterval);
         if (lastSeenInterval) clearInterval(lastSeenInterval);
         const uid = user?.id;
@@ -2090,13 +2256,11 @@
         pendingInjections = [];
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
-        
         firebaseSignOut(auth).then(() => {
             console.log("Signed out from Firebase");
         }).catch((error) => {
             console.error("Sign out error:", error);
         });
-
         showPage('landing');
         toast('Signed out.');
     }
@@ -2106,7 +2270,16 @@
     // ===== REFRESH =====
     document.querySelectorAll('.icon-btn').forEach(el => {
         if (el.id && el.id.startsWith('refresh')) {
-            el.onclick = () => { updateUI(); toast('Refreshed!'); };
+            el.onclick = async () => {
+                if (user) {
+                    await loadUserData(user.id);
+                    await loadInjections(user.id);
+                    await loadRechargeStatus(user.id);
+                    await loadNotifications();
+                    updateUI();
+                    toast('Refreshed!');
+                }
+            };
         }
     });
 
@@ -2165,6 +2338,8 @@
             toast(`Minimum balance $ ${minBal} required.`, true);
             return;
         }
+        // Start real-time injection listener when entering work page
+        subscribeInjectionsRealtime(user.id);
         await loadNextOrder();
     };
 
@@ -2342,10 +2517,10 @@
                     user = { id: snap.id, ...data };
                     if (!user.orders) user.orders = [];
                     if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    subscribeUser(user.id);
-                    subscribeInjections(user.id);
-                    subscribeChat();
-                    subscribeNotifications();
+                    await loadUserData(user.id);
+                    await loadInjections(user.id);
+                    await loadRechargeStatus(user.id);
+                    await loadNotifications();
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
@@ -2353,8 +2528,6 @@
                     await checkPopup();
                 }
             }
-        } else {
-            // No Google User found
         }
     });
 
@@ -2368,10 +2541,10 @@
                     user = { id: snap.id, ...data };
                     if (!user.orders) user.orders = [];
                     if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    subscribeUser(user.id);
-                    subscribeInjections(user.id);
-                    subscribeChat();
-                    subscribeNotifications();
+                    await loadUserData(user.id);
+                    await loadInjections(user.id);
+                    await loadRechargeStatus(user.id);
+                    await loadNotifications();
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
