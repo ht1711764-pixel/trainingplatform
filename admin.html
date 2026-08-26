@@ -15,13 +15,6 @@
             font-style: normal;
             font-display: swap;
         }
-        @font-face {
-            font-family: 'Inter';
-            src: url('Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
-            font-weight: 100 900;
-            font-style: italic;
-            font-display: swap;
-        }
 
         :root {
             --primary: #1a1a2e;
@@ -1006,7 +999,7 @@
         renderSection('vip');
     };
 
-    // ---- INJECTION ----
+    // ---- INJECTION (with Real-time History & Correct Data) ----
     function renderInjection(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -1023,6 +1016,13 @@
                         <thead><tr><th>ID</th><th>User</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead>
                         <tbody id="injTableBody"></tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-history"></i> Injection History (Real-time)</div>
+                <div id="injectionHistoryList" style="max-height:400px;overflow-y:auto;">
+                    <p style="color:var(--muted);text-align:center;padding:10px;">Loading...</p>
                 </div>
             </div>
         `;
@@ -1050,6 +1050,39 @@
         renderInjTable();
         document.getElementById('injSearchBtn').onclick = () => renderInjTable(document.getElementById('injSearchPhone').value, document.getElementById('injSearchEmail').value);
         document.getElementById('injResetBtn').onclick = () => { document.getElementById('injSearchPhone').value = ''; document.getElementById('injSearchEmail').value = ''; renderInjTable(); };
+
+        // ===== REAL-TIME INJECTION HISTORY =====
+        const historyContainer = document.getElementById('injectionHistoryList');
+        if (historyContainer) {
+            onSnapshot(query(collection(db, 'injections'), orderBy('createdAt', 'desc'), limit(50)), (snap) => {
+                historyContainer.innerHTML = '';
+                if (snap.empty) {
+                    historyContainer.innerHTML = '<p style="color:var(--muted);text-align:center;padding:10px;">No injections yet</p>';
+                    return;
+                }
+                snap.forEach(docSnap => {
+                    const inj = docSnap.data();
+                    const userObj = cachedData.users.find(u => u.id === inj.userId);
+                    const username = userObj ? userObj.username : inj.userId;
+                    const html = `
+                        <div class="inj-item" style="border-left:3px solid ${inj.used ? 'var(--muted)' : 'var(--secondary)'}; margin-bottom:6px;">
+                            <div class="flex">
+                                <div>
+                                    <strong>${esc(username)}</strong> - Task #${inj.taskNumber} (${inj.orderName || 'Premium'})
+                                    <div style="font-size:11px;color:var(--muted);">Extra Amount: $${inj.extraAmount || 0} | Commission: $${inj.commission || 0}</div>
+                                    <div style="font-size:10px;">${inj.used ? '<span style="color:#dc2626;">Used</span>' : '<span style="color:#10b981;">Pending</span>'}</div>
+                                </div>
+                                <div style="font-size:10px;">${inj.createdAt ? new Date(inj.createdAt).toLocaleString() : ''}</div>
+                            </div>
+                        </div>
+                    `;
+                    historyContainer.innerHTML += html;
+                });
+            }, (error) => {
+                console.error("Real-time injection history error:", error);
+                historyContainer.innerHTML = '<p style="color:#dc2626;">Error loading history: ' + esc(error.message) + '</p>';
+            });
+        }
     }
 
     window.showInjectionModal = (userId) => {
@@ -1062,10 +1095,9 @@
                 <div class="modal-title"><i class="fas fa-syringe"></i> Inject for ${esc(u.username)}</div>
                 <p style="font-size:12px;color:var(--muted);">Balance: S$ ${(u.balance||0).toFixed(2)} | Orders: ${u.tasks?.completed||0}/${u.tasks?.total||0}</p>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="injTask" value="${(u.tasks?.completed||0)+1}" min="1"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="injName" value="Premium Task"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="0"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Fixed Commission</label><input type="number" class="input-glass" id="injFixed" step="0.01" value="0"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="injName" value="Lucky Premium Task"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount (Balance Added)</label><input type="number" class="input-glass" id="injExtra" step="0.01" value="351"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Commission Amount</label><input type="number" class="input-glass" id="injCommission" step="0.01" value="66"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:3px;"></div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-primary" id="injSubmit"><i class="fas fa-check"></i> Inject</button>
@@ -1083,10 +1115,9 @@
         };
         document.getElementById('injSubmit').onclick = async function() {
             const task = parseInt(document.getElementById('injTask').value);
-            const name = document.getElementById('injName').value.trim() || 'Manual';
+            const name = document.getElementById('injName').value.trim() || 'Lucky Premium Task';
             const extra = parseFloat(document.getElementById('injExtra').value) || 0;
-            const rate = parseFloat(document.getElementById('injRate').value) || 0.5;
-            const fixed = parseFloat(document.getElementById('injFixed').value) || 0;
+            const commission = parseFloat(document.getElementById('injCommission').value) || 0;
             const file = document.getElementById('injImg').files[0];
             if (isNaN(task) || task < 1) {
                 document.getElementById('injStatus').innerHTML = '<span style="color:#dc2626;">Invalid task #</span>';
@@ -1099,8 +1130,8 @@
                     taskNumber: task,
                     orderName: name,
                     extraAmount: extra,
-                    commissionRate: rate,
-                    commission: fixed,
+                    commission: commission,
+                    commissionRate: 0,
                     imageData: img || null,
                     used: false,
                     createdAt: new Date().toISOString()
@@ -1132,7 +1163,7 @@
                         <div class="flex">
                             <div>
                                 <strong>#${i.taskNumber}: ${esc(i.orderName)}</strong>
-                                <div style="font-size:11px;color:var(--muted);">Extra: S$ ${i.extraAmount} | Rate: ${i.commissionRate}% | Fixed: S$ ${i.commission}</div>
+                                <div style="font-size:11px;color:var(--muted);">Extra: S$ ${i.extraAmount} | Commission: S$ ${i.commission}</div>
                                 <div style="font-size:10px;color:var(--muted);">${i.used ? '✅ Used' : '⏳ Pending'}</div>
                             </div>
                             <div class="flex gap-1">
@@ -1162,9 +1193,8 @@
                 <div class="modal-title"><i class="fas fa-edit"></i> Edit #${inj.taskNumber} for ${u?.username}</div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Task #</label><input type="number" class="input-glass" id="eTask" value="${inj.taskNumber}" min="1"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Order Name</label><input type="text" class="input-glass" id="eName" value="${esc(inj.orderName)}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate}"></div>
-                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Fixed</label><input type="number" class="input-glass" id="eFixed" step="0.01" value="${inj.commission}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Extra Amount</label><input type="number" class="input-glass" id="eExtra" step="0.01" value="${inj.extraAmount}"></div>
+                <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Commission Amount</label><input type="number" class="input-glass" id="eCommission" step="0.01" value="${inj.commission}"></div>
                 <div style="margin:6px 0;"><label style="font-size:12px;color:var(--text-secondary);">Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:3px;">${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm">` : ''}</div></div>
                 <div class="flex gap-1" style="margin-top:10px;">
                     <button class="btn-primary" id="eSubmit"><i class="fas fa-save"></i> Update</button>
@@ -1184,14 +1214,13 @@
             const task = parseInt(document.getElementById('eTask').value);
             const name = document.getElementById('eName').value.trim() || 'Manual';
             const extra = parseFloat(document.getElementById('eExtra').value) || 0;
-            const rate = parseFloat(document.getElementById('eRate').value) || 0.5;
-            const fixed = parseFloat(document.getElementById('eFixed').value) || 0;
+            const commission = parseFloat(document.getElementById('eCommission').value) || 0;
             const file = document.getElementById('eImg').files[0];
             if (isNaN(task) || task < 1) {
                 document.getElementById('eStatus').innerHTML = '<span style="color:#dc2626;">Invalid task #</span>';
                 return;
             }
-            const data = { taskNumber: task, orderName: name, extraAmount: extra, commissionRate: rate, commission: fixed };
+            const data = { taskNumber: task, orderName: name, extraAmount: extra, commission: commission };
             if (file) {
                 const imgData = await compressImage(file, 300, 300, 0.4);
                 data.imageData = imgData;

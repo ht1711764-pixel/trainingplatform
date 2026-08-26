@@ -1,3 +1,4 @@
+html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -334,7 +335,14 @@
             margin-bottom:14px;
             box-shadow:var(--shadow);
         }
-        .order-card.injection { border-color:#f59e0b; box-shadow:0 0 40px rgba(245,158,11,0.04); }
+        .order-card.lucky {
+            border-color: var(--gold);
+            background: linear-gradient(180deg, #fffdf5, #ffffff);
+            box-shadow: 0 8px 30px rgba(212,175,55,0.15);
+        }
+        .lucky-glow { position:absolute; top:-50%; right:-50%; width:200%; height:200%; background:radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%); pointer-events:none; }
+        .lucky-badge { background:linear-gradient(135deg,#D4AF37,#F5E7B2); color:#1a1a2e; padding:6px 20px; border-radius:30px; font-size:13px; font-weight:800; display:inline-block; animation:pulse 1.5s infinite; box-shadow:0 4px 12px rgba(212,175,55,0.3); margin-bottom:10px; }
+        @keyframes pulse { 0%,100%{opacity:0.8} 50%{opacity:1} }
         .order-img {
             width:100%; height:120px;
             background:var(--bg);
@@ -347,17 +355,6 @@
             border:1px solid var(--border);
         }
         .order-img img { width:100%; height:100%; object-fit:contain; }
-        .injection-badge {
-            background:linear-gradient(135deg,#f59e0b,#ea580c);
-            color:#fff;
-            padding:2px 12px;
-            border-radius:16px;
-            font-size:10px;
-            font-weight:700;
-            display:inline-block;
-            animation:pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
 
         .modal-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
@@ -868,7 +865,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     // ===== NEW CONFIG for tripnew-2026 =====
@@ -943,21 +940,6 @@
         });
     }
 
-    function getCache(key) {
-        const cached = localStorage.getItem(key);
-        if (cached) {
-            try {
-                const data = JSON.parse(cached);
-                if (Date.now() - data.timestamp < 30000) return data.data;
-            } catch(e) { /* ignore */ }
-        }
-        return null;
-    }
-
-    function setCache(key, data) {
-        localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
-    }
-
     function toast(msg, err=false) {
         const el = document.createElement('div');
         el.className = `toast-msg${err ? ' error' : ''}`;
@@ -1020,7 +1002,7 @@
             pendingOrder:"Pending Order!", pendingMsg:"Complete your current order first.",
             okay:"Okay", warning:"Warning", completed:"Completed", walletAddr:"USDT TRC20 Address", copy:"Copy",
             uploadPhoto:"Upload Photo", save:"Save",
-            bonusOrder:"BONUS ORDER!", injectionMsg:"Special commission order from admin!",
+            bonusOrder:"LUCKY ORDER!", injectionMsg:"You've been selected for a special task with boosted rewards!",
             referralEarned:"Referral Bonus Earned!",
             rechargeWaiting:"Please wait, we are checking your payment."
         }
@@ -1118,7 +1100,6 @@
         if (!u.orders) u.orders = [];
         if (!u.tasks) u.tasks = { completed:0, total:0 };
         await saveUser();
-        // Load data without real-time listeners
         await loadUserData(u.id);
         await loadInjections(u.id);
         await loadRechargeStatus(u.id);
@@ -1151,7 +1132,7 @@
         }, 60000);
     }
 
-    // ===== LOAD USER DATA (No Real-time) =====
+    // ===== LOAD USER DATA =====
     async function loadUserData(uid) {
         try {
             const snap = await getDoc(doc(db, "users", uid));
@@ -1171,14 +1152,10 @@
 
     // ===== ORDERS =====
     async function getOrders(userId) {
-        const cacheKey = `orders_${userId}`;
-        const cached = getCache(cacheKey);
-        if (cached) return cached;
         try {
             const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
             const orders = [];
             snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-            setCache(cacheKey, orders);
             return orders;
         } catch (e) {
             console.error('getOrders error:', e);
@@ -1191,13 +1168,10 @@
     }
 
     async function loadCustomOrders() {
-        const cached = getCache('customOrders');
-        if (cached) return cached;
         try {
             const snap = await getDocs(collection(db, "customOrders"));
             const orders = [];
             snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-            setCache('customOrders', orders);
             return orders;
         } catch (e) {
             console.error('loadCustomOrders error:', e);
@@ -1205,7 +1179,7 @@
         }
     }
 
-    // ===== INJECTIONS (Real-time on Work page) =====
+    // ===== INJECTIONS (Real-time) =====
     async function loadInjections(uid) {
         try {
             const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
@@ -1224,7 +1198,6 @@
         }
     }
 
-    // Real-time injections (only when Work page is active)
     function subscribeInjectionsRealtime(uid) {
         if (unsubInjections) {
             unsubInjections();
@@ -1241,7 +1214,7 @@
                 await saveUser();
                 const d = t[lang] || t.en;
                 toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
-                refreshWork();
+                if(currentSection === 'work') loadNextOrder();
             } else if (injs.length === 0 && user) {
                 pendingInjections = [];
                 user.pendingInjections = [];
@@ -1256,12 +1229,29 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== NOTIFICATIONS (Real-time only when Home page is active) =====
-    function subscribeNotificationsRealtime() {
-        if (unsubNotifications) {
-            unsubNotifications();
-            unsubNotifications = null;
+    // ===== REFERRAL SYSTEM (10% of commission) =====
+    async function distributeReferral(commission, customerDocId) {
+        if (!user.superior) return;
+        try {
+            const refQuery = query(collection(db, "users"), where("username", "==", user.superior));
+            const refSnap = await getDocs(refQuery);
+            if (!refSnap.empty) {
+                const refUser = refSnap.docs[0];
+                const bonus = commission * 0.10;
+                
+                await updateDoc(doc(db, "users", refUser.id), {
+                    balance: increment(bonus),
+                    referralEarnings: increment(bonus)
+                });
+            }
+        } catch (e) {
+            console.error("Referral distribution error:", e);
         }
+    }
+
+    // ===== NOTIFICATIONS =====
+    function subscribeNotificationsRealtime() {
+        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
         if (!user) return;
         const q = query(collection(db, "chatMessages"), 
             where("from", "==", "admin"), 
@@ -1278,16 +1268,10 @@
                 msgs.push(m);
             });
             const badge = document.getElementById('notifBadge');
-            if (newCount > 0) {
-                badge.innerText = newCount;
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
-            }
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
             window.__unreadAdminMessages = msgs.filter(m => !m.read);
-        }, (error) => {
-            console.error('subscribeNotificationsRealtime error:', error);
-        });
+        }, (error) => console.error('subscribeNotificationsRealtime error:', error));
     }
 
     async function loadNotifications() {
@@ -1308,52 +1292,35 @@
                 msgs.push(m);
             });
             const badge = document.getElementById('notifBadge');
-            if (newCount > 0) {
-                badge.innerText = newCount;
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
-            }
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
             window.__unreadAdminMessages = msgs.filter(m => !m.read);
-        } catch (e) {
-            console.error('loadNotifications error:', e);
-        }
+        } catch (e) { console.error('loadNotifications error:', e); }
     }
 
-    // Show Notification Modal (Clicking Bell)
     document.getElementById('notificationBtn').onclick = async () => {
         if (!user) return;
         const d = t[lang] || t.en;
         const msgs = window.__unreadAdminMessages || [];
-        
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        let html = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>
-        `;
-        if (msgs.length === 0) {
-            html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
-        } else {
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>`;
+        if (msgs.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
+        else {
             msgs.sort((a,b) => a.id - b.id);
             msgs.forEach(m => {
                 const text = m.text || '';
                 const parts = text.split('\n\n');
                 const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
                 const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
-                html += `
-                    <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
-                        <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
-                        <div style="white-space:pre-wrap;">${esc(body)}</div>
-                        <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
-                    </div>
-                `;
+                html += `<div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
+                    <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
+                    <div style="white-space:pre-wrap;">${esc(body)}</div>
+                    <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
+                </div>`;
             });
         }
-        html += `
-            <button class="btn-primary" id="notifCloseBtn">${d.close}</button>
-            </div>
-        `;
+        html += `<button class="btn-primary" id="notifCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
         document.body.appendChild(modal);
         modal.querySelector('#notifCloseBtn').onclick = async () => {
@@ -1361,9 +1328,7 @@
             if (msgs.length > 0) {
                 for (let m of msgs) {
                     const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
-                    snap.forEach(d => {
-                        updateDoc(doc(db, "chatMessages", d.id), { read: true });
-                    });
+                    snap.forEach(d => updateDoc(doc(db, "chatMessages", d.id), { read: true }));
                 }
                 document.getElementById('notifBadge').style.display = 'none';
                 window.__unreadAdminMessages = [];
@@ -1371,12 +1336,9 @@
         };
     };
 
-    // ===== CHAT (Real-time only when Service page is active) =====
+    // ===== CHAT =====
     function subscribeChatRealtime() {
-        if (unsubChat) {
-            unsubChat();
-            unsubChat = null;
-        }
+        if (unsubChat) { unsubChat(); unsubChat = null; }
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
         unsubChat = onSnapshot(q, (snap) => {
             const isServicePage = document.getElementById('pageService').classList.contains('active-page');
@@ -1394,35 +1356,21 @@
             container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
                 const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
-                return `
-                    <div class="chat-msg ${isSent ? 'sent' : 'received'}">
-                        <div>${esc(m.text||'')}</div>
-                        ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
-                        <div class="time">${msgTime}</div>
-                    </div>
-                `;
+                return `<div class="chat-msg ${isSent ? 'sent' : 'received'}"><div>${esc(m.text||'')}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div></div>`;
             }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
             container.scrollTop = container.scrollHeight;
-        }, (error) => {
-            console.error('subscribeChatRealtime error:', error);
-        });
+        }, (error) => console.error('subscribeChatRealtime error:', error));
     }
 
     async function sendChat(text, img=null) {
         if (!user) return;
         await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
-            id: Date.now()+Math.random(),
-            from: user.username,
-            to: 'admin',
-            text: text||'',
-            image: img,
-            time: new Date().toISOString(),
-            read: false,
-            type: 'message'
+            id: Date.now()+Math.random(), from: user.username, to: 'admin', text: text||'', image: img,
+            time: new Date().toISOString(), read: false, type: 'message'
         });
     }
 
-    // ===== RECHARGE (Real-time only when needed) =====
+    // ===== RECHARGE =====
     async function loadRechargeStatus(uid) {
         try {
             const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
@@ -1430,51 +1378,27 @@
             snap.forEach(async (docSnap) => {
                 const data = docSnap.data();
                 if (data.status === 'approved' && !data.balanceAdded) {
-                    if (user) {
-                        user.balance = (user.balance || 0) + data.amount;
-                        await saveUser();
-                        updateUI();
-                        toast(`✅ Recharge of $${data.amount} approved!`);
-                    }
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                } else if (data.status === 'rejected' && !data.balanceAdded) {
-                    toast(`❌ Recharge of $${data.amount} was rejected.`);
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
                     await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
                 }
             });
-        } catch (e) {
-            console.error('loadRechargeStatus error:', e);
-        }
+        } catch (e) { console.error('loadRechargeStatus error:', e); }
     }
 
     function subscribeRechargeRealtime(uid) {
-        if (unsubRecharge) {
-            unsubRecharge();
-            unsubRecharge = null;
-        }
+        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
         const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
         unsubRecharge = onSnapshot(q, async (snap) => {
             snap.forEach(async (docSnap) => {
                 const data = docSnap.data();
                 if (data.status === 'approved' && !data.balanceAdded) {
-                    if (user) {
-                        user.balance = (user.balance || 0) + data.amount;
-                        await saveUser();
-                        updateUI();
-                        toast(`✅ Recharge of $${data.amount} approved!`);
-                    }
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                } else if (data.status === 'rejected' && !data.balanceAdded) {
-                    toast(`❌ Recharge of $${data.amount} was rejected.`);
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
                     await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
                 }
             });
-        }, (error) => {
-            console.error('subscribeRechargeRealtime error:', error);
-        });
+        }, (error) => console.error('subscribeRechargeRealtime error:', error));
     }
 
-    // ===== RECHARGE MODAL =====
     function showRechargeModal() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
@@ -1487,96 +1411,35 @@
                     <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
                 </div>
                 <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="500">500</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="1000">1000</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="1500">1500</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="2000">2000</button>
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
-                </div>
-                <div id="receiptPreview" style="text-align:center;margin:6px 0;"></div>
-                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;min-height:50px;"></div>
+                <div class="upload-area" id="receiptArea">${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
+                <div id="receiptPreview"></div>
+                <div id="rechargeMsg"></div>
                 <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
                 <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
             </div>
         `;
         document.body.appendChild(modal);
-
-        modal.querySelector("#copyWalletBtn").onclick = () => {
-            navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF');
-            toast("Copied!");
-        };
-
-        modal.querySelectorAll('[data-amt]').forEach(btn => {
-            btn.onclick = function() {
-                modal.querySelector("#rechargeAmt").value = this.dataset.amt;
-                modal.querySelectorAll('[data-amt]').forEach(b => b.style.borderColor = 'var(--border)');
-                this.style.borderColor = 'var(--secondary)';
-            };
-        });
-
+        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF'); toast("Copied!"); };
         let receiptData = null;
         modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
         modal.querySelector("#receiptInput").onchange = async (e) => {
             if (e.target.files[0]) {
                 receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
-                const preview = modal.querySelector("#receiptPreview");
-                preview.innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
-                preview.style.display = 'block';
+                modal.querySelector("#receiptPreview").innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
             }
         };
-
-        modal.querySelector("#rechargeSubmitBtn").onclick = async function() {
+        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
             const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
-            if (isNaN(amt) || amt < 1) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
-                return;
-            }
-            if (!receiptData) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
-                return;
-            }
-
+            if (isNaN(amt) || amt < 1) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`; return; }
+            if (!receiptData) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`; return; }
             this.disabled = true;
-            this.innerHTML = '<span class="spinner-circle" style="width:22px;height:22px;border-width:3px;"></span> Processing...';
-
-            modal.querySelector("#rechargeMsg").innerHTML = `
-                <div class="checking-wrapper">
-                    <div class="spinner-circle"></div>
-                    <div class="checking-text">${d.rechargeWaiting}</div>
-                    <div class="checking-sub">⏳ This may take a moment</div>
-                </div>
-            `;
-
             try {
                 const reqId = Date.now().toString();
-                await setDoc(doc(db, "rechargeRequests", reqId), {
-                    id: reqId,
-                    userId: user.id,
-                    userName: user.username,
-                    amount: amt,
-                    receiptImage: receiptData,
-                    status: 'pending',
-                    timestamp: new Date().toISOString()
-                });
-
-                // Start real-time listener for recharge after submitting
+                await setDoc(doc(db, "rechargeRequests", reqId), { id: reqId, userId: user.id, userName: user.username, amount: amt, receiptImage: receiptData, status: 'pending', timestamp: new Date().toISOString() });
                 subscribeRechargeRealtime(user.id);
-
-                setTimeout(() => {
-                    document.body.removeChild(modal);
-                    toast(d.rechargeWaiting);
-                }, 2500);
-
-            } catch (e) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
-                this.disabled = false;
-                this.innerHTML = d.submit;
-            }
+                setTimeout(() => { document.body.removeChild(modal); toast(d.rechargeWaiting); }, 2500);
+            } catch (e) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`; this.disabled = false; }
         };
-
         modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
     }
 
@@ -1603,217 +1466,41 @@
             if (isNaN(amt) || amt < 1) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
             if (amt > (user.balance||0)) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>'; return; }
             user.balance -= amt;
-            await saveUser();
-            updateUI();
-            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), {
-                id: Date.now().toString(), userId: user.id, userName: user.username,
-                amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString()
-            });
-            document.body.removeChild(modal);
-            toast("Withdraw submitted!");
+            await saveUser(); updateUI();
+            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Withdraw submitted!");
         };
         modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
     }
 
-    // ===== HISTORY =====
-    function showHistory(title, items, type) {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
-        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
-        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
-        });
-        html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
-        modal.innerHTML = html;
-        document.body.appendChild(modal);
-        modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== BIND WALLET =====
-    function showBindWallet() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div>
-                <input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}">
-                <button class="btn-primary" id="bindWalletSave">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#bindWalletSave").onclick = async () => {
-            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
-            await saveUser();
-            updateUI();
-            document.body.removeChild(modal);
-            toast("Wallet updated!");
-        };
-        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== PERSONAL DETAILS =====
-    function showPersonalDetails() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div>
-                <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="profilePreview" style="width:90px;height:90px;border-radius:45px;background:var(--secondary);display:flex;align-items:center;justify-content:center;border:3px solid var(--secondary-light);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user" style="font-size:40px;color:#fff;"></i>'}</div>
-                </div>
-                <button class="btn-primary btn-outline" id="uploadPhotoBtn" style="font-size:12px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
-                <div style="margin-top:10px;">
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
-                </div>
-                <button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#uploadPhotoBtn").onclick = () => {
-            document.body.removeChild(modal);
-            showUploadPhoto();
-        };
-        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== UPLOAD PHOTO =====
-    function showUploadPhoto() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-camera"></i> ${d.uploadPhoto}</div>
-                <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="uploadPreview" style="width:100px;height:100px;border-radius:50px;background:var(--secondary);display:flex;align-items:center;justify-content:center;border:3px solid var(--secondary-light);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:48px;color:#fff;"></i>'}</div>
-                </div>
-                <div class="upload-area" id="photoUploadArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadPhoto}<input type="file" id="photoInput" accept="image/*" style="display:none;"></div>
-                <button class="btn-primary" id="photoSave">${d.save}</button>
-                <button class="btn-primary btn-outline" id="photoCancel" style="margin-top:8px;">${d.cancel}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        let data = null;
-        modal.querySelector("#photoUploadArea").onclick = () => modal.querySelector("#photoInput").click();
-        modal.querySelector("#photoInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                data = await compressImage(e.target.files[0], 400, 400, 0.5);
-                modal.querySelector("#uploadPreview").innerHTML = `<img src="${data}" style="width:100%;height:100%;object-fit:cover;">`;
-            }
-        };
-        modal.querySelector("#photoSave").onclick = async () => {
-            if (data) {
-                user.profilePhoto = data;
-                await saveUser();
-                updateUI();
-            }
-            document.body.removeChild(modal);
-            toast("Photo updated!");
-        };
-        modal.querySelector("#photoCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== LOAN =====
-    function showLoanModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div>
-                <div class="upload-area" id="loanBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="loanBankInput" accept="image/*" style="display:none;"></div>
-                <div id="loanBankPreview"></div>
-                <div style="display:flex;gap:8px;margin:8px 0;">
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanFrontArea"><i class="fas fa-upload"></i> Front Side<input type="file" id="loanFrontInput" accept="image/*" style="display:none;"></div>
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanBackArea"><i class="fas fa-upload"></i> Back Side<input type="file" id="loanBackInput" accept="image/*" style="display:none;"></div>
-                </div>
-                <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
-                    <div class="doc-opt" data-type="nrc" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(45,106,79,0.04);border:1px solid var(--secondary);color:var(--secondary);font-size:12px;">NRC</div>
-                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;">Driver</div>
-                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;">Passport</div>
-                </div>
-                <input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount">
-                <button class="btn-primary" id="loanSubmit">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button>
-                <div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        let bankData=null, frontData=null, backData=null;
-        let docType = 'nrc';
-        modal.querySelectorAll('.doc-opt').forEach(el => {
-            el.onclick = function() {
-                modal.querySelectorAll('.doc-opt').forEach(o => { o.style.background='var(--bg)'; o.style.border='1px solid var(--border)'; o.style.color='var(--muted)'; });
-                this.style.background='rgba(45,106,79,0.04)'; this.style.border='1px solid var(--secondary)'; this.style.color='var(--secondary)';
-                docType = this.dataset.type;
-            };
-        });
-        modal.querySelector("#loanBankArea").onclick = () => modal.querySelector("#loanBankInput").click();
-        modal.querySelector("#loanBankInput").onchange = async (e) => {
-            if (e.target.files[0]) { bankData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanBankPreview").innerHTML = `<img src="${bankData}" class="img-preview-sm">`; }
-        };
-        modal.querySelector("#loanFrontArea").onclick = () => modal.querySelector("#loanFrontInput").click();
-        modal.querySelector("#loanFrontInput").onchange = async (e) => {
-            if (e.target.files[0]) { frontData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanFrontArea").innerHTML = `<i class="fas fa-check" style="color:#10b981;"></i> Uploaded`; }
-        };
-        modal.querySelector("#loanBackArea").onclick = () => modal.querySelector("#loanBackInput").click();
-        modal.querySelector("#loanBackInput").onchange = async (e) => {
-            if (e.target.files[0]) { backData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanBackArea").innerHTML = `<i class="fas fa-check" style="color:#10b981;"></i> Uploaded`; }
-        };
-        modal.querySelector("#loanSubmit").onclick = async () => {
-            const amt = parseFloat(modal.querySelector("#loanAmt").value);
-            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
-            if (!bankData || !frontData || !backData) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Upload all documents.</span>'; return; }
-            await setDoc(doc(db, "loanRequests", Date.now().toString()), {
-                id: Date.now().toString(), userId: user.id, userName: user.username,
-                amount: amt, docType: docType, bankImage: bankData, frontImage: frontData, backImage: backData,
-                status: 'pending', timestamp: new Date().toISOString()
-            });
-            document.body.removeChild(modal);
-            toast("Loan submitted!");
-        };
-        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
-    }
-
     // ===== ORDER DISPLAY =====
-    async function displayOrder(o) {
+    async function displayOrder(o, isLucky) {
         const d = t[lang] || t.en;
         const container = document.getElementById('orderDisplay');
         if (!container) return;
-        const img = o.imageData ? `<img src="${o.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:32px;color:var(--secondary);"></i>';
-        const isInj = o.isInjection || false;
         const after = (user.balance||0) + o.netCommission;
         const insufficient = (user.balance||0) < o.amount;
-        const badge = isInj ? '<span class="injection-badge"><i class="fas fa-gift"></i> '+d.bonusOrder+'</span>' : '';
-        let injHtml = '';
-        if (isInj && o.injectionDetails) {
-            injHtml = `
-                <div style="background:rgba(245,158,11,0.04);border-radius:12px;padding:8px;margin:8px 0;font-size:13px;">
-                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ $ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ $ ${o.netCommission.toFixed(4)}</span></div>
+
+        let luckyHtml = '';
+        if (isLucky) {
+            luckyHtml = `
+                <div class="lucky-glow"></div>
+                <div class="lucky-badge"><i class="fas fa-gift"></i> ${d.bonusOrder}</div>
+                <div style="text-align:center;padding:10px;background:rgba(212,175,55,0.1);border-radius:12px;margin-bottom:12px;">
+                    <h2 style="color:var(--gold);font-size:24px;font-weight:800;">🎉 Congratulations!</h2>
+                    <p style="color:var(--text-secondary);font-size:14px;">${d.injectionMsg}</p>
                 </div>
             `;
         }
+
         container.innerHTML = `
-            <div class="order-card ${isInj ? 'injection' : ''}">
-                ${badge}
-                <div class="order-img">${img}</div>
+            <div class="order-card ${isLucky ? 'lucky' : ''}" style="position:relative;overflow:hidden;">
+                ${luckyHtml}
+                <div class="order-img"><i class="fas fa-box" style="font-size:32px;color:var(--secondary);"></i></div>
                 <h3 style="color:var(--primary);font-size:17px;">${o.name}</h3>
                 <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
-                ${injHtml}
-                ${!injHtml ? `
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
-                ` : ''}
+                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
                 <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
                     <span style="color:var(--muted);">${d.afterBalance}</span>
                     <strong style="color:var(--secondary);font-size:16px;">$ ${after.toFixed(2)}</strong>
@@ -1832,17 +1519,7 @@
                         <div class="stars" data-cat="sales"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
                     </div>
                     <button class="btn-primary" id="submitOrderBtn" style="margin-top:10px;font-size:14px;">${d.submitComplete}</button>
-                ` : `
-                    <div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);">
-                        <strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong>
-                        <div style="font-size:13px;margin-top:4px;">
-                            <div>💰 ${d.orderAmount}: $ ${o.amount.toFixed(2)}</div>
-                            <div>💵 ${d.yourBalance}: $ ${(user.balance||0).toFixed(2)}</div>
-                            <div>🔴 ${d.needAdditional}: $ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
-                        </div>
-                        <button class="btn-primary" id="rechargeFromOrder" style="margin-top:8px;background:#10b981;color:#fff;font-size:13px;">${d.rechargeNow}</button>
-                    </div>
-                `}
+                ` : `<div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);"><strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong></div>`}
             </div>
         `;
         order = o;
@@ -1856,130 +1533,97 @@
                     s.onclick = function() {
                         const val = parseInt(this.dataset.v);
                         ratings[cat] = val;
-                        stars.forEach((st, i) => {
-                            st.className = i < val ? 'fas fa-star active' : 'far fa-star';
-                        });
+                        stars.forEach((st, i) => { st.className = i < val ? 'fas fa-star active' : 'far fa-star'; });
                     };
                 });
             });
             const submitBtn = document.getElementById('submitOrderBtn');
-            if (submitBtn) {
-                submitBtn.onclick = async function() {
-                    if (this.disabled) return;
-                    if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) {
-                        toast("Please provide all ratings.", true);
-                        return;
-                    }
-                    this.disabled = true;
-                    this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
-                    try {
-                        const profit = order.netCommission;
-                        if (!user.tasks) user.tasks = { completed: 0, total: 0 };
-                        user.balance = (user.balance||0) + profit;
-                        user.todayEarnings = (user.todayEarnings||0) + profit;
-                        user.totalCommission = (user.totalCommission||0) + profit;
-                        user.tasks.completed = (user.tasks.completed||0) + 1;
-                        order.status = 'completed';
-                        order.ratings = { ...ratings };
-                        order.date = new Date().toLocaleString();
-                        order.profit = profit;
-                        await saveOrder(user.id, order);
-                        user.currentOrderObj = null;
-                        await saveUser();
-                        order = null;
-                        updateUI();
-                        toast(`✅ +$ ${profit.toFixed(4)}`);
-                        const limit = user.tasks.total || 0;
-                        const done = user.tasks.completed || 0;
-                        if (done >= limit && limit > 0) {
-                            document.getElementById('orderDisplay').innerHTML = '';
-                        } else {
-                            await loadNextOrder();
-                        }
-                    } catch(e) { console.error(e); toast("Error: "+e.message, true); }
-                    this.disabled = false;
-                    this.innerHTML = d.submitComplete;
-                };
-            }
-        } else {
-            const rb = document.getElementById('rechargeFromOrder');
-            if (rb) rb.onclick = () => showRechargeModal();
+            if (submitBtn) submitBtn.onclick = async function() {
+                if (this.disabled) return;
+                if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) { toast("Please provide all ratings.", true); return; }
+                this.disabled = true; this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
+                try {
+                    const profit = order.netCommission;
+                    if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    user.balance += profit;
+                    user.todayEarnings += profit;
+                    user.totalCommission += profit;
+                    user.tasks.completed += 1;
+                    order.status = 'completed'; order.ratings = { ...ratings }; order.date = new Date().toLocaleString(); order.profit = profit;
+                    await saveOrder(user.id, order);
+                    user.currentOrderObj = null; await saveUser(); order = null;
+                    
+                    // Referral Bonus (10% to Superior)
+                    await distributeReferral(profit, user.id);
+
+                    updateUI(); toast(`✅ +$${profit.toFixed(4)}`);
+                    loadNextOrder();
+                } catch(e) { console.error(e); toast("Error: "+e.message, true); }
+                this.disabled = false; this.innerHTML = d.submitComplete;
+            };
         }
     }
 
     async function loadNextOrder() {
         const limit = user.tasks?.total || 0;
         const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) {
-            document.getElementById('orderDisplay').innerHTML = '';
-            return;
-        }
+        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) {
-            document.getElementById('orderDisplay').innerHTML = `<div class="card" style="border-color:#f59e0b;text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ Insufficient balance. Please recharge.</span></div>`;
-            return;
-        }
+        if ((user.balance||0) < minBal) { document.getElementById('orderDisplay').innerHTML = `<div class="card" style="text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ ${t[lang].insufficient}</span></div>`; return; }
+
         const nextTask = (user.tasks?.completed||0) + 1;
-        let inj = null;
+        let isLucky = false;
+        let injection = null;
+
+        // Check pending injections for the exact task number
         if (pendingInjections.length > 0) {
-            inj = pendingInjections.find(i => i.taskNumber === nextTask);
-            if (inj && !inj.used) {
-                await markUsed(inj.id);
-                pendingInjections = pendingInjections.filter(i => i.id !== inj.id);
+            injection = pendingInjections.find(i => i.taskNumber === nextTask);
+            if (injection) {
+                isLucky = true;
+                await markUsed(injection.id);
+                pendingInjections = pendingInjections.filter(i => i.id !== injection.id);
                 user.pendingInjections = pendingInjections;
                 await saveUser();
-            } else inj = null;
+            }
         }
+
         const templates = await loadCustomOrders();
-        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Default Order', image:null, price:10 };
+        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Premium Order', price:10 };
         const balance = user.balance||0;
         const rate = getRate(user);
-        let amount, net, isInj = false;
-        if (inj) {
-            amount = balance + (inj.extraAmount||0);
-            net = inj.commission > 0 ? inj.commission : (inj.commissionRate > 0 ? amount * (inj.commissionRate/100) : amount * rate);
-            isInj = true;
-            const d = t[lang] || t.en;
-            toast(`🎉 ${d.bonusOrder} ${d.injectionMsg}`);
+        let amount, net;
+
+        if (isLucky) {
+            amount = balance + (injection.extraAmount || 0);
+            net = injection.commission > 0 ? injection.commission : (injection.commissionRate > 0 ? amount * (injection.commissionRate/100) : amount * rate);
         } else {
             const pct = 0.53 + Math.random() * 0.26;
             amount = parseFloat((balance * pct).toFixed(2));
             const gross = balance * rate;
             net = gross - (gross * 0.01);
         }
+
         const newOrder = {
             id: Date.now(),
-            name: inj ? (inj.orderName||tpl.name) : tpl.name,
-            imageData: inj?.imageData || tpl.image || null,
-            amount: amount,
-            netCommission: net,
-            rate: inj?.commissionRate || (rate * 100),
+            name: isLucky ? 'Lucky Premium Task' : tpl.name,
+            amount: amount, netCommission: net,
+            rate: isLucky ? injection.commissionRate : (rate * 100),
             orderNumber: 'ORD'+Math.floor(Math.random()*1e9),
-            profit: net,
-            isInjection: isInj,
-            injectionDetails: isInj ? { extraAmount: inj?.extraAmount||0, customCommission: net, originalBalance: balance, injectionId: inj?.id } : null
+            isLucky: isLucky
         };
-        user.currentOrderObj = newOrder;
-        await saveUser();
-        displayOrder(newOrder);
+        user.currentOrderObj = newOrder; await saveUser();
+        displayOrder(newOrder, isLucky);
     }
 
     function refreshWork() {
         if (!user) return;
         const limit = user.tasks?.total || 0;
         const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) {
-            document.getElementById('orderDisplay').innerHTML = '';
-            return;
-        }
-        if (user.currentOrderObj && !user.currentOrderObj.completed) {
-            displayOrder(user.currentOrderObj);
-        } else if (order) {
-            displayOrder(order);
-        } else {
-            if (done < limit && limit > 0) loadNextOrder();
-        }
+        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
+        if (user.currentOrderObj && !user.currentOrderObj.completed) displayOrder(user.currentOrderObj, user.currentOrderObj.isLucky);
+        else if (order) displayOrder(order, order.isLucky);
+        else if (done < limit && limit > 0) loadNextOrder();
     }
 
     // ===== UPDATE UI =====
@@ -2014,11 +1658,6 @@
         document.getElementById('taskCounter').innerText = `${done}/${limit}`;
         document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
 
-        const av = document.getElementById('profileAvatar');
-        if (av) {
-            av.innerHTML = user.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:40px;color:#fff;"></i>';
-        }
-
         const completed = orders.filter(o => o.status === 'completed');
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
             <div class="card">
@@ -2037,18 +1676,13 @@
         if (feedInterval) clearInterval(feedInterval);
         const container = document.getElementById('feedList');
         if (!container) return;
-        function add() {
-            const item = document.createElement('div');
-            item.className = 'feed-item';
-            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`;
-            container.prepend(item);
-            if (container.children.length > 5) container.removeChild(container.lastChild);
-        }
+        function add() { const item = document.createElement('div'); item.className = 'feed-item'; item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`; container.prepend(item); if (container.children.length > 5) container.removeChild(container.lastChild); }
         for (let i=0; i<2; i++) add();
         feedInterval = setInterval(add, 8000);
     }
 
     // ===== NAVIGATION =====
+    let currentSection = 'home';
     const pages = {
         landing: document.getElementById('pageLanding'),
         login: document.getElementById('pageLogin'),
@@ -2065,40 +1699,19 @@
         if (!user && !['landing','login','register'].includes(name)) name = 'landing';
         Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
         if (pages[name]) pages[name].classList.add('active-page');
+        currentSection = name;
         if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
         else bottomNav.classList.remove('hidden-nav');
         if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
         
-        // ===== PAGE-BASED REAL-TIME SUBSCRIPTIONS =====
-        // Home page: notifications real-time
-        if (name === 'home' && user) {
-            subscribeNotificationsRealtime();
-            // Update UI
-            updateUI();
-            loadNotifications();
-        }
-        // Work page: injections real-time + load order
-        if (name === 'work' && user) {
-            subscribeInjectionsRealtime(user.id);
-            updateUI();
-            refreshWork();
-        }
-        // Orders page: load orders
-        if (name === 'orders' && user) {
-            updateUI();
-        }
-        // Profile page: update UI
-        if (name === 'profile' && user) {
-            updateUI();
-        }
-        // Service page: chat real-time
-        if (name === 'service' && user) {
-            subscribeChatRealtime();
-        }
+        if (name === 'home' && user) { subscribeNotificationsRealtime(); updateUI(); loadNotifications(); }
+        if (name === 'work' && user) { subscribeInjectionsRealtime(user.id); updateUI(); refreshWork(); }
+        if (name === 'orders' && user) updateUI();
+        if (name === 'profile' && user) updateUI();
+        if (name === 'service' && user) subscribeChatRealtime();
         
         startFeed();
     }
-
     document.querySelectorAll('.nav-item').forEach(el => {
         el.onclick = () => {
             if (!user) { showPage('landing'); return; }
@@ -2109,11 +1722,9 @@
     });
 
     // ===== EVENT LISTENERS =====
-
     document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
-
     document.getElementById('landingLoginBtn').onclick = () => showPage('login');
     document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
     document.getElementById('backFromLogin').onclick = () => showPage('landing');
@@ -2121,69 +1732,24 @@
     document.getElementById('goRegisterBtn').onclick = () => showPage('register');
     document.getElementById('goLoginFromReg').onclick = () => showPage('login');
 
-    // ===== LOGIN WITH FIRESTORE INDEX (COMPOUND QUERY) =====
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
-        
-        if (!username || !password) {
-            toast('Enter username and password.', true);
-            return;
-        }
-        
-        this.disabled = true;
-        this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
-        
+        if (!username || !password) { toast('Enter username and password.', true); return; }
+        this.disabled = true; this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         try {
-            const q = query(
-                collection(db, "users"),
-                where("username", "==", username),
-                where("password", "==", password)
-            );
+            const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
             const snap = await getDocs(q);
-            
-            if (snap.empty) {
-                toast('Invalid username or password.', true);
-                this.disabled = false;
-                this.innerHTML = 'Login';
-                return;
-            }
-            
+            if (snap.empty) { toast('Invalid username or password.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
             const data = snap.docs[0].data();
-            if (data.disabled) {
-                toast('Account disabled.', true);
-                this.disabled = false;
-                this.innerHTML = 'Login';
-                return;
-            }
-            
+            if (data.disabled) { toast('Account disabled.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
             user = { id: snap.docs[0].id, ...data };
-            if (!user.orders) user.orders = [];
-            if (!user.tasks) user.tasks = { completed:0, total:0 };
-            
-            await saveUser();
-            await loadUserData(user.id);
-            await loadInjections(user.id);
-            await loadRechargeStatus(user.id);
-            await loadNotifications();
-            startLastSeenUpdate();
-            updateUI();
-            
-            const last = localStorage.getItem('lastPage');
-            showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+            if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+            await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+            const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             toast(`Welcome, ${username}`);
-            
-        } catch (e) {
-            console.error('Login error:', e);
-            if (e.message && e.message.includes('index')) {
-                toast('Firestore index is still building. Please wait 5-10 minutes.', true);
-            } else {
-                toast('Login failed: ' + e.message, true);
-            }
-        }
-        
-        this.disabled = false;
-        this.innerHTML = 'Login';
+        } catch (e) { console.error('Login error:', e); toast('Login failed: ' + e.message, true); }
+        this.disabled = false; this.innerHTML = 'Login';
     };
 
     document.getElementById('doRegisterBtn').onclick = async function() {
@@ -2199,91 +1765,31 @@
         const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
         if (!exist.empty) { toast('Username exists.', true); return; }
         let ref = null;
-        if (invite) {
-            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
-            if (refCheck.empty) { toast('Invalid invitation code.', true); return; }
-            ref = refCheck.docs[0].data().username;
-        }
+        if (invite) { const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite))); if (refCheck.empty) { toast('Invalid invitation code.', true); return; } ref = refCheck.docs[0].data().username; }
 
         const ip = await getClientIP();
-        user = {
-            id: Date.now().toString(),
-            username, email, phone,
-            password: pass,
-            withdrawPassword: withdraw,
-            balance: 0,
-            invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-            superior: ref,
-            referralEarnings: 0,
-            regTime: new Date().toISOString(),
-            tasks: { completed:0, total:0 },
-            orders: [],
-            todayOrders: 0,
-            todayEarnings: 0,
-            totalCommission: 0,
-            creditScore: 100,
-            disabled: false,
-            walletAddress: null,
-            currentOrderObj: null,
-            role: 'customer',
-            lastSeen: Date.now(),
-            regIP: ip
-        };
-        await setDoc(doc(db, "users", user.id), user);
-        await saveUser();
-        await loadUserData(user.id);
-        await loadInjections(user.id);
-        await loadRechargeStatus(user.id);
-        await loadNotifications();
-        startLastSeenUpdate();
-        updateUI();
-        showPage('home');
-        toast('Registration successful!');
+        user = { id: Date.now().toString(), username, email, phone, password: pass, withdrawPassword: withdraw, balance: 0, invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(), superior: ref, referralEarnings: 0, regTime: new Date().toISOString(), tasks: { completed:0, total:0 }, orders: [], todayOrders: 0, todayEarnings: 0, totalCommission: 0, creditScore: 100, disabled: false, walletAddress: null, currentOrderObj: null, role: 'customer', lastSeen: Date.now(), regIP: ip };
+        await setDoc(doc(db, "users", user.id), user); await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI(); showPage('home'); toast('Registration successful!');
     };
 
-    // ===== SIGN OUT =====
     function signOut() {
-        // Unsubscribe all real-time listeners
-        if (unsubChat) { unsubChat(); unsubChat = null; }
-        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
-        if (unsubInjections) { unsubInjections(); unsubInjections = null; }
-        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
-        if (feedInterval) clearInterval(feedInterval);
-        if (lastSeenInterval) clearInterval(lastSeenInterval);
-        const uid = user?.id;
-        user = null;
-        order = null;
-        pendingInjections = [];
-        localStorage.removeItem('uid');
-        if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
-        firebaseSignOut(auth).then(() => {
-            console.log("Signed out from Firebase");
-        }).catch((error) => {
-            console.error("Sign out error:", error);
-        });
-        showPage('landing');
-        toast('Signed out.');
+        if (unsubChat) unsubChat(); if (unsubRecharge) unsubRecharge(); if (unsubInjections) unsubInjections(); if (unsubNotifications) unsubNotifications();
+        if (feedInterval) clearInterval(feedInterval); if (lastSeenInterval) clearInterval(lastSeenInterval);
+        const uid = user?.id; user = null; order = null; pendingInjections = []; localStorage.removeItem('uid'); if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+        firebaseSignOut(auth).then(() => console.log("Signed out")).catch(e => console.error("Sign out error:", e));
+        showPage('landing'); toast('Signed out.');
     }
     document.getElementById('signOutHome').onclick = signOut;
     document.getElementById('signOutProfile').onclick = signOut;
 
-    // ===== REFRESH =====
     document.querySelectorAll('.icon-btn').forEach(el => {
         if (el.id && el.id.startsWith('refresh')) {
             el.onclick = async () => {
-                if (user) {
-                    await loadUserData(user.id);
-                    await loadInjections(user.id);
-                    await loadRechargeStatus(user.id);
-                    await loadNotifications();
-                    updateUI();
-                    toast('Refreshed!');
-                }
+                if (user) { await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); updateUI(); toast('Refreshed!'); }
             };
         }
     });
 
-    // ===== BUTTONS =====
     document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
     document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
     document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
@@ -2291,221 +1797,108 @@
     document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
     document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
     document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
+
     document.getElementById('rechargeHistoryBtn').onclick = async () => {
         if (!user) return;
         const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data()));
-        showHistory('Recharge History', items, 'recharge');
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Recharge History', items, 'recharge');
     };
     document.getElementById('withdrawHistoryBtn').onclick = async () => {
         if (!user) return;
         const snap = await getDocs(query(collection(db,"withdrawRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data()));
-        showHistory('Withdraw History', items, 'withdraw');
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Withdraw History', items, 'withdraw');
     };
 
     // ===== START ORDER =====
     document.getElementById('startOrderBtn').onclick = async () => {
         if (!user) { toast('Login first.', true); return; }
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (limit === 0) { toast('No orders assigned by admin.', true); return; }
+        const limit = user.tasks?.total || 0; const done = user.tasks?.completed || 0;
+        if (limit === 0) { toast('No orders assigned.', true); return; }
         if (done >= limit) { toast('All orders completed!', true); return; }
-        if (user.currentOrderObj && !user.currentOrderObj.completed) {
-            const d = t[lang] || t.en;
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-box" style="text-align:center;">
-                    <div style="font-size:48px;color:#dc2626;margin-bottom:12px;"><i class="fas fa-exclamation-triangle"></i></div>
-                    <h3 style="color:#dc2626;font-size:20px;">⚠️ ${d.warning}</h3>
-                    <p style="color:var(--text-secondary);font-size:14px;margin:12px 0;">${d.pendingMsg}</p>
-                    <button class="btn-primary" id="pendingOk">${d.okay}</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.querySelector('#pendingOk').onclick = () => {
-                document.body.removeChild(modal);
-                showPage('work');
-                if (user.currentOrderObj) displayOrder(user.currentOrderObj);
-                else if (order) displayOrder(order);
-            };
-            return;
-        }
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) {
-            toast(`Minimum balance $ ${minBal} required.`, true);
-            return;
-        }
-        // Start real-time injection listener when entering work page
+        if ((user.balance||0) < minBal) { toast(`Minimum balance $ ${minBal} required.`, true); return; }
         subscribeInjectionsRealtime(user.id);
-        await loadNextOrder();
+        loadNextOrder();
     };
 
-    // ===== CHAT =====
     document.getElementById('sendChatBtn').onclick = async () => {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
-        if (text) {
-            await sendChat(text);
-            input.value = '';
-            input.focus();
-        }
+        if (text && user) { await sendChat(text); input.value = ''; input.focus(); }
     };
     document.getElementById('chatInput').addEventListener('keypress', async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (text) {
-                await sendChat(text);
-                input.value = '';
-                input.focus();
-            }
-        }
+        if (e.key === 'Enter') { e.preventDefault(); const input = document.getElementById('chatInput'); const text = input.value.trim(); if (text && user) { await sendChat(text); input.value = ''; input.focus(); } }
     });
-    document.getElementById('emojiBtn').onclick = () => {
-        const input = document.getElementById('chatInput');
-        const picker = document.createElement('div');
-        picker.style.cssText = 'position:absolute;bottom:70px;left:16px;background:#1a1e26;padding:6px;border-radius:12px;z-index:10000;border:1px solid var(--border);display:flex;flex-wrap:wrap;max-width:200px;gap:2px;';
-        const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨'];
-        emojis.forEach(e => {
-            const s = document.createElement('span');
-            s.style.cssText = 'cursor:pointer;font-size:20px;padding:4px;border-radius:4px;';
-            s.innerText = e;
-            s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
-            picker.appendChild(s);
-        });
-        document.body.appendChild(picker);
-        setTimeout(() => {
-            const close = (e) => { if (!picker.contains(e.target) && e.target.id !== 'emojiBtn') { picker.remove(); document.removeEventListener('click', close); } };
-            document.addEventListener('click', close);
-        }, 50);
-    };
-    document.getElementById('uploadChatBtn').onclick = () => document.getElementById('chatFileInput').click();
-    document.getElementById('chatFileInput').onchange = async (e) => {
-        if (e.target.files[0]) {
-            const data = await compressImage(e.target.files[0], 300, 300, 0.4);
-            await sendChat('', data);
-            e.target.value = '';
-        }
-    };
 
-    // ===== COMPANY INFO =====
     document.getElementById('companyInfoBtn').onclick = () => {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
-                <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
-                <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
-                <div style="background:var(--bg);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--secondary);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text-secondary);">To provide seamless travel experiences and financial freedom.</p></div>
-                <div style="background:var(--bg);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--secondary);font-size:15px;"><i class="fas fa-eye"></i> ${d.vision}</h4><p style="font-size:13px;color:var(--text-secondary);">To become the world's leading integrated travel and earning platform.</p></div>
-                <button class="btn-primary" id="companyClose">${d.close}</button>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
+            <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
+            <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
+            <button class="btn-primary" id="companyClose">${d.close}</button></div>`;
         document.body.appendChild(modal);
         modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
     };
 
-    // ===== LANGUAGE =====
-    document.querySelectorAll('.lang-opt').forEach(el => {
-        el.onclick = function() {
-            applyLang(this.dataset.lang);
-            if (user) updateUI();
+    document.querySelectorAll('.lang-opt').forEach(el => { el.onclick = function() { applyLang(this.dataset.lang); if (user) updateUI(); }; });
+
+    function showHistory(title, items, type) {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
+        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
+        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div></div>`;
+        });
+        html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showBindWallet() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div><input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}"><button class="btn-primary" id="bindWalletSave">${d.submit}</button><button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#bindWalletSave").onclick = async () => {
+            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
+            await saveUser(); updateUI(); document.body.removeChild(modal); toast("Wallet updated!");
         };
-    });
-
-    // ===== LOGOS & COMPANY =====
-    function subscribeLogos() {
-        onSnapshot(doc(db, "systemSettings", "logos"), (snap) => {
-            if (snap.exists()) {
-                const logos = snap.data();
-                const container = document.getElementById('logoContainer');
-                let html = '';
-                for (let i=1; i<=5; i++) {
-                    const url = logos[`logo${i}`];
-                    if (url) html += `<div style="width:50px;height:50px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`;
-                    else html += `<div style="width:50px;height:50px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--secondary);"><i class="fas fa-plane"></i></div>`;
-                }
-                container.innerHTML = html;
-            }
-        });
+        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
     }
 
-    function subscribeCompany() {
-        onSnapshot(doc(db, "systemSettings", "companyInfo"), (snap) => {
-            if (snap.exists()) {
-                const d = snap.data();
-                if (d.companyName) document.getElementById('companyNameText').innerText = d.companyName;
-                if (d.companyTagline) document.getElementById('companyTaglineText').innerText = d.companyTagline;
-                if (d.companyDescription) document.getElementById('companyDesc').innerHTML = d.companyDescription;
-                if (d.companyLogo) {
-                    const logo = document.getElementById('companyLogo');
-                    if (logo) logo.innerHTML = `<img src="${d.companyLogo}" style="width:32px;height:32px;object-fit:contain;">`;
-                }
-                if (d.stat1Number) document.getElementById('stat1').innerText = d.stat1Number;
-                if (d.stat2Number) document.getElementById('stat2').innerText = d.stat2Number;
-                if (d.stat3Number) document.getElementById('stat3').innerText = d.stat3Number;
-                if (d.stat1Label) document.getElementById('stat1l').innerText = d.stat1Label;
-                if (d.stat2Label) document.getElementById('stat2l').innerText = d.stat2Label;
-                if (d.stat3Label) document.getElementById('stat3l').innerText = d.stat3Label;
-            }
-        });
+    function showPersonalDetails() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div><div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div><button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
     }
 
-    function subscribeSettings() {
-        onSnapshot(doc(db, "systemSettings", "main"), (snap) => {
-            if (snap.exists()) {
-                const s = snap.data();
-                if (s.customerName) {
-                    document.getElementById('loginWebsiteName').innerText = s.customerName;
-                    document.getElementById('homeBrand').innerText = s.homePageName || s.customerName;
-                    document.getElementById('brandName').innerText = s.customerName;
-                }
-                if (s.customerTagline) document.getElementById('loginTagline').innerText = s.customerTagline;
-            }
-        });
-    }
-
-    // ===== POPUP ADS =====
-    async function checkPopup() {
-        if (!user) return;
-        const snap = await getDocs(collection(db, "popupAds"));
-        const ads = [];
-        snap.forEach(d => ads.push({ id: d.id, ...d.data() }));
-        const active = ads.filter(a => a.isActive !== false);
-        if (!active.length) return;
-        const key = `popup_${user.id}`;
-        if (sessionStorage.getItem(key)) return;
-        const ad = active[0];
-        sessionStorage.setItem(key, 'true');
-        const overlay = document.createElement('div');
-        overlay.className = 'modal-overlay';
-        overlay.innerHTML = `
-            <div class="popup-card" style="background:var(--bg-card);border-radius:24px;padding:20px;max-width:400px;width:92%;border:1px solid var(--border);text-align:center;position:relative;box-shadow:var(--shadow-hover);">
-                <button id="popupClose" style="position:absolute;top:6px;right:10px;background:var(--bg);border:none;color:var(--muted);font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
-                ${ad.imageData ? `<img src="${ad.imageData}" style="max-width:100%;max-height:180px;border-radius:12px;margin-bottom:10px;border:1px solid var(--border);">` : ''}
-                <div style="font-size:20px;font-weight:800;color:var(--primary);">${esc(ad.title||'Special Offer')}</div>
-                <div style="color:var(--text-secondary);font-size:14px;margin:6px 0 14px;">${esc(ad.subtitle||'')}</div>
-                <button class="btn-primary" id="popupAction" style="width:auto;padding:8px 24px;">${esc(ad.buttonText||'Close')}</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        const close = () => { if (overlay.parentNode) document.body.removeChild(overlay); };
-        overlay.querySelector('#popupClose').onclick = close;
-        overlay.querySelector('#popupAction').onclick = close;
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    function showLoanModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div><input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount"><button class="btn-primary" id="loanSubmit">${d.submit}</button><button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button><div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#loanSubmit").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#loanAmt").value);
+            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
+            await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Loan submitted!");
+        };
+        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
     }
 
     // ===== INIT =====
     applyLang(lang);
-    subscribeLogos();
-    subscribeCompany();
-    subscribeSettings();
     startFeed();
 
     onAuthStateChanged(auth, async (gUser) => {
@@ -2514,18 +1907,9 @@
             if (snap.exists() && !user) {
                 const data = snap.data();
                 if (!data.disabled) {
-                    user = { id: snap.id, ...data };
-                    if (!user.orders) user.orders = [];
-                    if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    await loadUserData(user.id);
-                    await loadInjections(user.id);
-                    await loadRechargeStatus(user.id);
-                    await loadNotifications();
-                    startLastSeenUpdate();
-                    updateUI();
-                    const last = localStorage.getItem('lastPage');
-                    showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-                    await checkPopup();
+                    user = { id: snap.id, ...data }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                    const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
                 }
             }
         }
@@ -2535,22 +1919,10 @@
     if (saved) {
         (async () => {
             const snap = await getDoc(doc(db, "users", saved));
-            if (snap.exists()) {
-                const data = snap.data();
-                if (!data.disabled) {
-                    user = { id: snap.id, ...data };
-                    if (!user.orders) user.orders = [];
-                    if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    await loadUserData(user.id);
-                    await loadInjections(user.id);
-                    await loadRechargeStatus(user.id);
-                    await loadNotifications();
-                    startLastSeenUpdate();
-                    updateUI();
-                    const last = localStorage.getItem('lastPage');
-                    showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-                    await checkPopup();
-                } else showPage('landing');
+            if (snap.exists() && !snap.data().disabled) {
+                user = { id: snap.id, ...snap.data() }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             } else showPage('landing');
         })();
     } else showPage('landing');
