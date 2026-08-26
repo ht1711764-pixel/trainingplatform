@@ -861,9 +861,10 @@
         <button class="nav-item" data-page="service"><i class="fas fa-headset"></i><span id="navService">Service</span></button>
     </div>
 </div>
+
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     // ===== NEW CONFIG for tripnew-2026 =====
@@ -896,6 +897,7 @@
     let unsubRecharge = null;
     let unsubInjections = null;
     let unsubNotifications = null;
+    let unsubAccount = null; // <--- ဒါကို ထည့်ထားပါတယ်
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) { if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel; return 1; }
@@ -950,14 +952,22 @@
         else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
-    document.getElementById('loginToggle').onclick = function() {
-        const inp = document.getElementById('loginPass');
-        const icon = this.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    };
+    // ===== ACCOUNT DELETION LISTENER (Real-time) =====
+    function subscribeAccountDeletion(uid) {
+        if (unsubAccount) { unsubAccount(); unsubAccount = null; }
+        unsubAccount = onSnapshot(doc(db, "users", uid), (snap) => {
+            if (!snap.exists()) {
+                toast('Your account has been deleted by Admin.', true);
+                localStorage.removeItem('uid');
+                firebaseSignOut(auth).catch(e => console.log(e));
+                user = null;
+                showPage('landing');
+                setTimeout(() => window.location.reload(), 1500);
+            }
+        }, (error) => console.error('Account Deletion Subscription Error:', error));
+    }
 
-    // ===== REFERRAL SYSTEM FUNCTION (10% of Commission to Superior) =====
+    // ===== REFERRAL BONUS (10%) =====
     async function distributeReferral(commission) {
         if (!user.superior) return;
         try {
@@ -974,33 +984,6 @@
             }
         } catch (e) {
             console.error("Referral distribution error:", e);
-        }
-    }
-
-    // ===== ACCOUNT DELETION LISTENER (Real-time) =====
-    function subscribeAccountDeletion(uid) {
-        if (unsubAccount) { unsubAccount(); unsubAccount = null; }
-        unsubAccount = onSnapshot(doc(db, "users", uid), (snap) => {
-            if (!snap.exists()) {
-                toast('Your account has been deleted by Admin.', true);
-                localStorage.removeItem('uid');
-                firebaseSignOut(auth).catch(e => console.log(e));
-                user = null;
-                showPage('landing');
-                setTimeout(() => window.location.reload(), 1500);
-            }
-        }, (error) => console.error('Account Deletion Subscription Error:', error));
-    }
-
-    // ===== GET IP ADDRESS FUNCTION =====
-    async function getClientIP() {
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-        } catch (error) {
-            console.error('Error fetching IP:', error);
-            return null;
         }
     }
 
@@ -1297,6 +1280,60 @@
         await saveUser();
         subscribeAccountDeletion(user.id);
         updateUI(); showPage('home');
+    };
+
+    // ===== GOOGLE LOGIN =====
+    document.getElementById('landingGoogleBtn').onclick = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const gUser = result.user;
+            const email = gUser.email;
+            const username = email.split('@')[0]; 
+            
+            const userRef = doc(db, "users", gUser.uid);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists()) {
+                user = { id: gUser.uid, ...userSnap.data() };
+                toast(`Welcome back, ${user.username}`);
+            } else {
+                const newUser = {
+                    id: gUser.uid,
+                    username: username,
+                    email: email,
+                    phone: '',
+                    password: '',
+                    withdrawPassword: '',
+                    balance: 0,
+                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
+                    superior: null,
+                    referralEarnings: 0,
+                    regTime: new Date().toISOString(),
+                    tasks: { completed:0, total:0 },
+                    orders: [],
+                    todayOrders: 0,
+                    todayEarnings: 0,
+                    totalCommission: 0,
+                    creditScore: 100,
+                    disabled: false,
+                    walletAddress: null,
+                    currentOrderObj: null,
+                    role: 'customer',
+                    lastSeen: Date.now(),
+                    regIP: null
+                };
+                await setDoc(userRef, newUser);
+                user = { id: gUser.uid, ...newUser };
+                toast(`Welcome, ${username}! Account created.`);
+            }
+            await saveUser();
+            await loadInjections(user.id);
+            subscribeAccountDeletion(user.id);
+            updateUI(); showPage('home');
+        } catch (error) {
+            console.error("Google Login Error:", error);
+            toast("Google Login failed: " + error.message, true);
+        }
     };
 
     // ===== INIT =====
