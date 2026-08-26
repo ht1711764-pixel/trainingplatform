@@ -1351,13 +1351,11 @@
         `;
         document.body.appendChild(modal);
 
-        // Copy wallet
         modal.querySelector("#copyWalletBtn").onclick = () => {
             navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF');
             toast("Copied!");
         };
 
-        // Quick amount buttons
         modal.querySelectorAll('[data-amt]').forEach(btn => {
             btn.onclick = function() {
                 modal.querySelector("#rechargeAmt").value = this.dataset.amt;
@@ -1366,7 +1364,6 @@
             };
         });
 
-        // Receipt upload
         let receiptData = null;
         modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
         modal.querySelector("#receiptInput").onchange = async (e) => {
@@ -1378,7 +1375,6 @@
             }
         };
 
-        // ===== SUBMIT with SPINNER + CHECKING MESSAGE =====
         modal.querySelector("#rechargeSubmitBtn").onclick = async function() {
             const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
             if (isNaN(amt) || amt < 1) {
@@ -1390,11 +1386,9 @@
                 return;
             }
 
-            // Disable button & show spinner + "Please wait, we are checking your payment."
             this.disabled = true;
             this.innerHTML = '<span class="spinner-circle" style="width:22px;height:22px;border-width:3px;"></span> Processing...';
 
-            // Show the checking animation with spinner
             modal.querySelector("#rechargeMsg").innerHTML = `
                 <div class="checking-wrapper">
                     <div class="spinner-circle"></div>
@@ -1404,7 +1398,6 @@
             `;
 
             try {
-                // Save recharge request to Firestore
                 const reqId = Date.now().toString();
                 await setDoc(doc(db, "rechargeRequests", reqId), {
                     id: reqId,
@@ -1416,8 +1409,6 @@
                     timestamp: new Date().toISOString()
                 });
 
-                // Keep spinner visible for 2.5 seconds, then close modal
-                // The user will get a toast when admin approves/rejects via subscribeRecharge
                 setTimeout(() => {
                     document.body.removeChild(modal);
                     toast(d.rechargeWaiting);
@@ -1443,9 +1434,7 @@
         unsubRecharge = onSnapshot(q, async (snap) => {
             snap.forEach(async (docSnap) => {
                 const data = docSnap.data();
-                // Only act if status changed and we haven't processed it yet
                 if (data.status === 'approved' && !data.balanceAdded) {
-                    // Admin approved => add balance to user
                     if (user) {
                         user.balance = (user.balance || 0) + data.amount;
                         await saveUser();
@@ -1453,13 +1442,10 @@
                         const d = t[lang] || t.en;
                         toast(`✅ Recharge of $${data.amount} approved! Balance updated.`);
                     }
-                    // Mark as processed so we don't double-add
                     await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
                 } else if (data.status === 'rejected' && !data.balanceAdded) {
-                    // Admin rejected => do NOT add balance, just notify
                     const d = t[lang] || t.en;
                     toast(`❌ Recharge of $${data.amount} was rejected.`);
-                    // Mark as processed so we don't show again
                     await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
                 }
             });
@@ -2011,21 +1997,56 @@
     document.getElementById('goRegisterBtn').onclick = () => showPage('register');
     document.getElementById('goLoginFromReg').onclick = () => showPage('login');
 
+    // =============================================================
+    // ===== FIXED LOGIN: username ကိုရှာပြီးမှ password စစ် =====
+    // =============================================================
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
-        if (!username || !password) { toast('Enter username and password.', true); return; }
+        
+        if (!username || !password) { 
+            toast('Enter username and password.', true); 
+            return; 
+        }
+        
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        
         try {
-            const q = query(collection(db, "users"), where("username","==",username), where("password","==",password));
+            // Step 1: Find user by username only (no compound query)
+            const q = query(collection(db, "users"), where("username", "==", username));
             const snap = await getDocs(q);
-            if (snap.empty) { toast('Invalid credentials.', true); this.disabled=false; this.innerHTML='Login'; return; }
+            
+            if (snap.empty) { 
+                toast('Username not found.', true); 
+                this.disabled = false; 
+                this.innerHTML = 'Login'; 
+                return; 
+            }
+            
             const data = snap.docs[0].data();
-            if (data.disabled) { toast('Account disabled.', true); this.disabled=false; this.innerHTML='Login'; return; }
+            
+            // Step 2: Check password
+            if (data.password !== password) {
+                toast('Invalid password.', true);
+                this.disabled = false;
+                this.innerHTML = 'Login';
+                return;
+            }
+            
+            // Step 3: Check if disabled
+            if (data.disabled) { 
+                toast('Account disabled.', true); 
+                this.disabled = false; 
+                this.innerHTML = 'Login'; 
+                return; 
+            }
+            
+            // Step 4: Login success
             user = { id: snap.docs[0].id, ...data };
             if (!user.orders) user.orders = [];
             if (!user.tasks) user.tasks = { completed:0, total:0 };
+            
             await saveUser();
             subscribeUser(user.id);
             subscribeInjections(user.id);
@@ -2034,13 +2055,16 @@
             subscribeRecharge(user.id);
             startLastSeenUpdate();
             updateUI();
+            
             const last = localStorage.getItem('lastPage');
             showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             toast(`Welcome, ${username}`);
+            
         } catch(e) {
             toast('Login failed: '+e.message, true);
             console.error('Login error:', e);
         }
+        
         this.disabled = false;
         this.innerHTML = 'Login';
     };
@@ -2055,8 +2079,11 @@
         const invite = document.getElementById('regInvite').value.trim();
         if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
         if (pass !== confirm) { toast('Passwords do not match.', true); return; }
+        
+        // Check username exists
         const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
         if (!exist.empty) { toast('Username exists.', true); return; }
+        
         let ref = null;
         if (invite) {
             const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
