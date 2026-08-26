@@ -1111,6 +1111,11 @@
                 <button class="btn-home btn-login" id="landingLoginBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;border:none;background:var(--gradient-primary);color:#0a120e;box-shadow:0 5px 25px rgba(212,175,55,0.25);"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
                 <button class="btn-home btn-register" id="landingRegisterBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;background:transparent;border:2px solid var(--lux-gold);color:var(--lux-gold-light);"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
             </div>
+            <div style="position:relative;margin:16px 0 8px;width:100%;margin-top:20px;">
+                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or continue with</span>
+            </div>
+            <button class="btn-google" id="landingGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);margin-top:12px;"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign in with Google</button>
         </div>
         <div class="company-section" id="companySection">
             <div class="company-header" style="display:flex;align-items:center;gap:24px;margin-bottom:30px;flex-wrap:wrap;">
@@ -1130,14 +1135,28 @@
     <div id="loginPage" class="page">
         <div class="back-btn" id="backToLandingFromLogin"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
         <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--lux-text-muted);">Premium Task Ecosystem</p></div>
-        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button><div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--lux-text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Register →</span></div></div>
+        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button>
+            <div style="position:relative;margin:16px 0 8px;width:100%;">
+                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or</span>
+            </div>
+            <button class="btn-google" id="loginGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign in with Google</button>
+            <div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--lux-text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Register →</span></div>
+        </div>
     </div>
 
     <!-- ===== REGISTER PAGE ===== -->
     <div id="registerPage" class="page">
         <div class="back-btn" id="backToLandingFromRegister"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
         <div style="text-align:center;margin-bottom:20px;"><h2 style="color:var(--lux-gold);font-family:'Playfair Display',serif;" id="registerTitle">Create Account</h2></div>
-        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button><div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Login</span></div></div>
+        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button>
+            <div style="position:relative;margin:16px 0 8px;width:100%;">
+                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or</span>
+            </div>
+            <button class="btn-google" id="registerGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign up with Google</button>
+            <div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Login</span></div>
+        </div>
     </div>
 
     <!-- ===== HOME PAGE ===== -->
@@ -1328,17 +1347,23 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+    // ===== FIREBASE CONFIG - tripnew-2026 =====
     const firebaseConfig = {
-        apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
-        authDomain: "tiktok-shop2026.firebaseapp.com",
-        projectId: "tiktok-shop2026",
-        storageBucket: "tiktok-shop2026.firebasestorage.app",
-        messagingSenderId: "319316492310",
-        appId: "1:319316492310:web:b6b4969543d00b993eb537"
+        apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
+        authDomain: "tripnew-2026.firebaseapp.com",
+        projectId: "tripnew-2026",
+        storageBucket: "tripnew-2026.firebasestorage.app",
+        messagingSenderId: "225456579056",
+        appId: "1:225456579056:web:10f984841bdb63c9c73d35",
+        measurementId: "G-J0MYZLMJT0"
     };
+    
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
 
     // ==================== GLOBALS ====================
     let currentUser = null;
@@ -1378,6 +1403,76 @@
     function getCommissionRate(user) { return VIP_RATES[getVIPLevel(user)]; }
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+
+    // ==================== GOOGLE LOGIN FUNCTION ====================
+    async function handleGoogleLogin() {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const gUser = result.user;
+            const email = gUser.email;
+            const username = email.split('@')[0] + Math.floor(Math.random() * 100);
+            
+            const userRef = doc(db, "users", gUser.uid);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists()) {
+                currentUser = { id: gUser.uid, ...userSnap.data() };
+                toast(`Welcome back, ${currentUser.username}`);
+            } else {
+                const newUser = {
+                    id: gUser.uid,
+                    username: username,
+                    email: email,
+                    phone: '',
+                    password: '',
+                    withdrawPassword: '',
+                    balance: 0,
+                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
+                    superior: null,
+                    referralEarnings: 0,
+                    regTime: new Date().toISOString(),
+                    tasks: { completed:0, total:0 },
+                    orders: [],
+                    todayOrders: 0,
+                    todayEarnings: 0,
+                    totalCommission: 0,
+                    creditScore: 100,
+                    disabled: false,
+                    walletAddress: null,
+                    currentOrderObj: null,
+                    role: 'customer',
+                    lastSeen: Date.now(),
+                    authProvider: 'google'
+                };
+                await setDoc(userRef, newUser);
+                currentUser = { id: gUser.uid, ...newUser };
+                toast(`Welcome, ${username}! Account created with Google.`);
+            }
+            
+            localStorage.setItem('currentUserId', currentUser.id);
+            subscribeToUser(currentUser.id);
+            subscribeToWithdrawals(currentUser.id);
+            subscribeToInjections(currentUser.id);
+            subscribeToP2POrders(currentUser.id);
+            updateUI();
+            loadBackgrounds();
+            startSettingsSubscription();
+            const lastPage = localStorage.getItem("customerLastPage");
+            showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
+            startChatSubscription();
+            await updateKycStatus();
+            updateP2PAccess();
+            await checkAndShowPopupAds();
+        } catch (error) {
+            console.error("Google Login Error:", error);
+            alert("Google Login failed: " + error.message);
+        }
+    }
+
+    // Attach Google Login to buttons
+    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
 
     // ==================== LANGUAGE SYSTEM ====================
     const translations = {
@@ -1479,9 +1574,174 @@
             kycDocType: "ประเภทเอกสาร", kycFront: "ด้านหน้า", kycBack: "ด้านหลัง", kycSubmit: "ส่ง KYC",
             kycWaiting: "รอผู้ดูแลระบบตรวจสอบ..."
         },
-        // ... (other languages truncated for brevity, but will work)
+        es: {
+            heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones diarias.",
+            serviceFlightsTitle: "Vuelos", serviceFlightsDesc: "Reserva vuelos en todo el mundo",
+            serviceHotelsTitle: "Hoteles", serviceHotelsDesc: "Las mejores ofertas de hoteles de lujo",
+            serviceTrainsTitle: "Trenes", serviceTrainsDesc: "Billetes de tren premium",
+            serviceTasksTitle: "Plataforma de Tareas", serviceTasksDesc: "Gana hasta un 1% diario",
+            loginBtnText: "Iniciar Sesión", registerBtnText: "Registrarse", companyInfoText: "Sobre la Empresa",
+            backToHomeText: "Volver al Inicio", backToHomeTextReg: "Volver al Inicio",
+            loginWebsiteTagline: "Ecosistema de Tareas Premium", forgotPasswordText: "¿Olvidaste tu contraseña?",
+            registerTitle: "Crear Cuenta", registerNowText: "Registrarse Ahora", haveAccountText: "¿Tienes cuenta?",
+            welcomeText: "Bienvenido", vipLevelText: "Nivel VIP", accountBalanceText: "Saldo de la Cuenta",
+            rateText: "Tasa", todayText: "Hoy", todayEarningsText: "Ganancias de Hoy",
+            yesterdayText: "Ayer", totalCommissionText: "Comisión Total",
+            rechargeText: "Recargar", withdrawText: "Retirar", referralCodeText: "Tu Código de Referido",
+            liveUpdatesText: "Actualizaciones en Vivo de Comisiones", exitText: "Salir",
+            shoppingTasksText: "Tareas de Compras", taskProgressText: "Progreso de Tareas", startOrderText: "Iniciar Orden",
+            orderHistoryText: "Historial de Órdenes", myProfileText: "Mi Perfil", creditText: "Crédito",
+            totalAssetsText: "Activos Totales", todayOrdersText: "Órdenes de Hoy", todayEarningsTextMine: "Ganancias de Hoy",
+            totalCommissionTextMine: "Comisión Total", depositText: "Depositar", withdrawTextMine: "Retirar",
+            bindWalletText: "Vincular Billetera Crypto", personalDetailsText: "Detalles Personales", loanServiceText: "Servicio de Préstamos",
+            rechargeHistoryText: "Historial de Recargas", withdrawHistoryText: "Historial de Retiros", walletAddressText: "Dirección de Billetera",
+            howCommissionsText: "Cómo Funcionan las Comisiones", commDesc1: "Cada tarea completada gana comisión según el nivel VIP",
+            commDesc2: "Bono por referido: 10% de las ganancias del referido", commDesc3: "Límite diario de tareas basado en órdenes asignadas",
+            secureText: "Todas las transacciones son seguras e instantáneas", selectLanguageText: "Seleccionar Idioma",
+            signOutText: "Cerrar Sesión", customerServiceText: "Servicio al Cliente", sendText: "Enviar",
+            navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio", navP2P: "P2P",
+            orderAmount: "Monto de la Orden", profitEarned: "Ganancia", afterCompletionBalance: "Saldo Después de Completar",
+            serviceQuality: "Calidad del Servicio", productQuality: "Calidad del Producto", salesExperience: "Experiencia de Venta",
+            submitComplete: "Enviar y Completar", processing: "Procesando...", insufficientBalance: "¡Saldo Insuficiente!",
+            yourBalance: "Tu Saldo", needAdditional: "Necesitas Adicional", rechargeNow: "Recargar Ahora",
+            close: "Cerrar", submit: "Enviar", cancel: "Cancelar", uploadReceipt: "Subir comprobante",
+            enterValidAmount: "Ingresa un monto válido", noRecords: "Sin registros.",
+            companyModalTitle: "Acerca de LUXCY", companyModalMission: "Nuestra Misión", companyModalVision: "Nuestra Visión",
+            pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual antes de iniciar una nueva.",
+            okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
+            uploadPhoto: "Subir Foto", save: "Guardar", cancel: "Cancelar",
+            bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
+            referralEarned: "¡Bono por Referido Ganado!",
+            p2pTitle: "Intercambio P2P", p2pKycRequired: "Verificación KYC Requerida", p2pKycMessage: "Completa tu verificación KYC para acceder al trading P2P.",
+            p2pBuy: "Comprar USDT", p2pSell: "Vender USDT", p2pBalance: "Tu Saldo", p2pAvailable: "Disponible",
+            p2pAmount: "Ingresa monto en USDT", p2pNoOrders: "Sin órdenes aún.",
+            p2pOrderPending: "Pendiente", p2pOrderCompleted: "Completado", p2pOrderCancelled: "Cancelado",
+            p2pWaitingForAdmin: "Esperando procesamiento del administrador...", p2pAdminProcessed: "El administrador ha procesado tu orden.",
+            p2pUploadReceipt: "Subir Comprobante de Pago", p2pPaymentComplete: "Pago Completado",
+            p2pOrderSubmitted: "¡Orden enviada! Esperando al administrador.",
+            kycApply: "Solicitar KYC", kycStatus: "Verificación KYC", kycVerified: "Verificado", kycPending: "Pendiente", kycRejected: "Rechazado", kycNone: "No Verificado",
+            kycDocType: "Tipo de Documento", kycFront: "Lado Frontal", kycBack: "Lado Posterior", kycSubmit: "Enviar KYC",
+            kycWaiting: "Esperando revisión del administrador..."
+        },
+        uk: {
+            heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь розкішними подорожами та заробляйте щоденні комісії.",
+            serviceFlightsTitle: "Авіарейси", serviceFlightsDesc: "Бронюйте авіарейси по всьому світу",
+            serviceHotelsTitle: "Готелі", serviceHotelsDesc: "Найкращі пропозиції на готелі",
+            serviceTrainsTitle: "Поїзди", serviceTrainsDesc: "Преміальні квитки на поїзди",
+            serviceTasksTitle: "Платформа Завдань", serviceTasksDesc: "Заробляйте до 1% щодня",
+            loginBtnText: "Увійти", registerBtnText: "Зареєструватися", companyInfoText: "Про компанію",
+            backToHomeText: "На головну", backToHomeTextReg: "На головну",
+            loginWebsiteTagline: "Преміальна екосистема завдань", forgotPasswordText: "Забули пароль?",
+            registerTitle: "Створити обліковий запис", registerNowText: "Зареєструватися", haveAccountText: "Вже є акаунт?",
+            welcomeText: "Ласкаво просимо", vipLevelText: "Рівень VIP", accountBalanceText: "Баланс акаунта",
+            rateText: "Ставка", todayText: "Сьогодні", todayEarningsText: "Заробіток сьогодні",
+            yesterdayText: "Вчора", totalCommissionText: "Загальна комісія",
+            rechargeText: "Поповнити", withdrawText: "Вивести", referralCodeText: "Ваш реферальний код",
+            liveUpdatesText: "Оновлення комісій у реальному часі", exitText: "Вихід",
+            shoppingTasksText: "Завдання з покупок", taskProgressText: "Прогрес завдань", startOrderText: "Почати замовлення",
+            orderHistoryText: "Історія замовлень", myProfileText: "Мій профіль", creditText: "Кредит",
+            totalAssetsText: "Загальні активи", todayOrdersText: "Замовлення сьогодні", todayEarningsTextMine: "Заробіток сьогодні",
+            totalCommissionTextMine: "Загальна комісія", depositText: "Депозит", withdrawTextMine: "Вивести",
+            bindWalletText: "Прив'язати криптогаманець", personalDetailsText: "Особисті дані", loanServiceText: "Служба кредитування",
+            rechargeHistoryText: "Історія поповнень", withdrawHistoryText: "Історія виведень", walletAddressText: "Адреса гаманця",
+            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне виконане завдання приносить комісію залежно від рівня VIP",
+            commDesc2: "Реферальний бонус: 10% від заробітку реферала", commDesc3: "Денний ліміт завдань на основі призначених замовлень",
+            secureText: "Всі транзакції безпечні та миттєві", selectLanguageText: "Виберіть мову",
+            signOutText: "Вийти", customerServiceText: "Служба підтримки", sendText: "Надіслати",
+            navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Мій профіль", navService: "Підтримка", navP2P: "P2P",
+            orderAmount: "Сума замовлення", profitEarned: "Прибуток", afterCompletionBalance: "Баланс після виконання",
+            serviceQuality: "Якість обслуговування", productQuality: "Якість продукту", salesExperience: "Досвід продажів",
+            submitComplete: "Відправити та завершити", processing: "Обробка...", insufficientBalance: "Недостатньо коштів!",
+            yourBalance: "Ваш баланс", needAdditional: "Потрібно додатково", rechargeNow: "Поповнити зараз",
+            close: "Закрити", submit: "Відправити", cancel: "Скасувати", uploadReceipt: "Завантажити квитанцію",
+            enterValidAmount: "Введіть дійсну суму", noRecords: "Немає записів.",
+            companyModalTitle: "Про LUXCY", companyModalMission: "Наша місія", companyModalVision: "Наша візія",
+            pendingOrderWarning: "У вас є незавершене замовлення!", pendingOrderMessage: "Будь ласка, завершіть поточне замовлення перед початком нового.",
+            okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса гаманця USDT TRC20", copy: "Копіювати",
+            uploadPhoto: "Завантажити фото", save: "Зберегти", cancel: "Скасувати",
+            bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
+            referralEarned: "Реферальний бонус отримано!",
+            p2pTitle: "P2P Обмін", p2pKycRequired: "Потрібна KYC верифікація", p2pKycMessage: "Будь ласка, пройдіть KYC верифікацію для доступу до P2P торгівлі.",
+            p2pBuy: "Купити USDT", p2pSell: "Продати USDT", p2pBalance: "Ваш баланс", p2pAvailable: "Доступно",
+            p2pAmount: "Введіть суму в USDT", p2pNoOrders: "Ще немає замовлень.",
+            p2pOrderPending: "Очікується", p2pOrderCompleted: "Завершено", p2pOrderCancelled: "Скасовано",
+            p2pWaitingForAdmin: "Очікується обробка адміністратором...", p2pAdminProcessed: "Адміністратор обробив ваше замовлення.",
+            p2pUploadReceipt: "Завантажити квитанцію", p2pPaymentComplete: "Платіж завершено",
+            p2pOrderSubmitted: "Замовлення надіслано! Очікуйте адміністратора.",
+            kycApply: "Подати заявку на KYC", kycStatus: "KYC Верифікація", kycVerified: "Верифіковано", kycPending: "На розгляді", kycRejected: "Відхилено", kycNone: "Не верифіковано",
+            kycDocType: "Тип документа", kycFront: "Лицьова сторона", kycBack: "Зворотна сторона", kycSubmit: "Відправити KYC",
+            kycWaiting: "Очікування перевірки адміністратором..."
+        },
+        ru: {
+            heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь роскошными путешествиями и зарабатывайте ежедневные комиссии.",
+            serviceFlightsTitle: "Авиарейсы", serviceFlightsDesc: "Бронируйте авиабилеты по всему миру",
+            serviceHotelsTitle: "Отели", serviceHotelsDesc: "Лучшие предложения на отели",
+            serviceTrainsTitle: "Поезда", serviceTrainsDesc: "Премиальные билеты на поезда",
+            serviceTasksTitle: "Платформа Заданий", serviceTasksDesc: "Зарабатывайте до 1% ежедневно",
+            loginBtnText: "Войти", registerBtnText: "Зарегистрироваться", companyInfoText: "О компании",
+            backToHomeText: "На главную", backToHomeTextReg: "На главную",
+            loginWebsiteTagline: "Премиальная экосистема заданий", forgotPasswordText: "Забыли пароль?",
+            registerTitle: "Создать аккаунт", registerNowText: "Зарегистрироваться", haveAccountText: "Уже есть аккаунт?",
+            welcomeText: "Добро пожаловать", vipLevelText: "Уровень VIP", accountBalanceText: "Баланс аккаунта",
+            rateText: "Ставка", todayText: "Сегодня", todayEarningsText: "Заработок сегодня",
+            yesterdayText: "Вчера", totalCommissionText: "Общая комиссия",
+            rechargeText: "Пополнить", withdrawText: "Вывести", referralCodeText: "Ваш реферальный код",
+            liveUpdatesText: "Обновления комиссий в реальном времени", exitText: "Выход",
+            shoppingTasksText: "Задания по покупкам", taskProgressText: "Прогресс заданий", startOrderText: "Начать заказ",
+            orderHistoryText: "История заказов", myProfileText: "Мой профиль", creditText: "Кредит",
+            totalAssetsText: "Общие активы", todayOrdersText: "Заказы сегодня", todayEarningsTextMine: "Заработок сегодня",
+            totalCommissionTextMine: "Общая комиссия", depositText: "Депозит", withdrawTextMine: "Вывести",
+            bindWalletText: "Привязать криптокошелек", personalDetailsText: "Личные данные", loanServiceText: "Кредитная служба",
+            rechargeHistoryText: "История пополнений", withdrawHistoryText: "История выводов", walletAddressText: "Адрес кошелька",
+            howCommissionsText: "Как работают комиссии", commDesc1: "Каждое выполненное задание приносит комиссию в зависимости от уровня VIP",
+            commDesc2: "Реферальный бонус: 10% от заработка реферала", commDesc3: "Дневной лимит заданий на основе назначенных заказов",
+            secureText: "Все транзакции безопасны и мгновенны", selectLanguageText: "Выберите язык",
+            signOutText: "Выйти", customerServiceText: "Служба поддержки", sendText: "Отправить",
+            navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Мой профиль", navService: "Поддержка", navP2P: "P2P",
+            orderAmount: "Сумма заказа", profitEarned: "Прибыль", afterCompletionBalance: "Баланс после завершения",
+            serviceQuality: "Качество обслуживания", productQuality: "Качество продукта", salesExperience: "Опыт продаж",
+            submitComplete: "Отправить и завершить", processing: "Обработка...", insufficientBalance: "Недостаточно средств!",
+            yourBalance: "Ваш баланс", needAdditional: "Требуется дополнительно", rechargeNow: "Пополнить сейчас",
+            close: "Закрыть", submit: "Отправить", cancel: "Отмена", uploadReceipt: "Загрузить квитанцию",
+            enterValidAmount: "Введите действительную сумму", noRecords: "Нет записей.",
+            companyModalTitle: "О LUXCY", companyModalMission: "Наша миссия", companyModalVision: "Наше видение",
+            pendingOrderWarning: "У вас есть незавершенный заказ!", pendingOrderMessage: "Пожалуйста, завершите текущий заказ перед началом нового.",
+            okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес кошелька USDT TRC20", copy: "Копировать",
+            uploadPhoto: "Загрузить фото", save: "Сохранить", cancel: "Отмена",
+            bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
+            referralEarned: "Реферальный бонус получен!",
+            p2pTitle: "P2P Обмен", p2pKycRequired: "Требуется KYC верификация", p2pKycMessage: "Пожалуйста, пройдите KYC верификацию для доступа к P2P торговле.",
+            p2pBuy: "Купить USDT", p2pSell: "Продать USDT", p2pBalance: "Ваш баланс", p2pAvailable: "Доступно",
+            p2pAmount: "Введите сумму в USDT", p2pNoOrders: "Нет заказов.",
+            p2pOrderPending: "Ожидается", p2pOrderCompleted: "Завершено", p2pOrderCancelled: "Отменено",
+            p2pWaitingForAdmin: "Ожидание обработки администратором...", p2pAdminProcessed: "Администратор обработал ваш заказ.",
+            p2pUploadReceipt: "Загрузить квитанцию", p2pPaymentComplete: "Оплата завершена",
+            p2pOrderSubmitted: "Заказ отправлен! Ожидайте администратора.",
+            kycApply: "Подать заявку на KYC", kycStatus: "KYC Верификация", kycVerified: "Верифицирован", kycPending: "На рассмотрении", kycRejected: "Отклонен", kycNone: "Не верифицирован",
+            kycDocType: "Тип документа", kycFront: "Лицевая сторона", kycBack: "Обратная сторона", kycSubmit: "Отправить KYC",
+            kycWaiting: "Ожидание проверки администратором..."
+        }
     };
 
+    // ==================== TOAST FUNCTION ====================
+    function toast(msg, err = false) {
+        const el = document.createElement('div');
+        el.className = `toast-msg ${err ? 'error' : ''}`;
+        el.style.cssText = `
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+            background: ${err ? '#dc2626' : 'rgba(30,42,36,0.92)'};
+            backdrop-filter: blur(12px); padding: 12px 28px; border-radius: 40px;
+            font-size: 13px; z-index: 100; font-weight: 700; color: white;
+            border-left: 3px solid var(--lux-gold);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            max-width: 92%; text-align: center;
+        `;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+    }
+
+    // ==================== APPLY LANGUAGE ====================
     function applyLanguage(lang) {
         const dict = translations[lang] || translations.en;
         currentLang = lang;
@@ -1521,7 +1781,7 @@
         };
         for (const [id, text] of Object.entries(elements)) { const el = document.getElementById(id); if (el) el.innerText = text; }
         if (currentUser) updateUI();
-        showLiveFeedback(`Language changed to ${lang.toUpperCase()}`, false);
+        toast(`Language changed to ${lang.toUpperCase()}`);
     }
 
     window.togglePassword = function(inputId, iconElement) {
@@ -1558,8 +1818,7 @@
                 await saveCurrentUser();
                 updateUI();
             }
-            const dict = translations[currentLang] || translations.en;
-            showLiveFeedback(`🎁 ${dict.referralEarned} +S/ ${referralBonus.toFixed(4)} from referral!`, false);
+            toast(`🎁 Referral Bonus Earned! +S/ ${referralBonus.toFixed(4)}`);
         } catch (error) { console.error("Referral commission error:", error); }
     }
 
@@ -1577,7 +1836,7 @@
         };
         const id = Date.now().toString();
         await setDoc(doc(db, "kycRequests", id), { ...kycData, id });
-        showLiveFeedback("KYC application submitted! Waiting for admin review.");
+        toast("KYC application submitted! Waiting for admin review.");
         updateKycStatus();
     }
 
@@ -1798,7 +2057,7 @@
                             receiptImage: input.compressedData,
                             receiptUploadedAt: new Date().toISOString()
                         });
-                        showLiveFeedback("Payment receipt uploaded! Waiting for admin confirmation.");
+                        toast("Payment receipt uploaded! Waiting for admin confirmation.");
                     };
                 }
             }
@@ -1843,7 +2102,7 @@
             updateUI();
         }
         
-        showLiveFeedback("P2P order submitted! Waiting for admin.");
+        toast("P2P order submitted! Waiting for admin.");
         updateP2PAccess();
     }
 
@@ -1885,7 +2144,7 @@
                 currentUser.pendingInjections = pendingInjections;
                 await saveCurrentUser();
                 const dict = translations[currentLang] || translations.en;
-                showLiveFeedback(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`, false);
+                toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
                 if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
             }
         });
@@ -1966,7 +2225,7 @@
             }
         };
         modal.querySelector("#savePhotoBtn").onclick = async () => {
-            if (selectedImageData) { currentUser.profilePhoto = selectedImageData; await saveCurrentUser(); updateMineAvatar(); showLiveFeedback("Profile photo updated!"); }
+            if (selectedImageData) { currentUser.profilePhoto = selectedImageData; await saveCurrentUser(); updateMineAvatar(); toast("Profile photo updated!"); }
             document.body.removeChild(modal);
         };
         modal.querySelector("#cancelPhotoBtn").onclick = () => document.body.removeChild(modal);
@@ -2034,7 +2293,7 @@
                 updateUI();
                 updateKycStatus();
                 updateP2PAccess();
-                showLiveFeedback("Account updated!", false);
+                toast("Account updated!");
                 const indicator = document.getElementById("realTimeIndicator");
                 indicator.style.display = "flex";
                 setTimeout(() => { indicator.style.display = "none"; }, 2000);
@@ -2109,27 +2368,6 @@
     }
     async function loadSystemSettings() { const docRef = doc(db, "systemSettings", "main"); const docSnap = await getDoc(docRef); if (docSnap.exists()) return docSnap.data(); return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; }
     async function loadCustomOrders() { const snapshot = await getDocs(collection(db, "customOrders")); const orders = []; snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); return orders; }
-
-    function showLiveFeedback(message, isError = false) {
-        let feedback = document.createElement('div');
-        feedback.style.position = 'fixed';
-        feedback.style.bottom = '90px';
-        feedback.style.left = '50%';
-        feedback.style.transform = 'translateX(-50%)';
-        feedback.style.background = isError ? 'rgba(220,38,38,0.92)' : 'rgba(30,42,36,0.92)';
-        feedback.style.backdropFilter = 'blur(12px)';
-        feedback.style.padding = '12px 28px';
-        feedback.style.borderRadius = '40px';
-        feedback.style.fontSize = '13px';
-        feedback.style.zIndex = '100';
-        feedback.style.borderLeft = '3px solid var(--lux-gold)';
-        feedback.style.fontWeight = '700';
-        feedback.style.color = 'white';
-        feedback.style.boxShadow = '0 8px 32px rgba(0,0,0,0.3)';
-        feedback.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${message}`;
-        document.body.appendChild(feedback);
-        setTimeout(() => feedback.remove(), 3000);
-    }
 
     function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.7) {
         return new Promise((resolve, reject) => {
@@ -2225,7 +2463,7 @@
             else netCommission = amount * commissionRate;
             isInjection = true;
             const dict = translations[currentLang] || translations.en;
-            showLiveFeedback(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'} ${dict.injectionMessage || 'Special order from admin!'} Amount: S/ ${amount.toFixed(2)} | Commission: S/ ${netCommission.toFixed(4)}`, false);
+            toast(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'} ${dict.injectionMessage || 'Special order from admin!'} Amount: S/ ${amount.toFixed(2)} | Commission: S/ ${netCommission.toFixed(4)}`);
         } else {
             let percent = 0.53 + (Math.random() * 0.26);
             amount = parseFloat((balance * percent).toFixed(2));
@@ -2319,8 +2557,8 @@
                         currentOrder = null;
                         updateUI();
                         await processReferralCommission(currentUser.id, profitEarned);
-                        if (currentOrder?.isInjection) showLiveFeedback(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`, false);
-                        else showLiveFeedback(`Order Completed! +S/ ${profitEarned.toFixed(4)}`, false);
+                        if (currentOrder?.isInjection) toast(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`);
+                        else toast(`Order Completed! +S/ ${profitEarned.toFixed(4)}`);
                         let dailyLimit = currentUser.tasks.total;
                         let completedCount = currentUser.tasks.completed;
                         if(completedCount >= dailyLimit && dailyLimit > 0) document.getElementById("currentOrderDisplay").style.display = "none";
@@ -2340,7 +2578,7 @@
         let completedCount = currentUser.tasks?.completed || 0;
         if(completedCount >= dailyLimit && dailyLimit > 0) { document.getElementById("currentOrderDisplay").style.display = "none"; return; }
         let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { document.getElementById("currentOrderDisplay").style.display = "none"; showLiveFeedback("Insufficient balance! Please recharge.", true); return; }
+        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { document.getElementById("currentOrderDisplay").style.display = "none"; toast("Insufficient balance! Please recharge.", true); return; }
         let newOrder = await getNextOrder();
         currentUser.currentOrderObj = newOrder;
         await saveCurrentUser();
@@ -2389,7 +2627,7 @@
             const imgData = modal.querySelector("#receiptInput").compressedData;
             await setDoc(doc(db, "rechargeRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, receiptImage: imgData, status: "pending", timestamp: new Date().toISOString() });
             document.body.removeChild(modal);
-            showLiveFeedback("Recharge request submitted!");
+            toast("Recharge request submitted!");
         };
         modal.querySelector("#closeRechargeModal").onclick = () => document.body.removeChild(modal);
     }
@@ -2400,7 +2638,7 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.withdraw}</h2><input type="text" id="withdrawWallet" class="input-lux" placeholder="USDT TRC20 Wallet Address"><input type="number" id="withdrawAmount" class="input-lux" placeholder="Amount" step="0.01"><div class="flex-between" style="gap:12px;"><button class="btn-lux" id="confirmWithdrawBtn" style="flex:1;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeWithdrawModal" style="flex:1;">${dict.cancel}</button></div></div>`;
         document.body.appendChild(modal);
-        document.getElementById("confirmWithdrawBtn").onclick = async () => { let wallet = document.getElementById("withdrawWallet").value.trim(); let amount = parseFloat(document.getElementById("withdrawAmount").value); if(!wallet) { alert("Enter wallet address"); return; } if(isNaN(amount) || amount < 1) { alert("Enter valid amount"); return; } if(amount > currentUser.balance) { alert("Insufficient balance"); return; } currentUser.balance -= amount; await saveCurrentUser(); updateUI(); await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, walletAddress: wallet, status: "pending", timestamp: new Date().toISOString() }); document.body.removeChild(modal); showLiveFeedback("Withdraw request submitted!"); };
+        document.getElementById("confirmWithdrawBtn").onclick = async () => { let wallet = document.getElementById("withdrawWallet").value.trim(); let amount = parseFloat(document.getElementById("withdrawAmount").value); if(!wallet) { alert("Enter wallet address"); return; } if(isNaN(amount) || amount < 1) { alert("Enter valid amount"); return; } if(amount > currentUser.balance) { alert("Insufficient balance"); return; } currentUser.balance -= amount; await saveCurrentUser(); updateUI(); await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, walletAddress: wallet, status: "pending", timestamp: new Date().toISOString() }); document.body.removeChild(modal); toast("Withdraw request submitted!"); };
         document.getElementById("closeWithdrawModal").onclick = () => document.body.removeChild(modal);
     }
 
@@ -2443,7 +2681,7 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">${dict.bindWallet}</h2><input type="text" id="walletAddressInput" class="input-lux" placeholder="USDT TRC20 Address" value="${currentUser.walletAddress || ''}"><button class="btn-lux" id="saveWalletBtn">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeWalletModal">${dict.cancel}</button></div>`;
         document.body.appendChild(modal);
-        document.getElementById("saveWalletBtn").onclick = async () => { currentUser.walletAddress = document.getElementById("walletAddressInput").value.trim(); await saveCurrentUser(); updateUI(); document.body.removeChild(modal); showLiveFeedback("Wallet address updated!"); };
+        document.getElementById("saveWalletBtn").onclick = async () => { currentUser.walletAddress = document.getElementById("walletAddressInput").value.trim(); await saveCurrentUser(); updateUI(); document.body.removeChild(modal); toast("Wallet address updated!"); };
         document.getElementById("closeWalletModal").onclick = () => document.body.removeChild(modal);
     }
 
@@ -2494,7 +2732,7 @@
                 startSettingsSubscription();
                 const lastPage = localStorage.getItem("customerLastPage");
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
-                showLiveFeedback(`Welcome back, ${username}`);
+                toast(`Welcome back, ${username}`);
                 startChatSubscription();
                 await updateKycStatus();
                 updateP2PAccess();
@@ -2539,7 +2777,7 @@
         updateUI();
         loadBackgrounds();
         showPage("home");
-        showLiveFeedback("Registration successful!");
+        toast("Registration successful!");
         startChatSubscription();
         await updateKycStatus();
         updateP2PAccess();
@@ -2586,7 +2824,7 @@
         localStorage.removeItem("currentUserId");
         if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
         showPage("landing");
-        showLiveFeedback("Signed out");
+        toast("Signed out");
     }
 
     // ==================== EVENT LISTENERS ====================
@@ -2600,7 +2838,7 @@
         document.getElementById("loanServiceBtn").onclick = showLoanServiceModal;
         document.getElementById("signOutBtnHome").onclick = signOut;
         document.getElementById("signOutBtnMine").onclick = signOut;
-        document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); showLiveFeedback("Refreshed!"); });
+        document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); });
         document.getElementById("rechargeHomeBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
         document.getElementById("withdrawHomeBtn").onclick = () => currentUser ? showWithdrawModal() : alert("Login first");
         document.getElementById("depositBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
@@ -2739,7 +2977,7 @@
             showPage("mine");
             setTimeout(() => showKycModal(), 500);
         };
-        document.getElementById("refreshP2PBtn").onclick = () => { updateP2PAccess(); renderP2POrders(); showLiveFeedback("P2P refreshed!"); };
+        document.getElementById("refreshP2PBtn").onclick = () => { updateP2PAccess(); renderP2POrders(); toast("P2P refreshed!"); };
 
         document.getElementById("mineProfilePhoto").onclick = () => { if(currentUser) showUploadPhotoModal(); };
     });
@@ -2787,6 +3025,35 @@
         })();
     } else showPage("landing");
     startLiveFeed();
+
+    // ===== AUTH STATE LISTENER =====
+    onAuthStateChanged(auth, async (user) => {
+        if (user && !currentUser) {
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                currentUser = { id: user.uid, ...userSnap.data() };
+                localStorage.setItem('currentUserId', currentUser.id);
+                subscribeToUser(currentUser.id);
+                subscribeToWithdrawals(currentUser.id);
+                subscribeToInjections(currentUser.id);
+                subscribeToP2POrders(currentUser.id);
+                updateUI();
+                loadBackgrounds();
+                const lastPage = localStorage.getItem("customerLastPage");
+                showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
+                startChatSubscription();
+                await updateKycStatus();
+                updateP2PAccess();
+                await checkAndShowPopupAds();
+            }
+        } else if (!user && currentUser) {
+            // User signed out
+            signOut();
+        }
+    });
+
+    console.log('✅ LUXCY App initialized with Google Login!');
 </script>
 </body>
 </html>
