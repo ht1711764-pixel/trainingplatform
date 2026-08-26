@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
+        /* ===== မူရင်း CSS အတိုင်းပါ ===== */
         @font-face {
             font-family: 'Inter';
             src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -562,46 +563,6 @@
             animation:pulse 1.5s infinite;
             display:none;
         }
-
-        /* ===== SPINNER ANIMATION FOR RECHARGE ===== */
-        @keyframes spin {
-            0% { transform:rotate(0deg); }
-            100% { transform:rotate(360deg); }
-        }
-        .spinner-circle {
-            display:inline-block;
-            width:28px;
-            height:28px;
-            border:3px solid rgba(45,106,79,0.15);
-            border-radius:50%;
-            border-top-color:var(--secondary);
-            animation:spin 0.8s linear infinite;
-            margin-right:10px;
-            vertical-align:middle;
-        }
-        .checking-wrapper {
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            justify-content:center;
-            padding:12px 0;
-            gap:8px;
-        }
-        .checking-wrapper .spinner-circle {
-            width:36px;
-            height:36px;
-            border-width:4px;
-        }
-        .checking-wrapper .checking-text {
-            font-size:15px;
-            font-weight:600;
-            color:var(--secondary);
-            letter-spacing:0.3px;
-        }
-        .checking-wrapper .checking-sub {
-            font-size:13px;
-            color:var(--muted);
-        }
     </style>
 </head>
 <body>
@@ -675,11 +636,14 @@
                 <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
                 <span id="goRegisterBtn" style="color:var(--secondary);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
+
+            <!-- ========== GOOGLE BUTTON ON LOGIN PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
+            <!-- ================================================= -->
         </div>
     </div>
 
@@ -696,11 +660,15 @@
             <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
             <input class="input-glass" id="regInvite" placeholder="Invitation Code (Optional)">
             <button class="btn-primary" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
+            
+            <!-- ========== GOOGLE BUTTON ON REGISTER PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="registerGoogleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
+            <!-- =================================================== -->
+            
             <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--muted);" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--secondary);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
@@ -890,7 +858,7 @@
     let order = null;
     let ratings = { service: 0, quality: 0, sales: 0 };
     let feedInterval = null;
-    let unsubUser = null, unsubChat = null, unsubInjections = null, unsubNotifications = null, unsubRecharge = null;
+    let unsubUser = null, unsubChat = null, unsubInjections = null, unsubNotifications = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
@@ -1015,9 +983,7 @@
             uploadPhoto:"Upload Photo", save:"Save",
             bonusOrder:"BONUS ORDER!", injectionMsg:"Special commission order from admin!",
             referralEarned:"Referral Bonus Earned!",
-            rechargeWaiting:"Please wait, we are checking your payment.",
-            rechargeApproved:"✅ Recharge approved! Balance updated.",
-            rechargeRejected:"❌ Recharge rejected."
+            rechargeWaiting:"Please wait, we are checking your payment."
         }
     };
 
@@ -1071,7 +1037,9 @@
                 user = { id: gUser.uid, ...userSnap.data() };
                 toast(`Welcome back, ${user.username}`);
             } else {
+                // Fetch IP address for new users
                 const ip = await getClientIP();
+                
                 const newUser = {
                     id: gUser.uid,
                     username: username,
@@ -1096,7 +1064,7 @@
                     role: 'customer',
                     lastSeen: Date.now(),
                     authProvider: 'google',
-                    regIP: ip
+                    regIP: ip // <--- Save IP
                 };
                 await setDoc(userRef, newUser);
                 user = { id: gUser.uid, ...newUser };
@@ -1117,7 +1085,6 @@
         subscribeInjections(u.id);
         subscribeChat();
         subscribeNotifications();
-        subscribeRecharge(u.id);
         startLastSeenUpdate();
         updateUI();
         const last = localStorage.getItem('lastPage');
@@ -1195,24 +1162,32 @@
         await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
     }
 
-    // ===== NOTIFICATIONS =====
+    // ===== NOTIFICATIONS (FIXED: ONLY SHOW TYPE: NOTIFICATION) =====
     function subscribeNotifications() {
         if (unsubNotifications) unsubNotifications();
         if (!user) return;
+        
+        // Listen for messages sent FROM admin TO this user where type === 'notification'
         const q = query(collection(db, "chatMessages"), 
             where("from", "==", "admin"), 
             where("to", "==", user.username),
-            where("type", "==", "notification"),
+            where("type", "==", "notification"), // <--- ONLY GET NOTIFICATIONS
             orderBy("id", "asc")
         );
+        
         unsubNotifications = onSnapshot(q, (snap) => {
             let newCount = 0;
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
-                if (!m.read) newCount++;
+                // If this message hasn't been read yet
+                if (!m.read) {
+                    newCount++;
+                }
                 msgs.push(m);
             });
+
+            // Update badge
             const badge = document.getElementById('notifBadge');
             if (newCount > 0) {
                 badge.innerText = newCount;
@@ -1220,14 +1195,18 @@
             } else {
                 badge.style.display = 'none';
             }
+
+            // Store unread messages globally to show in modal
             window.__unreadAdminMessages = msgs.filter(m => !m.read);
         });
     }
 
+    // Show Notification Modal (Clicking Bell)
     document.getElementById('notificationBtn').onclick = async () => {
         if (!user) return;
         const d = t[lang] || t.en;
         const msgs = window.__unreadAdminMessages || [];
+        
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `
@@ -1239,10 +1218,12 @@
         } else {
             msgs.sort((a,b) => a.id - b.id);
             msgs.forEach(m => {
+                // Parse the notification text to split title and body
                 const text = m.text || '';
                 const parts = text.split('\n\n');
                 const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
                 const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
+
                 html += `
                     <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
                         <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
@@ -1258,8 +1239,11 @@
         `;
         modal.innerHTML = html;
         document.body.appendChild(modal);
+
+        // Mark all as read when closed
         modal.querySelector('#notifCloseBtn').onclick = async () => {
             document.body.removeChild(modal);
+            // Mark messages as read in database
             if (msgs.length > 0) {
                 for (let m of msgs) {
                     const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
@@ -1267,31 +1251,42 @@
                         updateDoc(doc(db, "chatMessages", d.id), { read: true });
                     });
                 }
+                // Hide badge
                 document.getElementById('notifBadge').style.display = 'none';
                 window.__unreadAdminMessages = [];
             }
         };
     };
 
-    // ===== CHAT =====
+    // ===== CHAT (FIXED: ONLY SHOW STANDARD MESSAGES, IGNORE NOTIFICATIONS) =====
     function subscribeChat() {
         if (unsubChat) unsubChat();
         const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
         unsubChat = onSnapshot(q, (snap) => {
+            // ONLY update if Service Page is active
             const isServicePage = document.getElementById('pageService').classList.contains('active-page');
             if (!isServicePage) return;
+
             const container = document.getElementById('chatMessages');
             if (!container || !user) return;
+            
+            // Store ALL messages related to this user EXCEPT notifications
             const msgs = [];
             snap.forEach(d => {
                 const m = d.data();
+                // Criteria: (User sent to Admin) OR (Admin sent to User)
+                // AND type is NOT 'notification'
                 if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
                     msgs.push(m);
                 }
             });
             msgs.sort((a,b) => a.id - b.id);
+            
+            // Render all messages
             container.innerHTML = msgs.length ? msgs.map(m => {
                 const isSent = m.from === user.username;
+                // Use the user's local browser timezone for display
+                // m.time is stored in UTC, browser handles the conversion automatically when passed to Date()
                 const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
                 return `
                     <div class="chat-msg ${isSent ? 'sent' : 'received'}">
@@ -1301,27 +1296,27 @@
                     </div>
                 `;
             }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
+            
             container.scrollTop = container.scrollHeight;
         });
     }
 
     async function sendChat(text, img=null) {
         if (!user) return;
+        // Save time as ISO string (UTC) so it can be formatted to any local timezone later
         await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
             id: Date.now()+Math.random(),
             from: user.username,
             to: 'admin',
             text: text||'',
             image: img,
-            time: new Date().toISOString(),
+            time: new Date().toISOString(), // UTC time
             read: false,
-            type: 'message'
+            type: 'message' // Standard chat message
         });
     }
 
-    // ============================================================
-    // ===== RECHARGE: MODAL WITH SPINNER + REAL-TIME STATUS =====
-    // ============================================================
+    // ===== RECHARGE MODAL =====
     function showRechargeModal() {
         const d = t[lang] || t.en;
         const modal = document.createElement('div');
@@ -1330,7 +1325,7 @@
             <div class="modal-box">
                 <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
                 <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
                     <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
                 </div>
                 <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
@@ -1344,15 +1339,15 @@
                     <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
                 </div>
                 <div id="receiptPreview" style="text-align:center;margin:6px 0;"></div>
-                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;min-height:50px;"></div>
                 <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
                 <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
             </div>
         `;
         document.body.appendChild(modal);
 
         modal.querySelector("#copyWalletBtn").onclick = () => {
-            navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF');
+            navigator.clipboard.writeText('TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf');
             toast("Copied!");
         };
 
@@ -1375,7 +1370,7 @@
             }
         };
 
-        modal.querySelector("#rechargeSubmitBtn").onclick = async function() {
+        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
             const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
             if (isNaN(amt) || amt < 1) {
                 modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
@@ -1385,71 +1380,26 @@
                 modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
                 return;
             }
+            modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#f59e0b;"><i class="fas fa-clock"></i> ${d.rechargeWaiting}</span>`;
+            modal.querySelector("#rechargeSubmitBtn").disabled = true;
 
-            this.disabled = true;
-            this.innerHTML = '<span class="spinner-circle" style="width:22px;height:22px;border-width:3px;"></span> Processing...';
+            await setDoc(doc(db, "rechargeRequests", Date.now().toString()), {
+                id: Date.now().toString(),
+                userId: user.id,
+                userName: user.username,
+                amount: amt,
+                receiptImage: receiptData,
+                status: 'pending',
+                timestamp: new Date().toISOString()
+            });
 
-            modal.querySelector("#rechargeMsg").innerHTML = `
-                <div class="checking-wrapper">
-                    <div class="spinner-circle"></div>
-                    <div class="checking-text">${d.rechargeWaiting}</div>
-                    <div class="checking-sub">⏳ This may take a moment</div>
-                </div>
-            `;
-
-            try {
-                const reqId = Date.now().toString();
-                await setDoc(doc(db, "rechargeRequests", reqId), {
-                    id: reqId,
-                    userId: user.id,
-                    userName: user.username,
-                    amount: amt,
-                    receiptImage: receiptData,
-                    status: 'pending',
-                    timestamp: new Date().toISOString()
-                });
-
-                setTimeout(() => {
-                    document.body.removeChild(modal);
-                    toast(d.rechargeWaiting);
-                }, 2500);
-
-            } catch (e) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
-                this.disabled = false;
-                this.innerHTML = d.submit;
-            }
+            setTimeout(() => {
+                document.body.removeChild(modal);
+                toast(d.rechargeWaiting || "Please wait, we are checking your payment.");
+            }, 800);
         };
 
         modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ============================================================
-    // ===== SUBSCRIBE RECHARGE: AUTO BALANCE ON APPROVE =====
-    // ============================================================
-    function subscribeRecharge(userId) {
-        if (unsubRecharge) unsubRecharge();
-        if (!userId) return;
-        const q = query(collection(db, "rechargeRequests"), where("userId", "==", userId));
-        unsubRecharge = onSnapshot(q, async (snap) => {
-            snap.forEach(async (docSnap) => {
-                const data = docSnap.data();
-                if (data.status === 'approved' && !data.balanceAdded) {
-                    if (user) {
-                        user.balance = (user.balance || 0) + data.amount;
-                        await saveUser();
-                        updateUI();
-                        const d = t[lang] || t.en;
-                        toast(`✅ Recharge of $${data.amount} approved! Balance updated.`);
-                    }
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                } else if (data.status === 'rejected' && !data.balanceAdded) {
-                    const d = t[lang] || t.en;
-                    toast(`❌ Recharge of $${data.amount} was rejected.`);
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                }
-            });
-        });
     }
 
     // ===== WITHDRAW =====
@@ -1969,6 +1919,7 @@
         if (name === 'work') { updateUI(); refreshWork(); }
         if (name === 'orders') updateUI();
         if (name === 'service') { 
+            // Trigger chat reload immediately
             if (unsubChat) unsubChat();
             subscribeChat(); 
         }
@@ -1999,34 +1950,35 @@
 
     // =============================================================
     // ===== FIXED LOGIN: username ကိုရှာပြီးမှ password စစ် =====
+    // ===== (Firestore Index မလိုဘဲ အလုပ်လုပ်) =====
     // =============================================================
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
         
-        if (!username || !password) { 
-            toast('Enter username and password.', true); 
-            return; 
+        if (!username || !password) {
+            toast('Enter username and password.', true);
+            return;
         }
         
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         
         try {
-            // Step 1: Find user by username only (no compound query)
+            // Step 1: username နဲ့ပဲ ရှာပါ (index မလိုဘူး)
             const q = query(collection(db, "users"), where("username", "==", username));
             const snap = await getDocs(q);
             
-            if (snap.empty) { 
-                toast('Username not found.', true); 
-                this.disabled = false; 
-                this.innerHTML = 'Login'; 
-                return; 
+            if (snap.empty) {
+                toast('Username not found.', true);
+                this.disabled = false;
+                this.innerHTML = 'Login';
+                return;
             }
             
             const data = snap.docs[0].data();
             
-            // Step 2: Check password
+            // Step 2: password စစ်ပါ
             if (data.password !== password) {
                 toast('Invalid password.', true);
                 this.disabled = false;
@@ -2034,15 +1986,15 @@
                 return;
             }
             
-            // Step 3: Check if disabled
-            if (data.disabled) { 
-                toast('Account disabled.', true); 
-                this.disabled = false; 
-                this.innerHTML = 'Login'; 
-                return; 
+            // Step 3: disabled စစ်ပါ
+            if (data.disabled) {
+                toast('Account disabled.', true);
+                this.disabled = false;
+                this.innerHTML = 'Login';
+                return;
             }
             
-            // Step 4: Login success
+            // Step 4: Login အောင်မြင်ပြီ
             user = { id: snap.docs[0].id, ...data };
             if (!user.orders) user.orders = [];
             if (!user.tasks) user.tasks = { completed:0, total:0 };
@@ -2052,7 +2004,6 @@
             subscribeInjections(user.id);
             subscribeChat();
             subscribeNotifications();
-            subscribeRecharge(user.id);
             startLastSeenUpdate();
             updateUI();
             
@@ -2079,18 +2030,18 @@
         const invite = document.getElementById('regInvite').value.trim();
         if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
         if (pass !== confirm) { toast('Passwords do not match.', true); return; }
-        
-        // Check username exists
         const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
         if (!exist.empty) { toast('Username exists.', true); return; }
-        
         let ref = null;
         if (invite) {
             const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
             if (refCheck.empty) { toast('Invalid invitation code.', true); return; }
             ref = refCheck.docs[0].data().username;
         }
+
+        // Fetch IP address for new users
         const ip = await getClientIP();
+
         user = {
             id: Date.now().toString(),
             username, email, phone,
@@ -2112,14 +2063,13 @@
             currentOrderObj: null,
             role: 'customer',
             lastSeen: Date.now(),
-            regIP: ip
+            regIP: ip // <--- Save IP
         };
         await setDoc(doc(db, "users", user.id), user);
         subscribeUser(user.id);
         subscribeInjections(user.id);
         subscribeChat();
         subscribeNotifications();
-        subscribeRecharge(user.id);
         startLastSeenUpdate();
         updateUI();
         showPage('home');
@@ -2132,7 +2082,6 @@
         if (unsubChat) unsubChat();
         if (unsubInjections) unsubInjections();
         if (unsubNotifications) unsubNotifications();
-        if (unsubRecharge) unsubRecharge();
         if (feedInterval) clearInterval(feedInterval);
         if (lastSeenInterval) clearInterval(lastSeenInterval);
         const uid = user?.id;
@@ -2141,11 +2090,13 @@
         pendingInjections = [];
         localStorage.removeItem('uid');
         if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+        
         firebaseSignOut(auth).then(() => {
             console.log("Signed out from Firebase");
         }).catch((error) => {
             console.error("Sign out error:", error);
         });
+
         showPage('landing');
         toast('Signed out.');
     }
@@ -2395,7 +2346,6 @@
                     subscribeInjections(user.id);
                     subscribeChat();
                     subscribeNotifications();
-                    subscribeRecharge(user.id);
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
@@ -2403,6 +2353,8 @@
                     await checkPopup();
                 }
             }
+        } else {
+            // No Google User found
         }
     });
 
@@ -2420,7 +2372,6 @@
                     subscribeInjections(user.id);
                     subscribeChat();
                     subscribeNotifications();
-                    subscribeRecharge(user.id);
                     startLastSeenUpdate();
                     updateUI();
                     const last = localStorage.getItem('lastPage');
