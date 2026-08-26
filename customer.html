@@ -7,7 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        /* System Font ကို သုံးထားပါတယ် - အင်တာနက်မှ Font ဆွဲစရာ မလိုတော့ပါ */
+        @font-face {
+            font-family: 'Inter';
+            src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Inter';
+            src: url('Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+            font-weight: 100 900;
+            font-style: italic;
+            font-display: swap;
+        }
+
         :root {
             --primary: #1a1a2e;
             --primary-light: #2d2d44;
@@ -29,523 +43,559 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 70px;
-            -webkit-font-smoothing: antialiased;
+            font-family:'Inter', sans-serif; 
+            background:var(--bg);
+            color:var(--text);
+            min-height:100vh;
+            overflow-x:hidden;
+            padding-bottom:70px;
+            -webkit-font-smoothing:antialiased;
         }
         .app {
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 0 16px 20px;
-            min-height: 100vh;
+            max-width:520px;
+            margin:0 auto;
+            padding:0 16px 20px;
+            min-height:100vh;
         }
-        .page { display: none; padding: 10px 0 20px; animation: fadeIn .3s ease; }
-        .active-page { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .page { display:none; padding:10px 0 20px; animation:fadeIn .3s ease; }
+        .active-page { display:block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 16px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:16px 0 16px;
+            border-bottom:1px solid var(--border);
+            margin-bottom:16px;
         }
-        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area { display:flex; align-items:center; gap:10px; }
         .logo-icon {
-            width: 40px; height: 40px;
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: #fff;
-            flex-shrink: 0;
+            width:40px; height:40px;
+            background:linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:18px;
+            color:#fff;
+            flex-shrink:0;
         }
-        .logo-text { font-size: 20px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
-        .header-actions { display: flex; gap: 6px; }
+        .logo-text { font-size:20px; font-weight:800; color:var(--primary); letter-spacing:-0.5px; }
+        .header-actions { display:flex; gap:6px; }
         .icon-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 6px 14px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 13px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: var(--shadow);
+            background:var(--bg-card);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:6px 14px;
+            cursor:pointer;
+            color:var(--text-secondary);
+            font-size:13px;
+            transition:var(--transition);
+            display:flex;
+            align-items:center;
+            gap:6px;
+            box-shadow:var(--shadow);
         }
-        .icon-btn:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(-1px); }
+        .icon-btn:hover { border-color:var(--secondary); color:var(--secondary); transform:translateY(-1px); }
+
         .notification-btn {
-            position: relative;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 6px 14px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            font-size: 13px;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: var(--shadow);
+            position:relative;
+            background:var(--bg-card);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:6px 14px;
+            cursor:pointer;
+            color:var(--text-secondary);
+            font-size:13px;
+            transition:var(--transition);
+            display:flex;
+            align-items:center;
+            gap:6px;
+            box-shadow:var(--shadow);
         }
-        .notification-btn:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(-1px); }
+        .notification-btn:hover { border-color:var(--secondary); color:var(--secondary); transform:translateY(-1px); }
         .notification-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #dc2626;
-            color: #fff;
-            border-radius: 50%;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 5px;
-            min-width: 18px;
-            text-align: center;
-            display: none;
+            position:absolute;
+            top:-6px;
+            right:-6px;
+            background:#dc2626;
+            color:#fff;
+            border-radius:50%;
+            font-size:9px;
+            font-weight:700;
+            padding:2px 5px;
+            min-width:18px;
+            text-align:center;
+            display:none;
         }
 
         .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            margin-bottom: 14px;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            background:var(--bg-card);
+            border-radius:var(--radius);
+            padding:18px 20px;
+            margin-bottom:14px;
+            border:1px solid var(--border);
+            box-shadow:var(--shadow);
+            transition:var(--transition);
         }
-        .card:hover { box-shadow: var(--shadow-hover); border-color: rgba(45,106,79,0.12); }
+        .card:hover { box-shadow:var(--shadow-hover); border-color:rgba(45,106,79,0.12); }
 
         .btn-primary {
-            background: var(--secondary);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-            width: 100%;
-            text-align: center;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(45,106,79,0.15);
+            background:var(--secondary);
+            border:none;
+            padding:12px 24px;
+            border-radius:40px;
+            font-weight:600;
+            color:#fff;
+            cursor:pointer;
+            transition:var(--transition);
+            font-size:14px;
+            width:100%;
+            text-align:center;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:8px;
+            box-shadow:0 4px 16px rgba(45,106,79,0.15);
         }
-        .btn-primary:hover { background: var(--secondary-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.20); }
-        .btn-primary:active { transform: scale(0.97); }
-        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-primary:hover { background:var(--secondary-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(45,106,79,0.20); }
+        .btn-primary:active { transform:scale(0.97); }
+        .btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
         .btn-outline {
-            background: transparent;
-            border: 1.5px solid var(--secondary);
-            color: var(--secondary);
-            box-shadow: none;
+            background:transparent;
+            border:1.5px solid var(--secondary);
+            color:var(--secondary);
+            box-shadow:none;
         }
-        .btn-outline:hover { background: rgba(45,106,79,0.04); transform: translateY(-2px); }
-        .btn-sm { padding: 8px 16px; font-size: 12px; width: auto; }
+        .btn-outline:hover { background:rgba(45,106,79,0.04); transform:translateY(-2px); }
+        .btn-sm { padding:8px 16px; font-size:12px; width:auto; }
         
         .btn-google {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-            width: 100%;
-            text-align: center;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: var(--shadow);
-            margin-top: 8px;
+            background:#ffffff;
+            border:1px solid var(--border);
+            color:var(--text-secondary);
+            padding:12px 24px;
+            border-radius:40px;
+            font-weight:600;
+            cursor:pointer;
+            transition:var(--transition);
+            font-size:14px;
+            width:100%;
+            text-align:center;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            box-shadow:var(--shadow);
+            margin-top:8px;
         }
-        .btn-google:hover { border-color: var(--secondary); color: var(--text); transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-        .btn-google i { font-size: 20px; color: #EA4335; }
+        .btn-google:hover { border-color:var(--secondary); color:var(--text); transform:translateY(-1px); box-shadow:var(--shadow-hover); }
+        .btn-google i { font-size:20px; color:#EA4335; }
 
         .input-glass {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            padding: 12px 16px;
-            border-radius: 40px;
-            width: 100%;
-            color: var(--text);
-            font-size: 14px;
-            outline: none;
-            transition: var(--transition);
-            margin-bottom: 10px;
+            background:var(--bg);
+            border:1px solid var(--border);
+            padding:12px 16px;
+            border-radius:40px;
+            width:100%;
+            color:var(--text);
+            font-size:14px;
+            outline:none;
+            transition:var(--transition);
+            margin-bottom:10px;
         }
-        .input-glass:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(45,106,79,0.06); }
-        .input-glass::placeholder { color: var(--muted); }
-        .pw-wrap { position: relative; }
-        .pw-wrap .input-glass { padding-right: 44px; }
+        .input-glass:focus { border-color:var(--secondary); box-shadow:0 0 0 3px rgba(45,106,79,0.06); }
+        .input-glass::placeholder { color:var(--muted); }
+        .pw-wrap { position:relative; }
+        .pw-wrap .input-glass { padding-right:44px; }
         .pw-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 16px;
+            position:absolute;
+            right:14px;
+            top:50%;
+            transform:translateY(-50%);
+            background:none;
+            border:none;
+            color:var(--muted);
+            cursor:pointer;
+            font-size:16px;
         }
 
-        .vip-1 { background: #e8e8ed; color: var(--text-secondary); padding: 2px 14px; border-radius: 20px; font-size: 10px; font-weight: 700; display: inline-block; }
-        .vip-2 { background: #d4edda; color: #1e7e34; }
-        .vip-3 { background: #cce5ff; color: #0f6b7a; }
-        .vip-4 { background: linear-gradient(135deg,#D4AF37,#F5E7B2); color: #0a120e; }
+        .vip-1 { background:#e8e8ed; color:var(--text-secondary); padding:2px 14px; border-radius:20px; font-size:10px; font-weight:700; display:inline-block; }
+        .vip-2 { background:#d4edda; color:#1e7e34; }
+        .vip-3 { background:#cce5ff; color:#0f6b7a; }
+        .vip-4 { background:linear-gradient(135deg,#D4AF37,#F5E7B2); color:#0a120e; }
 
         .balance-box {
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            border-radius: var(--radius);
-            padding: 22px 24px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
+            background:linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius:var(--radius);
+            padding:22px 24px;
+            color:#fff;
+            position:relative;
+            overflow:hidden;
         }
         .balance-box::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            right: -20%;
-            width: 60%;
-            height: 60%;
-            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-            pointer-events: none;
+            content:'';
+            position:absolute;
+            top:-40%;
+            right:-20%;
+            width:60%;
+            height:60%;
+            background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);
+            pointer-events:none;
         }
-        .balance-box .amount { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: 1px; }
-        .balance-box .label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+        .balance-box .amount { font-size:36px; font-weight:800; color:#fff; letter-spacing:1px; }
+        .balance-box .label { font-size:12px; color:rgba(255,255,255,0.5); letter-spacing:1px; text-transform:uppercase; }
 
         .bottom-nav {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 6px 8px 14px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 30;
-            box-shadow: 0 -4px 20px rgba(26,26,46,0.04);
+            background:var(--bg-card);
+            border-top:1px solid var(--border);
+            display:flex;
+            justify-content:space-around;
+            align-items:center;
+            padding:6px 8px 14px;
+            position:fixed;
+            bottom:0;
+            left:0;
+            right:0;
+            z-index:30;
+            box-shadow:0 -4px 20px rgba(26,26,46,0.04);
         }
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-size: 8px;
-            color: var(--muted);
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            padding: 4px 8px;
-            border-radius: 12px;
-            border: none;
-            background: transparent;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:2px;
+            font-size:8px;
+            color:var(--muted);
+            cursor:pointer;
+            font-weight:600;
+            transition:var(--transition);
+            padding:4px 8px;
+            border-radius:12px;
+            border:none;
+            background:transparent;
         }
-        .nav-item i { font-size: 20px; color: var(--muted); transition: var(--transition); }
-        .nav-item.active { color: var(--secondary); }
-        .nav-item.active i { color: var(--secondary); transform: scale(1.05); }
-        .nav-item:active { transform: scale(0.92); }
-        .hidden-nav { display: none !important; }
+        .nav-item i { font-size:20px; color:var(--muted); transition:var(--transition); }
+        .nav-item.active { color:var(--secondary); }
+        .nav-item.active i { color:var(--secondary); transform:scale(1.05); }
+        .nav-item:active { transform:scale(0.92); }
+        .hidden-nav { display:none !important; }
 
         .chat-box {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 180px);
-            background: var(--bg);
-            border-radius: var(--radius);
-            overflow: hidden;
-            border: 1px solid var(--border);
+            display:flex;
+            flex-direction:column;
+            height:calc(100vh - 180px);
+            background:var(--bg);
+            border-radius:var(--radius);
+            overflow:hidden;
+            border:1px solid var(--border);
         }
-        .chat-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+        .chat-msgs { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:6px; }
         .chat-msg {
-            max-width: 82%;
-            padding: 10px 16px;
-            border-radius: 16px;
-            font-size: 14px;
-            line-height: 1.5;
-            word-break: break-word;
+            max-width:82%;
+            padding:10px 16px;
+            border-radius:16px;
+            font-size:14px;
+            line-height:1.5;
+            word-break:break-word;
         }
         .chat-msg.sent {
-            align-self: flex-end;
-            background: var(--secondary);
-            color: #fff;
-            border-bottom-right-radius: 4px;
+            align-self:flex-end;
+            background:var(--secondary);
+            color:#fff;
+            border-bottom-right-radius:4px;
         }
         .chat-msg.received {
-            align-self: flex-start;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-bottom-left-radius: 4px;
+            align-self:flex-start;
+            background:var(--bg);
+            border:1px solid var(--border);
+            border-bottom-left-radius:4px;
         }
-        .chat-msg .time { font-size: 9px; opacity: 0.4; margin-top: 4px; text-align: right; }
-        .chat-msg img { max-width: 140px; max-height: 100px; border-radius: 8px; margin-top: 4px; border: 1px solid var(--border); cursor: pointer; }
+        .chat-msg .time { font-size:9px; opacity:0.4; margin-top:4px; text-align:right; }
+        .chat-msg img { max-width:140px; max-height:100px; border-radius:8px; margin-top:4px; border:1px solid var(--border); cursor:pointer; }
         .chat-input {
-            display: flex;
-            gap: 6px;
-            padding: 10px 12px;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            align-items: center;
-            flex-wrap: wrap;
+            display:flex;
+            gap:6px;
+            padding:10px 12px;
+            background:var(--bg-card);
+            border-top:1px solid var(--border);
+            align-items:center;
+            flex-wrap:wrap;
         }
-        .chat-input .input-glass { margin: 0; flex: 1; padding: 10px 16px; font-size: 13px; min-height: 44px; border-radius: 40px; }
-        .chat-input .btn-primary { width: auto; padding: 10px 20px; font-size: 13px; min-height: 44px; }
+        .chat-input .input-glass { margin:0; flex:1; padding:10px 16px; font-size:13px; min-height:44px; border-radius:40px; }
+        .chat-input .btn-primary { width:auto; padding:10px 20px; font-size:13px; min-height:44px; }
 
         .order-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 18px 20px;
-            border: 1px solid var(--secondary);
-            margin-bottom: 14px;
-            box-shadow: var(--shadow);
+            background:var(--bg-card);
+            border-radius:var(--radius);
+            padding:18px 20px;
+            border:1px solid var(--secondary);
+            margin-bottom:14px;
+            box-shadow:var(--shadow);
         }
-        .order-card.injection { border-color: #f59e0b; box-shadow: 0 0 40px rgba(245,158,11,0.04); }
+        .order-card.lucky {
+            border-color: var(--gold);
+            background: linear-gradient(180deg, #fffdf5, #ffffff);
+            box-shadow: 0 8px 30px rgba(212,175,55,0.15);
+        }
+        .lucky-glow { position:absolute; top:-50%; right:-50%; width:200%; height:200%; background:radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%); pointer-events:none; }
+        .lucky-badge { background:linear-gradient(135deg,#D4AF37,#F5E7B2); color:#1a1a2e; padding:6px 20px; border-radius:30px; font-size:13px; font-weight:800; display:inline-block; animation:pulse 1.5s infinite; box-shadow:0 4px 12px rgba(212,175,55,0.3); margin-bottom:10px; }
+        @keyframes pulse { 0%,100%{opacity:0.8} 50%{opacity:1} }
         .order-img {
-            width: 100%; height: 120px;
-            background: var(--bg);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 14px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            width:100%; height:120px;
+            background:var(--bg);
+            border-radius:14px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:14px;
+            overflow:hidden;
+            border:1px solid var(--border);
         }
-        .order-img img { width: 100%; height: 100%; object-fit: contain; }
-        .injection-badge {
-            background: linear-gradient(135deg,#f59e0b,#ea580c);
-            color: #fff;
-            padding: 2px 12px;
-            border-radius: 16px;
-            font-size: 10px;
-            font-weight: 700;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+        .order-img img { width:100%; height:100%; object-fit:contain; }
 
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 1000;
-            padding: 16px;
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5);
+            backdrop-filter:blur(8px);
+            display:flex; align-items:center; justify-content:center;
+            z-index:1000;
+            padding:16px;
         }
         .modal-box {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 24px;
-            width: 100%; max-width: 440px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(26,26,46,0.15);
+            background:var(--bg-card);
+            border-radius:24px;
+            padding:24px;
+            width:100%; max-width:440px;
+            max-height:85vh;
+            overflow-y:auto;
+            box-shadow:0 20px 60px rgba(26,26,46,0.15);
         }
-        .modal-title { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .modal-title { font-size:20px; font-weight:700; color:var(--primary); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
 
         .toast-msg {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            padding: 10px 24px;
-            border-radius: 40px;
-            font-size: 13px;
-            z-index: 100;
-            font-weight: 500;
-            color: #fff;
-            box-shadow: 0 8px 32px rgba(26,26,46,0.15);
-            max-width: 92%;
-            text-align: center;
+            position:fixed;
+            bottom:80px;
+            left:50%;
+            transform:translateX(-50%);
+            background:var(--primary);
+            padding:10px 24px;
+            border-radius:40px;
+            font-size:13px;
+            z-index:100;
+            font-weight:500;
+            color:#fff;
+            box-shadow:0 8px 32px rgba(26,26,46,0.15);
+            max-width:92%;
+            text-align:center;
         }
-        .toast-msg.error { background: #dc2626; }
+        .toast-msg.error { background:#dc2626; }
 
         @media(max-width:480px){
-            .app { padding: 0 10px 20px; }
-            .header { padding: 12px 0; }
-            .logo-text { font-size: 17px; }
-            .logo-icon { width: 36px; height: 36px; font-size: 16px; }
-            .balance-box .amount { font-size: 28px; }
-            .card { padding: 14px 16px; }
-            .btn-primary { font-size: 13px; padding: 10px 16px; }
-            .bottom-nav { padding: 4px 6px 12px; }
-            .nav-item i { font-size: 18px; }
-            .modal-box { padding: 16px; }
+            .app { padding:0 10px 20px; }
+            .header { padding:12px 0; }
+            .logo-text { font-size:17px; }
+            .logo-icon { width:36px; height:36px; font-size:16px; }
+            .balance-box .amount { font-size:28px; }
+            .card { padding:14px 16px; }
+            .btn-primary { font-size:13px; padding:10px 16px; }
+            .bottom-nav { padding:4px 6px 12px; }
+            .nav-item i { font-size:18px; }
+            .modal-box { padding:16px; }
         }
-        @media(min-width:768px){ .app { max-width: 520px; margin: 0 auto; } }
-        ::-webkit-scrollbar { width: 3px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+        @media(min-width:768px){ .app { max-width:520px; margin:0 auto; } }
+        ::-webkit-scrollbar { width:3px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
 
-        .flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .text-gold { color: var(--gold); }
-        .text-muted { color: var(--muted); }
-        .text-center { text-align: center; }
-        .mt-1 { margin-top: 8px; }
-        .mb-1 { margin-bottom: 8px; }
-        .w-full { width: 100%; }
-        .img-preview { max-width: 70px; max-height: 70px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
-        .img-preview-sm { max-width: 50px; max-height: 50px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; }
+        .flex { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+        .text-gold { color:var(--gold); }
+        .text-muted { color:var(--muted); }
+        .text-center { text-align:center; }
+        .mt-1 { margin-top:8px; }
+        .mb-1 { margin-bottom:8px; }
+        .w-full { width:100%; }
+        .img-preview { max-width:70px; max-height:70px; border-radius:8px; border:1px solid var(--border); cursor:pointer; }
+        .img-preview-sm { max-width:50px; max-height:50px; border-radius:6px; border:1px solid var(--border); cursor:pointer; }
         .glass-tag {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 2px 16px;
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--secondary);
-            letter-spacing: 1px;
-            display: inline-block;
+            background:var(--bg);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:2px 16px;
+            font-size:10px;
+            font-weight:600;
+            color:var(--secondary);
+            letter-spacing:1px;
+            display:inline-block;
         }
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2,1fr);
-            gap: 10px;
-            margin: 12px 0;
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:10px;
+            margin:12px 0;
         }
         .stat-card {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            text-align: center;
-            border: 1px solid var(--border);
+            background:var(--bg);
+            border-radius:var(--radius-sm);
+            padding:14px;
+            text-align:center;
+            border:1px solid var(--border);
         }
-        .stat-card .val { font-size: 20px; font-weight: 800; color: var(--primary); }
-        .stat-card .lbl { font-size: 11px; color: var(--muted); }
+        .stat-card .val { font-size:20px; font-weight:800; color:var(--primary); }
+        .stat-card .lbl { font-size:11px; color:var(--muted); }
         .live-feed {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            max-height: 140px;
-            overflow-y: auto;
-            border: 1px solid var(--border);
+            background:var(--bg);
+            border-radius:var(--radius-sm);
+            padding:12px;
+            max-height:140px;
+            overflow-y:auto;
+            border:1px solid var(--border);
         }
         .feed-item {
-            padding: 6px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--text-secondary);
+            padding:6px 0;
+            border-bottom:1px solid var(--border);
+            font-size:12px;
+            color:var(--text-secondary);
         }
-        .feed-item:last-child { border: none; }
-        .invite-code { font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--secondary); }
-        .stars { display: flex; gap: 6px; cursor: pointer; margin-top: 6px; flex-wrap: wrap; }
-        .stars i { font-size: 20px; color: rgba(26,26,46,0.08); transition: 0.2s; }
-        .stars i.active { color: #F5B042; }
-        .progress { background: var(--bg); border-radius: 16px; height: 6px; overflow: hidden; }
-        .progress-fill { background: var(--secondary); height: 100%; width: 0%; transition: width 0.5s ease; }
+        .feed-item:last-child { border:none; }
+        .invite-code { font-size:20px; font-weight:800; letter-spacing:2px; color:var(--secondary); }
+        .stars { display:flex; gap:6px; cursor:pointer; margin-top:6px; flex-wrap:wrap; }
+        .stars i { font-size:20px; color:rgba(26,26,46,0.08); transition:0.2s; }
+        .stars i.active { color:#F5B042; }
+        .progress { background:var(--bg); border-radius:16px; height:6px; overflow:hidden; }
+        .progress-fill { background:var(--secondary); height:100%; width:0%; transition:width 0.5s ease; }
         .wallet-box {
-            background: var(--bg);
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 10px 0;
+            background:var(--bg);
+            padding:12px 16px;
+            border-radius:var(--radius-sm);
+            border:1px solid var(--border);
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:8px;
+            margin:10px 0;
         }
-        .wallet-box .addr { font-family: monospace; font-size: 12px; color: var(--secondary); word-break: break-all; }
+        .wallet-box .addr { font-family:monospace; font-size:12px; color:var(--secondary); word-break:break-all; }
         .copy-btn {
-            background: var(--secondary);
-            color: #fff;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
+            background:var(--secondary);
+            color:#fff;
+            border:none;
+            padding:6px 18px;
+            border-radius:40px;
+            font-weight:600;
+            font-size:12px;
+            cursor:pointer;
+            transition:0.2s;
         }
-        .copy-btn:hover { background: var(--secondary-light); }
-        .copy-btn:active { transform: scale(0.95); }
+        .copy-btn:hover { background:var(--secondary-light); }
+        .copy-btn:active { transform:scale(0.95); }
         .back-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 8px 18px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-size: 13px;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
+            background:var(--bg-card);
+            border:1px solid var(--border);
+            border-radius:40px;
+            padding:8px 18px;
+            cursor:pointer;
+            color:var(--text-secondary);
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-bottom:12px;
+            font-size:13px;
+            transition:var(--transition);
+            box-shadow:var(--shadow);
         }
-        .back-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+        .back-btn:hover { border-color:var(--secondary); color:var(--secondary); }
         .lang-opt {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            padding: 6px 14px;
-            border-radius: 12px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            transition: 0.2s;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:3px;
+            cursor:pointer;
+            padding:6px 14px;
+            border-radius:12px;
+            background:var(--bg);
+            border:1px solid var(--border);
+            transition:0.2s;
         }
-        .lang-opt.active { border-color: var(--secondary); background: rgba(45,106,79,0.04); }
-        .lang-opt .name { font-size: 11px; color: var(--text-secondary); }
+        .lang-opt.active { border-color:var(--secondary); background:rgba(45,106,79,0.04); }
+        .lang-opt .name { font-size:11px; color:var(--text-secondary); }
         .upload-area {
-            border: 2px dashed var(--border);
-            border-radius: var(--radius-sm);
-            padding: 14px;
-            text-align: center;
-            background: var(--bg);
-            cursor: pointer;
-            margin-bottom: 10px;
-            color: var(--muted);
-            transition: 0.2s;
-            font-size: 13px;
+            border:2px dashed var(--border);
+            border-radius:var(--radius-sm);
+            padding:14px;
+            text-align:center;
+            background:var(--bg);
+            cursor:pointer;
+            margin-bottom:10px;
+            color:var(--muted);
+            transition:0.2s;
+            font-size:13px;
         }
-        .upload-area:hover { border-color: var(--secondary); background: rgba(45,106,79,0.02); }
+        .upload-area:hover { border-color:var(--secondary); background:rgba(45,106,79,0.02); }
         .history-item {
-            background: var(--bg);
-            border-radius: var(--radius-sm);
-            padding: 10px 14px;
-            margin-bottom: 8px;
-            border-left: 3px solid var(--secondary);
+            background:var(--bg);
+            border-radius:var(--radius-sm);
+            padding:10px 14px;
+            margin-bottom:8px;
+            border-left:3px solid var(--secondary);
         }
-        .online-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
-        .online-dot.online { background: #10b981; animation: pulse 1.5s infinite; }
-        .online-dot.offline { background: var(--muted); }
+        .online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px; }
+        .online-dot.online { background:#10b981; animation:pulse 1.5s infinite; }
+        .online-dot.offline { background:var(--muted); }
         .live-indicator {
-            position: fixed;
-            bottom: 76px;
-            right: 12px;
-            background: rgba(16,185,129,0.8);
-            backdrop-filter: blur(8px);
-            color: #fff;
-            padding: 3px 12px;
-            border-radius: 30px;
-            font-size: 9px;
-            z-index: 100;
-            animation: pulse 1.5s infinite;
-            display: none;
+            position:fixed;
+            bottom:76px;
+            right:12px;
+            background:rgba(16,185,129,0.8);
+            backdrop-filter:blur(8px);
+            color:#fff;
+            padding:3px 12px;
+            border-radius:30px;
+            font-size:9px;
+            z-index:100;
+            animation:pulse 1.5s infinite;
+            display:none;
+        }
+
+        @keyframes spin {
+            0% { transform:rotate(0deg); }
+            100% { transform:rotate(360deg); }
+        }
+        .spinner-circle {
+            display:inline-block;
+            width:28px;
+            height:28px;
+            border:3px solid rgba(45,106,79,0.15);
+            border-radius:50%;
+            border-top-color:var(--secondary);
+            animation:spin 0.8s linear infinite;
+            margin-right:10px;
+            vertical-align:middle;
+        }
+        .checking-wrapper {
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            padding:12px 0;
+            gap:8px;
+        }
+        .checking-wrapper .spinner-circle {
+            width:36px;
+            height:36px;
+            border-width:4px;
+        }
+        .checking-wrapper .checking-text {
+            font-size:15px;
+            font-weight:600;
+            color:var(--secondary);
+            letter-spacing:0.3px;
+        }
+        .checking-wrapper .checking-sub {
+            font-size:13px;
+            color:var(--muted);
         }
     </style>
 </head>
@@ -620,14 +670,11 @@
                 <span style="font-size:12px;color:var(--muted);" id="forgotText">Forgot Password?</span>
                 <span id="goRegisterBtn" style="color:var(--secondary);font-weight:600;cursor:pointer;font-size:13px;">Register →</span>
             </div>
-
-            <!-- ========== GOOGLE BUTTON ON LOGIN PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-            <!-- ================================================= -->
         </div>
     </div>
 
@@ -644,15 +691,11 @@
             <div class="pw-wrap"><input type="password" class="input-glass" id="regWithdraw" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('regWithdraw',this)"><i class="fas fa-eye"></i></button></div>
             <input class="input-glass" id="regInvite" placeholder="Invitation Code (Optional)">
             <button class="btn-primary" id="doRegisterBtn"><span id="regNowText">Register Now</span></button>
-            
-            <!-- ========== GOOGLE BUTTON ON REGISTER PAGE ========== -->
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
                 <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
             </div>
             <button class="btn-google" id="registerGoogleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
-            <!-- =================================================== -->
-            
             <div style="text-align:center;margin-top:10px;font-size:13px;color:var(--muted);" id="haveAccountText">Have account? <span id="goLoginFromReg" style="color:var(--secondary);font-weight:600;cursor:pointer;">Login</span></div>
         </div>
     </div>
@@ -819,23 +862,22 @@
     </div>
 </div>
 
-<!-- ============================================================
-     JavaScript ကို အောက်ဆုံးမှာ ထည့်ထားပါတယ်။
-     ဒါကြောင့် HTML တွေ အရင်တင်ပြီးမှ JavaScript အလုပ်လုပ်ပါလိမ့်မယ်။
-     ============================================================ -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
+    // ===== NEW CONFIG for tripnew-2026 =====
     const firebaseConfig = {
-        apiKey: "AIzaSyDm1FBPzFsnYsdgwlK6WNWFz3POuOL-pHs",
-        authDomain: "tiktok-shop2026.firebaseapp.com",
-        projectId: "tiktok-shop2026",
-        storageBucket: "tiktok-shop2026.firebasestorage.app",
-        messagingSenderId: "319316492310",
-        appId: "1:319316492310:web:b6b4969543d00b993eb537"
+        apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
+        authDomain: "tripnew-2026.firebaseapp.com",
+        projectId: "tripnew-2026",
+        storageBucket: "tripnew-2026.firebasestorage.app",
+        messagingSenderId: "225456579056",
+        appId: "1:225456579056:web:10f984841bdb63c9c73d35",
+        measurementId: "G-J0MYZLMJT0"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
@@ -846,10 +888,15 @@
     let order = null;
     let ratings = { service: 0, quality: 0, sales: 0 };
     let feedInterval = null;
-    let unsubUser = null, unsubChat = null, unsubInjections = null, unsubNotifications = null;
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
+    
+    // ===== UNSUBSCRIBERS =====
+    let unsubChat = null;
+    let unsubRecharge = null;
+    let unsubInjections = null;
+    let unsubNotifications = null;
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
     function getVIP(user) {
@@ -892,21 +939,6 @@
         });
     }
 
-    function getCache(key) {
-        const cached = localStorage.getItem(key);
-        if (cached) {
-            try {
-                const data = JSON.parse(cached);
-                if (Date.now() - data.timestamp < 30000) return data.data;
-            } catch(e) { /* ignore */ }
-        }
-        return null;
-    }
-
-    function setCache(key, data) {
-        localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
-    }
-
     function toast(msg, err=false) {
         const el = document.createElement('div');
         el.className = `toast-msg${err ? ' error' : ''}`;
@@ -929,6 +961,27 @@
         else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
+    // ===== REFERRAL SYSTEM FUNCTION (10% of Commission to Superior) =====
+    async function distributeReferral(commission, customerDocId) {
+        if (!user.superior) return;
+        try {
+            const refQuery = query(collection(db, "users"), where("username", "==", user.superior));
+            const refSnap = await getDocs(refQuery);
+            if (!refSnap.empty) {
+                const refUser = refSnap.docs[0];
+                const bonus = commission * 0.10;
+                
+                // Update Superior's balance & referral earnings
+                await updateDoc(doc(db, "users", refUser.id), {
+                    balance: increment(bonus),
+                    referralEarnings: increment(bonus)
+                });
+            }
+        } catch (e) {
+            console.error("Referral distribution error:", e);
+        }
+    }
+
     // ===== GET IP ADDRESS FUNCTION =====
     async function getClientIP() {
         try {
@@ -939,6 +992,856 @@
             console.error('Error fetching IP:', error);
             return null;
         }
+    }
+
+    // ===== LOAD USER DATA =====
+    async function loadUserData(uid) {
+        try {
+            const snap = await getDoc(doc(db, "users", uid));
+            if (snap.exists()) {
+                const data = snap.data();
+                user = { id: snap.id, ...data };
+                if (!user.orders) user.orders = [];
+                if (!user.tasks) user.tasks = { completed:0, total:0 };
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.error('loadUserData error:', e);
+            return false;
+        }
+    }
+
+    // ===== ORDERS =====
+    async function getOrders(userId) {
+        try {
+            const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
+            const orders = [];
+            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+            return orders;
+        } catch (e) {
+            console.error('getOrders error:', e);
+            return [];
+        }
+    }
+
+    async function saveOrder(userId, data) {
+        await addDoc(collection(db, "users", userId, "orders"), { ...data, timestamp: new Date().toISOString() });
+    }
+
+    async function loadCustomOrders() {
+        try {
+            const snap = await getDocs(collection(db, "customOrders"));
+            const orders = [];
+            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+            return orders;
+        } catch (e) {
+            console.error('loadCustomOrders error:', e);
+            return [];
+        }
+    }
+
+    // ===== INJECTIONS =====
+    async function loadInjections(uid) {
+        try {
+            const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
+            const snap = await getDocs(q);
+            pendingInjections = [];
+            snap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
+            if (pendingInjections.length) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                user.pendingInjections = pendingInjections;
+                await saveUser();
+            }
+            return pendingInjections;
+        } catch (e) {
+            console.error('loadInjections error:', e);
+            return [];
+        }
+    }
+
+    function subscribeInjectionsRealtime(uid) {
+        if (unsubInjections) {
+            unsubInjections();
+            unsubInjections = null;
+        }
+        const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
+        unsubInjections = onSnapshot(q, async (snap) => {
+            const injs = [];
+            snap.forEach(d => injs.push({ id: d.id, ...d.data() }));
+            if (injs.length > 0 && user) {
+                injs.sort((a,b) => a.taskNumber - b.taskNumber);
+                user.pendingInjections = injs;
+                pendingInjections = injs;
+                await saveUser();
+                const d = t[lang] || t.en;
+                toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
+                if(currentSection === 'work') loadNextOrder();
+            } else if (injs.length === 0 && user) {
+                pendingInjections = [];
+                user.pendingInjections = [];
+                await saveUser();
+            }
+        }, (error) => {
+            console.error('subscribeInjectionsRealtime error:', error);
+        });
+    }
+
+    async function markUsed(id) {
+        await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
+    }
+
+    // ===== SAVE USER =====
+    async function saveUser() {
+        if (!user) return;
+        const clean = { ...user };
+        delete clean.orders;
+        delete clean.pendingInjections;
+        await setDoc(doc(db, "users", user.id), clean, { merge: true });
+        localStorage.setItem('uid', user.id);
+        await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+    }
+
+    function startLastSeenUpdate() {
+        if (lastSeenInterval) clearInterval(lastSeenInterval);
+        lastSeenInterval = setInterval(async () => {
+            if (user) {
+                try {
+                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+                } catch(e) { /* silent */ }
+            }
+        }, 60000);
+    }
+
+    // ===== NOTIFICATIONS =====
+    function subscribeNotificationsRealtime() {
+        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
+        if (!user) return;
+        const q = query(collection(db, "chatMessages"), 
+            where("from", "==", "admin"), 
+            where("to", "==", user.username),
+            where("type", "==", "notification"),
+            orderBy("id", "asc")
+        );
+        unsubNotifications = onSnapshot(q, (snap) => {
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (!m.read) newCount++;
+                msgs.push(m);
+            });
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        }, (error) => console.error('subscribeNotificationsRealtime error:', error));
+    }
+
+    async function loadNotifications() {
+        if (!user) return;
+        try {
+            const q = query(collection(db, "chatMessages"), 
+                where("from", "==", "admin"), 
+                where("to", "==", user.username),
+                where("type", "==", "notification"),
+                orderBy("id", "asc")
+            );
+            const snap = await getDocs(q);
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (!m.read) newCount++;
+                msgs.push(m);
+            });
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        } catch (e) { console.error('loadNotifications error:', e); }
+    }
+
+    document.getElementById('notificationBtn').onclick = async () => {
+        if (!user) return;
+        const d = t[lang] || t.en;
+        const msgs = window.__unreadAdminMessages || [];
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>`;
+        if (msgs.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
+        else {
+            msgs.sort((a,b) => a.id - b.id);
+            msgs.forEach(m => {
+                const text = m.text || '';
+                const parts = text.split('\n\n');
+                const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
+                const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
+                html += `<div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
+                    <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
+                    <div style="white-space:pre-wrap;">${esc(body)}</div>
+                    <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
+                </div>`;
+            });
+        }
+        html += `<button class="btn-primary" id="notifCloseBtn">${d.close}</button></div>`;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        modal.querySelector('#notifCloseBtn').onclick = async () => {
+            document.body.removeChild(modal);
+            if (msgs.length > 0) {
+                for (let m of msgs) {
+                    const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
+                    snap.forEach(d => updateDoc(doc(db, "chatMessages", d.id), { read: true }));
+                }
+                document.getElementById('notifBadge').style.display = 'none';
+                window.__unreadAdminMessages = [];
+            }
+        };
+    };
+
+    // ===== CHAT =====
+    function subscribeChatRealtime() {
+        if (unsubChat) { unsubChat(); unsubChat = null; }
+        const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
+        unsubChat = onSnapshot(q, (snap) => {
+            const isServicePage = document.getElementById('pageService').classList.contains('active-page');
+            if (!isServicePage) return;
+            const container = document.getElementById('chatMessages');
+            if (!container || !user) return;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
+                    msgs.push(m);
+                }
+            });
+            msgs.sort((a,b) => a.id - b.id);
+            container.innerHTML = msgs.length ? msgs.map(m => {
+                const isSent = m.from === user.username;
+                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
+                return `<div class="chat-msg ${isSent ? 'sent' : 'received'}"><div>${esc(m.text||'')}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div></div>`;
+            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
+            container.scrollTop = container.scrollHeight;
+        }, (error) => console.error('subscribeChatRealtime error:', error));
+    }
+
+    async function sendChat(text, img=null) {
+        if (!user) return;
+        await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
+            id: Date.now()+Math.random(), from: user.username, to: 'admin', text: text||'', image: img,
+            time: new Date().toISOString(), read: false, type: 'message'
+        });
+    }
+
+    // ===== RECHARGE =====
+    async function loadRechargeStatus(uid) {
+        try {
+            const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+            const snap = await getDocs(q);
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        } catch (e) { console.error('loadRechargeStatus error:', e); }
+    }
+
+    function subscribeRechargeRealtime(uid) {
+        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
+        const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+        unsubRecharge = onSnapshot(q, async (snap) => {
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        }, (error) => console.error('subscribeRechargeRealtime error:', error));
+    }
+
+    function showRechargeModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
+                <div class="wallet-box">
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
+                    <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
+                </div>
+                <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
+                <div class="upload-area" id="receiptArea">${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
+                <div id="receiptPreview"></div>
+                <div id="rechargeMsg"></div>
+                <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF'); toast("Copied!"); };
+        let receiptData = null;
+        modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
+        modal.querySelector("#receiptInput").onchange = async (e) => {
+            if (e.target.files[0]) {
+                receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
+                modal.querySelector("#receiptPreview").innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
+            }
+        };
+        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
+            if (isNaN(amt) || amt < 1) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`; return; }
+            if (!receiptData) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`; return; }
+            this.disabled = true;
+            try {
+                const reqId = Date.now().toString();
+                await setDoc(doc(db, "rechargeRequests", reqId), { id: reqId, userId: user.id, userName: user.username, amount: amt, receiptImage: receiptData, status: 'pending', timestamp: new Date().toISOString() });
+                subscribeRechargeRealtime(user.id);
+                setTimeout(() => { document.body.removeChild(modal); toast(d.rechargeWaiting); }, 2500);
+            } catch (e) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`; this.disabled = false; }
+        };
+        modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ===== WITHDRAW =====
+    function showWithdrawModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
+                <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
+                <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
+                <button class="btn-primary" id="withdrawSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="withdrawCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+                <div id="withdrawMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector("#withdrawSubmitBtn").onclick = async () => {
+            const wallet = modal.querySelector("#withdrawWallet").value.trim();
+            const amt = parseFloat(modal.querySelector("#withdrawAmt").value);
+            if (!wallet) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter wallet address.</span>'; return; }
+            if (isNaN(amt) || amt < 1) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
+            if (amt > (user.balance||0)) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>'; return; }
+            user.balance -= amt;
+            await saveUser(); updateUI();
+            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Withdraw submitted!");
+        };
+        modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ===== ORDER DISPLAY =====
+    async function displayOrder(o, isLucky) {
+        const d = t[lang] || t.en;
+        const container = document.getElementById('orderDisplay');
+        if (!container) return;
+        const after = (user.balance||0) + o.netCommission;
+        const insufficient = (user.balance||0) < o.amount;
+
+        let luckyHtml = '';
+        if (isLucky) {
+            luckyHtml = `
+                <div class="lucky-glow"></div>
+                <div class="lucky-badge"><i class="fas fa-gift"></i> ${d.bonusOrder}</div>
+                <div style="text-align:center;padding:10px;background:rgba(212,175,55,0.1);border-radius:12px;margin-bottom:12px;">
+                    <h2 style="color:var(--gold);font-size:24px;font-weight:800;">🎉 Congratulations!</h2>
+                    <p style="color:var(--text-secondary);font-size:14px;">${d.injectionMsg}</p>
+                </div>
+            `;
+        }
+
+        container.innerHTML = `
+            <div class="order-card ${isLucky ? 'lucky' : ''}" style="position:relative;overflow:hidden;">
+                ${luckyHtml}
+                <div class="order-img"><i class="fas fa-box" style="font-size:32px;color:var(--secondary);"></i></div>
+                <h3 style="color:var(--primary);font-size:17px;">${o.name}</h3>
+                <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
+                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
+                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
+                    <span style="color:var(--muted);">${d.afterBalance}</span>
+                    <strong style="color:var(--secondary);font-size:16px;">$ ${after.toFixed(2)}</strong>
+                </div>
+                ${!insufficient ? `
+                    <div style="margin-top:10px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.serviceQuality}</div>
+                        <div class="stars" data-cat="service"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <div style="margin-top:6px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.productQuality}</div>
+                        <div class="stars" data-cat="quality"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <div style="margin-top:6px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.salesExperience}</div>
+                        <div class="stars" data-cat="sales"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <button class="btn-primary" id="submitOrderBtn" style="margin-top:10px;font-size:14px;">${d.submitComplete}</button>
+                ` : `<div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);"><strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong></div>`}
+            </div>
+        `;
+        order = o;
+        ratings = { service:0, quality:0, sales:0 };
+
+        if (!insufficient) {
+            container.querySelectorAll('.stars').forEach(el => {
+                const cat = el.dataset.cat;
+                const stars = el.querySelectorAll('i');
+                stars.forEach(s => {
+                    s.onclick = function() {
+                        const val = parseInt(this.dataset.v);
+                        ratings[cat] = val;
+                        stars.forEach((st, i) => { st.className = i < val ? 'fas fa-star active' : 'far fa-star'; });
+                    };
+                });
+            });
+            const submitBtn = document.getElementById('submitOrderBtn');
+            if (submitBtn) submitBtn.onclick = async function() {
+                if (this.disabled) return;
+                if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) { toast("Please provide all ratings.", true); return; }
+                this.disabled = true; this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
+                try {
+                    const profit = order.netCommission;
+                    if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    user.balance += profit;
+                    user.todayEarnings += profit;
+                    user.totalCommission += profit;
+                    user.tasks.completed += 1;
+                    order.status = 'completed'; order.ratings = { ...ratings }; order.date = new Date().toLocaleString(); order.profit = profit;
+                    await saveOrder(user.id, order);
+                    user.currentOrderObj = null; await saveUser(); order = null;
+                    
+                    // ===== REFERRAL BONUS (10% to Superior) =====
+                    await distributeReferral(profit, user.id);
+
+                    updateUI(); toast(`✅ +$${profit.toFixed(4)}`);
+                    loadNextOrder();
+                } catch(e) { console.error(e); toast("Error: "+e.message, true); }
+                this.disabled = false; this.innerHTML = d.submitComplete;
+            };
+        }
+    }
+
+    async function loadNextOrder() {
+        const limit = user.tasks?.total || 0;
+        const done = user.tasks?.completed || 0;
+        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
+        const settings = await getDoc(doc(db, "systemSettings", "main"));
+        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
+        if ((user.balance||0) < minBal) { document.getElementById('orderDisplay').innerHTML = `<div class="card" style="text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ ${t[lang].insufficient}</span></div>`; return; }
+
+        const nextTask = (user.tasks?.completed||0) + 1;
+        let isLucky = false;
+        let injection = null;
+
+        if (pendingInjections.length > 0) {
+            injection = pendingInjections.find(i => i.taskNumber === nextTask);
+            if (injection) {
+                isLucky = true;
+                await markUsed(injection.id);
+                pendingInjections = pendingInjections.filter(i => i.id !== injection.id);
+                user.pendingInjections = pendingInjections;
+                await saveUser();
+            }
+        }
+
+        const templates = await loadCustomOrders();
+        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Premium Order', price:10 };
+        const balance = user.balance||0;
+        const rate = getRate(user);
+        let amount, net;
+
+        if (isLucky) {
+            amount = balance + (injection.extraAmount || 0);
+            net = injection.commission > 0 ? injection.commission : (injection.commissionRate > 0 ? amount * (injection.commissionRate/100) : amount * rate);
+        } else {
+            const pct = 0.53 + Math.random() * 0.26;
+            amount = parseFloat((balance * pct).toFixed(2));
+            const gross = balance * rate;
+            net = gross - (gross * 0.01);
+        }
+
+        const newOrder = {
+            id: Date.now(),
+            name: isLucky ? 'Lucky Premium Task' : tpl.name,
+            amount: amount, netCommission: net,
+            rate: isLucky ? injection.commissionRate : (rate * 100),
+            orderNumber: 'ORD'+Math.floor(Math.random()*1e9),
+            isLucky: isLucky
+        };
+        user.currentOrderObj = newOrder; await saveUser();
+        displayOrder(newOrder, isLucky);
+    }
+
+    function refreshWork() {
+        if (!user) return;
+        const limit = user.tasks?.total || 0;
+        const done = user.tasks?.completed || 0;
+        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
+        if (user.currentOrderObj && !user.currentOrderObj.completed) displayOrder(user.currentOrderObj, user.currentOrderObj.isLucky);
+        else if (order) displayOrder(order, order.isLucky);
+        else if (done < limit && limit > 0) loadNextOrder();
+    }
+
+    // ===== UPDATE UI =====
+    async function updateUI() {
+        if (!user) return;
+        const d = t[lang] || t.en;
+        const orders = await getOrders(user.id);
+        const balance = user.balance||0;
+        const vip = getVIP(user);
+        const rate = getRate(user);
+        const limit = user.tasks?.total||0;
+        const done = user.tasks?.completed||0;
+        const vipClass = getVipClass(vip);
+
+        document.getElementById('homeName').innerText = user.username;
+        document.getElementById('balanceAmount').innerText = `$ ${balance.toFixed(2)}`;
+        document.getElementById('todayCount').innerText = done;
+        document.getElementById('dailyMax').innerText = limit;
+        document.getElementById('todayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('totalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('commRate').innerText = `${(rate*100).toFixed(1)}%`;
+        document.getElementById('homeVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
+        document.getElementById('refCode').innerText = user.invitationCode||'------';
+        document.getElementById('profileName').innerText = user.username;
+        document.getElementById('profileVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
+        document.getElementById('creditScore').innerText = user.creditScore||100;
+        document.getElementById('pTotalAssets').innerText = `$ ${balance.toFixed(2)}`;
+        document.getElementById('pTodayOrders').innerText = done;
+        document.getElementById('pTodayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
+        document.getElementById('pTotalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
+        document.getElementById('walletDisplay').innerText = user.walletAddress||'Not set';
+        document.getElementById('taskCounter').innerText = `${done}/${limit}`;
+        document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
+
+        const completed = orders.filter(o => o.status === 'completed');
+        document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
+            <div class="card">
+                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--secondary);font-size:11px;">${d.completed}</span></div>
+                <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
+                <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
+            </div>
+        `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
+    }
+
+    // ===== LIVE FEED =====
+    const names = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
+    function randName() { return names[Math.floor(Math.random()*names.length)]; }
+    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
+    function startFeed() {
+        if (feedInterval) clearInterval(feedInterval);
+        const container = document.getElementById('feedList');
+        if (!container) return;
+        function add() { const item = document.createElement('div'); item.className = 'feed-item'; item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`; container.prepend(item); if (container.children.length > 5) container.removeChild(container.lastChild); }
+        for (let i=0; i<2; i++) add();
+        feedInterval = setInterval(add, 8000);
+    }
+
+    // ===== NAVIGATION =====
+    let currentSection = 'home';
+    const pages = {
+        landing: document.getElementById('pageLanding'),
+        login: document.getElementById('pageLogin'),
+        register: document.getElementById('pageRegister'),
+        home: document.getElementById('pageHome'),
+        work: document.getElementById('pageWork'),
+        orders: document.getElementById('pageOrders'),
+        profile: document.getElementById('pageProfile'),
+        service: document.getElementById('pageService')
+    };
+    const bottomNav = document.getElementById('bottomNav');
+
+    function showPage(name) {
+        if (!user && !['landing','login','register'].includes(name)) name = 'landing';
+        Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
+        if (pages[name]) pages[name].classList.add('active-page');
+        currentSection = name;
+        if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
+        else bottomNav.classList.remove('hidden-nav');
+        if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
+        
+        if (name === 'home' && user) { subscribeNotificationsRealtime(); updateUI(); loadNotifications(); }
+        if (name === 'work' && user) { subscribeInjectionsRealtime(user.id); updateUI(); refreshWork(); }
+        if (name === 'orders' && user) updateUI();
+        if (name === 'profile' && user) updateUI();
+        if (name === 'service' && user) subscribeChatRealtime();
+        
+        startFeed();
+    }
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.onclick = () => {
+            if (!user) { showPage('landing'); return; }
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            showPage(el.dataset.page);
+        };
+    });
+
+    // ===== EVENT LISTENERS =====
+    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('landingLoginBtn').onclick = () => showPage('login');
+    document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
+    document.getElementById('backFromLogin').onclick = () => showPage('landing');
+    document.getElementById('backFromRegister').onclick = () => showPage('landing');
+    document.getElementById('goRegisterBtn').onclick = () => showPage('register');
+    document.getElementById('goLoginFromReg').onclick = () => showPage('login');
+
+    // ===== AUTH: GOOGLE LOGIN =====
+    async function handleGoogleLogin() {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const gUser = result.user;
+            const email = gUser.email;
+            const username = email.split('@')[0]; 
+            
+            const userRef = doc(db, "users", gUser.uid);
+            const userSnap = await getDoc(userRef);
+            
+            if (userSnap.exists()) {
+                user = { id: gUser.uid, ...userSnap.data() };
+                toast(`Welcome back, ${user.username}`);
+            } else {
+                const ip = await getClientIP();
+                const newUser = {
+                    id: gUser.uid,
+                    username: username,
+                    email: email,
+                    phone: '',
+                    password: '',
+                    withdrawPassword: '',
+                    balance: 0,
+                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
+                    superior: null,
+                    referralEarnings: 0,
+                    regTime: new Date().toISOString(),
+                    tasks: { completed:0, total:0 },
+                    orders: [],
+                    todayOrders: 0,
+                    todayEarnings: 0,
+                    totalCommission: 0,
+                    creditScore: 100,
+                    disabled: false,
+                    walletAddress: null,
+                    currentOrderObj: null,
+                    role: 'customer',
+                    lastSeen: Date.now(),
+                    authProvider: 'google',
+                    regIP: ip
+                };
+                await setDoc(userRef, newUser);
+                user = { id: gUser.uid, ...newUser };
+                toast(`Welcome, ${username}! Account created.`);
+            }
+            await finalizeLogin(user);
+        } catch (error) {
+            console.error("Google Login Error:", error);
+            toast("Google Login failed: " + error.message, true);
+        }
+    }
+
+    async function finalizeLogin(u) {
+        if (!u.orders) u.orders = [];
+        if (!u.tasks) u.tasks = { completed:0, total:0 };
+        await saveUser();
+        await loadUserData(u.id);
+        await loadInjections(u.id);
+        await loadRechargeStatus(u.id);
+        await loadNotifications();
+        startLastSeenUpdate();
+        updateUI();
+        const last = localStorage.getItem('lastPage');
+        showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+    }
+
+    // ===== LOGIN =====
+    document.getElementById('doLoginBtn').onclick = async function() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPass').value;
+        if (!username || !password) { toast('Enter username and password.', true); return; }
+        this.disabled = true; this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        try {
+            const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
+            const snap = await getDocs(q);
+            if (snap.empty) { toast('Invalid username or password.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
+            const data = snap.docs[0].data();
+            if (data.disabled) { toast('Account disabled.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
+            user = { id: snap.docs[0].id, ...data };
+            if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+            await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+            const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+            toast(`Welcome, ${username}`);
+        } catch (e) { console.error('Login error:', e); toast('Login failed: ' + e.message, true); }
+        this.disabled = false; this.innerHTML = 'Login';
+    };
+
+    // ===== REGISTER (With Superior Referral Logic) =====
+    document.getElementById('doRegisterBtn').onclick = async function() {
+        const username = document.getElementById('regUsername').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const pass = document.getElementById('regPass').value;
+        const confirm = document.getElementById('regConfirm').value;
+        const withdraw = document.getElementById('regWithdraw').value;
+        const invite = document.getElementById('regInvite').value.trim();
+        if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
+        if (pass !== confirm) { toast('Passwords do not match.', true); return; }
+        const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
+        if (!exist.empty) { toast('Username exists.', true); return; }
+        
+        let superior = null;
+        if (invite) { 
+            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite))); 
+            if (refCheck.empty) { toast('Invalid invitation code.', true); return; } 
+            superior = refCheck.docs[0].data().username; 
+        }
+
+        const ip = await getClientIP();
+        user = {
+            id: Date.now().toString(), username, email, phone, password: pass, withdrawPassword: withdraw,
+            balance: 0, invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
+            superior: superior, referralEarnings: 0, regTime: new Date().toISOString(),
+            tasks: { completed:0, total:0 }, orders: [], todayOrders: 0, todayEarnings: 0, totalCommission: 0,
+            creditScore: 100, disabled: false, walletAddress: null, currentOrderObj: null, role: 'customer', lastSeen: Date.now(), regIP: ip
+        };
+        await setDoc(doc(db, "users", user.id), user); await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI(); showPage('home'); toast('Registration successful!');
+    };
+
+    // ===== SIGN OUT =====
+    function signOut() {
+        if (unsubChat) unsubChat(); if (unsubRecharge) unsubRecharge(); if (unsubInjections) unsubInjections(); if (unsubNotifications) unsubNotifications();
+        if (feedInterval) clearInterval(feedInterval); if (lastSeenInterval) clearInterval(lastSeenInterval);
+        const uid = user?.id; user = null; order = null; pendingInjections = []; localStorage.removeItem('uid'); if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+        firebaseSignOut(auth).then(() => console.log("Signed out")).catch(e => console.error("Sign out error:", e));
+        showPage('landing'); toast('Signed out.');
+    }
+    document.getElementById('signOutHome').onclick = signOut;
+    document.getElementById('signOutProfile').onclick = signOut;
+
+    // ===== REFRESH =====
+    document.querySelectorAll('.icon-btn').forEach(el => {
+        if (el.id && el.id.startsWith('refresh')) {
+            el.onclick = async () => {
+                if (user) { await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); updateUI(); toast('Refreshed!'); }
+            };
+        }
+    });
+
+    // ===== BUTTONS =====
+    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
+    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
+    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
+
+    document.getElementById('rechargeHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Recharge History', items, 'recharge');
+    };
+    document.getElementById('withdrawHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const snap = await getDocs(query(collection(db,"withdrawRequests"), where("userId","==",user.id)));
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Withdraw History', items, 'withdraw');
+    };
+
+    // ===== START ORDER =====
+    document.getElementById('startOrderBtn').onclick = async () => {
+        if (!user) { toast('Login first.', true); return; }
+        const limit = user.tasks?.total || 0; const done = user.tasks?.completed || 0;
+        if (limit === 0) { toast('No orders assigned.', true); return; }
+        if (done >= limit) { toast('All orders completed!', true); return; }
+        const settings = await getDoc(doc(db, "systemSettings", "main"));
+        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
+        if ((user.balance||0) < minBal) { toast(`Minimum balance $ ${minBal} required.`, true); return; }
+        subscribeInjectionsRealtime(user.id);
+        loadNextOrder();
+    };
+
+    // ===== CHAT =====
+    document.getElementById('sendChatBtn').onclick = async () => {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (text && user) { await sendChat(text); input.value = ''; input.focus(); }
+    };
+    document.getElementById('chatInput').addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); const input = document.getElementById('chatInput'); const text = input.value.trim(); if (text && user) { await sendChat(text); input.value = ''; input.focus(); } }
+    });
+
+    document.getElementById('companyInfoBtn').onclick = () => {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
+            <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
+            <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
+            <button class="btn-primary" id="companyClose">${d.close}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
+    };
+
+    document.querySelectorAll('.lang-opt').forEach(el => { el.onclick = function() { applyLang(this.dataset.lang); if (user) updateUI(); }; });
+
+    function showHistory(title, items, type) {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
+        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
+        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div></div>`;
+        });
+        html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showBindWallet() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div><input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}"><button class="btn-primary" id="bindWalletSave">${d.submit}</button><button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#bindWalletSave").onclick = async () => {
+            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
+            await saveUser(); updateUI(); document.body.removeChild(modal); toast("Wallet updated!");
+        };
+        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showPersonalDetails() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div><div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div><button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showLoanModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div><input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount"><button class="btn-primary" id="loanSubmit">${d.submit}</button><button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button><div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#loanSubmit").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#loanAmt").value);
+            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
+            await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Loan submitted!");
+        };
+        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
     }
 
     // ===== TRANSLATIONS =====
@@ -969,7 +1872,7 @@
             pendingOrder:"Pending Order!", pendingMsg:"Complete your current order first.",
             okay:"Okay", warning:"Warning", completed:"Completed", walletAddr:"USDT TRC20 Address", copy:"Copy",
             uploadPhoto:"Upload Photo", save:"Save",
-            bonusOrder:"BONUS ORDER!", injectionMsg:"Special commission order from admin!",
+            bonusOrder:"LUCKY ORDER!", injectionMsg:"You've been selected for a special task with boosted rewards!",
             referralEarned:"Referral Bonus Earned!",
             rechargeWaiting:"Please wait, we are checking your payment."
         }
@@ -1010,1276 +1913,8 @@
         if (user) updateUI();
     }
 
-    // ===== AUTH HELPERS =====
-    async function handleGoogleLogin() {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const gUser = result.user;
-            const email = gUser.email;
-            const username = email.split('@')[0]; 
-            
-            const userRef = doc(db, "users", gUser.uid);
-            const userSnap = await getDoc(userRef);
-            
-            if (userSnap.exists()) {
-                user = { id: gUser.uid, ...userSnap.data() };
-                toast(`Welcome back, ${user.username}`);
-            } else {
-                // Fetch IP address for new users
-                const ip = await getClientIP();
-                
-                const newUser = {
-                    id: gUser.uid,
-                    username: username,
-                    email: email,
-                    phone: '',
-                    password: '',
-                    withdrawPassword: '',
-                    balance: 0,
-                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
-                    superior: null,
-                    referralEarnings: 0,
-                    regTime: new Date().toISOString(),
-                    tasks: { completed:0, total:0 },
-                    orders: [],
-                    todayOrders: 0,
-                    todayEarnings: 0,
-                    totalCommission: 0,
-                    creditScore: 100,
-                    disabled: false,
-                    walletAddress: null,
-                    currentOrderObj: null,
-                    role: 'customer',
-                    lastSeen: Date.now(),
-                    authProvider: 'google',
-                    regIP: ip // <--- Save IP
-                };
-                await setDoc(userRef, newUser);
-                user = { id: gUser.uid, ...newUser };
-                toast(`Welcome, ${username}! Account created.`);
-            }
-            await finalizeLogin(user);
-        } catch (error) {
-            console.error("Google Login Error:", error);
-            toast("Google Login failed: " + error.message, true);
-        }
-    }
-
-    async function finalizeLogin(u) {
-        if (!u.orders) u.orders = [];
-        if (!u.tasks) u.tasks = { completed:0, total:0 };
-        await saveUser();
-        subscribeUser(u.id);
-        subscribeInjections(u.id);
-        subscribeChat();
-        subscribeNotifications();
-        startLastSeenUpdate();
-        updateUI();
-        const last = localStorage.getItem('lastPage');
-        showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-    }
-
-    // ===== SAVE USER =====
-    async function saveUser() {
-        if (!user) return;
-        const clean = { ...user };
-        delete clean.orders;
-        delete clean.pendingInjections;
-        await setDoc(doc(db, "users", user.id), clean, { merge: true });
-        localStorage.setItem('uid', user.id);
-        await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
-    }
-
-    function startLastSeenUpdate() {
-        if (lastSeenInterval) clearInterval(lastSeenInterval);
-        lastSeenInterval = setInterval(async () => {
-            if (user) {
-                try {
-                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
-                } catch(e) { /* silent */ }
-            }
-        }, 60000);
-    }
-
-    // ===== ORDERS =====
-    async function getOrders(userId) {
-        const cacheKey = `orders_${userId}`;
-        const cached = getCache(cacheKey);
-        if (cached) return cached;
-        const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
-        const orders = [];
-        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-        setCache(cacheKey, orders);
-        return orders;
-    }
-
-    async function saveOrder(userId, data) {
-        await addDoc(collection(db, "users", userId, "orders"), { ...data, timestamp: new Date().toISOString() });
-    }
-
-    async function loadCustomOrders() {
-        const cached = getCache('customOrders');
-        if (cached) return cached;
-        const snap = await getDocs(collection(db, "customOrders"));
-        const orders = [];
-        snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-        setCache('customOrders', orders);
-        return orders;
-    }
-
-    // ===== INJECTIONS =====
-    function subscribeInjections(userId) {
-        if (unsubInjections) unsubInjections();
-        const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
-        unsubInjections = onSnapshot(q, async (snap) => {
-            const injs = [];
-            snap.forEach(d => injs.push({ id: d.id, ...d.data() }));
-            if (injs.length > 0 && user) {
-                injs.sort((a,b) => a.taskNumber - b.taskNumber);
-                user.pendingInjections = injs;
-                pendingInjections = injs;
-                await saveUser();
-                const d = t[lang] || t.en;
-                toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
-                if (document.getElementById('pageWork').classList.contains('active-page')) refreshWork();
-            }
-        });
-    }
-
-    async function markUsed(id) {
-        await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
-    }
-
-    // ===== NOTIFICATIONS (FIXED: ONLY SHOW TYPE: NOTIFICATION) =====
-    function subscribeNotifications() {
-        if (unsubNotifications) unsubNotifications();
-        if (!user) return;
-        
-        // Listen for messages sent FROM admin TO this user where type === 'notification'
-        const q = query(collection(db, "chatMessages"), 
-            where("from", "==", "admin"), 
-            where("to", "==", user.username),
-            where("type", "==", "notification"), // <--- ONLY GET NOTIFICATIONS
-            orderBy("id", "asc")
-        );
-        
-        unsubNotifications = onSnapshot(q, (snap) => {
-            let newCount = 0;
-            const msgs = [];
-            snap.forEach(d => {
-                const m = d.data();
-                // If this message hasn't been read yet
-                if (!m.read) {
-                    newCount++;
-                }
-                msgs.push(m);
-            });
-
-            // Update badge
-            const badge = document.getElementById('notifBadge');
-            if (newCount > 0) {
-                badge.innerText = newCount;
-                badge.style.display = 'block';
-            } else {
-                badge.style.display = 'none';
-            }
-
-            // Store unread messages globally to show in modal
-            window.__unreadAdminMessages = msgs.filter(m => !m.read);
-        });
-    }
-
-    // Show Notification Modal (Clicking Bell)
-    document.getElementById('notificationBtn').onclick = async () => {
-        if (!user) return;
-        const d = t[lang] || t.en;
-        const msgs = window.__unreadAdminMessages || [];
-        
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        let html = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>
-        `;
-        if (msgs.length === 0) {
-            html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
-        } else {
-            msgs.sort((a,b) => a.id - b.id);
-            msgs.forEach(m => {
-                // Parse the notification text to split title and body
-                const text = m.text || '';
-                const parts = text.split('\n\n');
-                const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
-                const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
-
-                html += `
-                    <div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
-                        <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
-                        <div style="white-space:pre-wrap;">${esc(body)}</div>
-                        <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
-                    </div>
-                `;
-            });
-        }
-        html += `
-            <button class="btn-primary" id="notifCloseBtn">${d.close}</button>
-            </div>
-        `;
-        modal.innerHTML = html;
-        document.body.appendChild(modal);
-
-        // Mark all as read when closed
-        modal.querySelector('#notifCloseBtn').onclick = async () => {
-            document.body.removeChild(modal);
-            // Mark messages as read in database
-            if (msgs.length > 0) {
-                for (let m of msgs) {
-                    const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
-                    snap.forEach(d => {
-                        updateDoc(doc(db, "chatMessages", d.id), { read: true });
-                    });
-                }
-                // Hide badge
-                document.getElementById('notifBadge').style.display = 'none';
-                window.__unreadAdminMessages = [];
-            }
-        };
-    };
-
-    // ===== CHAT (FIXED: ONLY SHOW STANDARD MESSAGES, IGNORE NOTIFICATIONS) =====
-    function subscribeChat() {
-        if (unsubChat) unsubChat();
-        const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
-        unsubChat = onSnapshot(q, (snap) => {
-            // ONLY update if Service Page is active
-            const isServicePage = document.getElementById('pageService').classList.contains('active-page');
-            if (!isServicePage) return;
-
-            const container = document.getElementById('chatMessages');
-            if (!container || !user) return;
-            
-            // Store ALL messages related to this user EXCEPT notifications
-            const msgs = [];
-            snap.forEach(d => {
-                const m = d.data();
-                // Criteria: (User sent to Admin) OR (Admin sent to User)
-                // AND type is NOT 'notification'
-                if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
-                    msgs.push(m);
-                }
-            });
-            msgs.sort((a,b) => a.id - b.id);
-            
-            // Render all messages
-            container.innerHTML = msgs.length ? msgs.map(m => {
-                const isSent = m.from === user.username;
-                // Use the user's local browser timezone for display
-                // m.time is stored in UTC, browser handles the conversion automatically when passed to Date()
-                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
-                return `
-                    <div class="chat-msg ${isSent ? 'sent' : 'received'}">
-                        <div>${esc(m.text||'')}</div>
-                        ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
-                        <div class="time">${msgTime}</div>
-                    </div>
-                `;
-            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
-            
-            container.scrollTop = container.scrollHeight;
-        });
-    }
-
-    async function sendChat(text, img=null) {
-        if (!user) return;
-        // Save time as ISO string (UTC) so it can be formatted to any local timezone later
-        await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
-            id: Date.now()+Math.random(),
-            from: user.username,
-            to: 'admin',
-            text: text||'',
-            image: img,
-            time: new Date().toISOString(), // UTC time
-            read: false,
-            type: 'message' // Standard chat message
-        });
-    }
-
-    // ===== RECHARGE MODAL =====
-    function showRechargeModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
-                <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf</div></div>
-                    <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
-                </div>
-                <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="500">500</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="1000">1000</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="1500">1500</button>
-                    <button class="btn-primary btn-sm" style="width:auto;flex:1;background:var(--bg);color:var(--text);border:1px solid var(--border);" data-amt="2000">2000</button>
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">
-                    <div class="upload-area" style="padding:12px;flex:1;" id="receiptArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
-                </div>
-                <div id="receiptPreview" style="text-align:center;margin:6px 0;"></div>
-                <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-                <div id="rechargeMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        modal.querySelector("#copyWalletBtn").onclick = () => {
-            navigator.clipboard.writeText('TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf');
-            toast("Copied!");
-        };
-
-        modal.querySelectorAll('[data-amt]').forEach(btn => {
-            btn.onclick = function() {
-                modal.querySelector("#rechargeAmt").value = this.dataset.amt;
-                modal.querySelectorAll('[data-amt]').forEach(b => b.style.borderColor = 'var(--border)');
-                this.style.borderColor = 'var(--secondary)';
-            };
-        });
-
-        let receiptData = null;
-        modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
-        modal.querySelector("#receiptInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
-                const preview = modal.querySelector("#receiptPreview");
-                preview.innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
-                preview.style.display = 'block';
-            }
-        };
-
-        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
-            const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
-            if (isNaN(amt) || amt < 1) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
-                return;
-            }
-            if (!receiptData) {
-                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
-                return;
-            }
-            modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#f59e0b;"><i class="fas fa-clock"></i> ${d.rechargeWaiting}</span>`;
-            modal.querySelector("#rechargeSubmitBtn").disabled = true;
-
-            await setDoc(doc(db, "rechargeRequests", Date.now().toString()), {
-                id: Date.now().toString(),
-                userId: user.id,
-                userName: user.username,
-                amount: amt,
-                receiptImage: receiptData,
-                status: 'pending',
-                timestamp: new Date().toISOString()
-            });
-
-            setTimeout(() => {
-                document.body.removeChild(modal);
-                toast(d.rechargeWaiting || "Please wait, we are checking your payment.");
-            }, 800);
-        };
-
-        modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== WITHDRAW =====
-    function showWithdrawModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
-                <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
-                <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
-                <button class="btn-primary" id="withdrawSubmitBtn">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="withdrawCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-                <div id="withdrawMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#withdrawSubmitBtn").onclick = async () => {
-            const wallet = modal.querySelector("#withdrawWallet").value.trim();
-            const amt = parseFloat(modal.querySelector("#withdrawAmt").value);
-            if (!wallet) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter wallet address.</span>'; return; }
-            if (isNaN(amt) || amt < 1) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
-            if (amt > (user.balance||0)) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>'; return; }
-            user.balance -= amt;
-            await saveUser();
-            updateUI();
-            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), {
-                id: Date.now().toString(), userId: user.id, userName: user.username,
-                amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString()
-            });
-            document.body.removeChild(modal);
-            toast("Withdraw submitted!");
-        };
-        modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== HISTORY =====
-    function showHistory(title, items, type) {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
-        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
-        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="img-preview-sm">`:''}${item.adminNote?`<div style="font-size:11px;color:var(--muted);">Note: ${item.adminNote}</div>`:''}</div>`;
-        });
-        html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
-        modal.innerHTML = html;
-        document.body.appendChild(modal);
-        modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== BIND WALLET =====
-    function showBindWallet() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div>
-                <input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}">
-                <button class="btn-primary" id="bindWalletSave">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#bindWalletSave").onclick = async () => {
-            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
-            await saveUser();
-            updateUI();
-            document.body.removeChild(modal);
-            toast("Wallet updated!");
-        };
-        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== PERSONAL DETAILS =====
-    function showPersonalDetails() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div>
-                <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="profilePreview" style="width:90px;height:90px;border-radius:45px;background:var(--secondary);display:flex;align-items:center;justify-content:center;border:3px solid var(--secondary-light);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user" style="font-size:40px;color:#fff;"></i>'}</div>
-                </div>
-                <button class="btn-primary btn-outline" id="uploadPhotoBtn" style="font-size:12px;"><i class="fas fa-camera"></i> ${d.uploadPhoto}</button>
-                <div style="margin-top:10px;">
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div>
-                </div>
-                <button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#uploadPhotoBtn").onclick = () => {
-            document.body.removeChild(modal);
-            showUploadPhoto();
-        };
-        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== UPLOAD PHOTO =====
-    function showUploadPhoto() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-camera"></i> ${d.uploadPhoto}</div>
-                <div style="display:flex;justify-content:center;margin-bottom:12px;">
-                    <div id="uploadPreview" style="width:100px;height:100px;border-radius:50px;background:var(--secondary);display:flex;align-items:center;justify-content:center;border:3px solid var(--secondary-light);overflow:hidden;">${user?.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:48px;color:#fff;"></i>'}</div>
-                </div>
-                <div class="upload-area" id="photoUploadArea"><i class="fas fa-cloud-upload-alt"></i> ${d.uploadPhoto}<input type="file" id="photoInput" accept="image/*" style="display:none;"></div>
-                <button class="btn-primary" id="photoSave">${d.save}</button>
-                <button class="btn-primary btn-outline" id="photoCancel" style="margin-top:8px;">${d.cancel}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        let data = null;
-        modal.querySelector("#photoUploadArea").onclick = () => modal.querySelector("#photoInput").click();
-        modal.querySelector("#photoInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                data = await compressImage(e.target.files[0], 400, 400, 0.5);
-                modal.querySelector("#uploadPreview").innerHTML = `<img src="${data}" style="width:100%;height:100%;object-fit:cover;">`;
-            }
-        };
-        modal.querySelector("#photoSave").onclick = async () => {
-            if (data) {
-                user.profilePhoto = data;
-                await saveUser();
-                updateUI();
-            }
-            document.body.removeChild(modal);
-            toast("Photo updated!");
-        };
-        modal.querySelector("#photoCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== LOAN =====
-    function showLoanModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div>
-                <div class="upload-area" id="loanBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="loanBankInput" accept="image/*" style="display:none;"></div>
-                <div id="loanBankPreview"></div>
-                <div style="display:flex;gap:8px;margin:8px 0;">
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanFrontArea"><i class="fas fa-upload"></i> Front Side<input type="file" id="loanFrontInput" accept="image/*" style="display:none;"></div>
-                    <div class="upload-area" style="flex:1;padding:8px;" id="loanBackArea"><i class="fas fa-upload"></i> Back Side<input type="file" id="loanBackInput" accept="image/*" style="display:none;"></div>
-                </div>
-                <div style="display:flex;gap:8px;margin:8px 0;flex-wrap:wrap;">
-                    <div class="doc-opt" data-type="nrc" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:rgba(45,106,79,0.04);border:1px solid var(--secondary);color:var(--secondary);font-size:12px;">NRC</div>
-                    <div class="doc-opt" data-type="driver" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;">Driver</div>
-                    <div class="doc-opt" data-type="passport" style="cursor:pointer;padding:4px 12px;border-radius:30px;background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:12px;">Passport</div>
-                </div>
-                <input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount">
-                <button class="btn-primary" id="loanSubmit">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button>
-                <div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        let bankData=null, frontData=null, backData=null;
-        let docType = 'nrc';
-        modal.querySelectorAll('.doc-opt').forEach(el => {
-            el.onclick = function() {
-                modal.querySelectorAll('.doc-opt').forEach(o => { o.style.background='var(--bg)'; o.style.border='1px solid var(--border)'; o.style.color='var(--muted)'; });
-                this.style.background='rgba(45,106,79,0.04)'; this.style.border='1px solid var(--secondary)'; this.style.color='var(--secondary)';
-                docType = this.dataset.type;
-            };
-        });
-        modal.querySelector("#loanBankArea").onclick = () => modal.querySelector("#loanBankInput").click();
-        modal.querySelector("#loanBankInput").onchange = async (e) => {
-            if (e.target.files[0]) { bankData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanBankPreview").innerHTML = `<img src="${bankData}" class="img-preview-sm">`; }
-        };
-        modal.querySelector("#loanFrontArea").onclick = () => modal.querySelector("#loanFrontInput").click();
-        modal.querySelector("#loanFrontInput").onchange = async (e) => {
-            if (e.target.files[0]) { frontData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanFrontArea").innerHTML = `<i class="fas fa-check" style="color:#10b981;"></i> Uploaded`; }
-        };
-        modal.querySelector("#loanBackArea").onclick = () => modal.querySelector("#loanBackInput").click();
-        modal.querySelector("#loanBackInput").onchange = async (e) => {
-            if (e.target.files[0]) { backData = await compressImage(e.target.files[0], 400, 400, 0.4); modal.querySelector("#loanBackArea").innerHTML = `<i class="fas fa-check" style="color:#10b981;"></i> Uploaded`; }
-        };
-        modal.querySelector("#loanSubmit").onclick = async () => {
-            const amt = parseFloat(modal.querySelector("#loanAmt").value);
-            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
-            if (!bankData || !frontData || !backData) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Upload all documents.</span>'; return; }
-            await setDoc(doc(db, "loanRequests", Date.now().toString()), {
-                id: Date.now().toString(), userId: user.id, userName: user.username,
-                amount: amt, docType: docType, bankImage: bankData, frontImage: frontData, backImage: backData,
-                status: 'pending', timestamp: new Date().toISOString()
-            });
-            document.body.removeChild(modal);
-            toast("Loan submitted!");
-        };
-        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== ORDER DISPLAY =====
-    async function displayOrder(o) {
-        const d = t[lang] || t.en;
-        const container = document.getElementById('orderDisplay');
-        if (!container) return;
-        const img = o.imageData ? `<img src="${o.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:32px;color:var(--secondary);"></i>';
-        const isInj = o.isInjection || false;
-        const after = (user.balance||0) + o.netCommission;
-        const insufficient = (user.balance||0) < o.amount;
-        const badge = isInj ? '<span class="injection-badge"><i class="fas fa-gift"></i> '+d.bonusOrder+'</span>' : '';
-        let injHtml = '';
-        if (isInj && o.injectionDetails) {
-            injHtml = `
-                <div style="background:rgba(245,158,11,0.04);border-radius:12px;padding:8px;margin:8px 0;font-size:13px;">
-                    <div class="flex"><span style="color:var(--muted);">Original:</span><span class="text-gold">$ ${o.injectionDetails.originalBalance.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Added:</span><span class="text-gold">+ $ ${o.injectionDetails.extraAmount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Total:</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex"><span style="color:var(--muted);">Commission:</span><span class="text-gold" style="font-size:16px;">+ $ ${o.netCommission.toFixed(4)}</span></div>
-                </div>
-            `;
-        }
-        container.innerHTML = `
-            <div class="order-card ${isInj ? 'injection' : ''}">
-                ${badge}
-                <div class="order-img">${img}</div>
-                <h3 style="color:var(--primary);font-size:17px;">${o.name}</h3>
-                <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
-                ${injHtml}
-                ${!injHtml ? `
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
-                    <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission (${o.rate.toFixed(2)}%)</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
-                ` : ''}
-                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
-                    <span style="color:var(--muted);">${d.afterBalance}</span>
-                    <strong style="color:var(--secondary);font-size:16px;">$ ${after.toFixed(2)}</strong>
-                </div>
-                ${!insufficient ? `
-                    <div style="margin-top:10px;">
-                        <div style="color:var(--secondary);font-size:12px;">${d.serviceQuality}</div>
-                        <div class="stars" data-cat="service"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
-                    </div>
-                    <div style="margin-top:6px;">
-                        <div style="color:var(--secondary);font-size:12px;">${d.productQuality}</div>
-                        <div class="stars" data-cat="quality"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
-                    </div>
-                    <div style="margin-top:6px;">
-                        <div style="color:var(--secondary);font-size:12px;">${d.salesExperience}</div>
-                        <div class="stars" data-cat="sales"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
-                    </div>
-                    <button class="btn-primary" id="submitOrderBtn" style="margin-top:10px;font-size:14px;">${d.submitComplete}</button>
-                ` : `
-                    <div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);">
-                        <strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong>
-                        <div style="font-size:13px;margin-top:4px;">
-                            <div>💰 ${d.orderAmount}: $ ${o.amount.toFixed(2)}</div>
-                            <div>💵 ${d.yourBalance}: $ ${(user.balance||0).toFixed(2)}</div>
-                            <div>🔴 ${d.needAdditional}: $ ${(o.amount - (user.balance||0)).toFixed(2)}</div>
-                        </div>
-                        <button class="btn-primary" id="rechargeFromOrder" style="margin-top:8px;background:#10b981;color:#fff;font-size:13px;">${d.rechargeNow}</button>
-                    </div>
-                `}
-            </div>
-        `;
-        order = o;
-        ratings = { service:0, quality:0, sales:0 };
-
-        if (!insufficient) {
-            container.querySelectorAll('.stars').forEach(el => {
-                const cat = el.dataset.cat;
-                const stars = el.querySelectorAll('i');
-                stars.forEach(s => {
-                    s.onclick = function() {
-                        const val = parseInt(this.dataset.v);
-                        ratings[cat] = val;
-                        stars.forEach((st, i) => {
-                            st.className = i < val ? 'fas fa-star active' : 'far fa-star';
-                        });
-                    };
-                });
-            });
-            const submitBtn = document.getElementById('submitOrderBtn');
-            if (submitBtn) {
-                submitBtn.onclick = async function() {
-                    if (this.disabled) return;
-                    if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) {
-                        toast("Please provide all ratings.", true);
-                        return;
-                    }
-                    this.disabled = true;
-                    this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
-                    try {
-                        const profit = order.netCommission;
-                        if (!user.tasks) user.tasks = { completed: 0, total: 0 };
-                        user.balance = (user.balance||0) + profit;
-                        user.todayEarnings = (user.todayEarnings||0) + profit;
-                        user.totalCommission = (user.totalCommission||0) + profit;
-                        user.tasks.completed = (user.tasks.completed||0) + 1;
-                        order.status = 'completed';
-                        order.ratings = { ...ratings };
-                        order.date = new Date().toLocaleString();
-                        order.profit = profit;
-                        await saveOrder(user.id, order);
-                        user.currentOrderObj = null;
-                        await saveUser();
-                        order = null;
-                        updateUI();
-                        toast(`✅ +$ ${profit.toFixed(4)}`);
-                        const limit = user.tasks.total || 0;
-                        const done = user.tasks.completed || 0;
-                        if (done >= limit && limit > 0) {
-                            document.getElementById('orderDisplay').innerHTML = '';
-                        } else {
-                            await loadNextOrder();
-                        }
-                    } catch(e) { console.error(e); toast("Error: "+e.message, true); }
-                    this.disabled = false;
-                    this.innerHTML = d.submitComplete;
-                };
-            }
-        } else {
-            const rb = document.getElementById('rechargeFromOrder');
-            if (rb) rb.onclick = () => showRechargeModal();
-        }
-    }
-
-    async function loadNextOrder() {
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) {
-            document.getElementById('orderDisplay').innerHTML = '';
-            return;
-        }
-        const settings = await getDoc(doc(db, "systemSettings", "main"));
-        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) {
-            document.getElementById('orderDisplay').innerHTML = `<div class="card" style="border-color:#f59e0b;text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ Insufficient balance. Please recharge.</span></div>`;
-            return;
-        }
-        const nextTask = (user.tasks?.completed||0) + 1;
-        let inj = null;
-        if (pendingInjections.length > 0) {
-            inj = pendingInjections.find(i => i.taskNumber === nextTask);
-            if (inj && !inj.used) {
-                await markUsed(inj.id);
-                pendingInjections = pendingInjections.filter(i => i.id !== inj.id);
-                user.pendingInjections = pendingInjections;
-                await saveUser();
-            } else inj = null;
-        }
-        const templates = await loadCustomOrders();
-        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Default Order', image:null, price:10 };
-        const balance = user.balance||0;
-        const rate = getRate(user);
-        let amount, net, isInj = false;
-        if (inj) {
-            amount = balance + (inj.extraAmount||0);
-            net = inj.commission > 0 ? inj.commission : (inj.commissionRate > 0 ? amount * (inj.commissionRate/100) : amount * rate);
-            isInj = true;
-            const d = t[lang] || t.en;
-            toast(`🎉 ${d.bonusOrder} ${d.injectionMsg}`);
-        } else {
-            const pct = 0.53 + Math.random() * 0.26;
-            amount = parseFloat((balance * pct).toFixed(2));
-            const gross = balance * rate;
-            net = gross - (gross * 0.01);
-        }
-        const newOrder = {
-            id: Date.now(),
-            name: inj ? (inj.orderName||tpl.name) : tpl.name,
-            imageData: inj?.imageData || tpl.image || null,
-            amount: amount,
-            netCommission: net,
-            rate: inj?.commissionRate || (rate * 100),
-            orderNumber: 'ORD'+Math.floor(Math.random()*1e9),
-            profit: net,
-            isInjection: isInj,
-            injectionDetails: isInj ? { extraAmount: inj?.extraAmount||0, customCommission: net, originalBalance: balance, injectionId: inj?.id } : null
-        };
-        user.currentOrderObj = newOrder;
-        await saveUser();
-        displayOrder(newOrder);
-    }
-
-    function refreshWork() {
-        if (!user) return;
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) {
-            document.getElementById('orderDisplay').innerHTML = '';
-            return;
-        }
-        if (user.currentOrderObj && !user.currentOrderObj.completed) {
-            displayOrder(user.currentOrderObj);
-        } else if (order) {
-            displayOrder(order);
-        } else {
-            if (done < limit && limit > 0) loadNextOrder();
-        }
-    }
-
-    // ===== UPDATE UI =====
-    async function updateUI() {
-        if (!user) return;
-        const d = t[lang] || t.en;
-        const orders = await getOrders(user.id);
-        const balance = user.balance||0;
-        const vip = getVIP(user);
-        const rate = getRate(user);
-        const limit = user.tasks?.total||0;
-        const done = user.tasks?.completed||0;
-        const vipClass = getVipClass(vip);
-
-        document.getElementById('homeName').innerText = user.username;
-        document.getElementById('balanceAmount').innerText = `$ ${balance.toFixed(2)}`;
-        document.getElementById('todayCount').innerText = done;
-        document.getElementById('dailyMax').innerText = limit;
-        document.getElementById('todayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('totalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
-        document.getElementById('commRate').innerText = `${(rate*100).toFixed(1)}%`;
-        document.getElementById('homeVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
-        document.getElementById('refCode').innerText = user.invitationCode||'------';
-        document.getElementById('profileName').innerText = user.username;
-        document.getElementById('profileVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
-        document.getElementById('creditScore').innerText = user.creditScore||100;
-        document.getElementById('pTotalAssets').innerText = `$ ${balance.toFixed(2)}`;
-        document.getElementById('pTodayOrders').innerText = done;
-        document.getElementById('pTodayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('pTotalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
-        document.getElementById('walletDisplay').innerText = user.walletAddress||'Not set';
-        document.getElementById('taskCounter').innerText = `${done}/${limit}`;
-        document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
-
-        const av = document.getElementById('profileAvatar');
-        if (av) {
-            av.innerHTML = user.profilePhoto ? `<img src="${user.profilePhoto}" style="width:100%;height:100%;object-fit:cover;">` : '<i class="fas fa-user-circle" style="font-size:40px;color:#fff;"></i>';
-        }
-
-        const completed = orders.filter(o => o.status === 'completed');
-        document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
-            <div class="card">
-                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--secondary);font-size:11px;">${d.completed}</span></div>
-                <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
-                <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
-            </div>
-        `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
-    }
-
-    // ===== LIVE FEED =====
-    const names = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
-    function randName() { return names[Math.floor(Math.random()*names.length)]; }
-    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
-    function startFeed() {
-        if (feedInterval) clearInterval(feedInterval);
-        const container = document.getElementById('feedList');
-        if (!container) return;
-        function add() {
-            const item = document.createElement('div');
-            item.className = 'feed-item';
-            item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`;
-            container.prepend(item);
-            if (container.children.length > 5) container.removeChild(container.lastChild);
-        }
-        for (let i=0; i<2; i++) add();
-        feedInterval = setInterval(add, 8000);
-    }
-
-    // ===== SUBSCRIPTIONS =====
-    function subscribeUser(uid) {
-        if (unsubUser) unsubUser();
-        unsubUser = onSnapshot(doc(db, "users", uid), async (snap) => {
-            if (snap.exists()) {
-                const data = snap.data();
-                user = { id: snap.id, ...data };
-                if (!user.orders) user.orders = [];
-                if (!user.tasks) user.tasks = { completed:0, total:0 };
-                const injSnap = await getDocs(query(collection(db, "injections"), where("userId","==",uid), where("used","==",false)));
-                pendingInjections = [];
-                injSnap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
-                if (pendingInjections.length) {
-                    pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                    user.pendingInjections = pendingInjections;
-                    await saveUser();
-                }
-                updateUI();
-                const indicator = document.getElementById('liveIndicator');
-                indicator.style.display = 'flex';
-                setTimeout(() => { indicator.style.display = 'none'; }, 1500);
-            }
-        });
-    }
-
-    // ===== NAVIGATION =====
-    const pages = {
-        landing: document.getElementById('pageLanding'),
-        login: document.getElementById('pageLogin'),
-        register: document.getElementById('pageRegister'),
-        home: document.getElementById('pageHome'),
-        work: document.getElementById('pageWork'),
-        orders: document.getElementById('pageOrders'),
-        profile: document.getElementById('pageProfile'),
-        service: document.getElementById('pageService')
-    };
-    const bottomNav = document.getElementById('bottomNav');
-
-    function showPage(name) {
-        if (!user && !['landing','login','register'].includes(name)) name = 'landing';
-        Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
-        if (pages[name]) pages[name].classList.add('active-page');
-        if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
-        else bottomNav.classList.remove('hidden-nav');
-        if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
-        if (name === 'home' || name === 'profile') updateUI();
-        if (name === 'work') { updateUI(); refreshWork(); }
-        if (name === 'orders') updateUI();
-        if (name === 'service') { 
-            // Trigger chat reload immediately
-            if (unsubChat) unsubChat();
-            subscribeChat(); 
-        }
-        startFeed();
-    }
-
-    document.querySelectorAll('.nav-item').forEach(el => {
-        el.onclick = () => {
-            if (!user) { showPage('landing'); return; }
-            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-            showPage(el.dataset.page);
-        };
-    });
-
-    // ===== EVENT LISTENERS =====
-
-    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
-
-    document.getElementById('landingLoginBtn').onclick = () => showPage('login');
-    document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
-    document.getElementById('backFromLogin').onclick = () => showPage('landing');
-    document.getElementById('backFromRegister').onclick = () => showPage('landing');
-    document.getElementById('goRegisterBtn').onclick = () => showPage('register');
-    document.getElementById('goLoginFromReg').onclick = () => showPage('login');
-
-    document.getElementById('doLoginBtn').onclick = async function() {
-        const username = document.getElementById('loginUsername').value.trim();
-        const password = document.getElementById('loginPass').value;
-        if (!username || !password) { toast('Enter username and password.', true); return; }
-        this.disabled = true;
-        this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
-        try {
-            const q = query(collection(db, "users"), where("username","==",username), where("password","==",password));
-            const snap = await getDocs(q);
-            if (snap.empty) { toast('Invalid credentials.', true); this.disabled=false; this.innerHTML='Login'; return; }
-            const data = snap.docs[0].data();
-            if (data.disabled) { toast('Account disabled.', true); this.disabled=false; this.innerHTML='Login'; return; }
-            user = { id: snap.docs[0].id, ...data };
-            if (!user.orders) user.orders = [];
-            if (!user.tasks) user.tasks = { completed:0, total:0 };
-            await saveUser();
-            subscribeUser(user.id);
-            subscribeInjections(user.id);
-            subscribeChat();
-            subscribeNotifications();
-            startLastSeenUpdate();
-            updateUI();
-            const last = localStorage.getItem('lastPage');
-            showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-            toast(`Welcome, ${username}`);
-        } catch(e) {
-            toast('Login failed: '+e.message, true);
-            console.error('Login error:', e);
-        }
-        this.disabled = false;
-        this.innerHTML = 'Login';
-    };
-
-    document.getElementById('doRegisterBtn').onclick = async function() {
-        const username = document.getElementById('regUsername').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const phone = document.getElementById('regPhone').value.trim();
-        const pass = document.getElementById('regPass').value;
-        const confirm = document.getElementById('regConfirm').value;
-        const withdraw = document.getElementById('regWithdraw').value;
-        const invite = document.getElementById('regInvite').value.trim();
-        if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
-        if (pass !== confirm) { toast('Passwords do not match.', true); return; }
-        const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
-        if (!exist.empty) { toast('Username exists.', true); return; }
-        let ref = null;
-        if (invite) {
-            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite)));
-            if (refCheck.empty) { toast('Invalid invitation code.', true); return; }
-            ref = refCheck.docs[0].data().username;
-        }
-
-        // Fetch IP address for new users
-        const ip = await getClientIP();
-
-        user = {
-            id: Date.now().toString(),
-            username, email, phone,
-            password: pass,
-            withdrawPassword: withdraw,
-            balance: 0,
-            invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-            superior: ref,
-            referralEarnings: 0,
-            regTime: new Date().toISOString(),
-            tasks: { completed:0, total:0 },
-            orders: [],
-            todayOrders: 0,
-            todayEarnings: 0,
-            totalCommission: 0,
-            creditScore: 100,
-            disabled: false,
-            walletAddress: null,
-            currentOrderObj: null,
-            role: 'customer',
-            lastSeen: Date.now(),
-            regIP: ip // <--- Save IP
-        };
-        await setDoc(doc(db, "users", user.id), user);
-        subscribeUser(user.id);
-        subscribeInjections(user.id);
-        subscribeChat();
-        subscribeNotifications();
-        startLastSeenUpdate();
-        updateUI();
-        showPage('home');
-        toast('Registration successful!');
-    };
-
-    // ===== SIGN OUT =====
-    function signOut() {
-        if (unsubUser) unsubUser();
-        if (unsubChat) unsubChat();
-        if (unsubInjections) unsubInjections();
-        if (unsubNotifications) unsubNotifications();
-        if (feedInterval) clearInterval(feedInterval);
-        if (lastSeenInterval) clearInterval(lastSeenInterval);
-        const uid = user?.id;
-        user = null;
-        order = null;
-        pendingInjections = [];
-        localStorage.removeItem('uid');
-        if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
-        
-        firebaseSignOut(auth).then(() => {
-            console.log("Signed out from Firebase");
-        }).catch((error) => {
-            console.error("Sign out error:", error);
-        });
-
-        showPage('landing');
-        toast('Signed out.');
-    }
-    document.getElementById('signOutHome').onclick = signOut;
-    document.getElementById('signOutProfile').onclick = signOut;
-
-    // ===== REFRESH =====
-    document.querySelectorAll('.icon-btn').forEach(el => {
-        if (el.id && el.id.startsWith('refresh')) {
-            el.onclick = () => { updateUI(); toast('Refreshed!'); };
-        }
-    });
-
-    // ===== BUTTONS =====
-    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
-    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
-    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
-    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
-    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
-    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
-    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
-    document.getElementById('rechargeHistoryBtn').onclick = async () => {
-        if (!user) return;
-        const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data()));
-        showHistory('Recharge History', items, 'recharge');
-    };
-    document.getElementById('withdrawHistoryBtn').onclick = async () => {
-        if (!user) return;
-        const snap = await getDocs(query(collection(db,"withdrawRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data()));
-        showHistory('Withdraw History', items, 'withdraw');
-    };
-
-    // ===== START ORDER =====
-    document.getElementById('startOrderBtn').onclick = async () => {
-        if (!user) { toast('Login first.', true); return; }
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (limit === 0) { toast('No orders assigned by admin.', true); return; }
-        if (done >= limit) { toast('All orders completed!', true); return; }
-        if (user.currentOrderObj && !user.currentOrderObj.completed) {
-            const d = t[lang] || t.en;
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-box" style="text-align:center;">
-                    <div style="font-size:48px;color:#dc2626;margin-bottom:12px;"><i class="fas fa-exclamation-triangle"></i></div>
-                    <h3 style="color:#dc2626;font-size:20px;">⚠️ ${d.warning}</h3>
-                    <p style="color:var(--text-secondary);font-size:14px;margin:12px 0;">${d.pendingMsg}</p>
-                    <button class="btn-primary" id="pendingOk">${d.okay}</button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            modal.querySelector('#pendingOk').onclick = () => {
-                document.body.removeChild(modal);
-                showPage('work');
-                if (user.currentOrderObj) displayOrder(user.currentOrderObj);
-                else if (order) displayOrder(order);
-            };
-            return;
-        }
-        const settings = await getDoc(doc(db, "systemSettings", "main"));
-        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) {
-            toast(`Minimum balance $ ${minBal} required.`, true);
-            return;
-        }
-        await loadNextOrder();
-    };
-
-    // ===== CHAT =====
-    document.getElementById('sendChatBtn').onclick = async () => {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (text) {
-            await sendChat(text);
-            input.value = '';
-            input.focus();
-        }
-    };
-    document.getElementById('chatInput').addEventListener('keypress', async (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (text) {
-                await sendChat(text);
-                input.value = '';
-                input.focus();
-            }
-        }
-    });
-    document.getElementById('emojiBtn').onclick = () => {
-        const input = document.getElementById('chatInput');
-        const picker = document.createElement('div');
-        picker.style.cssText = 'position:absolute;bottom:70px;left:16px;background:#1a1e26;padding:6px;border-radius:12px;z-index:10000;border:1px solid var(--border);display:flex;flex-wrap:wrap;max-width:200px;gap:2px;';
-        const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨'];
-        emojis.forEach(e => {
-            const s = document.createElement('span');
-            s.style.cssText = 'cursor:pointer;font-size:20px;padding:4px;border-radius:4px;';
-            s.innerText = e;
-            s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
-            picker.appendChild(s);
-        });
-        document.body.appendChild(picker);
-        setTimeout(() => {
-            const close = (e) => { if (!picker.contains(e.target) && e.target.id !== 'emojiBtn') { picker.remove(); document.removeEventListener('click', close); } };
-            document.addEventListener('click', close);
-        }, 50);
-    };
-    document.getElementById('uploadChatBtn').onclick = () => document.getElementById('chatFileInput').click();
-    document.getElementById('chatFileInput').onchange = async (e) => {
-        if (e.target.files[0]) {
-            const data = await compressImage(e.target.files[0], 300, 300, 0.4);
-            await sendChat('', data);
-            e.target.value = '';
-        }
-    };
-
-    // ===== COMPANY INFO =====
-    document.getElementById('companyInfoBtn').onclick = () => {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
-                <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
-                <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
-                <div style="background:var(--bg);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--secondary);font-size:15px;"><i class="fas fa-bullseye"></i> ${d.mission}</h4><p style="font-size:13px;color:var(--text-secondary);">To provide seamless travel experiences and financial freedom.</p></div>
-                <div style="background:var(--bg);border-radius:12px;padding:12px;margin:12px 0;border:1px solid var(--border);"><h4 style="color:var(--secondary);font-size:15px;"><i class="fas fa-eye"></i> ${d.vision}</h4><p style="font-size:13px;color:var(--text-secondary);">To become the world's leading integrated travel and earning platform.</p></div>
-                <button class="btn-primary" id="companyClose">${d.close}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
-    };
-
-    // ===== LANGUAGE =====
-    document.querySelectorAll('.lang-opt').forEach(el => {
-        el.onclick = function() {
-            applyLang(this.dataset.lang);
-            if (user) updateUI();
-        };
-    });
-
-    // ===== LOGOS & COMPANY =====
-    function subscribeLogos() {
-        onSnapshot(doc(db, "systemSettings", "logos"), (snap) => {
-            if (snap.exists()) {
-                const logos = snap.data();
-                const container = document.getElementById('logoContainer');
-                let html = '';
-                for (let i=1; i<=5; i++) {
-                    const url = logos[`logo${i}`];
-                    if (url) html += `<div style="width:50px;height:50px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="${url}" style="max-width:100%;max-height:100%;object-fit:contain;"></div>`;
-                    else html += `<div style="width:50px;height:50px;background:var(--bg);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--secondary);"><i class="fas fa-plane"></i></div>`;
-                }
-                container.innerHTML = html;
-            }
-        });
-    }
-
-    function subscribeCompany() {
-        onSnapshot(doc(db, "systemSettings", "companyInfo"), (snap) => {
-            if (snap.exists()) {
-                const d = snap.data();
-                if (d.companyName) document.getElementById('companyNameText').innerText = d.companyName;
-                if (d.companyTagline) document.getElementById('companyTaglineText').innerText = d.companyTagline;
-                if (d.companyDescription) document.getElementById('companyDesc').innerHTML = d.companyDescription;
-                if (d.companyLogo) {
-                    const logo = document.getElementById('companyLogo');
-                    if (logo) logo.innerHTML = `<img src="${d.companyLogo}" style="width:32px;height:32px;object-fit:contain;">`;
-                }
-                if (d.stat1Number) document.getElementById('stat1').innerText = d.stat1Number;
-                if (d.stat2Number) document.getElementById('stat2').innerText = d.stat2Number;
-                if (d.stat3Number) document.getElementById('stat3').innerText = d.stat3Number;
-                if (d.stat1Label) document.getElementById('stat1l').innerText = d.stat1Label;
-                if (d.stat2Label) document.getElementById('stat2l').innerText = d.stat2Label;
-                if (d.stat3Label) document.getElementById('stat3l').innerText = d.stat3Label;
-            }
-        });
-    }
-
-    function subscribeSettings() {
-        onSnapshot(doc(db, "systemSettings", "main"), (snap) => {
-            if (snap.exists()) {
-                const s = snap.data();
-                if (s.customerName) {
-                    document.getElementById('loginWebsiteName').innerText = s.customerName;
-                    document.getElementById('homeBrand').innerText = s.homePageName || s.customerName;
-                    document.getElementById('brandName').innerText = s.customerName;
-                }
-                if (s.customerTagline) document.getElementById('loginTagline').innerText = s.customerTagline;
-            }
-        });
-    }
-
-    // ===== POPUP ADS =====
-    async function checkPopup() {
-        if (!user) return;
-        const snap = await getDocs(collection(db, "popupAds"));
-        const ads = [];
-        snap.forEach(d => ads.push({ id: d.id, ...d.data() }));
-        const active = ads.filter(a => a.isActive !== false);
-        if (!active.length) return;
-        const key = `popup_${user.id}`;
-        if (sessionStorage.getItem(key)) return;
-        const ad = active[0];
-        sessionStorage.setItem(key, 'true');
-        const overlay = document.createElement('div');
-        overlay.className = 'modal-overlay';
-        overlay.innerHTML = `
-            <div class="popup-card" style="background:var(--bg-card);border-radius:24px;padding:20px;max-width:400px;width:92%;border:1px solid var(--border);text-align:center;position:relative;box-shadow:var(--shadow-hover);">
-                <button id="popupClose" style="position:absolute;top:6px;right:10px;background:var(--bg);border:none;color:var(--muted);font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:0.3s;">✕</button>
-                ${ad.imageData ? `<img src="${ad.imageData}" style="max-width:100%;max-height:180px;border-radius:12px;margin-bottom:10px;border:1px solid var(--border);">` : ''}
-                <div style="font-size:20px;font-weight:800;color:var(--primary);">${esc(ad.title||'Special Offer')}</div>
-                <div style="color:var(--text-secondary);font-size:14px;margin:6px 0 14px;">${esc(ad.subtitle||'')}</div>
-                <button class="btn-primary" id="popupAction" style="width:auto;padding:8px 24px;">${esc(ad.buttonText||'Close')}</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        const close = () => { if (overlay.parentNode) document.body.removeChild(overlay); };
-        overlay.querySelector('#popupClose').onclick = close;
-        overlay.querySelector('#popupAction').onclick = close;
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
-    }
-
     // ===== INIT =====
     applyLang(lang);
-    subscribeLogos();
-    subscribeCompany();
-    subscribeSettings();
     startFeed();
 
     onAuthStateChanged(auth, async (gUser) => {
@@ -2288,22 +1923,11 @@
             if (snap.exists() && !user) {
                 const data = snap.data();
                 if (!data.disabled) {
-                    user = { id: snap.id, ...data };
-                    if (!user.orders) user.orders = [];
-                    if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    subscribeUser(user.id);
-                    subscribeInjections(user.id);
-                    subscribeChat();
-                    subscribeNotifications();
-                    startLastSeenUpdate();
-                    updateUI();
-                    const last = localStorage.getItem('lastPage');
-                    showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-                    await checkPopup();
+                    user = { id: snap.id, ...data }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                    const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
                 }
             }
-        } else {
-            // No Google User found
         }
     });
 
@@ -2311,22 +1935,10 @@
     if (saved) {
         (async () => {
             const snap = await getDoc(doc(db, "users", saved));
-            if (snap.exists()) {
-                const data = snap.data();
-                if (!data.disabled) {
-                    user = { id: snap.id, ...data };
-                    if (!user.orders) user.orders = [];
-                    if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    subscribeUser(user.id);
-                    subscribeInjections(user.id);
-                    subscribeChat();
-                    subscribeNotifications();
-                    startLastSeenUpdate();
-                    updateUI();
-                    const last = localStorage.getItem('lastPage');
-                    showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-                    await checkPopup();
-                } else showPage('landing');
+            if (snap.exists() && !snap.data().disabled) {
+                user = { id: snap.id, ...snap.data() }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             } else showPage('landing');
         })();
     } else showPage('landing');
