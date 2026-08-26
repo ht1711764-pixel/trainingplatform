@@ -284,6 +284,18 @@
         ::-webkit-scrollbar { width:3px; }
         ::-webkit-scrollbar-track { background:transparent; }
         ::-webkit-scrollbar-thumb { background:var(--secondary); border-radius:10px; }
+        .spinner-circle {
+            display:inline-block;
+            width:20px;
+            height:20px;
+            border:2px solid rgba(255,255,255,0.3);
+            border-radius:50%;
+            border-top-color:#fff;
+            animation:spin 0.8s linear infinite;
+            vertical-align:middle;
+            margin-right:6px;
+        }
+        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
     </style>
 </head>
 <body>
@@ -301,13 +313,11 @@
             <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
         </div>
         <button class="btn-primary" id="loginBtn"><i class="fas fa-arrow-right-to-bracket"></i> Login</button>
-        
         <div style="position:relative;margin:16px 0 8px;width:100%;">
             <div style="border-top:1px solid var(--border);position:absolute;top:50%;left:0;right:0;"></div>
             <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--muted);font-size:11px;">or</span>
         </div>
         <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
-        
         <div id="loginError" class="error"></div>
     </div>
 </div>
@@ -344,7 +354,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit, getCountFromServer } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const firebaseConfig = {
@@ -360,53 +370,21 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
-    let users = [];
-    let agencies = [];
-    let injections = [];
-    let customOrders = [];
-    let rechargeReqs = [];
-    let withdrawReqs = [];
-    let loanReqs = [];
-    let popupAds = [];
+    // ===== GLOBALS =====
     let admin = null;
     let currentSection = 'dashboard';
-    let chatUser = null;
-    let unsubChat = null;
-    let unsubUsers = null;
-    let unsubInjections = null;
-    let systemSettings = { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf', minBalanceForOrder: 10 };
-
-    function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    let width = img.width;
-                    let height = img.height;
-                    if (width > maxWidth || height > maxHeight) {
-                        if (width > height) {
-                            height = Math.round(height * maxWidth / width);
-                            width = maxWidth;
-                        } else {
-                            width = Math.round(width * maxHeight / height);
-                            height = maxHeight;
-                        }
-                    }
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', quality));
-                };
-                img.onerror = reject;
-                img.src = e.target.result;
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-    }
+    let unsubscribers = {}; // store unsubscribe functions per section
+    let cachedData = {
+        users: [],
+        agencies: [],
+        injections: [],
+        customOrders: [],
+        rechargeReqs: [],
+        withdrawReqs: [],
+        loanReqs: [],
+        popupAds: [],
+        systemSettings: { usdtWalletAddress: 'TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf', minBalanceForOrder: 10 }
+    };
 
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
     function toast(msg, err=false) {
@@ -441,11 +419,14 @@
     }
     window.togglePw = togglePw;
 
+    // ===== AUTH =====
     async function login(username, password) {
-        const a = agencies.find(x => x.username === username && x.password === password && x.status === 'active');
+        // Check agencies
+        const a = cachedData.agencies.find(x => x.username === username && x.password === password && x.status === 'active');
         if (a) return { success:true, data:a, role:'agency', perms:a.permissions||{} };
         if (username === 'admin' && password === 'admin123') return { success:true, data:{id:'admin',username:'admin'}, role:'admin', perms:{all:true} };
         if (username === 'hein' && password === '123456') return { success:true, data:{id:'master',username:'hein'}, role:'master', perms:{all:true} };
+        // Check admin users collection
         const q = query(collection(db,'users'), where('username','==',username), where('role','==','admin'));
         const snap = await getDocs(q);
         if (!snap.empty) {
@@ -468,7 +449,7 @@
                 sessionStorage.setItem('adminSession', JSON.stringify(admin));
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                startSubscriptions();
+                loadBaseData();
                 renderSection('dashboard');
                 toast(`Welcome Admin, ${admin.username}`);
             } else {
@@ -489,14 +470,16 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         try {
-            await loadAllData();
+            // Load agencies first (for agency login)
+            const snapA = await getDocs(collection(db,'agencies'));
+            cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
             const res = await login(user, pass);
             if (res.success) {
                 admin = { id: res.data.id, username: res.data.username, role: res.role, perms: res.perms, loginTime: Date.now() };
                 sessionStorage.setItem('adminSession', JSON.stringify(admin));
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                startSubscriptions();
+                loadBaseData();
                 renderSection('dashboard');
             } else {
                 err.textContent = 'Invalid credentials';
@@ -507,14 +490,12 @@
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Login';
     };
-    
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-
     document.getElementById('loginToggle').onclick = function() {
         const inp = document.getElementById('loginPass');
         const icon = this.querySelector('i');
-        if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
     function checkSession() {
@@ -530,60 +511,468 @@
         return false;
     }
 
-    async function loadAllData() {
-        try {
-            const snap1 = await getDocs(query(collection(db,'users'), limit(500)));
-            users = []; snap1.forEach(d => users.push({ id:d.id, ...d.data() }));
-            const snap2 = await getDocs(collection(db,'agencies'));
-            agencies = []; snap2.forEach(d => agencies.push({ id:d.id, ...d.data() }));
-            const snap3 = await getDocs(collection(db,'injections'));
-            injections = []; snap3.forEach(d => injections.push({ id:d.id, ...d.data() }));
-            const snap4 = await getDocs(collection(db,'customOrders'));
-            customOrders = []; snap4.forEach(d => customOrders.push({ id:d.id, ...d.data() }));
-            const snap5 = await getDocs(query(collection(db,'rechargeRequests'), orderBy('timestamp','desc'), limit(200)));
-            rechargeReqs = []; snap5.forEach(d => rechargeReqs.push({ id:d.id, ...d.data() }));
-            const snap6 = await getDocs(query(collection(db,'withdrawRequests'), orderBy('timestamp','desc'), limit(200)));
-            withdrawReqs = []; snap6.forEach(d => withdrawReqs.push({ id:d.id, ...d.data() }));
-            const snap7 = await getDocs(query(collection(db,'loanRequests'), orderBy('timestamp','desc'), limit(200)));
-            loanReqs = []; snap7.forEach(d => loanReqs.push({ id:d.id, ...d.data() }));
-            const snap8 = await getDocs(collection(db,'popupAds'));
-            popupAds = []; snap8.forEach(d => popupAds.push({ id:d.id, ...d.data() }));
-            const settings = await getDoc(doc(db,'systemSettings','main'));
-            if (settings.exists()) systemSettings = settings.data();
-        } catch(e) { console.error(e); }
+    // ===== DATA LOADING (ON-DEMAND with unsubscribe) =====
+    function loadBaseData() {
+        // Load settings once
+        getDoc(doc(db,'systemSettings','main')).then(snap => {
+            if (snap.exists()) cachedData.systemSettings = snap.data();
+        }).catch(console.error);
+        // Load agencies once (for login and display)
+        getDocs(collection(db,'agencies')).then(snap => {
+            cachedData.agencies = []; snap.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
+        }).catch(console.error);
+        // Load custom orders once
+        getDocs(collection(db,'customOrders')).then(snap => {
+            cachedData.customOrders = []; snap.forEach(d => cachedData.customOrders.push({ id:d.id, ...d.data() }));
+        }).catch(console.error);
+        // Load popup ads once
+        getDocs(collection(db,'popupAds')).then(snap => {
+            cachedData.popupAds = []; snap.forEach(d => cachedData.popupAds.push({ id:d.id, ...d.data() }));
+        }).catch(console.error);
     }
 
-    function startSubscriptions() {
-        if (unsubUsers) unsubUsers();
-        unsubUsers = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
-            users = [];
-            snap.forEach(d => users.push({ id:d.id, ...d.data() }));
-            if (['dashboard','members','vip','injection'].includes(currentSection)) renderSection(currentSection);
-            document.getElementById('memberCount').textContent = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
-            const ind = document.getElementById('liveIndicator');
-            ind.style.display = 'flex';
-            setTimeout(() => { ind.style.display = 'none'; }, 1200);
+    function loadSectionData(section) {
+        // Unsubscribe previous listeners for this section
+        if (unsubscribers[section]) {
+            unsubscribers[section]();
+            delete unsubscribers[section];
+        }
+
+        switch(section) {
+            case 'dashboard':
+            case 'members':
+            case 'vip':
+            case 'injection':
+                // Users - used in multiple sections; we'll keep a single listener for users
+                if (!unsubscribers['users']) {
+                    unsubscribers['users'] = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
+                        cachedData.users = [];
+                        snap.forEach(d => cachedData.users.push({ id:d.id, ...d.data() }));
+                        // Update member count
+                        const total = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
+                        document.getElementById('memberCount').textContent = total;
+                        // If current section uses users, re-render
+                        if (['dashboard','members','vip','injection'].includes(currentSection)) {
+                            renderSection(currentSection);
+                        }
+                        // Live indicator
+                        const ind = document.getElementById('liveIndicator');
+                        ind.style.display = 'flex';
+                        setTimeout(() => { ind.style.display = 'none'; }, 1200);
+                    });
+                }
+                break;
+            case 'recharge':
+                if (!unsubscribers['recharge']) {
+                    unsubscribers['recharge'] = onSnapshot(query(collection(db,'rechargeRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                        cachedData.rechargeReqs = [];
+                        snap.forEach(d => cachedData.rechargeReqs.push({ id:d.id, ...d.data() }));
+                        if (currentSection === 'recharge') renderSection('recharge');
+                    });
+                }
+                break;
+            case 'withdraw':
+                if (!unsubscribers['withdraw']) {
+                    unsubscribers['withdraw'] = onSnapshot(query(collection(db,'withdrawRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                        cachedData.withdrawReqs = [];
+                        snap.forEach(d => cachedData.withdrawReqs.push({ id:d.id, ...d.data() }));
+                        if (currentSection === 'withdraw') renderSection('withdraw');
+                    });
+                }
+                break;
+            case 'loans':
+                if (!unsubscribers['loans']) {
+                    unsubscribers['loans'] = onSnapshot(query(collection(db,'loanRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                        cachedData.loanReqs = [];
+                        snap.forEach(d => cachedData.loanReqs.push({ id:d.id, ...d.data() }));
+                        if (currentSection === 'loans') renderSection('loans');
+                    });
+                }
+                break;
+            case 'injection':
+                // For injection, we need injections list; we can use a separate listener or fetch on demand
+                // We'll use onSnapshot for injections as well
+                if (!unsubscribers['injections']) {
+                    unsubscribers['injections'] = onSnapshot(collection(db,'injections'), (snap) => {
+                        cachedData.injections = [];
+                        snap.forEach(d => cachedData.injections.push({ id:d.id, ...d.data() }));
+                        if (currentSection === 'injection') renderSection('injection');
+                    });
+                }
+                break;
+            // Others: agencies, customOrders, popupAds already loaded once; chat uses its own listener
+            default:
+                break;
+        }
+    }
+
+    // ===== RENDER FUNCTIONS =====
+    function renderSection(section) {
+        currentSection = section;
+        localStorage.setItem('adminSection', section);
+        document.querySelectorAll('.nav-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.section === section);
         });
-        if (unsubInjections) unsubInjections();
-        unsubInjections = onSnapshot(collection(db,'injections'), (snap) => {
-            injections = [];
-            snap.forEach(d => injections.push({ id:d.id, ...d.data() }));
-            if (currentSection === 'injection') renderSection('injection');
-        });
-        onSnapshot(query(collection(db,'rechargeRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
-            rechargeReqs = [];
-            snap.forEach(d => rechargeReqs.push({ id:d.id, ...d.data() }));
-            if (currentSection === 'recharge') renderSection('recharge');
-        });
-        onSnapshot(query(collection(db,'withdrawRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
-            withdrawReqs = [];
-            snap.forEach(d => withdrawReqs.push({ id:d.id, ...d.data() }));
-            if (currentSection === 'withdraw') renderSection('withdraw');
-        });
+        // Load data for this section if not already loaded
+        loadSectionData(section);
+        const main = document.getElementById('mainContent');
+        switch(section) {
+            case 'dashboard': renderDashboard(main); break;
+            case 'members': renderMembers(main); break;
+            case 'vip': renderVIP(main); break;
+            case 'injection': renderInjection(main); break;
+            case 'orders': renderOrders(main); break;
+            case 'recharge': renderRecharge(main); break;
+            case 'withdraw': renderWithdraw(main); break;
+            case 'loans': renderLoans(main); break;
+            case 'agency': renderAgency(main); break;
+            case 'settings': renderSettings(main); break;
+            case 'popup': renderPopup(main); break;
+            case 'chat': renderChat(main); break;
+            case 'notifications': renderNotifications(main); break;
+            default: main.innerHTML = '<div class="card-glass"><p>Section not found</p></div>';
+        }
+    }
+
+    // ---- DASHBOARD ----
+    function renderDashboard(main) {
+        const users = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
+        const total = users.length;
+        const bal = users.reduce((s,u) => s + (u.balance||0), 0);
+        const comm = users.reduce((s,u) => s + (u.totalCommission||0), 0);
+        const rPend = cachedData.rechargeReqs.filter(r => r.status === 'pending').length;
+        const wPend = cachedData.withdrawReqs.filter(w => w.status === 'pending').length;
+        const lPend = cachedData.loanReqs.filter(l => l.status === 'pending').length;
+        const actA = cachedData.agencies.filter(a => a.status === 'active').length;
+        let vips = {1:0,2:0,3:0,4:0};
+        users.forEach(u => { const lv = getVIP(u.balance||0); vips[lv]++; });
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
+                <div class="row g-2">
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Users</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${total}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Balance</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${bal.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Commission</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${comm.toFixed(2)}</div></div></div>
+                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${actA}/${cachedData.agencies.length}</div></div></div>
+                </div>
+                <div class="row g-2 mt-1">
+                    <div class="col-4"><div style="background:rgba(245,158,11,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(245,158,11,0.08);"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(59,130,246,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(59,130,246,0.08);"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
+                    <div class="col-4"><div style="background:rgba(16,185,129,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(16,185,129,0.08);"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
+                </div>
+                <div class="row g-2 mt-1">
+                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
+                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">System Wallet</div><div style="font-size:11px;font-family:monospace;color:var(--secondary);">${cachedData.systemSettings.usdtWalletAddress.substring(0,18)}...</div></div></div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ---- MEMBERS ----
+    function renderMembers(main) {
+        const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="flex">
+                    <div class="title"><i class="fas fa-users"></i> Members</div>
+                    <button class="btn-primary btn-primary-sm" id="addMemberBtn"><i class="fas fa-plus"></i> Add</button>
+                </div>
+                <div class="flex" style="margin:8px 0;">
+                    <input class="input-glass" id="memberSearch" placeholder="Search..." style="flex:1;min-width:100px;">
+                    <button class="btn-outline" id="searchBtn">Search</button>
+                    <button class="btn-outline" id="resetSearch">Reset</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>Account</th><th>Email</th><th>IP</th><th>Invite Code</th><th>Balance</th><th>VIP</th><th>Status</th><th>Last Seen</th><th>Actions</th></tr></thead>
+                        <tbody id="memberTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        function renderTable(filter='') {
+            const filtered = customers.filter(u => {
+                const s = (u.username||'').toLowerCase() + (u.email||'').toLowerCase() + (u.phone||'').toLowerCase();
+                return s.includes(filter.toLowerCase());
+            });
+            const tbody = document.getElementById('memberTableBody');
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:16px;">No members</td></tr>'; return; }
+            tbody.innerHTML = filtered.map(u => {
+                const lv = getVIP(u.balance||0);
+                const vc = getVipClass(lv);
+                const isOnline = u.lastSeen && (Date.now() - u.lastSeen < 60000);
+                const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) : 'Never';
+                return `<tr>
+                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
+                    <td><strong style="color:var(--primary);">${esc(u.username)}</strong></td>
+                    <td style="font-size:11px;color:var(--text-secondary);">${esc(u.email) || '-'}</td>
+                    <td style="font-size:10px;color:var(--muted);">${esc(u.regIP) || '-'}</td>
+                    <td style="font-size:11px;color:var(--secondary);font-weight:600;letter-spacing:0.5px;">${esc(u.invitationCode) || '-'}</td>
+                    <td><strong>S$ ${(u.balance||0).toFixed(2)}</strong><br><span style="font-size:9px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
+                    <td><span class="${vc}">VIP ${lv}</span></td>
+                    <td><span class="badge-status ${u.disabled ? 'badge-inactive' : 'badge-active'}">${u.disabled ? 'Disabled' : 'Active'}</span></td>
+                    <td style="font-size:11px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
+                    <td>
+                        <div class="flex gap-1" style="flex-wrap:wrap;">
+                            <button class="btn-primary btn-primary-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
+                            <button class="btn-primary btn-primary-sm" style="background:${u.disabled ? '#10b981' : '#dc2626'};" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+        renderTable();
+        document.getElementById('searchBtn').onclick = () => renderTable(document.getElementById('memberSearch').value);
+        document.getElementById('resetSearch').onclick = () => { document.getElementById('memberSearch').value = ''; renderTable(); };
+        document.getElementById('addMemberBtn').onclick = showAddMember;
+    }
+
+    window.setupOrder = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const c = parseInt(prompt('Add/remove orders (+/-):', 0));
+        if (!isNaN(c)) {
+            if (!u.tasks) u.tasks = { completed:0, total:0 };
+            if (c > 0) u.tasks.total += c;
+            else if (c < 0) {
+                const r = Math.abs(c);
+                if (u.tasks.total >= r) { u.tasks.total -= r; if (u.tasks.completed > u.tasks.total) u.tasks.completed = u.tasks.total; }
+            }
+            await updateDoc(doc(db,'users',id), { tasks: u.tasks });
+            toast('Orders updated');
+            renderSection('members');
+        }
+    };
+    window.setupBalance = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const b = prompt('New balance:', u.balance);
+        if (b && !isNaN(parseFloat(b))) {
+            await updateDoc(doc(db,'users',id), { balance: parseFloat(b) });
+            toast('Balance updated');
+            renderSection('members');
+        }
+    };
+    window.changeLogin = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const p = prompt('New login password:');
+        if (p) { await updateDoc(doc(db,'users',id), { password: p }); toast('Password updated'); renderSection('members'); }
+    };
+    window.changeWithdraw = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const p = prompt('New withdraw password:');
+        if (p) { await updateDoc(doc(db,'users',id), { withdrawPassword: p }); toast('Withdraw password updated'); renderSection('members'); }
+    };
+    window.adjustCredit = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const a = parseInt(prompt('Add/remove credit (+/-):', 0));
+        if (!isNaN(a)) {
+            const newScore = (u.creditScore||100) + a;
+            await updateDoc(doc(db,'users',id), { creditScore: newScore });
+            toast('Credit updated');
+            renderSection('members');
+        }
+    };
+    window.changeWallet = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const w = prompt('USDT wallet address:', u.walletAddress||'');
+        if (w !== null && w.trim()) {
+            await updateDoc(doc(db,'users',id), { walletAddress: w.trim() });
+            toast('Wallet updated');
+            renderSection('members');
+        }
+    };
+    window.toggleDisable = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        await updateDoc(doc(db,'users',id), { disabled: !u.disabled });
+        toast(u.disabled ? 'Enabled' : 'Disabled');
+        renderSection('members');
+    };
+
+    async function showAddMember() {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-user-plus"></i> Add Member</div>
+                <input class="input-glass" id="amUsername" placeholder="Username">
+                <input class="input-glass" id="amEmail" placeholder="Email">
+                <input class="input-glass" id="amPhone" placeholder="Phone">
+                <div class="pw-wrap"><input type="password" class="input-glass" id="amPass" placeholder="Login Password"><button class="pw-toggle" onclick="togglePw('amPass',this)"><i class="fas fa-eye"></i></button></div>
+                <div class="pw-wrap"><input type="password" class="input-glass" id="amWpass" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('amWpass',this)"><i class="fas fa-eye"></i></button></div>
+                <input class="input-glass" id="amInvite" placeholder="Invitation Code (optional)">
+                <div class="flex gap-1" style="margin-top:8px;">
+                    <button class="btn-primary" id="amSubmit">Create</button>
+                    <button class="btn-outline" id="amCancel">Cancel</button>
+                </div>
+                <div id="amStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('amSubmit').onclick = async () => {
+            const un = document.getElementById('amUsername').value.trim();
+            const em = document.getElementById('amEmail').value.trim();
+            const ph = document.getElementById('amPhone').value.trim();
+            const p = document.getElementById('amPass').value;
+            const wp = document.getElementById('amWpass').value;
+            const inv = document.getElementById('amInvite').value.trim();
+            if (!un || !em || !p || !wp) {
+                document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Required fields missing</span>';
+                return;
+            }
+            if (cachedData.users.find(x => x.username === un)) {
+                document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Username exists</span>';
+                return;
+            }
+            let ref = null;
+            if (inv) {
+                const r = cachedData.users.find(x => x.invitationCode === inv);
+                if (!r) { document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Invalid invite code</span>'; return; }
+                ref = r.username;
+            }
+            const data = {
+                id: Date.now().toString(),
+                username: un, email: em, phone: ph,
+                password: p, withdrawPassword: wp,
+                balance: 0,
+                invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
+                superior: ref,
+                referralEarnings: 0,
+                regTime: new Date().toISOString(),
+                tasks: { completed:0, total:0 },
+                orders: [],
+                todayOrders: 0,
+                todayEarnings: 0,
+                totalCommission: 0,
+                creditScore: 100,
+                disabled: false,
+                walletAddress: null,
+                currentOrderObj: null,
+                role: 'customer',
+                lastSeen: null,
+                regIP: null
+            };
+            await setDoc(doc(db,'users',data.id), data);
+            document.getElementById('amStatus').innerHTML = '<span style="color:#10b981;">✅ Added!</span>';
+            setTimeout(() => { document.body.removeChild(modal); renderSection('members'); }, 700);
+        };
+        document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
+    }
+
+    // ---- VIP ----
+    function renderVIP(main) {
+        const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
+        const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-star"></i> VIP Management</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;">
+                    <span class="vip-1">VIP1 0.5%</span><span class="vip-2">VIP2 0.7%</span><span class="vip-3">VIP3 0.8%</span><span class="vip-4">VIP4 1.0%</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead>
+                        <tbody>
+                            ${customers.map(u => {
+                                const hasManual = u.manualVIPLevel && u.manualVIPLevel > 0;
+                                const lv = hasManual ? u.manualVIPLevel : 1;
+                                const rate = (VIP_RATES[lv] * 100).toFixed(1);
+                                const vc = getVipClass(lv);
+                                return `<tr>
+                                    <td><strong>${esc(u.username)}</strong>${hasManual ? ' <span style="font-size:9px;color:#f59e0b;">(Manual)</span>' : ''}</td>
+                                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
+                                    <td><span class="${vc}">VIP ${lv}</span></td>
+                                    <td>${rate}%</td>
+                                    <td><select class="input-glass" style="width:auto;padding:3px 6px;font-size:11px;" id="vipSel_${u.id}">
+                                        ${[1,2,3,4].map(v => `<option value="${v}" ${lv===v?'selected':''}>VIP ${v}</option>`).join('')}
+                                        <option value="0" ${!hasManual?'selected':''}>Auto</option>
+                                    </select></td>
+                                    <td><button class="btn-primary btn-primary-sm" onclick="window.applyVIP('${u.id}')">Apply</button></td>
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }
+
+    window.applyVIP = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const sel = document.getElementById(`vipSel_${id}`);
+        if (!sel) return;
+        const val = parseInt(sel.value);
+        if (val === 0) {
+            if (u.manualVIPLevel) {
+                await updateDoc(doc(db,'users',id), { manualVIPLevel: delete u.manualVIPLevel });
+                toast('Auto mode');
+            } else toast('Already auto');
+        } else {
+            await updateDoc(doc(db,'users',id), { manualVIPLevel: val });
+            toast(`VIP ${val} set`);
+        }
+        renderSection('vip');
+    };
+
+    // ---- INJECTION ----
+    function renderInjection(main) {
+        const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
+        main.innerHTML = `
+            <div class="card-glass">
+                <div class="title"><i class="fas fa-syringe"></i> Injection</div>
+                <div class="flex" style="margin:8px 0;">
+                    <input class="input-glass" id="injSearchPhone" placeholder="Phone" style="flex:1;min-width:80px;">
+                    <input class="input-glass" id="injSearchEmail" placeholder="Email" style="flex:1;min-width:80px;">
+                    <button class="btn-outline" id="injSearchBtn">Search</button>
+                    <button class="btn-outline" id="injResetBtn">Reset</button>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ID</th><th>User</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead>
+                        <tbody id="injTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+        function renderInjTable(p='', e='') {
+            const filtered = customers.filter(u => (p === '' || (u.phone||'').includes(p)) && (e === '' || (u.email||'').toLowerCase().includes(e.toLowerCase())));
+            const tbody = document.getElementById('injTableBody');
+            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">No users</td></tr>'; return; }
+            tbody.innerHTML = filtered.map(u => `
+                <tr>
+                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
+                    <td><strong>${esc(u.username)}</strong></td>
+                    <td>${u.phone||'-'}</td>
+                    <td>${u.email||'-'}</td>
+                    <td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td>
+                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
+                    <td>
+                        <div class="flex gap-1">
+                            <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.showInjectionModal('${u.id}')"><i class="fas fa-syringe"></i></button>
+                            <button class="btn-primary btn-primary-sm" onclick="window.showInjectionHistory('${u.id}')"><i class="fas fa-history"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        renderInjTable();
+        document.getElementById('injSearchBtn').onclick = () => renderInjTable(document.getElementById('injSearchPhone').value, document.getElementById('injSearchEmail').value);
+        document.getElementById('injResetBtn').onclick = () => { document.getElementById('injSearchPhone').value = ''; document.getElementById('injSearchEmail').value = ''; renderInjTable(); };
     }
 
     window.showInjectionModal = (userId) => {
-        const u = users.find(x => x.id === userId);
+        const u = cachedData.users.find(x => x.id === userId);
         if (!u) return;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
@@ -648,8 +1037,8 @@
     };
 
     window.showInjectionHistory = (userId) => {
-        const u = users.find(x => x.id === userId);
-        const injs = injections.filter(i => i.userId === userId);
+        const u = cachedData.users.find(x => x.id === userId);
+        const injs = cachedData.injections.filter(i => i.userId === userId);
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> History: ${u?.username}</div>`;
@@ -682,9 +1071,9 @@
     };
 
     window.editInjection = async (id) => {
-        const inj = injections.find(i => i.id === id);
+        const inj = cachedData.injections.find(i => i.id === id);
         if (!inj) return;
-        const u = users.find(x => x.id === inj.userId);
+        const u = cachedData.users.find(x => x.id === inj.userId);
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         modal.innerHTML = `
@@ -740,368 +1129,12 @@
     window.deleteInjection = async (id, userId) => {
         if (!confirm('Delete this injection permanently?')) return;
         await deleteDoc(doc(db,'injections',id));
-        injections = injections.filter(i => i.id !== id);
+        cachedData.injections = cachedData.injections.filter(i => i.id !== id);
         toast('Injection deleted!');
         renderSection('injection');
     };
 
-    function renderSection(section) {
-        currentSection = section;
-        localStorage.setItem('adminSection', section);
-        document.querySelectorAll('.nav-item').forEach(el => {
-            el.classList.toggle('active', el.dataset.section === section);
-        });
-        const main = document.getElementById('mainContent');
-        switch(section) {
-            case 'dashboard': renderDashboard(main); break;
-            case 'members': renderMembers(main); break;
-            case 'vip': renderVIP(main); break;
-            case 'injection': renderInjection(main); break;
-            case 'orders': renderOrders(main); break;
-            case 'recharge': renderRecharge(main); break;
-            case 'withdraw': renderWithdraw(main); break;
-            case 'loans': renderLoans(main); break;
-            case 'agency': renderAgency(main); break;
-            case 'settings': renderSettings(main); break;
-            case 'popup': renderPopup(main); break;
-            case 'chat': renderChat(main); break;
-            case 'notifications': renderNotifications(main); break;
-            default: main.innerHTML = '<div class="card-glass"><p>Section not found</p></div>';
-        }
-    }
-
-    function renderDashboard(main) {
-        const total = users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
-        const bal = users.reduce((s,u) => s + (u.balance||0), 0);
-        const comm = users.reduce((s,u) => s + (u.totalCommission||0), 0);
-        const rPend = rechargeReqs.filter(r => r.status === 'pending').length;
-        const wPend = withdrawReqs.filter(w => w.status === 'pending').length;
-        const lPend = loanReqs.filter(l => l.status === 'pending').length;
-        const actA = agencies.filter(a => a.status === 'active').length;
-        let vips = {1:0,2:0,3:0,4:0};
-        users.forEach(u => { if (u.role !== 'admin' && u.role !== 'agency') { const lv = getVIP(u.balance||0); vips[lv]++; } });
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-chart-pie"></i> Dashboard</div>
-                <div class="row g-2">
-                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Users</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${total}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Balance</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${bal.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Commission</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">S$ ${comm.toFixed(2)}</div></div></div>
-                    <div class="col-6 col-md-3"><div style="background:var(--bg);padding:12px;border-radius:10px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">Agencies</div><div style="font-size:24px;font-weight:800;color:var(--secondary);">${actA}/${agencies.length}</div></div></div>
-                </div>
-                <div class="row g-2 mt-1">
-                    <div class="col-4"><div style="background:rgba(245,158,11,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(245,158,11,0.08);"><div style="font-size:10px;color:var(--muted);">Recharge</div><div style="font-size:16px;font-weight:700;color:#f59e0b;">${rPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(59,130,246,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(59,130,246,0.08);"><div style="font-size:10px;color:var(--muted);">Withdraw</div><div style="font-size:16px;font-weight:700;color:#3b82f6;">${wPend}</div></div></div>
-                    <div class="col-4"><div style="background:rgba(16,185,129,0.04);padding:8px;border-radius:8px;text-align:center;border:1px solid rgba(16,185,129,0.08);"><div style="font-size:10px;color:var(--muted);">Loans</div><div style="font-size:16px;font-weight:700;color:#10b981;">${lPend}</div></div></div>
-                </div>
-                <div class="row g-2 mt-1">
-                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">VIP Distribution</div><div class="flex" style="font-size:11px;"><span class="vip-1">VIP1 ${vips[1]}</span><span class="vip-2">VIP2 ${vips[2]}</span><span class="vip-3">VIP3 ${vips[3]}</span><span class="vip-4">VIP4 ${vips[4]}</span></div></div></div>
-                    <div class="col-6"><div style="background:var(--bg);padding:8px;border-radius:8px;border:1px solid var(--border);"><div style="font-size:10px;color:var(--muted);">System Wallet</div><div style="font-size:11px;font-family:monospace;color:var(--secondary);">${systemSettings.usdtWalletAddress.substring(0,18)}...</div></div></div>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderMembers(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="flex">
-                    <div class="title"><i class="fas fa-users"></i> Members</div>
-                    <button class="btn-primary btn-primary-sm" id="addMemberBtn"><i class="fas fa-plus"></i> Add</button>
-                </div>
-                <div class="flex" style="margin:8px 0;">
-                    <input class="input-glass" id="memberSearch" placeholder="Search..." style="flex:1;min-width:100px;">
-                    <button class="btn-outline" id="searchBtn">Search</button>
-                    <button class="btn-outline" id="resetSearch">Reset</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>ID</th><th>Account</th><th>Email</th><th>IP</th><th>Invite Code</th><th>Balance</th><th>VIP</th><th>Status</th><th>Last Seen</th><th>Actions</th></tr></thead>
-                        <tbody id="memberTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        `;
-        function renderTable(filter='') {
-            const filtered = customers.filter(u => {
-                const s = (u.username||'').toLowerCase() + (u.email||'').toLowerCase() + (u.phone||'').toLowerCase();
-                return s.includes(filter.toLowerCase());
-            });
-            const tbody = document.getElementById('memberTableBody');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--muted);padding:16px;">No members</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(u => {
-                const lv = getVIP(u.balance||0);
-                const vc = getVipClass(lv);
-                const isOnline = u.lastSeen && (Date.now() - u.lastSeen < 60000);
-                const lastSeenTime = u.lastSeen ? new Date(u.lastSeen).toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) : 'Never';
-                return `<tr>
-                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
-                    <td><strong style="color:var(--primary);">${esc(u.username)}</strong></td>
-                    <td style="font-size:11px;color:var(--text-secondary);">${esc(u.email) || '-'}</td>
-                    <td style="font-size:10px;color:var(--muted);">${esc(u.regIP) || '-'}</td>
-                    <td style="font-size:11px;color:var(--secondary);font-weight:600;letter-spacing:0.5px;">${esc(u.invitationCode) || '-'}</td>
-                    <td><strong>S$ ${(u.balance||0).toFixed(2)}</strong><br><span style="font-size:9px;color:var(--muted);">Credit: ${u.creditScore||100}</span></td>
-                    <td><span class="${vc}">VIP ${lv}</span></td>
-                    <td><span class="badge-status ${u.disabled ? 'badge-inactive' : 'badge-active'}">${u.disabled ? 'Disabled' : 'Active'}</span></td>
-                    <td style="font-size:11px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}"></span>${isOnline ? 'Online' : lastSeenTime}</td>
-                    <td>
-                        <div class="flex gap-1" style="flex-wrap:wrap;">
-                            <button class="btn-primary btn-primary-sm" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
-                            <button class="btn-primary btn-primary-sm" style="background:${u.disabled ? '#10b981' : '#dc2626'};" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
-                        </div>
-                    </td>
-                </tr>`;
-            }).join('');
-        }
-        renderTable();
-        document.getElementById('searchBtn').onclick = () => renderTable(document.getElementById('memberSearch').value);
-        document.getElementById('resetSearch').onclick = () => { document.getElementById('memberSearch').value = ''; renderTable(); };
-        document.getElementById('addMemberBtn').onclick = showAddMember;
-    }
-
-    window.setupOrder = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const c = parseInt(prompt('Add/remove orders (+/-):', 0));
-        if (!isNaN(c)) {
-            if (!u.tasks) u.tasks = { completed:0, total:0 };
-            if (c > 0) u.tasks.total += c;
-            else if (c < 0) {
-                const r = Math.abs(c);
-                if (u.tasks.total >= r) { u.tasks.total -= r; if (u.tasks.completed > u.tasks.total) u.tasks.completed = u.tasks.total; }
-            }
-            await updateDoc(doc(db,'users',id), { tasks: u.tasks });
-            toast('Orders updated');
-            renderSection('members');
-        }
-    };
-    window.setupBalance = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const b = prompt('New balance:', u.balance);
-        if (b && !isNaN(parseFloat(b))) {
-            await updateDoc(doc(db,'users',id), { balance: parseFloat(b) });
-            toast('Balance updated');
-            renderSection('members');
-        }
-    };
-    window.changeLogin = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const p = prompt('New login password:');
-        if (p) { await updateDoc(doc(db,'users',id), { password: p }); toast('Password updated'); renderSection('members'); }
-    };
-    window.changeWithdraw = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const p = prompt('New withdraw password:');
-        if (p) { await updateDoc(doc(db,'users',id), { withdrawPassword: p }); toast('Withdraw password updated'); renderSection('members'); }
-    };
-    window.adjustCredit = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const a = parseInt(prompt('Add/remove credit (+/-):', 0));
-        if (!isNaN(a)) {
-            const newScore = (u.creditScore||100) + a;
-            await updateDoc(doc(db,'users',id), { creditScore: newScore });
-            toast('Credit updated');
-            renderSection('members');
-        }
-    };
-    window.changeWallet = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const w = prompt('USDT wallet address:', u.walletAddress||'');
-        if (w !== null && w.trim()) {
-            await updateDoc(doc(db,'users',id), { walletAddress: w.trim() });
-            toast('Wallet updated');
-            renderSection('members');
-        }
-    };
-    window.toggleDisable = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        await updateDoc(doc(db,'users',id), { disabled: !u.disabled });
-        toast(u.disabled ? 'Enabled' : 'Disabled');
-        renderSection('members');
-    };
-
-    async function showAddMember() {
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-user-plus"></i> Add Member</div>
-                <input class="input-glass" id="amUsername" placeholder="Username">
-                <input class="input-glass" id="amEmail" placeholder="Email">
-                <input class="input-glass" id="amPhone" placeholder="Phone">
-                <div class="pw-wrap"><input type="password" class="input-glass" id="amPass" placeholder="Login Password"><button class="pw-toggle" onclick="togglePw('amPass',this)"><i class="fas fa-eye"></i></button></div>
-                <div class="pw-wrap"><input type="password" class="input-glass" id="amWpass" placeholder="Withdraw Password"><button class="pw-toggle" onclick="togglePw('amWpass',this)"><i class="fas fa-eye"></i></button></div>
-                <input class="input-glass" id="amInvite" placeholder="Invitation Code (optional)">
-                <div class="flex gap-1" style="margin-top:8px;">
-                    <button class="btn-primary" id="amSubmit">Create</button>
-                    <button class="btn-outline" id="amCancel">Cancel</button>
-                </div>
-                <div id="amStatus" style="text-align:center;margin-top:6px;font-size:12px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('amSubmit').onclick = async () => {
-            const un = document.getElementById('amUsername').value.trim();
-            const em = document.getElementById('amEmail').value.trim();
-            const ph = document.getElementById('amPhone').value.trim();
-            const p = document.getElementById('amPass').value;
-            const wp = document.getElementById('amWpass').value;
-            const inv = document.getElementById('amInvite').value.trim();
-            if (!un || !em || !p || !wp) {
-                document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Required fields missing</span>';
-                return;
-            }
-            if (users.find(x => x.username === un)) {
-                document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Username exists</span>';
-                return;
-            }
-            let ref = null;
-            if (inv) {
-                const r = users.find(x => x.invitationCode === inv);
-                if (!r) { document.getElementById('amStatus').innerHTML = '<span style="color:#dc2626;">Invalid invite code</span>'; return; }
-                ref = r.username;
-            }
-            const data = {
-                id: Date.now().toString(),
-                username: un, email: em, phone: ph,
-                password: p, withdrawPassword: wp,
-                balance: 0,
-                invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-                superior: ref,
-                referralEarnings: 0,
-                regTime: new Date().toISOString(),
-                tasks: { completed:0, total:0 },
-                orders: [],
-                todayOrders: 0,
-                todayEarnings: 0,
-                totalCommission: 0,
-                creditScore: 100,
-                disabled: false,
-                walletAddress: null,
-                currentOrderObj: null,
-                role: 'customer',
-                lastSeen: null,
-                regIP: null
-            };
-            await setDoc(doc(db,'users',data.id), data);
-            document.getElementById('amStatus').innerHTML = '<span style="color:#10b981;">✅ Added!</span>';
-            setTimeout(() => { document.body.removeChild(modal); renderSection('members'); }, 700);
-        };
-        document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
-    }
-
-    function renderVIP(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-star"></i> VIP Management</div>
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;font-size:11px;">
-                    <span class="vip-1">VIP1 0.5%</span><span class="vip-2">VIP2 0.7%</span><span class="vip-3">VIP3 0.8%</span><span class="vip-4">VIP4 1.0%</span>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>User</th><th>Balance</th><th>VIP</th><th>Rate</th><th>Set VIP</th><th>Action</th></tr></thead>
-                        <tbody>
-                            ${customers.map(u => {
-                                const hasManual = u.manualVIPLevel && u.manualVIPLevel > 0;
-                                const lv = hasManual ? u.manualVIPLevel : 1;
-                                const rate = (VIP_RATES[lv] * 100).toFixed(1);
-                                const vc = getVipClass(lv);
-                                return `<tr>
-                                    <td><strong>${esc(u.username)}</strong>${hasManual ? ' <span style="font-size:9px;color:#f59e0b;">(Manual)</span>' : ''}</td>
-                                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
-                                    <td><span class="${vc}">VIP ${lv}</span></td>
-                                    <td>${rate}%</td>
-                                    <td><select class="input-glass" style="width:auto;padding:3px 6px;font-size:11px;" id="vipSel_${u.id}">
-                                        ${[1,2,3,4].map(v => `<option value="${v}" ${lv===v?'selected':''}>VIP ${v}</option>`).join('')}
-                                        <option value="0" ${!hasManual?'selected':''}>Auto</option>
-                                    </select></td>
-                                    <td><button class="btn-primary btn-primary-sm" onclick="window.applyVIP('${u.id}')">Apply</button></td>
-                                </tr>`;
-                            }).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        `;
-    }
-
-    const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
-    window.applyVIP = async (id) => {
-        const u = users.find(x => x.id === id);
-        if (!u) return;
-        const sel = document.getElementById(`vipSel_${id}`);
-        if (!sel) return;
-        const val = parseInt(sel.value);
-        if (val === 0) {
-            if (u.manualVIPLevel) {
-                await updateDoc(doc(db,'users',id), { manualVIPLevel: delete u.manualVIPLevel });
-                toast('Auto mode');
-            } else toast('Already auto');
-        } else {
-            await updateDoc(doc(db,'users',id), { manualVIPLevel: val });
-            toast(`VIP ${val} set`);
-        }
-        renderSection('vip');
-    };
-
-    function renderInjection(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
-        main.innerHTML = `
-            <div class="card-glass">
-                <div class="title"><i class="fas fa-syringe"></i> Injection</div>
-                <div class="flex" style="margin:8px 0;">
-                    <input class="input-glass" id="injSearchPhone" placeholder="Phone" style="flex:1;min-width:80px;">
-                    <input class="input-glass" id="injSearchEmail" placeholder="Email" style="flex:1;min-width:80px;">
-                    <button class="btn-outline" id="injSearchBtn">Search</button>
-                    <button class="btn-outline" id="injResetBtn">Reset</button>
-                </div>
-                <div class="table-wrap">
-                    <table>
-                        <thead><tr><th>ID</th><th>User</th><th>Phone</th><th>Email</th><th>Tasks</th><th>Balance</th><th>Actions</th></tr></thead>
-                        <tbody id="injTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        `;
-        function renderInjTable(p='', e='') {
-            const filtered = customers.filter(u => (p === '' || (u.phone||'').includes(p)) && (e === '' || (u.email||'').toLowerCase().includes(e.toLowerCase())));
-            const tbody = document.getElementById('injTableBody');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:16px;">No users</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(u => `
-                <tr>
-                    <td style="font-size:10px;color:var(--muted);">${u.id.substring(0,8)}</td>
-                    <td><strong>${esc(u.username)}</strong></td>
-                    <td>${u.phone||'-'}</td>
-                    <td>${u.email||'-'}</td>
-                    <td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td>
-                    <td>S$ ${(u.balance||0).toFixed(2)}</td>
-                    <td>
-                        <div class="flex gap-1">
-                            <button class="btn-primary btn-primary-sm" style="background:#dc2626;color:#fff;" onclick="window.showInjectionModal('${u.id}')"><i class="fas fa-syringe"></i></button>
-                            <button class="btn-primary btn-primary-sm" onclick="window.showInjectionHistory('${u.id}')"><i class="fas fa-history"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        renderInjTable();
-        document.getElementById('injSearchBtn').onclick = () => renderInjTable(document.getElementById('injSearchPhone').value, document.getElementById('injSearchEmail').value);
-        document.getElementById('injResetBtn').onclick = () => { document.getElementById('injSearchPhone').value = ''; document.getElementById('injSearchEmail').value = ''; renderInjTable(); };
-    }
-
+    // ---- ORDERS ----
     function renderOrders(main) {
         main.innerHTML = `
             <div class="card-glass">
@@ -1148,8 +1181,8 @@
     function renderOrderList() {
         const container = document.getElementById('ordList');
         if (!container) return;
-        if (!customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:10px;">No orders</p>'; return; }
-        container.innerHTML = customOrders.map((o,i) => `
+        if (!cachedData.customOrders.length) { container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:10px;">No orders</p>'; return; }
+        container.innerHTML = cachedData.customOrders.map((o,i) => `
             <div class="flex" style="padding:6px 10px;background:var(--bg);border-radius:8px;margin-bottom:4px;border:1px solid var(--border);">
                 <div style="display:flex;align-items:center;gap:8px;">
                     ${o.image ? `<img src="${o.image}" class="img-preview-sm">` : '<i class="fas fa-box" style="color:var(--secondary);"></i>'}
@@ -1163,16 +1196,17 @@
     window.deleteOrder = async (id) => {
         if (!confirm('Delete this order?')) return;
         await deleteDoc(doc(db,'customOrders',id));
-        customOrders = customOrders.filter(o => o.id !== id);
+        cachedData.customOrders = cachedData.customOrders.filter(o => o.id !== id);
         toast('Order deleted');
         renderSection('orders');
     };
 
+    // ---- RECHARGE ----
     function renderRecharge(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-coins"></i> Recharge Requests</div>
-                ${rechargeReqs.length ? rechargeReqs.map(r => `
+                ${cachedData.rechargeReqs.length ? cachedData.rechargeReqs.map(r => `
                     <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(r.userName)}</strong> <span class="badge-status ${r.status==='pending'?'badge-pending':r.status==='approved'?'badge-approved':'badge-rejected'}">${r.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
@@ -1191,19 +1225,18 @@
     }
 
     window.approveRecharge = async (id) => {
-        const r = rechargeReqs.find(x => x.id === id);
+        const r = cachedData.rechargeReqs.find(x => x.id === id);
         if (!r || r.status !== 'pending') return;
-        const u = users.find(x => x.id === r.userId);
-        if (u) {
-            await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + r.amount });
-            await updateDoc(doc(db,'rechargeRequests',id), { status: 'approved' });
-            toast(`✅ S$ ${r.amount} approved`);
-            renderSection('recharge');
-        }
+        // Update status to approved
+        await updateDoc(doc(db,'rechargeRequests',id), { status: 'approved' });
+        toast(`✅ Recharge approved!`);
+        // The customer's balance will be auto-updated via their listener (we set balanceAdded flag in customer)
+        // No need to manually add balance here; the customer's side listens for status change.
+        renderSection('recharge');
     };
 
     window.rejectRecharge = (id) => {
-        const r = rechargeReqs.find(x => x.id === id);
+        const r = cachedData.rechargeReqs.find(x => x.id === id);
         if (!r) return;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
@@ -1228,11 +1261,12 @@
         document.getElementById('rejCancel').onclick = () => document.body.removeChild(modal);
     };
 
+    // ---- WITHDRAW ----
     function renderWithdraw(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-usd"></i> Withdraw Requests</div>
-                ${withdrawReqs.length ? withdrawReqs.map(w => `
+                ${cachedData.withdrawReqs.length ? cachedData.withdrawReqs.map(w => `
                     <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(w.userName)}</strong> <span class="badge-status ${w.status==='pending'?'badge-pending':w.status==='approved'?'badge-approved':'badge-rejected'}">${w.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${w.amount} | Wallet: ${w.walletAddress}</div>
@@ -1251,7 +1285,7 @@
     }
 
     window.approveWithdraw = async (id) => {
-        const w = withdrawReqs.find(x => x.id === id);
+        const w = cachedData.withdrawReqs.find(x => x.id === id);
         if (!w || w.status !== 'pending') return;
         await updateDoc(doc(db,'withdrawRequests',id), { status: 'approved' });
         toast('✅ Withdraw approved');
@@ -1259,7 +1293,7 @@
     };
 
     window.rejectWithdraw = (id) => {
-        const w = withdrawReqs.find(x => x.id === id);
+        const w = cachedData.withdrawReqs.find(x => x.id === id);
         if (!w) return;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
@@ -1277,7 +1311,8 @@
         document.getElementById('rejWSubmit').onclick = async () => {
             const note = document.getElementById('rejWNote').value;
             await updateDoc(doc(db,'withdrawRequests',id), { status: 'rejected', adminNote: note });
-            const u = users.find(x => x.id === w.userId);
+            // Refund balance to user
+            const u = cachedData.users.find(x => x.id === w.userId);
             if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + w.amount });
             document.body.removeChild(modal);
             toast('Rejected');
@@ -1286,11 +1321,12 @@
         document.getElementById('rejWCancel').onclick = () => document.body.removeChild(modal);
     };
 
+    // ---- LOANS ----
     function renderLoans(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-hand-holding-heart"></i> Loan Requests</div>
-                ${loanReqs.length ? loanReqs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map(l => `
+                ${cachedData.loanReqs.length ? cachedData.loanReqs.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map(l => `
                     <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex"><strong>${esc(l.userName)}</strong> <span class="badge-status ${l.status==='pending'?'badge-pending':l.status==='approved'?'badge-approved':'badge-rejected'}">${l.status}</span></div>
                         <div style="font-size:12px;">Amount: S$ ${l.amount} | Doc: ${l.docType}</div>
@@ -1313,9 +1349,9 @@
     }
 
     window.approveLoan = async (id) => {
-        const l = loanReqs.find(x => x.id === id);
+        const l = cachedData.loanReqs.find(x => x.id === id);
         if (!l || l.status !== 'pending') return;
-        const u = users.find(x => x.id === l.userId);
+        const u = cachedData.users.find(x => x.id === l.userId);
         if (u) {
             await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + l.amount });
             await updateDoc(doc(db,'loanRequests',id), { status: 'approved' });
@@ -1331,6 +1367,7 @@
         renderSection('loans');
     };
 
+    // ---- AGENCY ----
     function renderAgency(main) {
         main.innerHTML = `
             <div class="card-glass">
@@ -1338,7 +1375,7 @@
                     <div class="title"><i class="fas fa-user-tie"></i> Agencies</div>
                     <button class="btn-primary btn-primary-sm" id="addAgencyBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
-                ${agencies.length ? agencies.map(a => `
+                ${cachedData.agencies.length ? cachedData.agencies.map(a => `
                     <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                         <div class="flex">
                             <div><strong style="color:var(--secondary);">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'badge-active':'badge-inactive'}">${a.status}</span></div>
@@ -1361,7 +1398,7 @@
     }
 
     window.genCode = async (id) => {
-        const a = agencies.find(x => x.id === id);
+        const a = cachedData.agencies.find(x => x.id === id);
         if (!a) return;
         const code = Math.floor(100000 + Math.random() * 900000).toString();
         const modal = document.createElement('div');
@@ -1380,7 +1417,7 @@
     };
 
     window.changeAgencyPw = (id) => {
-        const a = agencies.find(x => x.id === id);
+        const a = cachedData.agencies.find(x => x.id === id);
         if (!a) return;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
@@ -1410,7 +1447,7 @@
     };
 
     window.toggleAgency = async (id) => {
-        const a = agencies.find(x => x.id === id);
+        const a = cachedData.agencies.find(x => x.id === id);
         if (!a) return;
         const newStatus = a.status === 'active' ? 'closed' : 'active';
         await updateDoc(doc(db,'agencies',id), { status: newStatus });
@@ -1421,7 +1458,7 @@
     window.deleteAgency = async (id) => {
         if (!confirm('Delete this agency?')) return;
         await deleteDoc(doc(db,'agencies',id));
-        agencies = agencies.filter(x => x.id !== id);
+        cachedData.agencies = cachedData.agencies.filter(x => x.id !== id);
         toast('Deleted');
         renderSection('agency');
     };
@@ -1460,7 +1497,7 @@
             const c = document.getElementById('aaConfirm').value;
             if (!u || !e || !p) { document.getElementById('aaStatus').innerHTML = '<span style="color:#dc2626;">All fields required</span>'; return; }
             if (p !== c) { document.getElementById('aaStatus').innerHTML = '<span style="color:#dc2626;">Passwords do not match</span>'; return; }
-            if (agencies.find(x => x.username === u)) { document.getElementById('aaStatus').innerHTML = '<span style="color:#dc2626;">Username exists</span>'; return; }
+            if (cachedData.agencies.find(x => x.username === u)) { document.getElementById('aaStatus').innerHTML = '<span style="color:#dc2626;">Username exists</span>'; return; }
             const perms = {
                 canManageMembers: document.getElementById('aa_Members').checked,
                 canManageVIP: document.getElementById('aa_VIP').checked,
@@ -1488,12 +1525,13 @@
         document.getElementById('aaCancel').onclick = () => document.body.removeChild(modal);
     }
 
+    // ---- SETTINGS ----
     function renderSettings(main) {
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-paint-brush"></i> Settings</div>
-                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${systemSettings.usdtWalletAddress||''}"></div>
-                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${systemSettings.minBalanceForOrder||10}"></div>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">USDT Wallet Address</label><input class="input-glass" id="setWallet" value="${cachedData.systemSettings.usdtWalletAddress||''}"></div>
+                <div style="margin-bottom:6px;"><label style="font-size:12px;color:var(--text-secondary);">Min Balance for Order</label><input class="input-glass" id="setMin" type="number" step="0.01" value="${cachedData.systemSettings.minBalanceForOrder||10}"></div>
                 <button class="btn-primary" id="setSave">Save Settings</button>
             </div>
         `;
@@ -1501,12 +1539,13 @@
             const wallet = document.getElementById('setWallet').value.trim();
             const min = parseFloat(document.getElementById('setMin').value) || 10;
             await setDoc(doc(db,'systemSettings','main'), { usdtWalletAddress: wallet, minBalanceForOrder: min }, { merge: true });
-            systemSettings.usdtWalletAddress = wallet;
-            systemSettings.minBalanceForOrder = min;
+            cachedData.systemSettings.usdtWalletAddress = wallet;
+            cachedData.systemSettings.minBalanceForOrder = min;
             toast('Settings saved!');
         };
     }
 
+    // ---- POPUP ----
     function renderPopup(main) {
         main.innerHTML = `
             <div class="card-glass">
@@ -1515,7 +1554,7 @@
                     <button class="btn-primary btn-primary-sm" id="popAddBtn"><i class="fas fa-plus"></i> Create</button>
                 </div>
                 <div id="popList">
-                    ${popupAds.length ? popupAds.map(p => `
+                    ${cachedData.popupAds.length ? cachedData.popupAds.map(p => `
                         <div style="padding:8px 12px;background:var(--bg);border-radius:8px;margin-bottom:6px;border:1px solid var(--border);">
                             <div class="flex">
                                 <div><strong style="color:var(--secondary);">${esc(p.title||'Untitled')}</strong> <span class="badge-status ${p.isActive!==false?'badge-active':'badge-inactive'}">${p.isActive!==false?'Active':'Inactive'}</span></div>
@@ -1535,14 +1574,14 @@
     }
 
     window.editPopup = (id) => {
-        const p = popupAds.find(x => x.id === id);
+        const p = cachedData.popupAds.find(x => x.id === id);
         if (p) showPopupForm(p);
     };
 
     window.deletePopup = async (id) => {
         if (!confirm('Delete this popup ad?')) return;
         await deleteDoc(doc(db,'popupAds',id));
-        popupAds = popupAds.filter(x => x.id !== id);
+        cachedData.popupAds = cachedData.popupAds.filter(x => x.id !== id);
         toast('Deleted');
         renderSection('popup');
     };
@@ -1586,12 +1625,12 @@
                 const data = { title, subtitle: sub, imageData: img || existing?.imageData || null, isActive: active };
                 if (isEdit) {
                     await setDoc(doc(db,'popupAds',existing.id), { ...data, id: existing.id, createdAt: existing.createdAt, updatedAt: new Date().toISOString() });
-                    popupAds = popupAds.map(x => x.id === existing.id ? { ...data, id: existing.id, createdAt: existing.createdAt } : x);
+                    cachedData.popupAds = cachedData.popupAds.map(x => x.id === existing.id ? { ...data, id: existing.id, createdAt: existing.createdAt } : x);
                     status.innerHTML = '<span style="color:#10b981;">✅ Updated</span>';
                 } else {
                     const id = Date.now().toString();
                     await setDoc(doc(db,'popupAds',id), { ...data, id, createdAt: new Date().toISOString() });
-                    popupAds.push({ ...data, id });
+                    cachedData.popupAds.push({ ...data, id });
                     status.innerHTML = '<span style="color:#10b981;">✅ Created</span>';
                 }
                 setTimeout(() => { document.body.removeChild(modal); renderSection('popup'); }, 700);
@@ -1604,8 +1643,9 @@
         document.getElementById('popCancel').onclick = () => document.body.removeChild(modal);
     }
 
+    // ---- CHAT ----
     function renderChat(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
+        const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
             <div class="card-glass">
                 <div class="title"><i class="fas fa-comment-dots"></i> Customer Chat</div>
@@ -1622,44 +1662,48 @@
                 </div>
             </div>
         `;
+        let chatUnsub = null;
         document.getElementById('chatSelect').onchange = function() {
-            chatUser = this.value;
-            if (chatUser) {
-                document.getElementById('chatMsgs').innerHTML = '<div style="text-align:center;padding:10px;color:var(--muted);">Loading...</div>';
-                if (unsubChat) unsubChat();
-                const q = query(collection(db,'chatMessages'), orderBy('id','asc'));
-                unsubChat = onSnapshot(q, (snap) => {
-                    const container = document.getElementById('chatMsgs');
-                    if (!container || !chatUser) return;
-                    const msgs = [];
-                    snap.forEach(d => {
-                        const m = d.data();
-                        if ((m.to === 'admin' && m.from === chatUser) || (m.from === 'admin' && m.to === chatUser)) msgs.push(m);
-                    });
-                    msgs.sort((a,b) => a.id - b.id);
-                    container.innerHTML = msgs.length ? msgs.map(m => `
-                        <div class="chat-msg ${m.from === 'admin' ? 'sent' : 'received'}">
-                            <div>${esc(m.text||'')}</div>
-                            ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
-                            <div class="time">${m.time||''}</div>
-                        </div>
-                    `).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages</div>';
-                    container.scrollTop = container.scrollHeight;
+            const chatUser = this.value;
+            if (chatUnsub) { chatUnsub(); chatUnsub = null; }
+            const container = document.getElementById('chatMsgs');
+            if (!chatUser) { container.innerHTML = '<div style="text-align:center;padding:10px;color:var(--muted);">Select a customer</div>'; return; }
+            container.innerHTML = '<div style="text-align:center;padding:10px;color:var(--muted);">Loading...</div>';
+            const q = query(collection(db,'chatMessages'), orderBy('id','asc'));
+            chatUnsub = onSnapshot(q, (snap) => {
+                if (!container || !chatUser) return;
+                const msgs = [];
+                snap.forEach(d => {
+                    const m = d.data();
+                    if (m.type !== 'notification' && ((m.from === chatUser && m.to === 'admin') || (m.from === 'admin' && m.to === chatUser))) {
+                        msgs.push(m);
+                    }
                 });
-            }
+                msgs.sort((a,b) => a.id - b.id);
+                container.innerHTML = msgs.length ? msgs.map(m => `
+                    <div class="chat-msg ${m.from === 'admin' ? 'sent' : 'received'}">
+                        <div>${esc(m.text||'')}</div>
+                        ${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}
+                        <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
+                    </div>
+                `).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages</div>';
+                container.scrollTop = container.scrollHeight;
+            });
         };
         document.getElementById('chatSend').onclick = async () => {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
+            const chatUser = document.getElementById('chatSelect').value;
             if (!text || !chatUser) { if (!chatUser) toast('Select customer', true); return; }
             await setDoc(doc(db,'chatMessages',(Date.now()+Math.random()).toString()), {
-                id: Date.now() + Math.random(),
+                id: Date.now()+Math.random(),
                 from: 'admin',
                 to: chatUser,
                 text: text,
                 image: null,
                 time: new Date().toISOString(),
-                read: false 
+                read: false,
+                type: 'message'
             });
             input.value = '';
             input.focus();
@@ -1667,11 +1711,13 @@
         document.getElementById('chatInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') document.getElementById('chatSend').click();
         });
+        // Store unsub for cleanup
+        window.__chatUnsub = chatUnsub;
     }
 
-    // === NEW ADMIN NOTIFICATION SYSTEM (FIXED TO BE SEPARATE FROM CHAT) ===
+    // ---- NOTIFICATIONS ----
     function renderNotifications(main) {
-        const customers = users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
+        const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
             <div class="card-glass">
                 <div class="flex">
@@ -1701,23 +1747,18 @@
             const username = document.getElementById('notifUserSelect').value;
             const title = document.getElementById('notifTitle').value.trim();
             const message = document.getElementById('notifMessage').value.trim();
-
             if (!title || !message) {
                 document.getElementById('notifStatus').innerHTML = '<span style="color:#dc2626;">Please fill in both Title and Message.</span>';
                 return;
             }
-
             const btn = document.getElementById('sendNotifBtn');
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';
             document.getElementById('notifStatus').innerHTML = '';
-
             try {
-                // Send as a chat message with special type "notification" and "read: false"
                 const targets = username === 'all' 
-                    ? users.filter(u => u.role === 'customer' && !u.disabled).map(u => u.username)
+                    ? cachedData.users.filter(u => u.role === 'customer' && !u.disabled).map(u => u.username)
                     : [username];
-
                 for (let target of targets) {
                     await setDoc(doc(db, 'chatMessages', (Date.now() + Math.random() + target).toString()), {
                         id: Date.now() + Math.random() + target,
@@ -1725,12 +1766,11 @@
                         to: target,
                         text: `[NOTIFICATION] ${title}\n\n${message}`,
                         image: null,
-                        time: new Date().toISOString(), // Save as UTC, display in customer's local time later
+                        time: new Date().toISOString(),
                         read: false,
-                        type: 'notification' // <--- THIS IS THE KEY FIX: Mark it as a notification
+                        type: 'notification'
                     });
                 }
-
                 document.getElementById('notifStatus').innerHTML = `<span style="color:#10b981;">✅ Notification sent successfully!</span>`;
                 document.getElementById('notifTitle').value = '';
                 document.getElementById('notifMessage').value = '';
@@ -1738,10 +1778,42 @@
             } catch (e) {
                 document.getElementById('notifStatus').innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
             }
-
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Notification';
         };
+    }
+
+    // ===== COMPRESS IMAGE HELPER =====
+    async function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > maxWidth || height > maxHeight) {
+                        if (width > height) {
+                            height = Math.round(height * maxWidth / width);
+                            width = maxWidth;
+                        } else {
+                            width = Math.round(width * maxHeight / height);
+                            height = maxHeight;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = reject;
+                img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
     }
 
     // ===== NAVIGATION =====
@@ -1755,9 +1827,10 @@
     });
 
     document.getElementById('logoutBtn').onclick = () => {
-        if (unsubChat) unsubChat();
-        if (unsubUsers) unsubUsers();
-        if (unsubInjections) unsubInjections();
+        // Unsubscribe all listeners
+        Object.values(unsubscribers).forEach(unsub => { if (unsub) unsub(); });
+        unsubscribers = {};
+        if (window.__chatUnsub) { window.__chatUnsub(); window.__chatUnsub = null; }
         admin = null;
         sessionStorage.removeItem('adminSession');
         document.getElementById('adminPanel').style.display = 'none';
@@ -1774,16 +1847,42 @@
     // ===== INIT =====
     if (checkSession()) {
         (async () => {
-            await loadAllData();
+            // Load agencies and orders first for login
+            const snapA = await getDocs(collection(db,'agencies'));
+            cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
+            const snapO = await getDocs(collection(db,'customOrders'));
+            cachedData.customOrders = []; snapO.forEach(d => cachedData.customOrders.push({ id:d.id, ...d.data() }));
+            const snapP = await getDocs(collection(db,'popupAds'));
+            cachedData.popupAds = []; snapP.forEach(d => cachedData.popupAds.push({ id:d.id, ...d.data() }));
+            const settings = await getDoc(doc(db,'systemSettings','main'));
+            if (settings.exists()) cachedData.systemSettings = settings.data();
+
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            startSubscriptions();
+            // Load users listener
+            if (!unsubscribers['users']) {
+                unsubscribers['users'] = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
+                    cachedData.users = [];
+                    snap.forEach(d => cachedData.users.push({ id:d.id, ...d.data() }));
+                    const total = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
+                    document.getElementById('memberCount').textContent = total;
+                    if (['dashboard','members','vip','injection'].includes(currentSection)) {
+                        renderSection(currentSection);
+                    }
+                    const ind = document.getElementById('liveIndicator');
+                    ind.style.display = 'flex';
+                    setTimeout(() => { ind.style.display = 'none'; }, 1200);
+                });
+            }
             const saved = localStorage.getItem('adminSection');
             renderSection(saved || 'dashboard');
         })();
+    } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminPanel').style.display = 'none';
     }
 
-    console.log('Trip.com Admin Panel loaded');
+    console.log('Trip.com Admin Panel loaded (optimized)');
 </script>
 </body>
 </html>
