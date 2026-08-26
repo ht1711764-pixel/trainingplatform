@@ -862,28 +862,23 @@
     </div>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+<!-- ===== SUPABASE SDK ===== -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // ===== NEW CONFIG for tripnew-2026 =====
-    const firebaseConfig = {
-        apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
-        authDomain: "tripnew-2026.firebaseapp.com",
-        projectId: "tripnew-2026",
-        storageBucket: "tripnew-2026.firebasestorage.app",
-        messagingSenderId: "225456579056",
-        appId: "1:225456579056:web:10f984841bdb63c9c73d35",
-        measurementId: "G-J0MYZLMJT0"
-    };
+<script>
+    // ============================================
+    // SUPABASE CONFIG - YOUR PROJECT
+    // ============================================
+    const supabaseUrl = 'https://qlnsqkwbcqsroictuicv.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsbnNxa3diY3Fzcm9pY3R1aWN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NzE5OTYsImV4cCI6MjEwMzM0Nzk5Nn0.ha2ZYci58eo0pHgfqqyUunjIYqfq30mUbdX9CoQt3aM';
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    console.log('✅ Supabase connected successfully!');
+    console.log('📁 Project:', supabaseUrl);
 
-    // ===== GLOBALS =====
+    // ============================================
+    // GLOBALS
+    // ============================================
     let user = null;
     let order = null;
     let ratings = { service: 0, quality: 0, sales: 0 };
@@ -891,22 +886,81 @@
     let lang = localStorage.getItem('lang') || 'en';
     let pendingInjections = [];
     let lastSeenInterval = null;
-    
-    // ===== UNSUBSCRIBERS =====
-    let unsubChat = null;
     let unsubRecharge = null;
     let unsubInjections = null;
     let unsubNotifications = null;
+    let unsubChat = null;
+    let currentSection = 'home';
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
-    function getVIP(user) {
-        if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel;
+
+    function getVIP(u) {
+        if (u?.manual_vip_level && u.manual_vip_level > 0) return u.manual_vip_level;
         return 1;
     }
-    function getRate(user) { return VIP_RATES[getVIP(user)] || 0.005; }
-    function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
-    function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
 
+    function getRate(u) {
+        return VIP_RATES[getVIP(u)] || 0.005;
+    }
+
+    function getVipClass(lv) {
+        return lv === 1 ? 'vip-1' : lv === 2 ? 'vip-2' : lv === 3 ? 'vip-3' : 'vip-4';
+    }
+
+    function esc(s) {
+        if (!s) return '';
+        return s.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m] || m);
+    }
+
+    function toast(msg, err = false) {
+        const el = document.createElement('div');
+        el.className = `toast-msg${err ? ' error' : ''}`;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2500);
+    }
+
+    window.togglePw = function(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            inp.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    };
+
+    document.getElementById('loginToggle').onclick = function() {
+        const inp = document.getElementById('loginPass');
+        const icon = this.querySelector('i');
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            inp.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    };
+
+    // ============================================
+    // IP ADDRESS
+    // ============================================
+    async function getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+            return null;
+        }
+    }
+
+    // ============================================
+    // COMPRESS IMAGE
+    // ============================================
     function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -939,239 +993,731 @@
         });
     }
 
-    function toast(msg, err=false) {
-        const el = document.createElement('div');
-        el.className = `toast-msg${err ? ' error' : ''}`;
-        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2500);
-    }
+    // ============================================
+    // SUPABASE DATABASE FUNCTIONS
+    // ============================================
 
-    window.togglePw = function(id, btn) {
-        const inp = document.getElementById(id);
-        const icon = btn.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    };
-
-    document.getElementById('loginToggle').onclick = function() {
-        const inp = document.getElementById('loginPass');
-        const icon = this.querySelector('i');
-        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
-        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
-    };
-
-    // ===== REFERRAL SYSTEM FUNCTION (10% of Commission to Superior) =====
-    async function distributeReferral(commission, customerDocId) {
-        if (!user.superior) return;
+    // GET USER PROFILE
+    async function getUserProfile(userId) {
         try {
-            const refQuery = query(collection(db, "users"), where("username", "==", user.superior));
-            const refSnap = await getDocs(refQuery);
-            if (!refSnap.empty) {
-                const refUser = refSnap.docs[0];
-                const bonus = commission * 0.10;
-                
-                // Update Superior's balance & referral earnings
-                await updateDoc(doc(db, "users", refUser.id), {
-                    balance: increment(bonus),
-                    referralEarnings: increment(bonus)
-                });
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('id', userId)
+                .single();
+            if (error) {
+                console.error('getUserProfile error:', error);
+                return null;
             }
+            return data;
         } catch (e) {
-            console.error("Referral distribution error:", e);
-        }
-    }
-
-    // ===== GET IP ADDRESS FUNCTION =====
-    async function getClientIP() {
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-        } catch (error) {
-            console.error('Error fetching IP:', error);
+            console.error('getUserProfile exception:', e);
             return null;
         }
     }
 
-    // ===== LOAD USER DATA =====
-    async function loadUserData(uid) {
+    // UPDATE USER
+    async function updateUser(userId, updates) {
         try {
-            const snap = await getDoc(doc(db, "users", uid));
-            if (snap.exists()) {
-                const data = snap.data();
-                user = { id: snap.id, ...data };
-                if (!user.orders) user.orders = [];
-                if (!user.tasks) user.tasks = { completed:0, total:0 };
-                return true;
-            }
-            return false;
+            const { data, error } = await supabase
+                .from('users')
+                .update(updates)
+                .eq('id', userId)
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
         } catch (e) {
-            console.error('loadUserData error:', e);
-            return false;
+            console.error('updateUser error:', e);
+            throw e;
         }
     }
 
-    // ===== ORDERS =====
+    // GET ORDERS
     async function getOrders(userId) {
         try {
-            const snap = await getDocs(query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50)));
-            const orders = [];
-            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-            return orders;
+            const { data, error } = await supabase
+                .from('orders')
+                .select('*')
+                .eq('user_id', userId)
+                .order('timestamp', { ascending: false })
+                .limit(50);
+            if (error) {
+                console.error('getOrders error:', error);
+                return [];
+            }
+            return data;
         } catch (e) {
-            console.error('getOrders error:', e);
+            console.error('getOrders exception:', e);
             return [];
         }
     }
 
-    async function saveOrder(userId, data) {
-        await addDoc(collection(db, "users", userId, "orders"), { ...data, timestamp: new Date().toISOString() });
+    // SAVE ORDER
+    async function saveOrder(userId, orderData) {
+        try {
+            const { data, error } = await supabase
+                .from('orders')
+                .insert({
+                    user_id: userId,
+                    order_name: orderData.name,
+                    amount: orderData.amount,
+                    net_commission: orderData.netCommission,
+                    rate: orderData.rate,
+                    order_number: orderData.orderNumber,
+                    profit: orderData.profit,
+                    status: orderData.status || 'completed',
+                    ratings: orderData.ratings || {},
+                    date: orderData.date || new Date().toLocaleString(),
+                    is_lucky: orderData.isLucky || false,
+                    image_data: orderData.imageData || null,
+                    timestamp: new Date().toISOString()
+                })
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
+        } catch (e) {
+            console.error('saveOrder error:', e);
+            throw e;
+        }
     }
 
+    // LOAD CUSTOM ORDERS
     async function loadCustomOrders() {
         try {
-            const snap = await getDocs(collection(db, "customOrders"));
-            const orders = [];
-            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
-            return orders;
+            const { data, error } = await supabase
+                .from('custom_orders')
+                .select('*');
+            if (error) {
+                console.error('loadCustomOrders error:', error);
+                return [];
+            }
+            return data;
         } catch (e) {
-            console.error('loadCustomOrders error:', e);
+            console.error('loadCustomOrders exception:', e);
             return [];
         }
     }
 
-    // ===== INJECTIONS =====
-    async function loadInjections(uid) {
+    // GET INJECTIONS
+    async function getInjections(userId) {
         try {
-            const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
-            const snap = await getDocs(q);
-            pendingInjections = [];
-            snap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
-            if (pendingInjections.length) {
-                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                user.pendingInjections = pendingInjections;
-                await saveUser();
+            const { data, error } = await supabase
+                .from('injections')
+                .select('*')
+                .eq('user_id', userId)
+                .eq('used', false)
+                .order('task_number');
+            if (error) {
+                console.error('getInjections error:', error);
+                return [];
             }
-            return pendingInjections;
+            return data;
         } catch (e) {
-            console.error('loadInjections error:', e);
+            console.error('getInjections exception:', e);
             return [];
         }
     }
+
+    // MARK INJECTION USED
+    async function markInjectionUsed(id) {
+        try {
+            const { error } = await supabase
+                .from('injections')
+                .update({ used: true, used_at: new Date().toISOString() })
+                .eq('id', id);
+            if (error) throw error;
+        } catch (e) {
+            console.error('markInjectionUsed error:', e);
+            throw e;
+        }
+    }
+
+    // CREATE RECHARGE REQUEST
+    async function createRechargeRequest(userId, userName, amount, receiptImage) {
+        try {
+            const { data, error } = await supabase
+                .from('recharge_requests')
+                .insert({
+                    user_id: userId,
+                    user_name: userName,
+                    amount: amount,
+                    receipt_image: receiptImage,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                })
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
+        } catch (e) {
+            console.error('createRechargeRequest error:', e);
+            throw e;
+        }
+    }
+
+    // CREATE WITHDRAW REQUEST
+    async function createWithdrawRequest(userId, userName, amount, walletAddress) {
+        try {
+            const { data, error } = await supabase
+                .from('withdraw_requests')
+                .insert({
+                    user_id: userId,
+                    user_name: userName,
+                    amount: amount,
+                    wallet_address: walletAddress,
+                    status: 'pending',
+                    timestamp: new Date().toISOString()
+                })
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
+        } catch (e) {
+            console.error('createWithdrawRequest error:', e);
+            throw e;
+        }
+    }
+
+    // GET RECHARGE REQUESTS
+    async function getRechargeRequests(userId) {
+        try {
+            const { data, error } = await supabase
+                .from('recharge_requests')
+                .select('*')
+                .eq('user_id', userId)
+                .order('timestamp', { ascending: false });
+            if (error) {
+                console.error('getRechargeRequests error:', error);
+                return [];
+            }
+            return data;
+        } catch (e) {
+            console.error('getRechargeRequests exception:', e);
+            return [];
+        }
+    }
+
+    // GET WITHDRAW REQUESTS
+    async function getWithdrawRequests(userId) {
+        try {
+            const { data, error } = await supabase
+                .from('withdraw_requests')
+                .select('*')
+                .eq('user_id', userId)
+                .order('timestamp', { ascending: false });
+            if (error) {
+                console.error('getWithdrawRequests error:', error);
+                return [];
+            }
+            return data;
+        } catch (e) {
+            console.error('getWithdrawRequests exception:', e);
+            return [];
+        }
+    }
+
+    // SEND CHAT MESSAGE
+    async function sendChatMessage(fromUser, toUser, text, image = null) {
+        try {
+            const { data, error } = await supabase
+                .from('chat_messages')
+                .insert({
+                    from_user: fromUser,
+                    to_user: toUser,
+                    text: text || '',
+                    image: image,
+                    time: new Date().toISOString(),
+                    read: false,
+                    type: 'message'
+                })
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
+        } catch (e) {
+            console.error('sendChatMessage error:', e);
+            throw e;
+        }
+    }
+
+    // GET SYSTEM SETTINGS
+    async function getSystemSettings() {
+        try {
+            const { data, error } = await supabase
+                .from('system_settings')
+                .select('value')
+                .eq('key', 'main')
+                .single();
+            if (error) {
+                console.error('getSystemSettings error:', error);
+                return null;
+            }
+            return data.value;
+        } catch (e) {
+            console.error('getSystemSettings exception:', e);
+            return null;
+        }
+    }
+
+    // GET COMPANY INFO
+    async function getCompanyInfo() {
+        try {
+            const { data, error } = await supabase
+                .from('system_settings')
+                .select('value')
+                .eq('key', 'companyInfo')
+                .single();
+            if (error) {
+                console.error('getCompanyInfo error:', error);
+                return null;
+            }
+            return data.value;
+        } catch (e) {
+            console.error('getCompanyInfo exception:', e);
+            return null;
+        }
+    }
+
+    // ============================================
+    // SUBSCRIPTIONS (REALTIME)
+    // ============================================
 
     function subscribeInjectionsRealtime(uid) {
         if (unsubInjections) {
             unsubInjections();
             unsubInjections = null;
         }
-        const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
-        unsubInjections = onSnapshot(q, async (snap) => {
-            const injs = [];
-            snap.forEach(d => injs.push({ id: d.id, ...d.data() }));
-            if (injs.length > 0 && user) {
-                injs.sort((a,b) => a.taskNumber - b.taskNumber);
-                user.pendingInjections = injs;
-                pendingInjections = injs;
-                await saveUser();
-                const d = t[lang] || t.en;
-                toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
-                if(currentSection === 'work') loadNextOrder();
-            } else if (injs.length === 0 && user) {
-                pendingInjections = [];
-                user.pendingInjections = [];
-                await saveUser();
-            }
-        }, (error) => {
-            console.error('subscribeInjectionsRealtime error:', error);
-        });
+        const channel = supabase
+            .channel('injections_channel')
+            .on('postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'injections', filter: `user_id=eq.${uid}` },
+                async (payload) => {
+                    const inj = payload.new;
+                    if (!inj.used) {
+                        pendingInjections.push(inj);
+                        pendingInjections.sort((a, b) => a.task_number - b.task_number);
+                        user.pendingInjections = pendingInjections;
+                        await updateUser(user.id, { pendingInjections: pendingInjections });
+                        const d = translations[lang] || translations.en;
+                        toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
+                        if (currentSection === 'work') loadNextOrder();
+                    }
+                }
+            )
+            .subscribe();
+        unsubInjections = () => {
+            channel.unsubscribe();
+        };
     }
 
-    async function markUsed(id) {
-        await updateDoc(doc(db, "injections", id), { used: true, usedAt: new Date().toISOString() });
+    function subscribeRechargeRealtime(uid) {
+        if (unsubRecharge) {
+            unsubRecharge();
+            unsubRecharge = null;
+        }
+        const channel = supabase
+            .channel('recharge_channel')
+            .on('postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'recharge_requests', filter: `user_id=eq.${uid}` },
+                async (payload) => {
+                    const data = payload.new;
+                    if (data.status === 'approved' && !data.balance_added) {
+                        if (user) {
+                            user.balance += data.amount;
+                            await updateUser(user.id, { balance: user.balance });
+                            await supabase
+                                .from('recharge_requests')
+                                .update({ balance_added: true })
+                                .eq('id', data.id);
+                            updateUI();
+                            toast(`✅ Recharge of $${data.amount} approved!`);
+                        }
+                    }
+                }
+            )
+            .subscribe();
+        unsubRecharge = () => {
+            channel.unsubscribe();
+        };
     }
 
-    // ===== SAVE USER =====
-    async function saveUser() {
-        if (!user) return;
-        const clean = { ...user };
-        delete clean.orders;
-        delete clean.pendingInjections;
-        await setDoc(doc(db, "users", user.id), clean, { merge: true });
-        localStorage.setItem('uid', user.id);
-        await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
-    }
-
-    function startLastSeenUpdate() {
-        if (lastSeenInterval) clearInterval(lastSeenInterval);
-        lastSeenInterval = setInterval(async () => {
-            if (user) {
-                try {
-                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
-                } catch(e) { /* silent */ }
-            }
-        }, 60000);
-    }
-
-    // ===== NOTIFICATIONS =====
     function subscribeNotificationsRealtime() {
-        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
+        if (unsubNotifications) {
+            unsubNotifications();
+            unsubNotifications = null;
+        }
         if (!user) return;
-        const q = query(collection(db, "chatMessages"), 
-            where("from", "==", "admin"), 
-            where("to", "==", user.username),
-            where("type", "==", "notification"),
-            orderBy("id", "asc")
-        );
-        unsubNotifications = onSnapshot(q, (snap) => {
-            let newCount = 0;
-            const msgs = [];
-            snap.forEach(d => {
-                const m = d.data();
-                if (!m.read) newCount++;
-                msgs.push(m);
-            });
-            const badge = document.getElementById('notifBadge');
-            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
-            else { badge.style.display = 'none'; }
-            window.__unreadAdminMessages = msgs.filter(m => !m.read);
-        }, (error) => console.error('subscribeNotificationsRealtime error:', error));
+        const channel = supabase
+            .channel('notifications_channel')
+            .on('postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'chat_messages',
+                    filter: `from_user=eq.admin AND to_user=eq.${user.username} AND type=eq.notification`
+                },
+                async (payload) => {
+                    const msg = payload.new;
+                    if (!msg.read) {
+                        const badge = document.getElementById('notifBadge');
+                        let count = parseInt(badge.innerText) || 0;
+                        count++;
+                        badge.innerText = count;
+                        badge.style.display = 'block';
+                        if (!window.__unreadAdminMessages) window.__unreadAdminMessages = [];
+                        window.__unreadAdminMessages.push(msg);
+                    }
+                }
+            )
+            .subscribe();
+        unsubNotifications = () => {
+            channel.unsubscribe();
+        };
     }
 
+    function subscribeChatRealtime() {
+        if (unsubChat) {
+            unsubChat();
+            unsubChat = null;
+        }
+        if (!user) return;
+        const channel = supabase
+            .channel('chat_channel')
+            .on('postgres_changes',
+                { event: 'INSERT', schema: 'public', table: 'chat_messages' },
+                (payload) => {
+                    const isServicePage = document.getElementById('pageService').classList.contains('active-page');
+                    if (!isServicePage) return;
+                    const container = document.getElementById('chatMessages');
+                    if (!container) return;
+                    const msg = payload.new;
+                    if (msg.type !== 'notification' &&
+                        ((msg.from_user === user.username && msg.to_user === 'admin') ||
+                         (msg.from_user === 'admin' && msg.to_user === user.username))) {
+                        const isSent = msg.from_user === user.username;
+                        const msgTime = msg.time ? new Date(msg.time).toLocaleString([], { hour12: false }) : '';
+                        const div = document.createElement('div');
+                        div.className = `chat-msg ${isSent ? 'sent' : 'received'}`;
+                        div.innerHTML = `<div>${esc(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div>`;
+                        container.appendChild(div);
+                        container.scrollTop = container.scrollHeight;
+                    }
+                }
+            )
+            .subscribe();
+        unsubChat = () => {
+            channel.unsubscribe();
+        };
+    }
+
+    // ============================================
+    // AUTH FUNCTIONS
+    // ============================================
+
+    // LOGIN
+    async function loginUser(username, password) {
+        try {
+            // 1. Get user by username
+            const { data: userData, error: userError } = await supabase
+                .from('users')
+                .select('*')
+                .eq('username', username)
+                .single();
+
+            if (userError || !userData) {
+                toast('User not found.', true);
+                return null;
+            }
+
+            if (userData.disabled) {
+                toast('Account disabled.', true);
+                return null;
+            }
+
+            // 2. Sign in with email/password
+            const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+                email: userData.email,
+                password: password
+            });
+
+            if (authError) {
+                toast('Invalid credentials.', true);
+                return null;
+            }
+
+            return userData;
+        } catch (e) {
+            console.error('Login error:', e);
+            toast('Login error: ' + e.message, true);
+            return null;
+        }
+    }
+
+    // REGISTER
+    async function registerUser(username, email, phone, password, withdrawPassword, inviteCode) {
+        try {
+            // 1. Check if username exists
+            const { data: existing, error: checkError } = await supabase
+                .from('users')
+                .select('username')
+                .eq('username', username)
+                .single();
+
+            if (existing) {
+                toast('Username already exists.', true);
+                return null;
+            }
+
+            // 2. Check invite code
+            let superior = null;
+            if (inviteCode) {
+                const { data: refUser, error: refError } = await supabase
+                    .from('users')
+                    .select('username')
+                    .eq('invitation_code', inviteCode)
+                    .single();
+
+                if (!refUser) {
+                    toast('Invalid invitation code.', true);
+                    return null;
+                }
+                superior = refUser.username;
+            }
+
+            // 3. Create auth user
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (authError) {
+                toast('Registration error: ' + authError.message, true);
+                return null;
+            }
+
+            // 4. Create profile
+            const invitationCode = 'LXC' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            const ip = await getClientIP();
+
+            const { data: profile, error: profileError } = await supabase
+                .from('users')
+                .insert({
+                    id: authData.user.id,
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    password_hash: password,
+                    withdraw_password: withdrawPassword,
+                    invitation_code: invitationCode,
+                    superior: superior,
+                    balance: 0,
+                    credit_score: 100,
+                    role: 'customer',
+                    manual_vip_level: 1,
+                    tasks_total: 0,
+                    reg_time: new Date().toISOString(),
+                    reg_ip: ip
+                })
+                .select()
+                .single();
+
+            if (profileError) {
+                toast('Error creating profile: ' + profileError.message, true);
+                return null;
+            }
+
+            return profile;
+        } catch (e) {
+            console.error('Register error:', e);
+            toast('Registration error: ' + e.message, true);
+            return null;
+        }
+    }
+
+    // GOOGLE LOGIN
+    async function googleLogin() {
+        try {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) {
+                toast('Google login error: ' + error.message, true);
+                return null;
+            }
+            return data;
+        } catch (e) {
+            toast('Google login error: ' + e.message, true);
+            return null;
+        }
+    }
+
+    // SIGN OUT
+    async function signOut() {
+        try {
+            const { error } = await supabase.auth.signOut();
+            if (error) throw error;
+            return true;
+        } catch (e) {
+            console.error('Sign out error:', e);
+            toast('Error signing out: ' + e.message, true);
+            return false;
+        }
+    }
+
+    // ============================================
+    // NAVIGATION
+    // ============================================
+    const pages = {
+        landing: document.getElementById('pageLanding'),
+        login: document.getElementById('pageLogin'),
+        register: document.getElementById('pageRegister'),
+        home: document.getElementById('pageHome'),
+        work: document.getElementById('pageWork'),
+        orders: document.getElementById('pageOrders'),
+        profile: document.getElementById('pageProfile'),
+        service: document.getElementById('pageService')
+    };
+    const bottomNav = document.getElementById('bottomNav');
+
+    function showPage(name) {
+        if (!user && !['landing', 'login', 'register'].includes(name)) name = 'landing';
+        Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
+        if (pages[name]) pages[name].classList.add('active-page');
+        currentSection = name;
+        if (['landing', 'login', 'register'].includes(name)) {
+            bottomNav.classList.add('hidden-nav');
+        } else {
+            bottomNav.classList.remove('hidden-nav');
+        }
+        if (!['landing', 'login', 'register'].includes(name)) {
+            localStorage.setItem('lastPage', name);
+        }
+
+        if (name === 'home' && user) {
+            subscribeNotificationsRealtime();
+            updateUI();
+            loadNotifications();
+        }
+        if (name === 'work' && user) {
+            subscribeInjectionsRealtime(user.id);
+            updateUI();
+            refreshWork();
+        }
+        if (name === 'orders' && user) updateUI();
+        if (name === 'profile' && user) updateUI();
+        if (name === 'service' && user) {
+            if (unsubChat) unsubChat();
+            subscribeChatRealtime();
+            loadChatHistory();
+        }
+        startFeed();
+    }
+
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.onclick = () => {
+            if (!user) { showPage('landing'); return; }
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            showPage(el.dataset.page);
+        };
+    });
+
+    // ============================================
+    // LOAD CHAT HISTORY
+    // ============================================
+    async function loadChatHistory() {
+        if (!user) return;
+        try {
+            const { data, error } = await supabase
+                .from('chat_messages')
+                .select('*')
+                .or(`from_user.eq.${user.username},to_user.eq.${user.username}`)
+                .neq('type', 'notification')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error('loadChatHistory error:', error);
+                return;
+            }
+
+            const container = document.getElementById('chatMessages');
+            if (!container) return;
+
+            const msgs = data.filter(m =>
+                (m.from_user === user.username && m.to_user === 'admin') ||
+                (m.from_user === 'admin' && m.to_user === user.username)
+            );
+
+            container.innerHTML = msgs.length ? msgs.map(m => {
+                const isSent = m.from_user === user.username;
+                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
+                return `<div class="chat-msg ${isSent ? 'sent' : 'received'}"><div>${esc(m.text || '')}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div></div>`;
+            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
+
+            container.scrollTop = container.scrollHeight;
+        } catch (e) {
+            console.error('loadChatHistory exception:', e);
+        }
+    }
+
+    // ============================================
+    // LOAD NOTIFICATIONS
+    // ============================================
     async function loadNotifications() {
         if (!user) return;
         try {
-            const q = query(collection(db, "chatMessages"), 
-                where("from", "==", "admin"), 
-                where("to", "==", user.username),
-                where("type", "==", "notification"),
-                orderBy("id", "asc")
-            );
-            const snap = await getDocs(q);
+            const { data, error } = await supabase
+                .from('chat_messages')
+                .select('*')
+                .eq('from_user', 'admin')
+                .eq('to_user', user.username)
+                .eq('type', 'notification')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error('loadNotifications error:', error);
+                return;
+            }
+
             let newCount = 0;
             const msgs = [];
-            snap.forEach(d => {
-                const m = d.data();
+            data.forEach(m => {
                 if (!m.read) newCount++;
                 msgs.push(m);
             });
+
             const badge = document.getElementById('notifBadge');
-            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
-            else { badge.style.display = 'none'; }
+            if (newCount > 0) {
+                badge.innerText = newCount;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
             window.__unreadAdminMessages = msgs.filter(m => !m.read);
-        } catch (e) { console.error('loadNotifications error:', e); }
+        } catch (e) {
+            console.error('loadNotifications exception:', e);
+        }
     }
 
+    // ============================================
+    // NOTIFICATION BUTTON
+    // ============================================
     document.getElementById('notificationBtn').onclick = async () => {
         if (!user) return;
-        const d = t[lang] || t.en;
+        const d = translations[lang] || translations.en;
         const msgs = window.__unreadAdminMessages || [];
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>`;
-        if (msgs.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
-        else {
-            msgs.sort((a,b) => a.id - b.id);
+        if (msgs.length === 0) {
+            html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
+        } else {
+            msgs.sort((a, b) => a.id - b.id);
             msgs.forEach(m => {
                 const text = m.text || '';
                 const parts = text.split('\n\n');
@@ -1187,12 +1733,15 @@
         html += `<button class="btn-primary" id="notifCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
         document.body.appendChild(modal);
+
         modal.querySelector('#notifCloseBtn').onclick = async () => {
             document.body.removeChild(modal);
             if (msgs.length > 0) {
                 for (let m of msgs) {
-                    const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
-                    snap.forEach(d => updateDoc(doc(db, "chatMessages", d.id), { read: true }));
+                    await supabase
+                        .from('chat_messages')
+                        .update({ read: true })
+                        .eq('id', m.id);
                 }
                 document.getElementById('notifBadge').style.display = 'none';
                 window.__unreadAdminMessages = [];
@@ -1200,150 +1749,15 @@
         };
     };
 
-    // ===== CHAT =====
-    function subscribeChatRealtime() {
-        if (unsubChat) { unsubChat(); unsubChat = null; }
-        const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
-        unsubChat = onSnapshot(q, (snap) => {
-            const isServicePage = document.getElementById('pageService').classList.contains('active-page');
-            if (!isServicePage) return;
-            const container = document.getElementById('chatMessages');
-            if (!container || !user) return;
-            const msgs = [];
-            snap.forEach(d => {
-                const m = d.data();
-                if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
-                    msgs.push(m);
-                }
-            });
-            msgs.sort((a,b) => a.id - b.id);
-            container.innerHTML = msgs.length ? msgs.map(m => {
-                const isSent = m.from === user.username;
-                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
-                return `<div class="chat-msg ${isSent ? 'sent' : 'received'}"><div>${esc(m.text||'')}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div></div>`;
-            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
-            container.scrollTop = container.scrollHeight;
-        }, (error) => console.error('subscribeChatRealtime error:', error));
-    }
-
-    async function sendChat(text, img=null) {
-        if (!user) return;
-        await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
-            id: Date.now()+Math.random(), from: user.username, to: 'admin', text: text||'', image: img,
-            time: new Date().toISOString(), read: false, type: 'message'
-        });
-    }
-
-    // ===== RECHARGE =====
-    async function loadRechargeStatus(uid) {
-        try {
-            const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
-            const snap = await getDocs(q);
-            snap.forEach(async (docSnap) => {
-                const data = docSnap.data();
-                if (data.status === 'approved' && !data.balanceAdded) {
-                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                }
-            });
-        } catch (e) { console.error('loadRechargeStatus error:', e); }
-    }
-
-    function subscribeRechargeRealtime(uid) {
-        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
-        const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
-        unsubRecharge = onSnapshot(q, async (snap) => {
-            snap.forEach(async (docSnap) => {
-                const data = docSnap.data();
-                if (data.status === 'approved' && !data.balanceAdded) {
-                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
-                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
-                }
-            });
-        }, (error) => console.error('subscribeRechargeRealtime error:', error));
-    }
-
-    function showRechargeModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
-                <div class="wallet-box">
-                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
-                    <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
-                </div>
-                <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
-                <div class="upload-area" id="receiptArea">${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
-                <div id="receiptPreview"></div>
-                <div id="rechargeMsg"></div>
-                <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF'); toast("Copied!"); };
-        let receiptData = null;
-        modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
-        modal.querySelector("#receiptInput").onchange = async (e) => {
-            if (e.target.files[0]) {
-                receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
-                modal.querySelector("#receiptPreview").innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
-            }
-        };
-        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
-            const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
-            if (isNaN(amt) || amt < 1) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`; return; }
-            if (!receiptData) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`; return; }
-            this.disabled = true;
-            try {
-                const reqId = Date.now().toString();
-                await setDoc(doc(db, "rechargeRequests", reqId), { id: reqId, userId: user.id, userName: user.username, amount: amt, receiptImage: receiptData, status: 'pending', timestamp: new Date().toISOString() });
-                subscribeRechargeRealtime(user.id);
-                setTimeout(() => { document.body.removeChild(modal); toast(d.rechargeWaiting); }, 2500);
-            } catch (e) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`; this.disabled = false; }
-        };
-        modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== WITHDRAW =====
-    function showWithdrawModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-box">
-                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
-                <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
-                <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
-                <button class="btn-primary" id="withdrawSubmitBtn">${d.submit}</button>
-                <button class="btn-primary btn-outline" id="withdrawCancelBtn" style="margin-top:8px;">${d.cancel}</button>
-                <div id="withdrawMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        modal.querySelector("#withdrawSubmitBtn").onclick = async () => {
-            const wallet = modal.querySelector("#withdrawWallet").value.trim();
-            const amt = parseFloat(modal.querySelector("#withdrawAmt").value);
-            if (!wallet) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter wallet address.</span>'; return; }
-            if (isNaN(amt) || amt < 1) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
-            if (amt > (user.balance||0)) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>'; return; }
-            user.balance -= amt;
-            await saveUser(); updateUI();
-            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString() });
-            document.body.removeChild(modal); toast("Withdraw submitted!");
-        };
-        modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== ORDER DISPLAY =====
+    // ============================================
+    // ORDER DISPLAY
+    // ============================================
     async function displayOrder(o, isLucky) {
-        const d = t[lang] || t.en;
+        const d = translations[lang] || translations.en;
         const container = document.getElementById('orderDisplay');
         if (!container) return;
-        const after = (user.balance||0) + o.netCommission;
-        const insufficient = (user.balance||0) < o.amount;
+        const after = (user.balance || 0) + o.netCommission;
+        const insufficient = (user.balance || 0) < o.amount;
 
         let luckyHtml = '';
         if (isLucky) {
@@ -1386,8 +1800,9 @@
                 ` : `<div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);"><strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong></div>`}
             </div>
         `;
+
         order = o;
-        ratings = { service:0, quality:0, sales:0 };
+        ratings = { service: 0, quality: 0, sales: 0 };
 
         if (!insufficient) {
             container.querySelectorAll('.stars').forEach(el => {
@@ -1397,69 +1812,125 @@
                     s.onclick = function() {
                         const val = parseInt(this.dataset.v);
                         ratings[cat] = val;
-                        stars.forEach((st, i) => { st.className = i < val ? 'fas fa-star active' : 'far fa-star'; });
+                        stars.forEach((st, i) => {
+                            st.className = i < val ? 'fas fa-star active' : 'far fa-star';
+                        });
                     };
                 });
             });
-            const submitBtn = document.getElementById('submitOrderBtn');
-            if (submitBtn) submitBtn.onclick = async function() {
-                if (this.disabled) return;
-                if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) { toast("Please provide all ratings.", true); return; }
-                this.disabled = true; this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
-                try {
-                    const profit = order.netCommission;
-                    if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    user.balance += profit;
-                    user.todayEarnings += profit;
-                    user.totalCommission += profit;
-                    user.tasks.completed += 1;
-                    order.status = 'completed'; order.ratings = { ...ratings }; order.date = new Date().toLocaleString(); order.profit = profit;
-                    await saveOrder(user.id, order);
-                    user.currentOrderObj = null; await saveUser(); order = null;
-                    
-                    // ===== REFERRAL BONUS (10% to Superior) =====
-                    await distributeReferral(profit, user.id);
 
-                    updateUI(); toast(`✅ +$${profit.toFixed(4)}`);
-                    loadNextOrder();
-                } catch(e) { console.error(e); toast("Error: "+e.message, true); }
-                this.disabled = false; this.innerHTML = d.submitComplete;
-            };
+            const submitBtn = document.getElementById('submitOrderBtn');
+            if (submitBtn) {
+                submitBtn.onclick = async function() {
+                    if (this.disabled) return;
+                    if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) {
+                        toast("Please provide all ratings.", true);
+                        return;
+                    }
+                    this.disabled = true;
+                    this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
+                    try {
+                        const profit = order.netCommission;
+                        if (!user.tasks) user.tasks = { completed: 0, total: 0 };
+                        user.balance += profit;
+                        user.today_earnings += profit;
+                        user.total_commission += profit;
+                        user.tasks_completed += 1;
+
+                        order.status = 'completed';
+                        order.ratings = { ...ratings };
+                        order.date = new Date().toLocaleString();
+                        order.profit = profit;
+
+                        await saveOrder(user.id, order);
+                        await updateUser(user.id, {
+                            balance: user.balance,
+                            today_earnings: user.today_earnings,
+                            total_commission: user.total_commission,
+                            tasks_completed: user.tasks_completed
+                        });
+
+                        user.currentOrderObj = null;
+                        order = null;
+
+                        // ===== REFERRAL BONUS (10% to Superior) =====
+                        if (user.superior) {
+                            try {
+                                const { data: refUser } = await supabase
+                                    .from('users')
+                                    .select('id')
+                                    .eq('username', user.superior)
+                                    .single();
+                                if (refUser) {
+                                    const bonus = profit * 0.10;
+                                    await supabase
+                                        .from('users')
+                                        .update({
+                                            balance: supabase.raw('balance + ?', bonus),
+                                            referral_earnings: supabase.raw('referral_earnings + ?', bonus)
+                                        })
+                                        .eq('id', refUser.id);
+                                }
+                            } catch (refErr) {
+                                console.error('Referral error:', refErr);
+                            }
+                        }
+
+                        updateUI();
+                        toast(`✅ +$${profit.toFixed(4)}`);
+                        loadNextOrder();
+                    } catch (e) {
+                        console.error(e);
+                        toast("Error: " + e.message, true);
+                    }
+                    this.disabled = false;
+                    this.innerHTML = d.submitComplete;
+                };
+            }
         }
     }
 
     async function loadNextOrder() {
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
-        const settings = await getDoc(doc(db, "systemSettings", "main"));
-        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) { document.getElementById('orderDisplay').innerHTML = `<div class="card" style="text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ ${t[lang].insufficient}</span></div>`; return; }
+        const limit = user.tasks_total || 0;
+        const done = user.tasks_completed || 0;
+        if (done >= limit && limit > 0) {
+            document.getElementById('orderDisplay').innerHTML = '';
+            return;
+        }
 
-        const nextTask = (user.tasks?.completed||0) + 1;
+        const settings = await getSystemSettings();
+        const minBal = settings?.minBalanceForOrder || 10;
+        if ((user.balance || 0) < minBal) {
+            document.getElementById('orderDisplay').innerHTML =
+                `<div class="card" style="text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ ${translations[lang].insufficient}</span></div>`;
+            return;
+        }
+
+        const nextTask = (user.tasks_completed || 0) + 1;
         let isLucky = false;
         let injection = null;
 
         if (pendingInjections.length > 0) {
-            injection = pendingInjections.find(i => i.taskNumber === nextTask);
+            injection = pendingInjections.find(i => i.task_number === nextTask);
             if (injection) {
                 isLucky = true;
-                await markUsed(injection.id);
+                await markInjectionUsed(injection.id);
                 pendingInjections = pendingInjections.filter(i => i.id !== injection.id);
                 user.pendingInjections = pendingInjections;
-                await saveUser();
+                await updateUser(user.id, { pendingInjections: pendingInjections });
             }
         }
 
         const templates = await loadCustomOrders();
-        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Premium Order', price:10 };
-        const balance = user.balance||0;
+        const tpl = templates.length ? templates[Math.floor(Math.random() * templates.length)] : { name: 'Premium Order', price: 10 };
+        const balance = user.balance || 0;
         const rate = getRate(user);
         let amount, net;
 
-        if (isLucky) {
-            amount = balance + (injection.extraAmount || 0);
-            net = injection.commission > 0 ? injection.commission : (injection.commissionRate > 0 ? amount * (injection.commissionRate/100) : amount * rate);
+        if (isLucky && injection) {
+            amount = balance + (injection.extra_amount || 0);
+            net = injection.commission > 0 ? injection.commission :
+                (injection.commission_rate > 0 ? amount * (injection.commission_rate / 100) : amount * rate);
         } else {
             const pct = 0.53 + Math.random() * 0.26;
             amount = parseFloat((balance * pct).toFixed(2));
@@ -1470,124 +1941,89 @@
         const newOrder = {
             id: Date.now(),
             name: isLucky ? 'Lucky Premium Task' : tpl.name,
-            amount: amount, netCommission: net,
-            rate: isLucky ? injection.commissionRate : (rate * 100),
-            orderNumber: 'ORD'+Math.floor(Math.random()*1e9),
-            isLucky: isLucky
+            amount: amount,
+            netCommission: net,
+            rate: isLucky && injection ? injection.commission_rate : (rate * 100),
+            orderNumber: 'ORD' + Math.floor(Math.random() * 1e9),
+            isLucky: isLucky,
+            imageData: isLucky && injection ? injection.image_data : null
         };
-        user.currentOrderObj = newOrder; await saveUser();
+
+        user.currentOrderObj = newOrder;
+        await updateUser(user.id, { current_order: newOrder });
         displayOrder(newOrder, isLucky);
     }
 
     function refreshWork() {
         if (!user) return;
-        const limit = user.tasks?.total || 0;
-        const done = user.tasks?.completed || 0;
-        if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
-        if (user.currentOrderObj && !user.currentOrderObj.completed) displayOrder(user.currentOrderObj, user.currentOrderObj.isLucky);
-        else if (order) displayOrder(order, order.isLucky);
-        else if (done < limit && limit > 0) loadNextOrder();
+        const limit = user.tasks_total || 0;
+        const done = user.tasks_completed || 0;
+        if (done >= limit && limit > 0) {
+            document.getElementById('orderDisplay').innerHTML = '';
+            return;
+        }
+        if (user.currentOrderObj && !user.currentOrderObj.completed) {
+            displayOrder(user.currentOrderObj, user.currentOrderObj.isLucky);
+        } else if (order) {
+            displayOrder(order, order.isLucky);
+        } else if (done < limit && limit > 0) {
+            loadNextOrder();
+        }
     }
 
-    // ===== UPDATE UI =====
+    // ============================================
+    // UPDATE UI
+    // ============================================
     async function updateUI() {
         if (!user) return;
-        const d = t[lang] || t.en;
+        const d = translations[lang] || translations.en;
         const orders = await getOrders(user.id);
-        const balance = user.balance||0;
+        const balance = user.balance || 0;
         const vip = getVIP(user);
         const rate = getRate(user);
-        const limit = user.tasks?.total||0;
-        const done = user.tasks?.completed||0;
+        const limit = user.tasks_total || 0;
+        const done = user.tasks_completed || 0;
         const vipClass = getVipClass(vip);
 
         document.getElementById('homeName').innerText = user.username;
         document.getElementById('balanceAmount').innerText = `$ ${balance.toFixed(2)}`;
         document.getElementById('todayCount').innerText = done;
         document.getElementById('dailyMax').innerText = limit;
-        document.getElementById('todayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('totalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
-        document.getElementById('commRate').innerText = `${(rate*100).toFixed(1)}%`;
+        document.getElementById('todayEarn').innerText = `$ ${(user.today_earnings || 0).toFixed(4)}`;
+        document.getElementById('totalComm').innerText = `$ ${(user.total_commission || 0).toFixed(4)}`;
+        document.getElementById('commRate').innerText = `${(rate * 100).toFixed(1)}%`;
         document.getElementById('homeVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
-        document.getElementById('refCode').innerText = user.invitationCode||'------';
+        document.getElementById('refCode').innerText = user.invitation_code || '------';
         document.getElementById('profileName').innerText = user.username;
         document.getElementById('profileVip').innerHTML = `<span class="${vipClass}">VIP ${vip}</span>`;
-        document.getElementById('creditScore').innerText = user.creditScore||100;
+        document.getElementById('creditScore').innerText = user.credit_score || 100;
         document.getElementById('pTotalAssets').innerText = `$ ${balance.toFixed(2)}`;
         document.getElementById('pTodayOrders').innerText = done;
-        document.getElementById('pTodayEarn').innerText = `$ ${(user.todayEarnings||0).toFixed(4)}`;
-        document.getElementById('pTotalComm').innerText = `$ ${(user.totalCommission||0).toFixed(4)}`;
-        document.getElementById('walletDisplay').innerText = user.walletAddress||'Not set';
+        document.getElementById('pTodayEarn').innerText = `$ ${(user.today_earnings || 0).toFixed(4)}`;
+        document.getElementById('pTotalComm').innerText = `$ ${(user.total_commission || 0).toFixed(4)}`;
+        document.getElementById('walletDisplay').innerText = user.wallet_address || 'Not set';
         document.getElementById('taskCounter').innerText = `${done}/${limit}`;
-        document.getElementById('taskFill').style.width = limit ? `${(done/limit)*100}%` : '0%';
+        document.getElementById('taskFill').style.width = limit ? `${(done / limit) * 100}%` : '0%';
+
+        if (user.profile_photo) {
+            document.getElementById('profileAvatar').innerHTML =
+                `<img src="${user.profile_photo}" style="width:100%;height:100%;object-fit:cover;">`;
+        }
 
         const completed = orders.filter(o => o.status === 'completed');
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
             <div class="card">
-                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--secondary);font-size:11px;">${d.completed}</span></div>
-                <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
-                <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
+                <div class="flex"><strong style="font-size:14px;">${o.order_name}</strong><span style="color:var(--secondary);font-size:11px;">${d.completed}</span></div>
+                <div style="font-size:13px;">Amount: $ ${(o.amount || 0).toFixed(2)} | Profit: +$ ${(o.profit || 0).toFixed(4)}</div>
+                <div style="font-size:11px;color:var(--muted);">${o.date || new Date(o.timestamp).toLocaleString()}</div>
             </div>
         `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
     }
 
-    // ===== LIVE FEED =====
-    const names = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
-    function randName() { return names[Math.floor(Math.random()*names.length)]; }
-    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
-    function startFeed() {
-        if (feedInterval) clearInterval(feedInterval);
-        const container = document.getElementById('feedList');
-        if (!container) return;
-        function add() { const item = document.createElement('div'); item.className = 'feed-item'; item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`; container.prepend(item); if (container.children.length > 5) container.removeChild(container.lastChild); }
-        for (let i=0; i<2; i++) add();
-        feedInterval = setInterval(add, 8000);
-    }
+    // ============================================
+    // EVENT LISTENERS
+    // ============================================
 
-    // ===== NAVIGATION =====
-    let currentSection = 'home';
-    const pages = {
-        landing: document.getElementById('pageLanding'),
-        login: document.getElementById('pageLogin'),
-        register: document.getElementById('pageRegister'),
-        home: document.getElementById('pageHome'),
-        work: document.getElementById('pageWork'),
-        orders: document.getElementById('pageOrders'),
-        profile: document.getElementById('pageProfile'),
-        service: document.getElementById('pageService')
-    };
-    const bottomNav = document.getElementById('bottomNav');
-
-    function showPage(name) {
-        if (!user && !['landing','login','register'].includes(name)) name = 'landing';
-        Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
-        if (pages[name]) pages[name].classList.add('active-page');
-        currentSection = name;
-        if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
-        else bottomNav.classList.remove('hidden-nav');
-        if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
-        
-        if (name === 'home' && user) { subscribeNotificationsRealtime(); updateUI(); loadNotifications(); }
-        if (name === 'work' && user) { subscribeInjectionsRealtime(user.id); updateUI(); refreshWork(); }
-        if (name === 'orders' && user) updateUI();
-        if (name === 'profile' && user) updateUI();
-        if (name === 'service' && user) subscribeChatRealtime();
-        
-        startFeed();
-    }
-    document.querySelectorAll('.nav-item').forEach(el => {
-        el.onclick = () => {
-            if (!user) { showPage('landing'); return; }
-            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-            el.classList.add('active');
-            showPage(el.dataset.page);
-        };
-    });
-
-    // ===== EVENT LISTENERS =====
-    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('landingLoginBtn').onclick = () => showPage('login');
     document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
     document.getElementById('backFromLogin').onclick = () => showPage('landing');
@@ -1595,95 +2031,47 @@
     document.getElementById('goRegisterBtn').onclick = () => showPage('register');
     document.getElementById('goLoginFromReg').onclick = () => showPage('login');
 
-    // ===== AUTH: GOOGLE LOGIN =====
-    async function handleGoogleLogin() {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const gUser = result.user;
-            const email = gUser.email;
-            const username = email.split('@')[0]; 
-            
-            const userRef = doc(db, "users", gUser.uid);
-            const userSnap = await getDoc(userRef);
-            
-            if (userSnap.exists()) {
-                user = { id: gUser.uid, ...userSnap.data() };
-                toast(`Welcome back, ${user.username}`);
-            } else {
-                const ip = await getClientIP();
-                const newUser = {
-                    id: gUser.uid,
-                    username: username,
-                    email: email,
-                    phone: '',
-                    password: '',
-                    withdrawPassword: '',
-                    balance: 0,
-                    invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
-                    superior: null,
-                    referralEarnings: 0,
-                    regTime: new Date().toISOString(),
-                    tasks: { completed:0, total:0 },
-                    orders: [],
-                    todayOrders: 0,
-                    todayEarnings: 0,
-                    totalCommission: 0,
-                    creditScore: 100,
-                    disabled: false,
-                    walletAddress: null,
-                    currentOrderObj: null,
-                    role: 'customer',
-                    lastSeen: Date.now(),
-                    authProvider: 'google',
-                    regIP: ip
-                };
-                await setDoc(userRef, newUser);
-                user = { id: gUser.uid, ...newUser };
-                toast(`Welcome, ${username}! Account created.`);
-            }
-            await finalizeLogin(user);
-        } catch (error) {
-            console.error("Google Login Error:", error);
-            toast("Google Login failed: " + error.message, true);
-        }
-    }
+    // GOOGLE LOGIN
+    document.getElementById('landingGoogleBtn').onclick = googleLogin;
+    document.getElementById('loginGoogleBtn').onclick = googleLogin;
+    document.getElementById('registerGoogleBtn').onclick = googleLogin;
 
-    async function finalizeLogin(u) {
-        if (!u.orders) u.orders = [];
-        if (!u.tasks) u.tasks = { completed:0, total:0 };
-        await saveUser();
-        await loadUserData(u.id);
-        await loadInjections(u.id);
-        await loadRechargeStatus(u.id);
-        await loadNotifications();
-        startLastSeenUpdate();
-        updateUI();
-        const last = localStorage.getItem('lastPage');
-        showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-    }
-
-    // ===== LOGIN =====
+    // LOGIN
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
         const password = document.getElementById('loginPass').value;
-        if (!username || !password) { toast('Enter username and password.', true); return; }
-        this.disabled = true; this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        if (!username || !password) {
+            toast('Enter username and password.', true);
+            return;
+        }
+
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+
         try {
-            const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
-            const snap = await getDocs(q);
-            if (snap.empty) { toast('Invalid username or password.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
-            const data = snap.docs[0].data();
-            if (data.disabled) { toast('Account disabled.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
-            user = { id: snap.docs[0].id, ...data };
-            if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
-            await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
-            const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-            toast(`Welcome, ${username}`);
-        } catch (e) { console.error('Login error:', e); toast('Login failed: ' + e.message, true); }
-        this.disabled = false; this.innerHTML = 'Login';
+            const userData = await loginUser(username, password);
+            if (userData) {
+                user = { id: userData.id, ...userData };
+                localStorage.setItem('uid', user.id);
+                await updateUser(user.id, { last_seen: new Date().toISOString() });
+                await loadNotifications();
+                subscribeRechargeRealtime(user.id);
+                subscribeInjectionsRealtime(user.id);
+                updateUI();
+                const last = localStorage.getItem('lastPage');
+                showPage(last && !['landing', 'login', 'register'].includes(last) ? last : 'home');
+                toast(`Welcome, ${username}`);
+            }
+        } catch (e) {
+            console.error('Login error:', e);
+            toast('Login failed: ' + e.message, true);
+        }
+
+        this.disabled = false;
+        this.innerHTML = 'Login';
     };
 
-    // ===== REGISTER (With Superior Referral Logic) =====
+    // REGISTER
     document.getElementById('doRegisterBtn').onclick = async function() {
         const username = document.getElementById('regUsername').value.trim();
         const email = document.getElementById('regEmail').value.trim();
@@ -1692,220 +2080,620 @@
         const confirm = document.getElementById('regConfirm').value;
         const withdraw = document.getElementById('regWithdraw').value;
         const invite = document.getElementById('regInvite').value.trim();
-        if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
-        if (pass !== confirm) { toast('Passwords do not match.', true); return; }
-        const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
-        if (!exist.empty) { toast('Username exists.', true); return; }
-        
-        let superior = null;
-        if (invite) { 
-            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite))); 
-            if (refCheck.empty) { toast('Invalid invitation code.', true); return; } 
-            superior = refCheck.docs[0].data().username; 
+
+        if (!username || !email || !pass || !withdraw) {
+            toast('All fields required.', true);
+            return;
+        }
+        if (pass !== confirm) {
+            toast('Passwords do not match.', true);
+            return;
         }
 
-        const ip = await getClientIP();
-        user = {
-            id: Date.now().toString(), username, email, phone, password: pass, withdrawPassword: withdraw,
-            balance: 0, invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-            superior: superior, referralEarnings: 0, regTime: new Date().toISOString(),
-            tasks: { completed:0, total:0 }, orders: [], todayOrders: 0, todayEarnings: 0, totalCommission: 0,
-            creditScore: 100, disabled: false, walletAddress: null, currentOrderObj: null, role: 'customer', lastSeen: Date.now(), regIP: ip
-        };
-        await setDoc(doc(db, "users", user.id), user); await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI(); showPage('home'); toast('Registration successful!');
+        this.disabled = true;
+        this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+
+        try {
+            const profile = await registerUser(username, email, phone, pass, withdraw, invite);
+            if (profile) {
+                user = { id: profile.id, ...profile };
+                localStorage.setItem('uid', user.id);
+                subscribeRechargeRealtime(user.id);
+                subscribeInjectionsRealtime(user.id);
+                updateUI();
+                showPage('home');
+                toast('Registration successful!');
+            }
+        } catch (e) {
+            console.error('Register error:', e);
+            toast('Registration failed: ' + e.message, true);
+        }
+
+        this.disabled = false;
+        this.innerHTML = 'Register Now';
     };
 
-    // ===== SIGN OUT =====
-    function signOut() {
-        if (unsubChat) unsubChat(); if (unsubRecharge) unsubRecharge(); if (unsubInjections) unsubInjections(); if (unsubNotifications) unsubNotifications();
-        if (feedInterval) clearInterval(feedInterval); if (lastSeenInterval) clearInterval(lastSeenInterval);
-        const uid = user?.id; user = null; order = null; pendingInjections = []; localStorage.removeItem('uid'); if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
-        firebaseSignOut(auth).then(() => console.log("Signed out")).catch(e => console.error("Sign out error:", e));
-        showPage('landing'); toast('Signed out.');
-    }
-    document.getElementById('signOutHome').onclick = signOut;
-    document.getElementById('signOutProfile').onclick = signOut;
+    // SIGN OUT
+    function signOutHandler() {
+        if (unsubChat) unsubChat();
+        if (unsubRecharge) unsubRecharge();
+        if (unsubInjections) unsubInjections();
+        if (unsubNotifications) unsubNotifications();
+        if (feedInterval) clearInterval(feedInterval);
+        if (lastSeenInterval) clearInterval(lastSeenInterval);
 
-    // ===== REFRESH =====
+        const uid = user?.id;
+        user = null;
+        order = null;
+        pendingInjections = [];
+        localStorage.removeItem('uid');
+        if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+
+        signOut().then(() => {
+            showPage('landing');
+            toast('Signed out.');
+        });
+    }
+
+    document.getElementById('signOutHome').onclick = signOutHandler;
+    document.getElementById('signOutProfile').onclick = signOutHandler;
+
+    // REFRESH
     document.querySelectorAll('.icon-btn').forEach(el => {
         if (el.id && el.id.startsWith('refresh')) {
             el.onclick = async () => {
-                if (user) { await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); updateUI(); toast('Refreshed!'); }
+                if (user) {
+                    const fresh = await getUserProfile(user.id);
+                    if (fresh) {
+                        user = { id: fresh.id, ...fresh };
+                        await loadNotifications();
+                        updateUI();
+                        toast('Refreshed!');
+                    }
+                }
             };
         }
     });
 
-    // ===== BUTTONS =====
-    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
-    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
-    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
-    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
-    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
-    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
-    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
+    // ============================================
+    // BUTTONS
+    // ============================================
 
-    document.getElementById('rechargeHistoryBtn').onclick = async () => {
-        if (!user) return;
-        const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Recharge History', items, 'recharge');
-    };
-    document.getElementById('withdrawHistoryBtn').onclick = async () => {
-        if (!user) return;
-        const snap = await getDocs(query(collection(db,"withdrawRequests"), where("userId","==",user.id)));
-        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Withdraw History', items, 'withdraw');
-    };
-
-    // ===== START ORDER =====
-    document.getElementById('startOrderBtn').onclick = async () => {
-        if (!user) { toast('Login first.', true); return; }
-        const limit = user.tasks?.total || 0; const done = user.tasks?.completed || 0;
-        if (limit === 0) { toast('No orders assigned.', true); return; }
-        if (done >= limit) { toast('All orders completed!', true); return; }
-        const settings = await getDoc(doc(db, "systemSettings", "main"));
-        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) { toast(`Minimum balance $ ${minBal} required.`, true); return; }
-        subscribeInjectionsRealtime(user.id);
-        loadNextOrder();
-    };
-
-    // ===== CHAT =====
-    document.getElementById('sendChatBtn').onclick = async () => {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (text && user) { await sendChat(text); input.value = ''; input.focus(); }
-    };
-    document.getElementById('chatInput').addEventListener('keypress', async (e) => {
-        if (e.key === 'Enter') { e.preventDefault(); const input = document.getElementById('chatInput'); const text = input.value.trim(); if (text && user) { await sendChat(text); input.value = ''; input.focus(); } }
-    });
-
-    document.getElementById('companyInfoBtn').onclick = () => {
-        const d = t[lang] || t.en;
+    // RECHARGE
+    function showRechargeModal() {
+        const d = translations[lang] || translations.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
-            <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
-            <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
-            <button class="btn-primary" id="companyClose">${d.close}</button></div>`;
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
+                <div class="wallet-box">
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
+                    <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
+                </div>
+                <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
+                <div class="upload-area" id="receiptArea">${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
+                <div id="receiptPreview"></div>
+                <div id="rechargeMsg"></div>
+                <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+            </div>
+        `;
         document.body.appendChild(modal);
-        modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
+
+        modal.querySelector("#copyWalletBtn").onclick = () => {
+            navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF');
+            toast("Copied!");
+        };
+
+        let receiptData = null;
+        modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
+        modal.querySelector("#receiptInput").onchange = async (e) => {
+            if (e.target.files[0]) {
+                receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
+                modal.querySelector("#receiptPreview").innerHTML =
+                    `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
+            }
+        };
+
+        modal.querySelector("#rechargeSubmitBtn").onclick = async function() {
+            const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
+            if (isNaN(amt) || amt < 1) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`;
+                return;
+            }
+            if (!receiptData) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`;
+                return;
+            }
+
+            this.disabled = true;
+            try {
+                await createRechargeRequest(user.id, user.username, amt, receiptData);
+                subscribeRechargeRealtime(user.id);
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                    toast(d.rechargeWaiting);
+                }, 2500);
+            } catch (e) {
+                modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
+                this.disabled = false;
+            }
+        };
+
+        modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+
+    // WITHDRAW
+    function showWithdrawModal() {
+        const d = translations[lang] || translations.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
+                <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
+                <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
+                <button class="btn-primary" id="withdrawSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="withdrawCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+                <div id="withdrawMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector("#withdrawSubmitBtn").onclick = async function() {
+            const wallet = modal.querySelector("#withdrawWallet").value.trim();
+            const amt = parseFloat(modal.querySelector("#withdrawAmt").value);
+            if (!wallet) {
+                modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter wallet address.</span>';
+                return;
+            }
+            if (isNaN(amt) || amt < 1) {
+                modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>';
+                return;
+            }
+            if (amt > (user.balance || 0)) {
+                modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>';
+                return;
+            }
+
+            this.disabled = true;
+            try {
+                await createWithdrawRequest(user.id, user.username, amt, wallet);
+                user.balance -= amt;
+                await updateUser(user.id, { balance: user.balance });
+                updateUI();
+                document.body.removeChild(modal);
+                toast("Withdraw submitted!");
+            } catch (e) {
+                modal.querySelector("#withdrawMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
+                this.disabled = false;
+            }
+        };
+
+        modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+
+    // BIND WALLET
+    document.getElementById('bindWalletBtn').onclick = () => {
+        if (!user) { toast('Login first.', true); return; }
+        const d = translations[lang] || translations.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div>
+                <input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user.wallet_address || ''}">
+                <button class="btn-primary" id="bindWalletSave">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector("#bindWalletSave").onclick = async () => {
+            const addr = modal.querySelector("#bindWalletInput").value.trim();
+            await updateUser(user.id, { wallet_address: addr });
+            user.wallet_address = addr;
+            updateUI();
+            document.body.removeChild(modal);
+            toast("Wallet updated!");
+        };
+
+        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
     };
 
-    document.querySelectorAll('.lang-opt').forEach(el => { el.onclick = function() { applyLang(this.dataset.lang); if (user) updateUI(); }; });
+    // PERSONAL DETAILS
+    document.getElementById('personalDetailsBtn').onclick = () => {
+        if (!user) { toast('Login first.', true); return; }
+        const d = translations[lang] || translations.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div>
+                <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+                    <span style="color:var(--muted);">Credit:</span><span>${user.credit_score || 100}</span>
+                </div>
+                <div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+                    <span style="color:var(--muted);">Balance:</span><span>$ ${(user.balance || 0).toFixed(2)}</span>
+                </div>
+                <div class="flex" style="font-size:13px;padding:6px 0;">
+                    <span style="color:var(--muted);">Invitation Code:</span><span>${user.invitation_code || 'N/A'}</span>
+                </div>
+                <button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
+    };
+
+    // LOAN
+    document.getElementById('loanBtn').onclick = () => {
+        if (!user) { toast('Login first.', true); return; }
+        const d = translations[lang] || translations.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div>
+                <input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount">
+                <button class="btn-primary" id="loanSubmit">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button>
+                <div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector("#loanSubmit").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#loanAmt").value);
+            if (isNaN(amt) || amt <= 0) {
+                modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>';
+                return;
+            }
+            try {
+                const { error } = await supabase
+                    .from('loan_requests')
+                    .insert({
+                        user_id: user.id,
+                        user_name: user.username,
+                        amount: amt,
+                        status: 'pending',
+                        timestamp: new Date().toISOString()
+                    });
+                if (error) throw error;
+                document.body.removeChild(modal);
+                toast("Loan submitted!");
+            } catch (e) {
+                modal.querySelector("#loanMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
+            }
+        };
+
+        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
+    };
+
+    // HISTORY
+    document.getElementById('rechargeHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const items = await getRechargeRequests(user.id);
+        showHistory('Recharge History', items, 'recharge');
+    };
+
+    document.getElementById('withdrawHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const items = await getWithdrawRequests(user.id);
+        showHistory('Withdraw History', items, 'withdraw');
+    };
 
     function showHistory(title, items, type) {
-        const d = t[lang] || t.en;
+        const d = translations[lang] || translations.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
         let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
-        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
-        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
-            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div></div>`;
-        });
+        if (items.length === 0) {
+            html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
+        } else {
+            items.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
+                html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type === 'recharge' ? 'Recharge' : 'Withdraw'}</strong><span style="color:${item.status === 'pending' ? '#f59e0b' : item.status === 'approved' ? '#10b981' : '#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div></div>`;
+            });
+        }
         html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
         modal.innerHTML = html;
         document.body.appendChild(modal);
         modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
     }
 
-    function showBindWallet() {
-        const d = t[lang] || t.en;
+    // ============================================
+    // START ORDER
+    // ============================================
+    document.getElementById('startOrderBtn').onclick = async () => {
+        if (!user) { toast('Login first.', true); return; }
+        const limit = user.tasks_total || 0;
+        const done = user.tasks_completed || 0;
+        if (limit === 0) { toast('No orders assigned.', true); return; }
+        if (done >= limit) { toast('All orders completed!', true); return; }
+
+        const settings = await getSystemSettings();
+        const minBal = settings?.minBalanceForOrder || 10;
+        if ((user.balance || 0) < minBal) {
+            toast(`Minimum balance $ ${minBal} required.`, true);
+            return;
+        }
+
+        if (user.currentOrderObj && !user.currentOrderObj.completed) {
+            const d = translations[lang] || translations.en;
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-box" style="text-align:center;">
+                    <div style="font-size:48px;color:#dc2626;margin-bottom:12px;"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h3 style="color:#dc2626;font-size:20px;">⚠️ ${d.warning}</h3>
+                    <p style="color:var(--text-secondary);font-size:14px;margin:12px 0;">${d.pendingMsg}</p>
+                    <button class="btn-primary" id="pendingOk">${d.okay}</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.querySelector('#pendingOk').onclick = () => {
+                document.body.removeChild(modal);
+                showPage('work');
+                if (user.currentOrderObj) displayOrder(user.currentOrderObj, user.currentOrderObj.isLucky);
+                else if (order) displayOrder(order, order.isLucky);
+            };
+            return;
+        }
+
+        subscribeInjectionsRealtime(user.id);
+        loadNextOrder();
+    };
+
+    // ============================================
+    // CHAT
+    // ============================================
+    document.getElementById('sendChatBtn').onclick = async () => {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (text && user) {
+            await sendChatMessage(user.username, 'admin', text);
+            input.value = '';
+            input.focus();
+            loadChatHistory();
+        }
+    };
+
+    document.getElementById('chatInput').addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (text && user) {
+                await sendChatMessage(user.username, 'admin', text);
+                input.value = '';
+                input.focus();
+                loadChatHistory();
+            }
+        }
+    });
+
+    document.getElementById('uploadChatBtn').onclick = () => {
+        document.getElementById('chatFileInput').click();
+    };
+
+    document.getElementById('chatFileInput').onchange = async (e) => {
+        if (e.target.files[0] && user) {
+            const data = await compressImage(e.target.files[0], 300, 300, 0.4);
+            await sendChatMessage(user.username, 'admin', '', data);
+            e.target.value = '';
+            loadChatHistory();
+        }
+    };
+
+    // ============================================
+    // COMPANY INFO
+    // ============================================
+    document.getElementById('companyInfoBtn').onclick = () => {
+        const d = translations[lang] || translations.en;
         const modal = document.createElement('div');
         modal.className = 'modal-overlay';
-        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div><input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}"><button class="btn-primary" id="bindWalletSave">${d.submit}</button><button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button></div>`;
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
+                <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
+                <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
+                <button class="btn-primary" id="companyClose">${d.close}</button>
+            </div>
+        `;
         document.body.appendChild(modal);
-        modal.querySelector("#bindWalletSave").onclick = async () => {
-            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
-            await saveUser(); updateUI(); document.body.removeChild(modal); toast("Wallet updated!");
-        };
-        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
-    }
+        modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
+    };
 
-    function showPersonalDetails() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div><div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div><button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button></div>`;
-        document.body.appendChild(modal);
-        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
-    }
-
-    function showLoanModal() {
-        const d = t[lang] || t.en;
-        const modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div><input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount"><button class="btn-primary" id="loanSubmit">${d.submit}</button><button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button><div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div></div>`;
-        document.body.appendChild(modal);
-        modal.querySelector("#loanSubmit").onclick = async () => {
-            const amt = parseFloat(modal.querySelector("#loanAmt").value);
-            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
-            await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, status: 'pending', timestamp: new Date().toISOString() });
-            document.body.removeChild(modal); toast("Loan submitted!");
-        };
-        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ===== TRANSLATIONS =====
-    const t = {
+    // ============================================
+    // LANGUAGE
+    // ============================================
+    const translations = {
         en: {
-            heroTitle:"Trip.com", heroSubtitle:"Travel & earn daily commissions.",
-            s1:"Flights", s1d:"Worldwide", s2:"Hotels", s2d:"Luxury deals", s3:"Trains", s3d:"Premium", s4:"Tasks", s4d:"Earn up to 1%",
-            loginBtn:"Login", registerBtn:"Register", aboutText:"About",
-            backLogin:"Back", backReg:"Back", loginTagline:"Premium Task Ecosystem", forgotText:"Forgot Password?",
-            regTitle:"Create Account", regNow:"Register Now", haveAccount:"Have account?",
-            welcome:"Welcome", vipLabel:"VIP", balanceLabel:"Account Balance",
-            rateLabel:"Rate", todayLabel:"Today", todayEarnLabel:"Today's Earnings", yesterdayLabel:"Yesterday",
-            totalCommLabel:"Total Commission", rechargeText:"Recharge", withdrawText:"Withdraw", refLabel:"Referral Code",
-            liveLabel:"Live Updates", exitText:"Exit", workTitle:"Tasks", progressLabel:"Task Progress", startOrder:"Start Order",
-            orderTitle:"History", profileTitle:"Profile", creditLabel:"Credit", totalAssets:"Total Assets",
-            todayOrders:"Today's Orders", todayEarnings:"Today's Earnings", totalCommission:"Total Commission",
-            depositText:"Deposit", withdrawProfileText:"Withdraw", bindWallet:"Bind Wallet", personalDetails:"Personal Details",
-            loanService:"Loan Service", rechargeHist:"Recharge History", withdrawHist:"Withdraw History", walletLabel:"Wallet",
-            langLabel:"Language", signOut:"Sign Out", serviceTitle:"Support", sendText:"Send",
-            navHome:"Home", navWork:"Work", navOrders:"Orders", navProfile:"Profile", navService:"Service",
-            orderAmount:"Order Amount", profitEarned:"Profit", afterBalance:"After Balance",
-            serviceQuality:"Service Quality", productQuality:"Product Quality", salesExperience:"Sales Experience",
-            submitComplete:"Submit & Complete", processing:"Processing...", insufficient:"Insufficient Balance!",
-            yourBalance:"Your Balance", needAdditional:"Need Additional", rechargeNow:"Recharge Now",
-            close:"Close", submit:"Submit", cancel:"Cancel", uploadReceipt:"Upload receipt",
-            enterAmount:"Enter valid amount", noRecords:"No records.",
-            companyTitle:"About Trip.com", mission:"Our Mission", vision:"Our Vision",
-            pendingOrder:"Pending Order!", pendingMsg:"Complete your current order first.",
-            okay:"Okay", warning:"Warning", completed:"Completed", walletAddr:"USDT TRC20 Address", copy:"Copy",
-            uploadPhoto:"Upload Photo", save:"Save",
-            bonusOrder:"LUCKY ORDER!", injectionMsg:"You've been selected for a special task with boosted rewards!",
-            referralEarned:"Referral Bonus Earned!",
-            rechargeWaiting:"Please wait, we are checking your payment."
+            heroTitle: "Trip.com",
+            heroSubtitle: "Travel & earn daily commissions.",
+            s1: "Flights", s1d: "Worldwide",
+            s2: "Hotels", s2d: "Luxury deals",
+            s3: "Trains", s3d: "Premium",
+            s4: "Tasks", s4d: "Earn up to 1%",
+            loginBtn: "Login",
+            registerBtn: "Register",
+            aboutText: "About",
+            backLogin: "Back",
+            backReg: "Back",
+            loginTagline: "Premium Task Ecosystem",
+            forgotText: "Forgot Password?",
+            regTitle: "Create Account",
+            regNow: "Register Now",
+            haveAccount: "Have account?",
+            welcome: "Welcome",
+            vipLabel: "VIP",
+            balanceLabel: "Account Balance",
+            rateLabel: "Rate",
+            todayLabel: "Today",
+            todayEarnLabel: "Today's Earnings",
+            yesterdayLabel: "Yesterday",
+            totalCommLabel: "Total Commission",
+            rechargeText: "Recharge",
+            withdrawText: "Withdraw",
+            refLabel: "Referral Code",
+            liveLabel: "Live Updates",
+            exitText: "Exit",
+            workTitle: "Tasks",
+            progressLabel: "Task Progress",
+            startOrder: "Start Order",
+            orderTitle: "History",
+            profileTitle: "Profile",
+            creditLabel: "Credit",
+            totalAssets: "Total Assets",
+            todayOrders: "Today's Orders",
+            todayEarnings: "Today's Earnings",
+            totalCommission: "Total Commission",
+            depositText: "Deposit",
+            withdrawProfileText: "Withdraw",
+            bindWallet: "Bind Wallet",
+            personalDetails: "Personal Details",
+            loanService: "Loan Service",
+            rechargeHist: "Recharge History",
+            withdrawHist: "Withdraw History",
+            walletLabel: "Wallet",
+            langLabel: "Language",
+            signOut: "Sign Out",
+            serviceTitle: "Support",
+            sendText: "Send",
+            navHome: "Home",
+            navWork: "Work",
+            navOrders: "Orders",
+            navProfile: "Profile",
+            navService: "Service",
+            orderAmount: "Order Amount",
+            profitEarned: "Profit",
+            afterBalance: "After Balance",
+            serviceQuality: "Service Quality",
+            productQuality: "Product Quality",
+            salesExperience: "Sales Experience",
+            submitComplete: "Submit & Complete",
+            processing: "Processing...",
+            insufficient: "Insufficient Balance!",
+            yourBalance: "Your Balance",
+            needAdditional: "Need Additional",
+            rechargeNow: "Recharge Now",
+            close: "Close",
+            submit: "Submit",
+            cancel: "Cancel",
+            uploadReceipt: "Upload receipt",
+            enterAmount: "Enter valid amount",
+            noRecords: "No records.",
+            companyTitle: "About Trip.com",
+            mission: "Our Mission",
+            vision: "Our Vision",
+            pendingOrder: "Pending Order!",
+            pendingMsg: "Complete your current order first.",
+            okay: "Okay",
+            warning: "Warning",
+            completed: "Completed",
+            walletAddr: "USDT TRC20 Address",
+            copy: "Copy",
+            uploadPhoto: "Upload Photo",
+            save: "Save",
+            bonusOrder: "LUCKY ORDER!",
+            injectionMsg: "You've been selected for a special task with boosted rewards!",
+            referralEarned: "Referral Bonus Earned!",
+            rechargeWaiting: "Please wait, we are checking your payment."
         }
     };
 
     function applyLang(l) {
         lang = l;
         localStorage.setItem('lang', l);
-        const d = t[l] || t.en;
-        document.querySelectorAll('.lang-opt').forEach(el => { el.classList.toggle('active', el.dataset.lang === l); });
+        const d = translations[l] || translations.en;
+        document.querySelectorAll('.lang-opt').forEach(el => {
+            el.classList.toggle('active', el.dataset.lang === l);
+        });
+
         const map = {
-            heroTitle:d.heroTitle, heroSubtitle:d.heroSubtitle,
-            s1:d.s1, s1d:d.s1d, s2:d.s2, s2d:d.s2d, s3:d.s3, s3d:d.s3d, s4:d.s4, s4d:d.s4d,
-            loginBtn:d.loginBtn, registerBtn:d.registerBtn, aboutText:d.aboutText,
-            backLogin:d.backLogin, backReg:d.backReg, loginTagline:d.loginTagline, forgotText:d.forgotText,
-            regTitle:d.regTitle, regNow:d.regNow, haveAccount:d.haveAccount,
-            welcome:d.welcome, vipLabel:d.vipLabel, balanceLabel:d.balanceLabel,
-            rateLabel:d.rateLabel, todayLabel:d.todayLabel, todayEarnLabel:d.todayEarnLabel, yesterdayLabel:d.yesterdayLabel,
-            totalCommLabel:d.totalCommLabel, rechargeText:d.rechargeText, withdrawText:d.withdrawText, refLabel:d.refLabel,
-            liveLabel:d.liveLabel, exitText:d.exitText, workTitle:d.workTitle, progressLabel:d.progressLabel, startOrder:d.startOrder,
-            orderTitle:d.orderTitle, profileTitle:d.profileTitle, creditLabel:d.creditLabel,
-            totalAssets:d.totalAssets, todayOrders:d.todayOrders, todayEarnings:d.todayEarnings, totalCommission:d.totalCommission,
-            depositText:d.depositText, withdrawProfileText:d.withdrawProfileText, bindWallet:d.bindWallet, personalDetails:d.personalDetails,
-            loanService:d.loanService, rechargeHist:d.rechargeHist, withdrawHist:d.withdrawHist, walletLabel:d.walletLabel,
-            langLabel:d.langLabel, signOut:d.signOut, serviceTitle:d.serviceTitle, sendText:d.sendText,
-            navHome:d.navHome, navWork:d.navWork, navOrders:d.navOrders, navProfile:d.navProfile, navService:d.navService,
-            orderAmount:d.orderAmount, profitEarned:d.profitEarned, afterBalance:d.afterBalance,
-            serviceQuality:d.serviceQuality, productQuality:d.productQuality, salesExperience:d.salesExperience,
-            submitComplete:d.submitComplete, processing:d.processing, insufficient:d.insufficient,
-            yourBalance:d.yourBalance, needAdditional:d.needAdditional, rechargeNow:d.rechargeNow,
-            close:d.close, submit:d.submit, cancel:d.cancel, uploadReceipt:d.uploadReceipt,
-            enterAmount:d.enterAmount, noRecords:d.noRecords
+            heroTitle: d.heroTitle,
+            heroSubtitle: d.heroSubtitle,
+            s1: d.s1, s1d: d.s1d,
+            s2: d.s2, s2d: d.s2d,
+            s3: d.s3, s3d: d.s3d,
+            s4: d.s4, s4d: d.s4d,
+            loginBtn: d.loginBtn,
+            registerBtn: d.registerBtn,
+            aboutText: d.aboutText,
+            backLogin: d.backLogin,
+            backReg: d.backReg,
+            loginTagline: d.loginTagline,
+            forgotText: d.forgotText,
+            regTitle: d.regTitle,
+            regNow: d.regNow,
+            haveAccount: d.haveAccount,
+            welcome: d.welcome,
+            vipLabel: d.vipLabel,
+            balanceLabel: d.balanceLabel,
+            rateLabel: d.rateLabel,
+            todayLabel: d.todayLabel,
+            todayEarnLabel: d.todayEarnLabel,
+            yesterdayLabel: d.yesterdayLabel,
+            totalCommLabel: d.totalCommLabel,
+            rechargeText: d.rechargeText,
+            withdrawText: d.withdrawText,
+            refLabel: d.refLabel,
+            liveLabel: d.liveLabel,
+            exitText: d.exitText,
+            workTitle: d.workTitle,
+            progressLabel: d.progressLabel,
+            startOrder: d.startOrder,
+            orderTitle: d.orderTitle,
+            profileTitle: d.profileTitle,
+            creditLabel: d.creditLabel,
+            totalAssets: d.totalAssets,
+            todayOrders: d.todayOrders,
+            todayEarnings: d.todayEarnings,
+            totalCommission: d.totalCommission,
+            depositText: d.depositText,
+            withdrawProfileText: d.withdrawProfileText,
+            bindWallet: d.bindWallet,
+            personalDetails: d.personalDetails,
+            loanService: d.loanService,
+            rechargeHist: d.rechargeHist,
+            withdrawHist: d.withdrawHist,
+            walletLabel: d.walletLabel,
+            langLabel: d.langLabel,
+            signOut: d.signOut,
+            serviceTitle: d.serviceTitle,
+            sendText: d.sendText,
+            navHome: d.navHome,
+            navWork: d.navWork,
+            navOrders: d.navOrders,
+            navProfile: d.navProfile,
+            navService: d.navService,
+            orderAmount: d.orderAmount,
+            profitEarned: d.profitEarned,
+            afterBalance: d.afterBalance,
+            serviceQuality: d.serviceQuality,
+            productQuality: d.productQuality,
+            salesExperience: d.salesExperience,
+            submitComplete: d.submitComplete,
+            processing: d.processing,
+            insufficient: d.insufficient,
+            yourBalance: d.yourBalance,
+            needAdditional: d.needAdditional,
+            rechargeNow: d.rechargeNow,
+            close: d.close,
+            submit: d.submit,
+            cancel: d.cancel,
+            uploadReceipt: d.uploadReceipt,
+            enterAmount: d.enterAmount,
+            noRecords: d.noRecords
         };
+
         for (const [id, val] of Object.entries(map)) {
             const el = document.getElementById(id);
             if (el) el.innerText = val;
@@ -1913,35 +2701,116 @@
         if (user) updateUI();
     }
 
-    // ===== INIT =====
-    applyLang(lang);
-    startFeed();
+    document.querySelectorAll('.lang-opt').forEach(el => {
+        el.onclick = function() {
+            applyLang(this.dataset.lang);
+            if (user) updateUI();
+        };
+    });
 
-    onAuthStateChanged(auth, async (gUser) => {
-        if (gUser) {
-            const snap = await getDoc(doc(db, "users", gUser.uid));
-            if (snap.exists() && !user) {
-                const data = snap.data();
-                if (!data.disabled) {
-                    user = { id: snap.id, ...data }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
-                    await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
-                    const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+    // ============================================
+    // LIVE FEED
+    // ============================================
+    const feedNames = ["James", "Emma", "Liam", "Olivia", "Noah", "Ava", "William", "Sophia", "Somchai", "Somying", "Wichai", "Napa", "Carlos", "Maria", "Olga", "Dmitri"];
+
+    function randName() { return feedNames[Math.floor(Math.random() * feedNames.length)]; }
+
+    function randComm() { return Math.floor(Math.random() * (23513 - 800 + 1) + 800); }
+
+    function startFeed() {
+        if (feedInterval) clearInterval(feedInterval);
+        const container = document.getElementById('feedList');
+        if (!container) return;
+
+        function add() {
+            const item = document.createElement('div');
+            item.className = 'feed-item';
+            item.innerHTML =
+                `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`;
+            container.prepend(item);
+            if (container.children.length > 5) container.removeChild(container.lastChild);
+        }
+        for (let i = 0; i < 2; i++) add();
+        feedInterval = setInterval(add, 8000);
+    }
+
+    // ============================================
+    // AUTH STATE LISTENER
+    // ============================================
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        console.log('Auth event:', event);
+        if (event === 'SIGNED_IN' && session?.user) {
+            const profile = await getUserProfile(session.user.id);
+            if (profile && !profile.disabled) {
+                user = { id: profile.id, ...profile };
+                localStorage.setItem('uid', user.id);
+                subscribeRechargeRealtime(user.id);
+                subscribeInjectionsRealtime(user.id);
+                await loadNotifications();
+                updateUI();
+                const last = localStorage.getItem('lastPage');
+                showPage(last && !['landing', 'login', 'register'].includes(last) ? last : 'home');
+            }
+        } else if (event === 'SIGNED_OUT') {
+            user = null;
+            showPage('landing');
+        } else if (event === 'USER_UPDATED') {
+            if (session?.user) {
+                const profile = await getUserProfile(session.user.id);
+                if (profile) {
+                    user = { id: profile.id, ...profile };
+                    updateUI();
                 }
             }
         }
     });
 
-    const saved = localStorage.getItem('uid');
-    if (saved) {
+    // ============================================
+    // INIT
+    // ============================================
+    applyLang(lang);
+    startFeed();
+
+    // Check for saved user
+    const savedUid = localStorage.getItem('uid');
+    if (savedUid) {
         (async () => {
-            const snap = await getDoc(doc(db, "users", saved));
-            if (snap.exists() && !snap.data().disabled) {
-                user = { id: snap.id, ...snap.data() }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
-                await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
-                const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
-            } else showPage('landing');
+            const profile = await getUserProfile(savedUid);
+            if (profile && !profile.disabled) {
+                user = { id: profile.id, ...profile };
+                subscribeRechargeRealtime(user.id);
+                subscribeInjectionsRealtime(user.id);
+                await loadNotifications();
+                updateUI();
+                const last = localStorage.getItem('lastPage');
+                showPage(last && !['landing', 'login', 'register'].includes(last) ? last : 'home');
+            } else {
+                showPage('landing');
+            }
         })();
-    } else showPage('landing');
+    } else {
+        showPage('landing');
+    }
+
+    // Check for existing session
+    (async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user && !user) {
+            const profile = await getUserProfile(session.user.id);
+            if (profile && !profile.disabled) {
+                user = { id: profile.id, ...profile };
+                localStorage.setItem('uid', user.id);
+                subscribeRechargeRealtime(user.id);
+                subscribeInjectionsRealtime(user.id);
+                await loadNotifications();
+                updateUI();
+                const last = localStorage.getItem('lastPage');
+                showPage(last && !['landing', 'login', 'register'].includes(last) ? last : 'home');
+            }
+        }
+    })();
+
+    console.log('✅ Application initialized with Supabase!');
 </script>
 </body>
 </html>
