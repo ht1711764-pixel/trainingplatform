@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
-        /* ===== မူရင်း CSS အတိုင်းပါ ===== */
         @font-face {
             font-family: 'Inter';
             src: url('Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -626,9 +625,9 @@
             <div style="font-size:12px;color:var(--muted);" id="loginTagline">Premium Task Ecosystem</div>
         </div>
         <div class="card">
-            <input type="text" class="input-glass" id="loginUsername" placeholder="Username">
+            <input type="text" class="input-glass" id="loginUsername" placeholder="Username" value="lunaqueen">
             <div class="pw-wrap">
-                <input type="password" class="input-glass" id="loginPass" placeholder="Password">
+                <input type="password" class="input-glass" id="loginPass" placeholder="Password" value="123456">
                 <button class="pw-toggle" id="loginToggle"><i class="fas fa-eye"></i></button>
             </div>
             <button class="btn-primary" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnText">Login</span></button>
@@ -1949,8 +1948,7 @@
     document.getElementById('goLoginFromReg').onclick = () => showPage('login');
 
     // =============================================================
-    // ===== FIXED LOGIN: username ကိုရှာပြီးမှ password စစ် =====
-    // ===== (Firestore Index မလိုဘဲ အလုပ်လုပ်) =====
+    // ===== LOGIN WITH FIRESTORE INDEX (COMPOUND QUERY) =====
     // =============================================================
     document.getElementById('doLoginBtn').onclick = async function() {
         const username = document.getElementById('loginUsername').value.trim();
@@ -1965,12 +1963,17 @@
         this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
         
         try {
-            // Step 1: username နဲ့ပဲ ရှာပါ (index မလိုဘူး)
-            const q = query(collection(db, "users"), where("username", "==", username));
+            // ===== FIRESTORE COMPOUND QUERY (INDEX REQUIRED) =====
+            // Index: username (Ascending) + password (Ascending)
+            const q = query(
+                collection(db, "users"),
+                where("username", "==", username),
+                where("password", "==", password)
+            );
             const snap = await getDocs(q);
             
             if (snap.empty) {
-                toast('Username not found.', true);
+                toast('Invalid username or password.', true);
                 this.disabled = false;
                 this.innerHTML = 'Login';
                 return;
@@ -1978,15 +1981,7 @@
             
             const data = snap.docs[0].data();
             
-            // Step 2: password စစ်ပါ
-            if (data.password !== password) {
-                toast('Invalid password.', true);
-                this.disabled = false;
-                this.innerHTML = 'Login';
-                return;
-            }
-            
-            // Step 3: disabled စစ်ပါ
+            // Check if account is disabled
             if (data.disabled) {
                 toast('Account disabled.', true);
                 this.disabled = false;
@@ -1994,7 +1989,7 @@
                 return;
             }
             
-            // Step 4: Login အောင်မြင်ပြီ
+            // Login successful
             user = { id: snap.docs[0].id, ...data };
             if (!user.orders) user.orders = [];
             if (!user.tasks) user.tasks = { completed:0, total:0 };
@@ -2011,9 +2006,14 @@
             showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
             toast(`Welcome, ${username}`);
             
-        } catch(e) {
-            toast('Login failed: '+e.message, true);
+        } catch (e) {
+            // If error occurs, it might be index not ready
             console.error('Login error:', e);
+            if (e.message && e.message.includes('index')) {
+                toast('Firestore index is still building. Please wait 5-10 minutes.', true);
+            } else {
+                toast('Login failed: ' + e.message, true);
+            }
         }
         
         this.disabled = false;
