@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY ADMIN | Premium Control Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- ✅ FIXED: Google Fonts link ကိုပြင်ထားတယ် -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* CSS အားလုံး ဒီမှာ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #e2e8f0; height: 100vh; overflow: hidden; }
         
@@ -358,7 +360,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.6';
+        const APP_VERSION = '2.0.7';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
