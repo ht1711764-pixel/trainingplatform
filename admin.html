@@ -356,7 +356,22 @@
 </div>
 
 <script type="module">
-    // ===== FIREBASE INITIALIZATION =====
+    // ===== VERSION CHECK & CACHE CLEAR =====
+    (function() {
+        const APP_VERSION = '2.0.5';
+        const storedVersion = localStorage.getItem('admin_version');
+        if (!storedVersion || storedVersion !== APP_VERSION) {
+            localStorage.clear();
+            sessionStorage.clear();
+            localStorage.setItem('admin_version', APP_VERSION);
+            console.log('🔄 Admin version:', APP_VERSION, 'Cache cleared');
+            if (storedVersion) {
+                setTimeout(() => location.reload(), 300);
+            }
+        }
+    })();
+
+    // ===== FIREBASE IMPORTS =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -377,6 +392,9 @@
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
 
+    console.log('✅ Firebase initialized');
+    console.log('📁 Project:', firebaseConfig.projectId);
+
     // ===== GLOBALS =====
     let admin = null;
     let currentSection = 'dashboard';
@@ -394,14 +412,16 @@
     };
 
     function esc(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[m]||m); }
+    
     function toast(msg, err=false) {
         const el = document.createElement('div');
         el.className = `toast-msg${err ? ' error' : ''}`;
         el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${err ? '#dc2626' : '#1a1e26'};padding:8px 20px;border-radius:40px;font-size:12px;z-index:100;font-weight:600;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.3);max-width:92%;text-align:center;border-left:3px solid #d4af37;`;
         el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2200);
+        setTimeout(() => el.remove(), 2500);
     }
+
     function showLoader() {
         const l = document.createElement('div');
         l.id = 'loader';
@@ -410,15 +430,18 @@
         document.body.appendChild(l);
         setTimeout(() => { const el = document.getElementById('loader'); if(el) el.remove(); }, 500);
     }
+
     function getVIP(balance) {
         if (balance >= 1500) return 4;
         if (balance >= 500) return 3;
         if (balance >= 100) return 2;
         return 1;
     }
+
     function getVipClass(lv) {
         return lv===1?'vip-badge-1':lv===2?'vip-badge-2':lv===3?'vip-badge-3':'vip-badge-4';
     }
+
     function togglePw(id, btn) {
         const inp = document.getElementById(id);
         const icon = btn.querySelector('i');
@@ -460,21 +483,128 @@
         });
     }
 
-    // ===== AUTH =====
+    // ===== AUTH - LOGIN FUNCTION =====
     async function login(username, password) {
-        const a = cachedData.agencies.find(x => x.username === username && x.password === password && x.status === 'active');
-        if (a) return { success:true, data:a, role:'agency', perms:a.permissions||{} };
-        if (username === 'admin' && password === 'admin123') return { success:true, data:{id:'admin',username:'admin'}, role:'admin', perms:{all:true} };
-        if (username === 'hein' && password === '123456') return { success:true, data:{id:'master',username:'hein'}, role:'master', perms:{all:true} };
-        const q = query(collection(db,'users'), where('username','==',username), where('role','==','admin'));
-        const snap = await getDocs(q);
-        if (!snap.empty) {
-            const d = snap.docs[0].data();
-            if (d.password === password) return { success:true, data:{id:snap.docs[0].id,...d}, role:'admin', perms:{all:true} };
+        try {
+            // 1. Check agencies
+            const snapA = await getDocs(collection(db,'agencies'));
+            cachedData.agencies = []; 
+            snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
+            
+            const agencyMatch = cachedData.agencies.find(a => a.username === username && a.password === password && a.status === 'active');
+            if (agencyMatch) {
+                return { success: true, data: agencyMatch, role: 'agency', perms: agencyMatch.permissions || {} };
+            }
+            
+            // 2. Check admin users collection
+            const q = query(collection(db, 'users'), where('username', '==', username), where('role', '==', 'admin'));
+            const snap = await getDocs(q);
+            if (!snap.empty) {
+                const data = snap.docs[0].data();
+                if (data.password === password) {
+                    return { success: true, data: { id: snap.docs[0].id, ...data }, role: 'admin', perms: { all: true } };
+                }
+            }
+            
+            // 3. Hardcoded master admin
+            if (username === 'hein' && password === '123456') {
+                return { success: true, data: { id: 'master', username: 'hein' }, role: 'master', perms: { all: true } };
+            }
+            
+            // 4. Hardcoded admin fallback
+            if (username === 'admin' && password === 'admin123') {
+                return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
+            }
+            
+            return { success: false };
+        } catch (e) {
+            console.error('Login error:', e);
+            // If Firebase fails, try hardcoded login
+            if (username === 'admin' && password === 'admin123') {
+                return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
+            }
+            if (username === 'hein' && password === '123456') {
+                return { success: true, data: { id: 'master', username: 'hein' }, role: 'master', perms: { all: true } };
+            }
+            return { success: false };
         }
-        return { success:false };
     }
 
+    // ===== LOGIN BUTTON =====
+    document.getElementById('adminLoginBtn').onclick = async () => {
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        const err = document.getElementById('loginError');
+        err.textContent = '';
+        const btn = document.getElementById('adminLoginBtn');
+        
+        if (!username || !password) {
+            err.textContent = 'Please enter username and password';
+            return;
+        }
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        
+        try {
+            const res = await login(username, password);
+            if (res.success) {
+                admin = { 
+                    id: res.data.id, 
+                    username: res.data.username, 
+                    role: res.role, 
+                    perms: res.perms, 
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                document.getElementById('adminLoginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadBaseData();
+                renderSection('dashboard');
+                toast(`Welcome, ${admin.username}`);
+            } else {
+                err.textContent = 'Invalid username or password';
+            }
+        } catch(e) {
+            console.error('Login error:', e);
+            // Try hardcoded login as fallback
+            if (username === 'admin' && password === 'admin123') {
+                admin = { 
+                    id: 'admin', 
+                    username: 'admin', 
+                    role: 'admin', 
+                    perms: { all: true }, 
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                document.getElementById('adminLoginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadBaseData();
+                renderSection('dashboard');
+                toast(`Welcome, ${admin.username}`);
+            } else if (username === 'hein' && password === '123456') {
+                admin = { 
+                    id: 'master', 
+                    username: 'hein', 
+                    role: 'master', 
+                    perms: { all: true }, 
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                document.getElementById('adminLoginScreen').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadBaseData();
+                renderSection('dashboard');
+                toast(`Welcome Master, ${admin.username}`);
+            } else {
+                err.textContent = 'Login error: ' + e.message;
+            }
+        }
+        btn.disabled = false;
+        btn.innerHTML = 'Login';
+    };
+
+    // ===== GOOGLE LOGIN =====
     async function handleGoogleLogin() {
         try {
             const result = await signInWithPopup(auth, googleProvider);
@@ -500,35 +630,6 @@
         }
     }
 
-    document.getElementById('adminLoginBtn').onclick = async () => {
-        const user = document.getElementById('adminUsername').value.trim();
-        const pass = document.getElementById('adminPassword').value;
-        const err = document.getElementById('loginError');
-        err.textContent = '';
-        const btn = document.getElementById('adminLoginBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
-        try {
-            const snapA = await getDocs(collection(db,'agencies'));
-            cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
-            const res = await login(user, pass);
-            if (res.success) {
-                admin = { id: res.data.id, username: res.data.username, role: res.role, perms: res.perms, loginTime: Date.now() };
-                sessionStorage.setItem('adminSession', JSON.stringify(admin));
-                document.getElementById('adminLoginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadBaseData();
-                renderSection('dashboard');
-                toast(`Welcome, ${admin.username}`);
-            } else {
-                err.textContent = 'Invalid credentials';
-            }
-        } catch(e) {
-            err.textContent = 'Network error';
-        }
-        btn.disabled = false;
-        btn.innerHTML = 'Login';
-    };
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
 
     function checkSession() {
@@ -760,8 +861,8 @@
                     <td style="font-size:10px;color:#94a3b8;">${esc(u.regIP) || '-'}</td>
                     <td><strong>$${(u.balance||0).toFixed(2)}</strong><br><span style="font-size:10px;color:#94a3b8;">Credit: ${u.creditScore||100}</span></td>
                     <td><span class="${vc}">VIP ${lv}</span></td>
-                    <td><span class="badge-status ${u.disabled ? 'badge-inactive' : 'badge-active'}" style="background:${u.disabled ? 'rgba(220,38,38,0.15)' : 'rgba(16,185,129,0.15)'};color:${u.disabled ? '#dc2626' : '#10b981'};padding:2px 10px;border-radius:20px;font-size:11px;">${u.disabled ? 'Disabled' : 'Active'}</span></td>
-                    <td style="font-size:11px;"><span class="online-dot ${isOnline ? 'online' : 'offline'}" style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:${isOnline ? '#10b981' : '#4a5568'};"></span>${isOnline ? 'Online' : lastSeenTime}</td>
+                    <td><span class="badge-status" style="background:${u.disabled ? 'rgba(220,38,38,0.15)' : 'rgba(16,185,129,0.15)'};color:${u.disabled ? '#dc2626' : '#10b981'};padding:2px 10px;border-radius:20px;font-size:11px;">${u.disabled ? 'Disabled' : 'Active'}</span></td>
+                    <td style="font-size:11px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:${isOnline ? '#10b981' : '#4a5568'};"></span>${isOnline ? 'Online' : lastSeenTime}</td>
                     <td>
                         <div style="display:flex;flex-wrap:wrap;gap:4px;">
                             <button class="btn-sm btn-warning" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
@@ -783,7 +884,7 @@
         document.getElementById('addMemberBtn').onclick = showAddMember;
     }
 
-    // ---- ADD MEMBER MODAL ----
+    // ---- ADD MEMBER ----
     async function showAddMember() {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -971,7 +1072,7 @@
         renderSection('vip');
     };
 
-    // ---- INJECTION (WITH EDIT & DELETE) ----
+    // ---- INJECTION ----
     function renderInjection(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -1027,7 +1128,6 @@
         document.getElementById('injSearchBtn').onclick = () => renderInjTable(document.getElementById('injSearchPhone').value, document.getElementById('injSearchEmail').value);
         document.getElementById('injResetBtn').onclick = () => { document.getElementById('injSearchPhone').value = ''; document.getElementById('injSearchEmail').value = ''; renderInjTable(); };
 
-        // Real-time Injection History with Edit/Delete
         const historyContainer = document.getElementById('injectionHistoryList');
         if (historyContainer) {
             onSnapshot(query(collection(db,'injections'), orderBy('createdAt','desc'), limit(100)), (snap) => {
@@ -1491,7 +1591,7 @@
                 ${cachedData.agencies.length ? cachedData.agencies.map(a => `
                     <div class="agency-row" style="background:#0f1117;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #2d3748;transition:all 0.2s;">
                         <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-                            <div><strong style="color:#d4af37;">${esc(a.username)}</strong> <span class="badge-status ${a.status==='active'?'status-active':'status-closed'}" style="color:${a.status==='active'?'#10b981':'#dc2626'};font-weight:700;">${a.status}</span></div>
+                            <div><strong style="color:#d4af37;">${esc(a.username)}</strong> <span class="badge-status" style="color:${a.status==='active'?'#10b981':'#dc2626'};font-weight:700;">${a.status}</span></div>
                             <div style="display:flex;gap:4px;flex-wrap:wrap;">
                                 ${a.status === 'active' ? `
                                     <button class="btn-sm btn-warning" onclick="window.changeAgencyPw('${a.id}')">🔑 Change PW</button>
@@ -1727,6 +1827,13 @@
         firebaseSignOut(auth).catch(console.error);
     };
 
+    document.getElementById('refreshAdminBtn').onclick = async () => {
+        showLoader();
+        await loadBaseData();
+        renderSection(currentSection);
+        toast('Refreshed!');
+    };
+
     // ===== INIT =====
     if (checkSession()) {
         (async () => {
@@ -1762,7 +1869,7 @@
         document.getElementById('adminPanel').style.display = 'none';
     }
 
-    console.log('✅ LUXCY Admin Panel loaded (P2P & KYC removed)');
+    console.log('✅ LUXCY Admin Panel loaded');
 </script>
 </body>
 </html>
