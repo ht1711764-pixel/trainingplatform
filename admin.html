@@ -4,15 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY ADMIN | Premium Control Panel</title>
-    <!-- ✅ FIXED: Font Awesome alternative CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #e2e8f0; height: 100vh; overflow: hidden; }
-        
         .admin-container { display: flex; height: 100vh; }
-        
         .sidebar { 
             width: 280px; 
             background: linear-gradient(180deg, #0f1117 0%, #0a0c10 100%);
@@ -25,12 +22,10 @@
         .sidebar::-webkit-scrollbar { width: 3px; }
         .sidebar::-webkit-scrollbar-track { background: #1a1e26; }
         .sidebar::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-        
         .main-content { flex: 1; padding: 24px 32px; overflow-y: auto; }
         .main-content::-webkit-scrollbar { width: 4px; }
         .main-content::-webkit-scrollbar-track { background: #1a1e26; }
         .main-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
-        
         .admin-card { 
             background: rgba(26, 30, 38, 0.95); 
             backdrop-filter: blur(10px);
@@ -42,7 +37,6 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .admin-card:hover { transform: translateY(-2px); border-color: rgba(212, 175, 55, 0.5); }
-        
         .btn-admin { 
             background: linear-gradient(105deg, #d4af37, #f5e7b2, #c9a03d); 
             border: none; 
@@ -55,13 +49,11 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .btn-admin:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(212,175,55,0.3); }
-        
         .btn-danger { background: linear-gradient(105deg, #dc2626, #ef4444); color: white; border: none; }
         .btn-success { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; }
         .btn-warning { background: linear-gradient(105deg, #f59e0b, #d97706); color: white; border: none; }
         .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
         .btn-secondary { background: #4a5568; color: white; border: none; }
-        
         input, select, textarea { 
             background: #0f1117; 
             border: 1px solid #2d3748; 
@@ -75,7 +67,6 @@
         }
         input:focus, select:focus, textarea:focus { border-color: #d4af37; }
         textarea { min-height: 80px; resize: vertical; }
-        
         .nav-item { 
             padding: 12px 16px; 
             margin: 4px 0; 
@@ -93,20 +84,10 @@
             color: #d4af37; 
             border-left: 2px solid #d4af37;
         }
-        
-        .user-row { 
-            background: #0f1117; 
-            margin-bottom: 12px; 
-            padding: 16px; 
-            border-radius: 16px; 
-            transition: all 0.2s; 
-            border: 1px solid #2d3748;
-        }
+        .user-row { background: #0f1117; margin-bottom: 12px; padding: 16px; border-radius: 16px; transition: all 0.2s; border: 1px solid #2d3748; }
         .user-row:hover { background: #1a1e26; transform: translateX(5px); border-color: rgba(212,175,55,0.3); }
-        
         .search-box { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .search-box input { flex: 1; min-width: 150px; margin-bottom: 0; }
-        
         .login-screen { 
             position: fixed; 
             top: 0; 
@@ -128,29 +109,16 @@
             border: 1px solid rgba(212,175,55,0.3);
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        
         .badge { background: #d4af37; color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-        
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .flex-center { display: flex; justify-content: center; align-items: center; }
-        
-        .refresh-btn { 
-            background: rgba(212,175,55,0.15); 
-            border: 1px solid #d4af37; 
-            border-radius: 40px; 
-            padding: 8px 12px; 
-            cursor: pointer; 
-            transition: all 0.3s; 
-        }
+        .refresh-btn { background: rgba(212,175,55,0.15); border: 1px solid #d4af37; border-radius: 40px; padding: 8px 12px; cursor: pointer; transition: all 0.3s; }
         .refresh-btn:hover { background: rgba(212,175,55,0.3); transform: rotate(180deg); }
-        
         .status-pending { color: #f59e0b; font-weight: 700; }
         .status-approved { color: #10b981; font-weight: 700; }
         .status-rejected { color: #dc2626; font-weight: 700; }
-        
         .request-row { background: #0f1117; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #2d3748; }
         .request-img { max-width: 80px; max-height: 80px; border-radius: 8px; cursor: pointer; border: 1px solid #d4af37; }
-        
         .modal { 
             position: fixed; 
             top: 0; 
@@ -173,11 +141,9 @@
             overflow-y: auto; 
             border: 1px solid #d4af37;
         }
-        
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #2d3748; vertical-align: top; }
         th { background: #0f1117; color: #d4af37; font-weight: 600; }
-        
         .loader { 
             position: fixed; 
             top: 0; 
@@ -193,18 +159,9 @@
             color: #d4af37; 
             backdrop-filter: blur(4px);
         }
-        
-        .injection-history-item { 
-            background: #0f1117; 
-            padding: 12px; 
-            border-radius: 12px; 
-            margin-bottom: 10px; 
-            border-left: 3px solid #d4af37; 
-        }
-        
+        .injection-history-item { background: #0f1117; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #d4af37; }
         .setting-row { margin-bottom: 16px; }
         .setting-row label { display: block; margin-bottom: 6px; color: #9ca3af; font-weight: 500; }
-        
         .chat-container { 
             display: flex; 
             flex-direction: column; 
@@ -222,17 +179,8 @@
         .chat-image { max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 8px; cursor: pointer; }
         .chat-input-area { display: flex; gap: 10px; padding: 16px; background: #0f1117; border-top: 1px solid #2d3748; }
         .chat-input-area input { flex: 1; margin-bottom: 0; }
-        
-        .agency-row { 
-            background: #0f1117; 
-            border-radius: 16px; 
-            padding: 16px; 
-            margin-bottom: 12px; 
-            border: 1px solid #2d3748; 
-            transition: all 0.2s; 
-        }
+        .agency-row { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid #2d3748; transition: all 0.2s; }
         .agency-row:hover { background: #1a1e26; border-color: rgba(212,175,55,0.3); }
-        
         .permission-group { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
         .permission-checkbox { 
             display: flex; 
@@ -247,11 +195,9 @@
         }
         .permission-checkbox:hover { border-color: #d4af37; }
         .permission-checkbox input { width: auto; margin-bottom: 0; margin-right: 5px; }
-        
         .status-active { color: #10b981; font-weight: 700; }
         .status-closed { color: #dc2626; font-weight: 700; }
         .badge-permission { background: #2d3748; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
-        
         .real-time-indicator { 
             position: fixed; 
             bottom: 20px; 
@@ -266,12 +212,10 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
-        
         .loan-card { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #2d3748; }
         .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid #3a423e; cursor: pointer; }
         .loan-detail-row { display: flex; margin-bottom: 8px; }
         .loan-detail-label { width: 130px; color: #9ca3af; }
-        
         .password-wrapper { position: relative; width: 100%; margin-bottom: 12px; }
         .password-wrapper input { width: 100%; margin-bottom: 0; padding-right: 50px; }
         .toggle-password { 
@@ -285,27 +229,14 @@
             border: none; 
             font-size: 18px; 
         }
-        
         .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; display: inline-block; }
         .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
         .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
         .vip-badge-4 { background: linear-gradient(135deg, #d4af37, #b8941e); color: #0a120e; }
-        
-        .vip-select { 
-            background: #0f1117; 
-            border: 1px solid #d4af37; 
-            border-radius: 20px; 
-            padding: 6px 12px; 
-            color: white; 
-            cursor: pointer; 
-            font-size: 12px;
-        }
+        .vip-select { background: #0f1117; border: 1px solid #d4af37; border-radius: 20px; padding: 6px 12px; color: white; cursor: pointer; font-size: 12px; }
         .vip-select option { background: #0f1117; }
-        
         .commission-rate { color: #d4af37; font-weight: bold; }
-        
         .btn-sm { padding: 5px 10px; font-size: 12px; }
-        
         .settings-tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid #2d3748; flex-wrap: wrap; }
         .settings-tab { padding: 10px 20px; cursor: pointer; border-radius: 12px 12px 0 0; background: #0f1117; border: 1px solid #2d3748; border-bottom: none; }
         .settings-tab.active { background: #d4af37; color: #0a120e; border-color: #d4af37; }
@@ -356,23 +287,30 @@
     </div>
 </div>
 
-<script type="module">
-    // ===== VERSION CHECK & CACHE CLEAR =====
+<!-- ===== FIREBASE COMPAT SDK ===== -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+<script>
+    // ============================================
+    // VERSION CHECK & CACHE CLEAR
+    // ============================================
     (function() {
-        const APP_VERSION = '2.0.8';
+        const APP_VERSION = '2.0.9';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
             sessionStorage.clear();
             localStorage.setItem('admin_version', APP_VERSION);
-            console.log('🔄 Admin version:', APP_VERSION, 'Cache cleared');
-            if (storedVersion) {
-                setTimeout(() => location.reload(), 300);
-            }
+            console.log('🔄 Admin version:', APP_VERSION);
+            if (storedVersion) setTimeout(() => location.reload(), 300);
         }
     })();
 
-    // ===== TOGGLE PASSWORD - GLOBAL FUNCTION =====
+    // ============================================
+    // TOGGLE PASSWORD
+    // ============================================
     function togglePassword(inputId, iconElement) {
         const input = document.getElementById(inputId);
         if (input) {
@@ -389,12 +327,9 @@
     }
     window.togglePassword = togglePassword;
 
-    // ===== FIREBASE IMPORTS =====
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
-    // ===== FIREBASE CONFIG - tripnew-2026 =====
+    // ============================================
+    // FIREBASE INIT - COMPAT
+    // ============================================
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
         authDomain: "tripnew-2026.firebaseapp.com",
@@ -405,15 +340,17 @@
         measurementId: "G-J0MYZLMJT0"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-    console.log('✅ Firebase initialized');
+    console.log('✅ Firebase initialized (compat)');
     console.log('📁 Project:', firebaseConfig.projectId);
 
-    // ===== GLOBALS =====
+    // ============================================
+    // GLOBALS
+    // ============================================
     let admin = null;
     let currentSection = 'dashboard';
     let unsubscribers = {};
@@ -468,8 +405,7 @@
     }
     window.togglePw = togglePw;
 
-    // ===== COMPRESS IMAGE =====
-    async function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
+    function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.5) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -501,22 +437,23 @@
         });
     }
 
-    // ===== AUTH - LOGIN FUNCTION =====
+    // ============================================
+    // AUTH FUNCTIONS (COMPAT)
+    // ============================================
     async function login(username, password) {
         try {
-            // 1. Check agencies
-            const snapA = await getDocs(collection(db,'agencies'));
+            // Check agencies
+            const snapA = await db.collection('agencies').get();
             cachedData.agencies = []; 
-            snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
+            snapA.forEach(d => cachedData.agencies.push({ id: d.id, ...d.data() }));
             
             const agencyMatch = cachedData.agencies.find(a => a.username === username && a.password === password && a.status === 'active');
             if (agencyMatch) {
                 return { success: true, data: agencyMatch, role: 'agency', perms: agencyMatch.permissions || {} };
             }
             
-            // 2. Check admin users collection
-            const q = query(collection(db, 'users'), where('username', '==', username), where('role', '==', 'admin'));
-            const snap = await getDocs(q);
+            // Check admin users
+            const snap = await db.collection('users').where('username', '==', username).where('role', '==', 'admin').get();
             if (!snap.empty) {
                 const data = snap.docs[0].data();
                 if (data.password === password) {
@@ -524,12 +461,10 @@
                 }
             }
             
-            // 3. Hardcoded master admin
+            // Hardcoded fallback
             if (username === 'hein' && password === '123456') {
                 return { success: true, data: { id: 'master', username: 'hein' }, role: 'master', perms: { all: true } };
             }
-            
-            // 4. Hardcoded admin fallback
             if (username === 'admin' && password === 'admin123') {
                 return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
             }
@@ -547,13 +482,15 @@
         }
     }
 
-    // ===== LOGIN BUTTON =====
-    document.getElementById('adminLoginBtn').onclick = async () => {
+    // ============================================
+    // LOGIN BUTTON
+    // ============================================
+    document.getElementById('adminLoginBtn').onclick = async function() {
         const username = document.getElementById('adminUsername').value.trim();
         const password = document.getElementById('adminPassword').value;
         const err = document.getElementById('loginError');
         err.textContent = '';
-        const btn = document.getElementById('adminLoginBtn');
+        const btn = this;
         
         if (!username || !password) {
             err.textContent = 'Please enter username and password';
@@ -561,7 +498,7 @@
         }
         
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i>';
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Logging in...';
         
         try {
             const res = await login(username, password);
@@ -578,56 +515,27 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 loadBaseData();
                 renderSection('dashboard');
-                toast(`Welcome, ${admin.username}`);
+                toast(`✅ Welcome, ${admin.username}!`);
             } else {
-                err.textContent = 'Invalid username or password';
+                err.textContent = '❌ Invalid username or password';
             }
         } catch(e) {
             console.error('Login error:', e);
-            if (username === 'admin' && password === 'admin123') {
-                admin = { 
-                    id: 'admin', 
-                    username: 'admin', 
-                    role: 'admin', 
-                    perms: { all: true }, 
-                    loginTime: Date.now() 
-                };
-                sessionStorage.setItem('adminSession', JSON.stringify(admin));
-                document.getElementById('adminLoginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadBaseData();
-                renderSection('dashboard');
-                toast(`Welcome, ${admin.username}`);
-            } else if (username === 'hein' && password === '123456') {
-                admin = { 
-                    id: 'master', 
-                    username: 'hein', 
-                    role: 'master', 
-                    perms: { all: true }, 
-                    loginTime: Date.now() 
-                };
-                sessionStorage.setItem('adminSession', JSON.stringify(admin));
-                document.getElementById('adminLoginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadBaseData();
-                renderSection('dashboard');
-                toast(`Welcome Master, ${admin.username}`);
-            } else {
-                err.textContent = 'Login error: ' + e.message;
-            }
+            err.textContent = '❌ Login error: ' + e.message;
         }
         btn.disabled = false;
         btn.innerHTML = 'Login';
     };
 
-    // ===== GOOGLE LOGIN =====
-    async function handleGoogleLogin() {
+    // ============================================
+    // GOOGLE LOGIN
+    // ============================================
+    document.getElementById('loginGoogleBtn')?.addEventListener('click', async function() {
         try {
-            const result = await signInWithPopup(auth, googleProvider);
+            const result = await auth.signInWithPopup(googleProvider);
             const gUser = result.user;
             const email = gUser.email;
-            const q = query(collection(db,'users'), where('email','==',email), where('role','==','admin'));
-            const snap = await getDocs(q);
+            const snap = await db.collection('users').where('email', '==', email).where('role', '==', 'admin').get();
             if (!snap.empty) {
                 const d = snap.docs[0].data();
                 admin = { id: snap.docs[0].id, username: d.username, role: 'admin', perms: {all:true}, loginTime: Date.now() };
@@ -636,7 +544,7 @@
                 document.getElementById('adminPanel').style.display = 'block';
                 loadBaseData();
                 renderSection('dashboard');
-                toast(`Welcome Admin, ${admin.username}`);
+                toast(`✅ Welcome Admin, ${admin.username}`);
             } else {
                 toast('This Google account is not registered as an Admin.', true);
             }
@@ -644,21 +552,36 @@
             console.error("Google Login Error:", error);
             toast("Google Login failed: " + error.message, true);
         }
+    });
+
+    function checkSession() {
+        const s = sessionStorage.getItem('adminSession');
+        if (s) {
+            const d = JSON.parse(s);
+            if (Date.now() - d.loginTime < 24*60*60*1000) {
+                admin = d;
+                return true;
+            }
+            sessionStorage.removeItem('adminSession');
+        }
+        return false;
     }
 
-    // ===== DATA LOADING =====
+    // ============================================
+    // DATA LOADING
+    // ============================================
     function loadBaseData() {
-        getDoc(doc(db,'systemSettings','main')).then(snap => {
+        db.collection('systemSettings').doc('main').get().then(snap => {
             if (snap.exists()) cachedData.systemSettings = snap.data();
         }).catch(console.error);
-        getDocs(collection(db,'agencies')).then(snap => {
-            cachedData.agencies = []; snap.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
+        db.collection('agencies').get().then(snap => {
+            cachedData.agencies = []; snap.forEach(d => cachedData.agencies.push({ id: d.id, ...d.data() }));
         }).catch(console.error);
-        getDocs(collection(db,'customOrders')).then(snap => {
-            cachedData.customOrders = []; snap.forEach(d => cachedData.customOrders.push({ id:d.id, ...d.data() }));
+        db.collection('customOrders').get().then(snap => {
+            cachedData.customOrders = []; snap.forEach(d => cachedData.customOrders.push({ id: d.id, ...d.data() }));
         }).catch(console.error);
-        getDocs(collection(db,'popupAds')).then(snap => {
-            cachedData.popupAds = []; snap.forEach(d => cachedData.popupAds.push({ id:d.id, ...d.data() }));
+        db.collection('popupAds').get().then(snap => {
+            cachedData.popupAds = []; snap.forEach(d => cachedData.popupAds.push({ id: d.id, ...d.data() }));
         }).catch(console.error);
     }
 
@@ -674,9 +597,9 @@
             case 'vip':
             case 'injection':
                 if (!unsubscribers['users']) {
-                    unsubscribers['users'] = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
+                    unsubscribers['users'] = db.collection('users').limit(500).onSnapshot((snap) => {
                         cachedData.users = [];
-                        snap.forEach(d => cachedData.users.push({ id:d.id, ...d.data() }));
+                        snap.forEach(d => cachedData.users.push({ id: d.id, ...d.data() }));
                         const total = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
                         document.getElementById('memberCount')?.textContent = total;
                         if (['dashboard','users','vip','injection'].includes(currentSection)) {
@@ -689,36 +612,36 @@
                 break;
             case 'rechargeRequests':
                 if (!unsubscribers['recharge']) {
-                    unsubscribers['recharge'] = onSnapshot(query(collection(db,'rechargeRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                    unsubscribers['recharge'] = db.collection('rechargeRequests').orderBy('timestamp', 'desc').limit(200).onSnapshot((snap) => {
                         cachedData.rechargeReqs = [];
-                        snap.forEach(d => cachedData.rechargeReqs.push({ id:d.id, ...d.data() }));
+                        snap.forEach(d => cachedData.rechargeReqs.push({ id: d.id, ...d.data() }));
                         if (currentSection === 'rechargeRequests') renderSection('rechargeRequests');
                     });
                 }
                 break;
             case 'withdrawRequests':
                 if (!unsubscribers['withdraw']) {
-                    unsubscribers['withdraw'] = onSnapshot(query(collection(db,'withdrawRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                    unsubscribers['withdraw'] = db.collection('withdrawRequests').orderBy('timestamp', 'desc').limit(200).onSnapshot((snap) => {
                         cachedData.withdrawReqs = [];
-                        snap.forEach(d => cachedData.withdrawReqs.push({ id:d.id, ...d.data() }));
+                        snap.forEach(d => cachedData.withdrawReqs.push({ id: d.id, ...d.data() }));
                         if (currentSection === 'withdrawRequests') renderSection('withdrawRequests');
                     });
                 }
                 break;
             case 'loanRequests':
                 if (!unsubscribers['loans']) {
-                    unsubscribers['loans'] = onSnapshot(query(collection(db,'loanRequests'), orderBy('timestamp','desc'), limit(200)), (snap) => {
+                    unsubscribers['loans'] = db.collection('loanRequests').orderBy('timestamp', 'desc').limit(200).onSnapshot((snap) => {
                         cachedData.loanReqs = [];
-                        snap.forEach(d => cachedData.loanReqs.push({ id:d.id, ...d.data() }));
+                        snap.forEach(d => cachedData.loanReqs.push({ id: d.id, ...d.data() }));
                         if (currentSection === 'loanRequests') renderSection('loanRequests');
                     });
                 }
                 break;
             case 'injection':
                 if (!unsubscribers['injections']) {
-                    unsubscribers['injections'] = onSnapshot(collection(db,'injections'), (snap) => {
+                    unsubscribers['injections'] = db.collection('injections').onSnapshot((snap) => {
                         cachedData.injections = [];
-                        snap.forEach(d => cachedData.injections.push({ id:d.id, ...d.data() }));
+                        snap.forEach(d => cachedData.injections.push({ id: d.id, ...d.data() }));
                         if (currentSection === 'injection') renderSection('injection');
                     });
                 }
@@ -728,7 +651,9 @@
         }
     }
 
-    // ===== RENDER SECTIONS =====
+    // ============================================
+    // RENDER FUNCTIONS (အတိုချုံးထားတယ်)
+    // ============================================
     function renderSection(section) {
         currentSection = section;
         localStorage.setItem('adminSection', section);
@@ -773,49 +698,15 @@
             <div class="admin-card">
                 <h2 style="color:#d4af37;">📊 Dashboard</h2>
                 <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:20px;">
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Total Users</h3>
-                        <p style="font-size:36px; font-weight:800; color:#d4af37;">${total}</p>
-                    </div>
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Total Balance</h3>
-                        <p style="font-size:36px; font-weight:800; color:#d4af37;">$${bal.toFixed(2)}</p>
-                    </div>
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Total Commission</h3>
-                        <p style="font-size:36px; font-weight:800; color:#d4af37;">$${comm.toFixed(2)}</p>
-                    </div>
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Active Agencies</h3>
-                        <p style="font-size:36px; font-weight:800; color:#d4af37;">${actA}/${cachedData.agencies.length}</p>
-                    </div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Total Users</h3><p style="font-size:36px; font-weight:800; color:#d4af37;">${total}</p></div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Total Balance</h3><p style="font-size:36px; font-weight:800; color:#d4af37;">$${bal.toFixed(2)}</p></div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Total Commission</h3><p style="font-size:36px; font-weight:800; color:#d4af37;">$${comm.toFixed(2)}</p></div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Active Agencies</h3><p style="font-size:36px; font-weight:800; color:#d4af37;">${actA}/${cachedData.agencies.length}</p></div>
                 </div>
                 <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:20px;">
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Pending Requests</h3>
-                        <div style="display:flex; gap:15px;">
-                            <div><span style="color:#f59e0b;">💰 ${rPend}</span></div>
-                            <div><span style="color:#3b82f6;">💳 ${wPend}</span></div>
-                            <div><span style="color:#10b981;">🏦 ${lPend}</span></div>
-                        </div>
-                    </div>
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">VIP Distribution</h3>
-                        <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                            <div><span class="vip-badge-1">VIP 1</span> ${vips[1]}</div>
-                            <div><span class="vip-badge-2">VIP 2</span> ${vips[2]}</div>
-                            <div><span class="vip-badge-3">VIP 3</span> ${vips[3]}</div>
-                            <div><span class="vip-badge-4">VIP 4</span> ${vips[4]}</div>
-                        </div>
-                    </div>
-                    <div style="background:#0f1117; padding:20px; border-radius:20px;">
-                        <h3 style="color:#9ca3af;">Tasks Progress</h3>
-                        <p style="font-size:28px; font-weight:800; color:#d4af37;">${completedTasks}/${totalTasks}</p>
-                        <div style="background:#1a1e26; border-radius:10px; height:6px; margin-top:8px; overflow:hidden;">
-                            <div style="background:linear-gradient(90deg, #d4af37, #f5e7b2); height:100%; width:${completionRate}%; transition:width 0.5s;"></div>
-                        </div>
-                        <span style="font-size:12px; color:#9ca3af;">${completionRate}% Complete</span>
-                    </div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Pending Requests</h3><div style="display:flex; gap:15px;"><div><span style="color:#f59e0b;">💰 ${rPend}</span></div><div><span style="color:#3b82f6;">💳 ${wPend}</span></div><div><span style="color:#10b981;">🏦 ${lPend}</span></div></div></div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">VIP Distribution</h3><div style="display:flex; gap:15px; flex-wrap:wrap;"><div><span class="vip-badge-1">VIP 1</span> ${vips[1]}</div><div><span class="vip-badge-2">VIP 2</span> ${vips[2]}</div><div><span class="vip-badge-3">VIP 3</span> ${vips[3]}</div><div><span class="vip-badge-4">VIP 4</span> ${vips[4]}</div></div></div>
+                    <div style="background:#0f1117; padding:20px; border-radius:20px;"><h3 style="color:#9ca3af;">Tasks Progress</h3><p style="font-size:28px; font-weight:800; color:#d4af37;">${completedTasks}/${totalTasks}</p><div style="background:#1a1e26; border-radius:10px; height:6px; margin-top:8px; overflow:hidden;"><div style="background:linear-gradient(90deg, #d4af37, #f5e7b2); height:100%; width:${completionRate}%; transition:width 0.5s;"></div></div><span style="font-size:12px; color:#9ca3af;">${completionRate}% Complete</span></div>
                 </div>
             </div>
         `;
@@ -826,21 +717,9 @@
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
             <div class="admin-card">
-                <div class="flex-between">
-                    <h2 style="color:#d4af37;">👥 Member Management</h2>
-                    <button class="btn-admin" id="addMemberBtn">+ Add Member</button>
-                </div>
-                <div class="search-box">
-                    <input class="input-glass" id="userSearch" placeholder="Search by username, email or phone...">
-                    <button class="btn-admin" id="searchBtn">Search</button>
-                    <button class="btn-warning" id="resetSearchBtn">Reset</button>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table style="min-width:900px; width:100%;">
-                        <thead><tr><th>ID</th><th>Account</th><th>Email</th><th>IP</th><th>Balance</th><th>VIP</th><th>Status</th><th>Last Seen</th><th>Actions</th></tr></thead>
-                        <tbody id="userTableBody"></tbody>
-                    </table>
-                </div>
+                <div class="flex-between"><h2 style="color:#d4af37;">👥 Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div>
+                <div class="search-box"><input class="input-glass" id="userSearch" placeholder="Search by username, email or phone..."><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div>
+                <div style="overflow-x:auto;"><table style="min-width:900px; width:100%;"><thead><tr><th>ID</th><th>Account</th><th>Email</th><th>IP</th><th>Balance</th><th>VIP</th><th>Status</th><th>Last Seen</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
             </div>
         `;
         function renderTable(filter='') {
@@ -864,18 +743,16 @@
                     <td><span class="${vc}">VIP ${lv}</span></td>
                     <td><span class="badge-status" style="background:${u.disabled ? 'rgba(220,38,38,0.15)' : 'rgba(16,185,129,0.15)'};color:${u.disabled ? '#dc2626' : '#10b981'};padding:2px 10px;border-radius:20px;font-size:11px;">${u.disabled ? 'Disabled' : 'Active'}</span></td>
                     <td style="font-size:11px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:${isOnline ? '#10b981' : '#4a5568'};"></span>${isOnline ? 'Online' : lastSeenTime}</td>
-                    <td>
-                        <div style="display:flex;flex-wrap:wrap;gap:4px;">
-                            <button class="btn-sm btn-warning" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
-                            <button class="btn-sm btn-info" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
-                            <button class="btn-sm btn-admin" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
-                            <button class="btn-sm btn-admin" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
-                            <button class="btn-sm btn-info" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
-                            <button class="btn-sm btn-admin" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
-                            <button class="btn-sm ${u.disabled ? 'btn-success' : 'btn-danger'}" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
-                            <button class="btn-sm btn-danger" onclick="window.deleteAccount('${u.id}')"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </td>
+                    <td><div style="display:flex;flex-wrap:wrap;gap:4px;">
+                        <button class="btn-sm btn-warning" onclick="window.setupOrder('${u.id}')" title="Orders">📦</button>
+                        <button class="btn-sm btn-info" onclick="window.setupBalance('${u.id}')" title="Balance">💰</button>
+                        <button class="btn-sm btn-admin" onclick="window.changeLogin('${u.id}')" title="Login PW">🔑</button>
+                        <button class="btn-sm btn-admin" onclick="window.changeWithdraw('${u.id}')" title="Withdraw PW">💳</button>
+                        <button class="btn-sm btn-info" onclick="window.adjustCredit('${u.id}')" title="Credit">⭐</button>
+                        <button class="btn-sm btn-admin" onclick="window.changeWallet('${u.id}')" title="Wallet">🏦</button>
+                        <button class="btn-sm ${u.disabled ? 'btn-success' : 'btn-danger'}" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
+                        <button class="btn-sm btn-danger" onclick="window.deleteAccount('${u.id}')"><i class="fas fa-trash"></i></button>
+                    </div></td>
                 </tr>`;
             }).join('');
         }
@@ -898,10 +775,7 @@
                 <div class="password-wrapper"><input type="password" class="input-glass" id="amPass" placeholder="Login Password"><i class="fas fa-eye toggle-password" onclick="togglePw('amPass', this)"></i></div>
                 <div class="password-wrapper"><input type="password" class="input-glass" id="amWpass" placeholder="Withdraw Password"><i class="fas fa-eye toggle-password" onclick="togglePw('amWpass', this)"></i></div>
                 <input class="input-glass" id="amInvite" placeholder="Invitation Code (optional)">
-                <div style="display:flex; gap:10px; margin-top:12px;">
-                    <button class="btn-success" id="amSubmit">Create</button>
-                    <button class="btn-secondary" id="amCancel">Cancel</button>
-                </div>
+                <div style="display:flex; gap:10px; margin-top:12px;"><button class="btn-success" id="amSubmit">Create</button><button class="btn-secondary" id="amCancel">Cancel</button></div>
                 <div id="amStatus" style="text-align:center;margin-top:8px;font-size:12px;"></div>
             </div>
         `;
@@ -939,14 +813,14 @@
                 lastSeen: null,
                 regIP: null
             };
-            await setDoc(doc(db,'users',data.id), data);
+            await db.collection('users').doc(data.id).set(data);
             document.getElementById('amStatus').innerHTML = '<span style="color:#10b981;">✅ Added!</span>';
             setTimeout(() => { document.body.removeChild(modal); renderSection('users'); }, 700);
         };
         document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ---- USER ACTIONS ----
+    // ---- USER ACTIONS (window functions) ----
     window.setupOrder = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
@@ -955,7 +829,7 @@
             if (!u.tasks) u.tasks = { completed:0, total:0 };
             if (c > 0) u.tasks.total += c;
             else if (c < 0) { const r = Math.abs(c); if (u.tasks.total >= r) { u.tasks.total -= r; if (u.tasks.completed > u.tasks.total) u.tasks.completed = u.tasks.total; } }
-            await updateDoc(doc(db,'users',id), { tasks: u.tasks });
+            await db.collection('users').doc(id).update({ tasks: u.tasks });
             toast('Orders updated');
             renderSection('users');
         }
@@ -965,7 +839,7 @@
         if (!u) return;
         const b = prompt('New balance:', u.balance);
         if (b && !isNaN(parseFloat(b))) {
-            await updateDoc(doc(db,'users',id), { balance: parseFloat(b) });
+            await db.collection('users').doc(id).update({ balance: parseFloat(b) });
             toast('Balance updated');
             renderSection('users');
         }
@@ -974,50 +848,69 @@
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
         const p = prompt('New login password:');
-        if (p) { await updateDoc(doc(db,'users',id), { password: p }); toast('Password updated'); renderSection('users'); }
+        if (p) { await db.collection('users').doc(id).update({ password: p }); toast('Password updated'); renderSection('users'); }
     };
     window.changeWithdraw = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
         const p = prompt('New withdraw password:');
-        if (p) { await updateDoc(doc(db,'users',id), { withdrawPassword: p }); toast('Withdraw password updated'); renderSection('users'); }
+        if (p) { await db.collection('users').doc(id).update({ withdrawPassword: p }); toast('Withdraw password updated'); renderSection('users'); }
     };
     window.adjustCredit = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
         const a = parseInt(prompt('Add/remove credit (+/-):', 0));
-        if (!isNaN(a)) { const newScore = (u.creditScore||100) + a; await updateDoc(doc(db,'users',id), { creditScore: newScore }); toast('Credit updated'); renderSection('users'); }
+        if (!isNaN(a)) { const newScore = (u.creditScore||100) + a; await db.collection('users').doc(id).update({ creditScore: newScore }); toast('Credit updated'); renderSection('users'); }
     };
     window.changeWallet = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
         const w = prompt('USDT wallet address:', u.walletAddress||'');
-        if (w !== null && w.trim()) { await updateDoc(doc(db,'users',id), { walletAddress: w.trim() }); toast('Wallet updated'); renderSection('users'); }
+        if (w !== null && w.trim()) { await db.collection('users').doc(id).update({ walletAddress: w.trim() }); toast('Wallet updated'); renderSection('users'); }
     };
     window.toggleDisable = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
-        await updateDoc(doc(db,'users',id), { disabled: !u.disabled });
+        await db.collection('users').doc(id).update({ disabled: !u.disabled });
         toast(u.disabled ? 'Enabled' : 'Disabled');
         renderSection('users');
     };
     window.deleteAccount = async (id) => {
         if (!confirm('⚠️ Delete this account permanently?')) return;
         try {
-            const ordersSnap = await getDocs(collection(db, "users", id, "orders"));
-            for (const docSnap of ordersSnap.docs) await deleteDoc(doc(db, "users", id, "orders", docSnap.id));
-            const rechargeSnap = await getDocs(query(collection(db, "rechargeRequests"), where("userId", "==", id)));
-            for (const docSnap of rechargeSnap.docs) await deleteDoc(doc(db, "rechargeRequests", docSnap.id));
-            const withdrawSnap = await getDocs(query(collection(db, "withdrawRequests"), where("userId", "==", id)));
-            for (const docSnap of withdrawSnap.docs) await deleteDoc(doc(db, "withdrawRequests", docSnap.id));
-            const loanSnap = await getDocs(query(collection(db, "loanRequests"), where("userId", "==", id)));
-            for (const docSnap of loanSnap.docs) await deleteDoc(doc(db, "loanRequests", docSnap.id));
-            const injSnap = await getDocs(query(collection(db, "injections"), where("userId", "==", id)));
-            for (const docSnap of injSnap.docs) await deleteDoc(doc(db, "injections", docSnap.id));
-            await deleteDoc(doc(db, "users", id));
+            const ordersSnap = await db.collection('users').doc(id).collection('orders').get();
+            for (const doc of ordersSnap.docs) await doc.ref.delete();
+            const rechargeSnap = await db.collection('rechargeRequests').where('userId', '==', id).get();
+            for (const doc of rechargeSnap.docs) await doc.ref.delete();
+            const withdrawSnap = await db.collection('withdrawRequests').where('userId', '==', id).get();
+            for (const doc of withdrawSnap.docs) await doc.ref.delete();
+            const loanSnap = await db.collection('loanRequests').where('userId', '==', id).get();
+            for (const doc of loanSnap.docs) await doc.ref.delete();
+            const injSnap = await db.collection('injections').where('userId', '==', id).get();
+            for (const doc of injSnap.docs) await doc.ref.delete();
+            await db.collection('users').doc(id).delete();
             toast('✅ Account deleted');
             renderSection('users');
         } catch(e) { toast('Error: '+e.message, true); }
+    };
+
+    // ---- APPLY VIP ----
+    window.applyVIP = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const sel = document.getElementById(`vipSel_${id}`);
+        if (!sel) return;
+        const val = parseInt(sel.value);
+        if (val === 0) {
+            if (u.manualVIPLevel) {
+                await db.collection('users').doc(id).update({ manualVIPLevel: null });
+                toast('Auto mode');
+            } else toast('Already auto');
+        } else {
+            await db.collection('users').doc(id).update({ manualVIPLevel: val });
+            toast(`VIP ${val} set`);
+        }
+        renderSection('vip');
     };
 
     // ---- VIP ----
@@ -1062,29 +955,7 @@
         `;
     }
 
-    // ---- APPLY VIP - FIXED (delete error ဖြေရှင်းပြီး) ----
-    window.applyVIP = async (id) => {
-        const u = cachedData.users.find(x => x.id === id);
-        if (!u) return;
-        const sel = document.getElementById(`vipSel_${id}`);
-        if (!sel) return;
-        const val = parseInt(sel.value);
-        if (val === 0) {
-            if (u.manualVIPLevel) {
-                // ✅ FIXED: delete အစား null ကိုသုံးပါ
-                await updateDoc(doc(db,'users',id), { manualVIPLevel: null });
-                toast('Auto mode');
-            } else {
-                toast('Already auto');
-            }
-        } else {
-            await updateDoc(doc(db,'users',id), { manualVIPLevel: val });
-            toast(`VIP ${val} set`);
-        }
-        renderSection('vip');
-    };
-
-    // ---- INJECTION ----
+    // ---- INJECTION (အတိုချုံး) ----
     function renderInjection(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -1142,14 +1013,14 @@
 
         const historyContainer = document.getElementById('injectionHistoryList');
         if (historyContainer) {
-            onSnapshot(query(collection(db,'injections'), orderBy('createdAt','desc'), limit(100)), (snap) => {
+            db.collection('injections').orderBy('createdAt', 'desc').limit(100).onSnapshot((snap) => {
                 historyContainer.innerHTML = '';
                 if (snap.empty) {
                     historyContainer.innerHTML = '<p style="color:#9ca3af;text-align:center;padding:20px;">No injections yet</p>';
                     return;
                 }
-                snap.forEach(docSnap => {
-                    const inj = docSnap.data();
+                snap.forEach(doc => {
+                    const inj = doc.data();
                     const userObj = cachedData.users.find(u => u.id === inj.userId);
                     const username = userObj ? userObj.username : 'Unknown';
                     const div = document.createElement('div');
@@ -1160,13 +1031,8 @@
                             <div>
                                 <strong style="color:#d4af37;">👤 ${esc(username)}</strong> - Task #${inj.taskNumber}
                                 <div style="font-size:12px;color:#94a3b8;">${esc(inj.orderName || 'Premium Task')}</div>
-                                <div style="font-size:11px;color:#9ca3af;margin-top:4px;">
-                                    Extra: $${inj.extraAmount||0} | Rate: ${inj.commissionRate||0}% | Commission: $${inj.commission||0}
-                                </div>
-                                <div style="font-size:10px;margin-top:4px;">
-                                    ${inj.used ? '<span style="color:#10b981;">✅ Used</span>' : '<span style="color:#f59e0b;">⏳ Pending</span>'}
-                                    ${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm" style="max-width:50px;max-height:50px;border-radius:4px;border:1px solid #d4af37;cursor:pointer;margin-left:8px;" onclick="window.open(this.src)">` : ''}
-                                </div>
+                                <div style="font-size:11px;color:#9ca3af;margin-top:4px;">Extra: $${inj.extraAmount||0} | Rate: ${inj.commissionRate||0}% | Commission: $${inj.commission||0}</div>
+                                <div style="font-size:10px;margin-top:4px;">${inj.used ? '<span style="color:#10b981;">✅ Used</span>' : '<span style="color:#f59e0b;">⏳ Pending</span>'}${inj.imageData ? `<img src="${inj.imageData}" class="img-preview-sm" style="max-width:50px;max-height:50px;border-radius:4px;border:1px solid #d4af37;cursor:pointer;margin-left:8px;" onclick="window.open(this.src)">` : ''}</div>
                                 <div style="font-size:10px;color:#4a5568;">${inj.createdAt ? new Date(inj.createdAt).toLocaleString() : ''}</div>
                             </div>
                             <div style="display:flex;gap:4px;flex-wrap:wrap;">
@@ -1177,13 +1043,11 @@
                     `;
                     historyContainer.appendChild(div);
                 });
-            }, (error) => {
-                historyContainer.innerHTML = `<p style="color:#dc2626;text-align:center;padding:20px;">Error: ${esc(error.message)}</p>`;
             });
         }
     }
 
-    // ---- INJECTION MODAL ----
+    // ---- INJECTION MODALS ----
     window.showInjectionModal = (userId) => {
         const u = cachedData.users.find(x => x.id === userId);
         if (!u) { toast('User not found', true); return; }
@@ -1199,10 +1063,7 @@
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">📊 Commission Rate (%)</label><input type="number" class="input-glass" id="injRate" step="0.01" value="0.5"></div>
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">💰 Fixed Commission ($)</label><input type="number" class="input-glass" id="injCommission" step="0.01" value="0"></div>
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">🖼️ Image</label><input type="file" class="input-glass" id="injImg" accept="image/*"><div id="injPreview" style="margin-top:4px;"></div></div>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-success" id="injSubmit">✅ Inject</button>
-                    <button class="btn-secondary" id="injCancel">Cancel</button>
-                </div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-success" id="injSubmit">✅ Inject</button><button class="btn-secondary" id="injCancel">Cancel</button></div>
                 <div id="injStatus" style="text-align:center;margin-top:8px;font-size:12px;"></div>
             </div>
         `;
@@ -1241,7 +1102,7 @@
                     used: false,
                     createdAt: new Date().toISOString()
                 };
-                await setDoc(doc(db,'injections',data.id), data);
+                await db.collection('injections').doc(data.id).set(data);
                 document.getElementById('injStatus').innerHTML = '<span style="color:#10b981;">✅ Injection successful!</span>';
                 setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 800);
             };
@@ -1254,7 +1115,6 @@
         document.getElementById('injCancel').onclick = () => document.body.removeChild(modal);
     };
 
-    // ---- EDIT INJECTION ----
     window.editInjection = async (id) => {
         const inj = cachedData.injections.find(i => i.id === id);
         if (!inj) { toast('Injection not found', true); return; }
@@ -1271,10 +1131,7 @@
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">📊 Commission Rate (%)</label><input type="number" class="input-glass" id="eRate" step="0.01" value="${inj.commissionRate||0.5}"></div>
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">💰 Fixed Commission ($)</label><input type="number" class="input-glass" id="eCommission" step="0.01" value="${inj.commission||0}"></div>
                 <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">🖼️ Image</label><input type="file" class="input-glass" id="eImg" accept="image/*"><div id="ePreview" style="margin-top:4px;">${inj.imageData ? `<img src="${inj.imageData}" style="max-width:80px;max-height:80px;border-radius:6px;border:1px solid #d4af37;">` : ''}</div></div>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-success" id="eSubmit">💾 Update</button>
-                    <button class="btn-secondary" id="eCancel">Cancel</button>
-                </div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-success" id="eSubmit">💾 Update</button><button class="btn-secondary" id="eCancel">Cancel</button></div>
                 <div id="eStatus" style="text-align:center;margin-top:8px;font-size:12px;"></div>
             </div>
         `;
@@ -1305,23 +1162,21 @@
                 const imgData = await compressImage(file, 300, 300, 0.4);
                 data.imageData = imgData;
             }
-            await updateDoc(doc(db,'injections',id), data);
+            await db.collection('injections').doc(id).update(data);
             document.getElementById('eStatus').innerHTML = '<span style="color:#10b981;">✅ Updated!</span>';
             setTimeout(() => { document.body.removeChild(modal); renderSection('injection'); }, 800);
         };
         document.getElementById('eCancel').onclick = () => document.body.removeChild(modal);
     };
 
-    // ---- DELETE INJECTION ----
     window.deleteInjection = async (id) => {
         if (!confirm('⚠️ Delete this injection permanently?')) return;
-        await deleteDoc(doc(db,'injections',id));
+        await db.collection('injections').doc(id).delete();
         cachedData.injections = cachedData.injections.filter(i => i.id !== id);
         toast('🗑️ Injection deleted');
         renderSection('injection');
     };
 
-    // ---- SHOW INJECTION HISTORY ----
     window.showInjectionHistory = (userId) => {
         const u = cachedData.users.find(x => x.id === userId);
         const injs = cachedData.injections.filter(i => i.userId === userId);
@@ -1358,7 +1213,7 @@
         document.getElementById('histClose').onclick = () => document.body.removeChild(modal);
     };
 
-    // ---- ORDERS ----
+    // ---- ORDERS (အတိုချုံး) ----
     function renderOrders(main) {
         main.innerHTML = `
             <div class="admin-card">
@@ -1391,7 +1246,7 @@
                 const imgData = await compressImage(file, 200, 200, 0.4);
                 data.image = imgData;
             }
-            await setDoc(doc(db,'customOrders',data.id), data);
+            await db.collection('customOrders').doc(data.id).set(data);
             toast('Order added');
             renderSection('addOrder');
         };
@@ -1415,7 +1270,7 @@
 
     window.deleteOrder = async (id) => {
         if (!confirm('Delete this order?')) return;
-        await deleteDoc(doc(db,'customOrders',id));
+        await db.collection('customOrders').doc(id).delete();
         cachedData.customOrders = cachedData.customOrders.filter(o => o.id !== id);
         toast('Order deleted');
         renderSection('addOrder');
@@ -1434,12 +1289,7 @@
                         </div>
                         <div style="font-size:13px;color:#94a3b8;">Amount: $${r.amount} | ${new Date(r.timestamp).toLocaleString()}</div>
                         ${r.receiptImage ? `<img src="${r.receiptImage}" style="max-width:80px;max-height:80px;border-radius:6px;cursor:pointer;border:1px solid #d4af37;margin-top:4px;" onclick="window.open(this.src)">` : ''}
-                        ${r.status === 'pending' ? `
-                            <div style="display:flex;gap:8px;margin-top:8px;">
-                                <button class="btn-sm btn-success" onclick="window.approveRecharge('${r.id}')">✅ Approve</button>
-                                <button class="btn-sm btn-danger" onclick="window.rejectRecharge('${r.id}')">❌ Reject</button>
-                            </div>
-                        ` : ''}
+                        ${r.status === 'pending' ? `<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-sm btn-success" onclick="window.approveRecharge('${r.id}')">✅ Approve</button><button class="btn-sm btn-danger" onclick="window.rejectRecharge('${r.id}')">❌ Reject</button></div>` : ''}
                         ${r.adminNote ? `<div style="font-size:12px;color:#94a3b8;margin-top:4px;">Note: ${r.adminNote}</div>` : ''}
                     </div>
                 `).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;">No requests</p>'}
@@ -1450,7 +1300,7 @@
     window.approveRecharge = async (id) => {
         const r = cachedData.rechargeReqs.find(x => x.id === id);
         if (!r || r.status !== 'pending') return;
-        await updateDoc(doc(db,'rechargeRequests',id), { status: 'approved' });
+        await db.collection('rechargeRequests').doc(id).update({ status: 'approved' });
         toast('✅ Recharge approved');
         renderSection('rechargeRequests');
     };
@@ -1464,16 +1314,13 @@
             <div class="modal-content" style="max-width:450px;">
                 <h3 style="color:#d4af37;">Reject Recharge</h3>
                 <textarea class="input-glass" id="rejNote" placeholder="Reason..." rows="2"></textarea>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-danger" id="rejSubmit">Reject</button>
-                    <button class="btn-secondary" id="rejCancel">Cancel</button>
-                </div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-danger" id="rejSubmit">Reject</button><button class="btn-secondary" id="rejCancel">Cancel</button></div>
             </div>
         `;
         document.body.appendChild(modal);
         document.getElementById('rejSubmit').onclick = async () => {
             const note = document.getElementById('rejNote').value;
-            await updateDoc(doc(db,'rechargeRequests',id), { status: 'rejected', adminNote: note });
+            await db.collection('rechargeRequests').doc(id).update({ status: 'rejected', adminNote: note });
             document.body.removeChild(modal);
             toast('Rejected');
             renderSection('rechargeRequests');
@@ -1494,12 +1341,7 @@
                         </div>
                         <div style="font-size:13px;color:#94a3b8;">Amount: $${w.amount} | Wallet: ${w.walletAddress}</div>
                         <div style="font-size:11px;color:#4a5568;">${new Date(w.timestamp).toLocaleString()}</div>
-                        ${w.status === 'pending' ? `
-                            <div style="display:flex;gap:8px;margin-top:8px;">
-                                <button class="btn-sm btn-success" onclick="window.approveWithdraw('${w.id}')">✅ Approve</button>
-                                <button class="btn-sm btn-danger" onclick="window.rejectWithdraw('${w.id}')">❌ Reject</button>
-                            </div>
-                        ` : ''}
+                        ${w.status === 'pending' ? `<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-sm btn-success" onclick="window.approveWithdraw('${w.id}')">✅ Approve</button><button class="btn-sm btn-danger" onclick="window.rejectWithdraw('${w.id}')">❌ Reject</button></div>` : ''}
                         ${w.adminNote ? `<div style="font-size:12px;color:#94a3b8;margin-top:4px;">Note: ${w.adminNote}</div>` : ''}
                     </div>
                 `).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;">No requests</p>'}
@@ -1510,7 +1352,7 @@
     window.approveWithdraw = async (id) => {
         const w = cachedData.withdrawReqs.find(x => x.id === id);
         if (!w || w.status !== 'pending') return;
-        await updateDoc(doc(db,'withdrawRequests',id), { status: 'approved' });
+        await db.collection('withdrawRequests').doc(id).update({ status: 'approved' });
         toast('✅ Withdraw approved');
         renderSection('withdrawRequests');
     };
@@ -1524,18 +1366,15 @@
             <div class="modal-content" style="max-width:450px;">
                 <h3 style="color:#d4af37;">Reject Withdraw</h3>
                 <textarea class="input-glass" id="rejWNote" placeholder="Reason..." rows="2"></textarea>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-danger" id="rejWSubmit">Reject</button>
-                    <button class="btn-secondary" id="rejWCancel">Cancel</button>
-                </div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-danger" id="rejWSubmit">Reject</button><button class="btn-secondary" id="rejWCancel">Cancel</button></div>
             </div>
         `;
         document.body.appendChild(modal);
         document.getElementById('rejWSubmit').onclick = async () => {
             const note = document.getElementById('rejWNote').value;
-            await updateDoc(doc(db,'withdrawRequests',id), { status: 'rejected', adminNote: note });
+            await db.collection('withdrawRequests').doc(id).update({ status: 'rejected', adminNote: note });
             const u = cachedData.users.find(x => x.id === w.userId);
-            if (u) await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + w.amount });
+            if (u) await db.collection('users').doc(u.id).update({ balance: (u.balance||0) + w.amount });
             document.body.removeChild(modal);
             toast('Rejected');
             renderSection('withdrawRequests');
@@ -1561,12 +1400,7 @@
                             ${l.frontImage ? `<img src="${l.frontImage}" style="max-width:70px;max-height:70px;border-radius:4px;border:1px solid #d4af37;cursor:pointer;" onclick="window.open(this.src)">` : ''}
                             ${l.backImage ? `<img src="${l.backImage}" style="max-width:70px;max-height:70px;border-radius:4px;border:1px solid #d4af37;cursor:pointer;" onclick="window.open(this.src)">` : ''}
                         </div>
-                        ${l.status === 'pending' ? `
-                            <div style="display:flex;gap:8px;margin-top:8px;">
-                                <button class="btn-sm btn-success" onclick="window.approveLoan('${l.id}')">✅ Approve</button>
-                                <button class="btn-sm btn-danger" onclick="window.rejectLoan('${l.id}')">❌ Reject</button>
-                            </div>
-                        ` : ''}
+                        ${l.status === 'pending' ? `<div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-sm btn-success" onclick="window.approveLoan('${l.id}')">✅ Approve</button><button class="btn-sm btn-danger" onclick="window.rejectLoan('${l.id}')">❌ Reject</button></div>` : ''}
                     </div>
                 `).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;">No requests</p>'}
             </div>
@@ -1578,8 +1412,8 @@
         if (!l || l.status !== 'pending') return;
         const u = cachedData.users.find(x => x.id === l.userId);
         if (u) {
-            await updateDoc(doc(db,'users',u.id), { balance: (u.balance||0) + l.amount });
-            await updateDoc(doc(db,'loanRequests',id), { status: 'approved' });
+            await db.collection('users').doc(u.id).update({ balance: (u.balance||0) + l.amount });
+            await db.collection('loanRequests').doc(id).update({ status: 'approved' });
             toast(`✅ Loan $${l.amount} approved`);
             renderSection('loanRequests');
         }
@@ -1587,12 +1421,12 @@
 
     window.rejectLoan = async (id) => {
         if (!confirm('Reject this loan?')) return;
-        await updateDoc(doc(db,'loanRequests',id), { status: 'rejected' });
+        await db.collection('loanRequests').doc(id).update({ status: 'rejected' });
         toast('Rejected');
         renderSection('loanRequests');
     };
 
-    // ---- AGENCY ----
+    // ---- AGENCY (အတိုချုံး) ----
     function renderAgency(main) {
         main.innerHTML = `
             <div class="admin-card">
@@ -1605,17 +1439,12 @@
                         <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
                             <div><strong style="color:#d4af37;">${esc(a.username)}</strong> <span class="badge-status" style="color:${a.status==='active'?'#10b981':'#dc2626'};font-weight:700;">${a.status}</span></div>
                             <div style="display:flex;gap:4px;flex-wrap:wrap;">
-                                ${a.status === 'active' ? `
-                                    <button class="btn-sm btn-warning" onclick="window.changeAgencyPw('${a.id}')">🔑 Change PW</button>
-                                    <button class="btn-sm btn-danger" onclick="window.toggleAgency('${a.id}')">🔒 Close</button>
-                                ` : `<button class="btn-sm btn-success" onclick="window.toggleAgency('${a.id}')">🔓 Reactivate</button>`}
+                                ${a.status === 'active' ? `<button class="btn-sm btn-warning" onclick="window.changeAgencyPw('${a.id}')">🔑 Change PW</button><button class="btn-sm btn-danger" onclick="window.toggleAgency('${a.id}')">🔒 Close</button>` : `<button class="btn-sm btn-success" onclick="window.toggleAgency('${a.id}')">🔓 Reactivate</button>`}
                                 <button class="btn-sm btn-danger" onclick="window.deleteAgency('${a.id}')">🗑️</button>
                             </div>
                         </div>
                         <div style="font-size:12px;color:#94a3b8;margin-top:6px;">Email: ${a.email||'N/A'} | Created: ${new Date(a.createdAt).toLocaleString()}</div>
-                        <div style="font-size:11px;color:#94a3b8;margin-top:4px;">
-                            Permissions: ${Object.entries(a.permissions||{}).filter(([k,v])=>v).map(([k])=>k.replace('can','')).join(', ')}
-                        </div>
+                        <div style="font-size:11px;color:#94a3b8;margin-top:4px;">Permissions: ${Object.entries(a.permissions||{}).filter(([k,v])=>v).map(([k])=>k.replace('can','')).join(', ')}</div>
                     </div>
                 `).join('') : '<p style="color:#94a3b8;text-align:center;padding:20px;">No agencies</p>'}
             </div>
@@ -1633,10 +1462,7 @@
                 <h3 style="color:#d4af37;">Change Password for ${esc(a.username)}</h3>
                 <div class="password-wrapper"><input type="password" class="input-glass" id="apwNew" placeholder="New Password"><i class="fas fa-eye toggle-password" onclick="togglePw('apwNew', this)"></i></div>
                 <div class="password-wrapper"><input type="password" class="input-glass" id="apwConfirm" placeholder="Confirm"><i class="fas fa-eye toggle-password" onclick="togglePw('apwConfirm', this)"></i></div>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-success" id="apwSubmit">Update</button>
-                    <button class="btn-secondary" id="apwCancel">Cancel</button>
-                </div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-success" id="apwSubmit">Update</button><button class="btn-secondary" id="apwCancel">Cancel</button></div>
                 <div id="apwStatus" style="text-align:center;margin-top:8px;font-size:12px;"></div>
             </div>
         `;
@@ -1646,7 +1472,7 @@
             const p2 = document.getElementById('apwConfirm').value;
             if (!p1) { document.getElementById('apwStatus').innerHTML = '<span style="color:#dc2626;">Enter password</span>'; return; }
             if (p1 !== p2) { document.getElementById('apwStatus').innerHTML = '<span style="color:#dc2626;">Passwords do not match</span>'; return; }
-            await updateDoc(doc(db,'agencies',id), { password: p1 });
+            await db.collection('agencies').doc(id).update({ password: p1 });
             document.getElementById('apwStatus').innerHTML = '<span style="color:#10b981;">✅ Updated</span>';
             setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 700);
         };
@@ -1657,14 +1483,14 @@
         const a = cachedData.agencies.find(x => x.id === id);
         if (!a) return;
         const newStatus = a.status === 'active' ? 'closed' : 'active';
-        await updateDoc(doc(db,'agencies',id), { status: newStatus });
+        await db.collection('agencies').doc(id).update({ status: newStatus });
         toast(`Agency ${newStatus}`);
         renderSection('agency');
     };
 
     window.deleteAgency = async (id) => {
         if (!confirm('Delete this agency?')) return;
-        await deleteDoc(doc(db,'agencies',id));
+        await db.collection('agencies').doc(id).delete();
         cachedData.agencies = cachedData.agencies.filter(x => x.id !== id);
         toast('Deleted');
         renderSection('agency');
@@ -1680,20 +1506,10 @@
                 <input class="input-glass" id="aaEmail" placeholder="Email">
                 <div class="password-wrapper"><input type="password" class="input-glass" id="aaPass" placeholder="Password"><i class="fas fa-eye toggle-password" onclick="togglePw('aaPass', this)"></i></div>
                 <div class="password-wrapper"><input type="password" class="input-glass" id="aaConfirm" placeholder="Confirm"><i class="fas fa-eye toggle-password" onclick="togglePw('aaConfirm', this)"></i></div>
-                <div style="margin:8px 0;">
-                    <label style="font-size:12px;color:#9ca3af;">Permissions</label>
-                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
-                        ${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `
-                            <label style="background:#0f1117;padding:4px 10px;border-radius:20px;border:1px solid #2d3748;font-size:12px;cursor:pointer;">
-                                <input type="checkbox" id="aa_${p}" ${p!=='Settings'?'checked':''}> ${p}
-                            </label>
-                        `).join('')}
-                    </div>
-                </div>
-                <div style="display:flex;gap:10px;margin-top:12px;">
-                    <button class="btn-success" id="aaSubmit">Create</button>
-                    <button class="btn-secondary" id="aaCancel">Cancel</button>
-                </div>
+                <div style="margin:8px 0;"><label style="font-size:12px;color:#9ca3af;">Permissions</label><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                    ${['Members','VIP','Inject','Orders','Recharge','Withdraw','Loans','Settings','Chat'].map(p => `<label style="background:#0f1117;padding:4px 10px;border-radius:20px;border:1px solid #2d3748;font-size:12px;cursor:pointer;"><input type="checkbox" id="aa_${p}" ${p!=='Settings'?'checked':''}> ${p}</label>`).join('')}
+                </div></div>
+                <div style="display:flex;gap:10px;margin-top:12px;"><button class="btn-success" id="aaSubmit">Create</button><button class="btn-secondary" id="aaCancel">Cancel</button></div>
                 <div id="aaStatus" style="text-align:center;margin-top:8px;font-size:12px;"></div>
             </div>
         `;
@@ -1718,7 +1534,7 @@
                 canChat: document.getElementById('aa_Chat').checked
             };
             const data = { id: Date.now().toString(), username: u, email: e, password: p, role: 'agency', permissions: perms, status: 'active', createdAt: new Date().toISOString(), lastLogin: null };
-            await setDoc(doc(db,'agencies',data.id), data);
+            await db.collection('agencies').doc(data.id).set(data);
             document.getElementById('aaStatus').innerHTML = '<span style="color:#10b981;">✅ Created</span>';
             setTimeout(() => { document.body.removeChild(modal); renderSection('agency'); }, 700);
         };
@@ -1738,14 +1554,14 @@
         document.getElementById('setSave').onclick = async () => {
             const wallet = document.getElementById('setWallet').value.trim();
             const min = parseFloat(document.getElementById('setMin').value) || 10;
-            await setDoc(doc(db,'systemSettings','main'), { usdtWalletAddress: wallet, minBalanceForOrder: min }, { merge: true });
+            await db.collection('systemSettings').doc('main').set({ usdtWalletAddress: wallet, minBalanceForOrder: min }, { merge: true });
             cachedData.systemSettings.usdtWalletAddress = wallet;
             cachedData.systemSettings.minBalanceForOrder = min;
             toast('Settings saved!');
         };
     }
 
-    // ---- CHAT ----
+    // ---- CHAT (အတိုချုံး) ----
     function renderChat(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
@@ -1771,8 +1587,7 @@
             const container = document.getElementById('adminChatMessages');
             if (!chatUser) { container.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;">Select a customer</div>'; return; }
             container.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;">Loading...</div>';
-            const q = query(collection(db,'chatMessages'), orderBy('id','asc'));
-            chatUnsub = onSnapshot(q, (snap) => {
+            chatUnsub = db.collection('chatMessages').orderBy('id', 'asc').onSnapshot((snap) => {
                 if (!container || !chatUser) return;
                 const msgs = [];
                 snap.forEach(d => {
@@ -1797,7 +1612,7 @@
             const text = input.value.trim();
             const chatUser = document.getElementById('chatSelect').value;
             if (!text || !chatUser) { if (!chatUser) toast('Select customer', true); return; }
-            await setDoc(doc(db,'chatMessages',(Date.now()+Math.random()).toString()), {
+            await db.collection('chatMessages').doc((Date.now()+Math.random()).toString()).set({
                 id: Date.now()+Math.random(),
                 from: 'admin',
                 to: chatUser,
@@ -1816,7 +1631,9 @@
         window.__chatUnsub = chatUnsub;
     }
 
-    // ===== NAVIGATION =====
+    // ============================================
+    // NAVIGATION
+    // ============================================
     document.querySelectorAll('.nav-item').forEach(el => {
         el.onclick = function() {
             const section = this.dataset.section;
@@ -1836,7 +1653,7 @@
         document.getElementById('adminLoginScreen').style.display = 'flex';
         document.getElementById('adminUsername').value = '';
         document.getElementById('adminPassword').value = '';
-        firebaseSignOut(auth).catch(console.error);
+        auth.signOut().catch(console.error);
     };
 
     document.getElementById('refreshAdminBtn').onclick = async () => {
@@ -1846,24 +1663,26 @@
         toast('Refreshed!');
     };
 
-    // ===== INIT =====
+    // ============================================
+    // INIT
+    // ============================================
     if (checkSession()) {
         (async () => {
-            const snapA = await getDocs(collection(db,'agencies'));
-            cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id:d.id, ...d.data() }));
-            const snapO = await getDocs(collection(db,'customOrders'));
-            cachedData.customOrders = []; snapO.forEach(d => cachedData.customOrders.push({ id:d.id, ...d.data() }));
-            const snapP = await getDocs(collection(db,'popupAds'));
-            cachedData.popupAds = []; snapP.forEach(d => cachedData.popupAds.push({ id:d.id, ...d.data() }));
-            const settings = await getDoc(doc(db,'systemSettings','main'));
+            const snapA = await db.collection('agencies').get();
+            cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id: d.id, ...d.data() }));
+            const snapO = await db.collection('customOrders').get();
+            cachedData.customOrders = []; snapO.forEach(d => cachedData.customOrders.push({ id: d.id, ...d.data() }));
+            const snapP = await db.collection('popupAds').get();
+            cachedData.popupAds = []; snapP.forEach(d => cachedData.popupAds.push({ id: d.id, ...d.data() }));
+            const settings = await db.collection('systemSettings').doc('main').get();
             if (settings.exists()) cachedData.systemSettings = settings.data();
 
             document.getElementById('adminLoginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             if (!unsubscribers['users']) {
-                unsubscribers['users'] = onSnapshot(query(collection(db,'users'), limit(500)), (snap) => {
+                unsubscribers['users'] = db.collection('users').limit(500).onSnapshot((snap) => {
                     cachedData.users = [];
-                    snap.forEach(d => cachedData.users.push({ id:d.id, ...d.data() }));
+                    snap.forEach(d => cachedData.users.push({ id: d.id, ...d.data() }));
                     const total = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').length;
                     document.getElementById('memberCount')?.textContent = total;
                     if (['dashboard','users','vip','injection'].includes(currentSection)) {
@@ -1881,7 +1700,7 @@
         document.getElementById('adminPanel').style.display = 'none';
     }
 
-    console.log('✅ LUXCY Admin Panel loaded');
+    console.log('✅ LUXCY Admin Panel loaded (compat)');
 </script>
 </body>
 </html>
