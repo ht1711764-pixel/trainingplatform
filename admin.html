@@ -9,7 +9,9 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #e2e8f0; height: 100vh; overflow: hidden; }
+        
         .admin-container { display: flex; height: 100vh; }
+        
         .sidebar { 
             width: 280px; 
             background: linear-gradient(180deg, #0f1117 0%, #0a0c10 100%);
@@ -22,10 +24,12 @@
         .sidebar::-webkit-scrollbar { width: 3px; }
         .sidebar::-webkit-scrollbar-track { background: #1a1e26; }
         .sidebar::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+        
         .main-content { flex: 1; padding: 24px 32px; overflow-y: auto; }
         .main-content::-webkit-scrollbar { width: 4px; }
         .main-content::-webkit-scrollbar-track { background: #1a1e26; }
         .main-content::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 10px; }
+        
         .admin-card { 
             background: rgba(26, 30, 38, 0.95); 
             backdrop-filter: blur(10px);
@@ -37,6 +41,7 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .admin-card:hover { transform: translateY(-2px); border-color: rgba(212, 175, 55, 0.5); }
+        
         .btn-admin { 
             background: linear-gradient(105deg, #d4af37, #f5e7b2, #c9a03d); 
             border: none; 
@@ -49,11 +54,13 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .btn-admin:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(212,175,55,0.3); }
+        
         .btn-danger { background: linear-gradient(105deg, #dc2626, #ef4444); color: white; border: none; }
         .btn-success { background: linear-gradient(105deg, #10b981, #059669); color: white; border: none; }
         .btn-warning { background: linear-gradient(105deg, #f59e0b, #d97706); color: white; border: none; }
         .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
         .btn-secondary { background: #4a5568; color: white; border: none; }
+        
         input, select, textarea { 
             background: #0f1117; 
             border: 1px solid #2d3748; 
@@ -67,6 +74,7 @@
         }
         input:focus, select:focus, textarea:focus { border-color: #d4af37; }
         textarea { min-height: 80px; resize: vertical; }
+        
         .nav-item { 
             padding: 12px 16px; 
             margin: 4px 0; 
@@ -84,10 +92,20 @@
             color: #d4af37; 
             border-left: 2px solid #d4af37;
         }
-        .user-row { background: #0f1117; margin-bottom: 12px; padding: 16px; border-radius: 16px; transition: all 0.2s; border: 1px solid #2d3748; }
+        
+        .user-row { 
+            background: #0f1117; 
+            margin-bottom: 12px; 
+            padding: 16px; 
+            border-radius: 16px; 
+            transition: all 0.2s; 
+            border: 1px solid #2d3748;
+        }
         .user-row:hover { background: #1a1e26; transform: translateX(5px); border-color: rgba(212,175,55,0.3); }
+        
         .search-box { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
         .search-box input { flex: 1; min-width: 150px; margin-bottom: 0; }
+        
         .login-screen { 
             position: fixed; 
             top: 0; 
@@ -101,24 +119,38 @@
             z-index: 1000; 
         }
         .login-box { 
-            background: rgba(26, 30, 38, 0.95); 
-            backdrop-filter: blur(16px);
-            padding: 40px; 
-            border-radius: 32px; 
-            width: 420px; 
-            border: 1px solid rgba(212,175,55,0.3);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            background: rgba(10, 12, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 48px;
+            max-width: 420px;
+            width: 92%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
         }
+        
         .badge { background: #d4af37; color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        
         .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .flex-center { display: flex; justify-content: center; align-items: center; }
-        .refresh-btn { background: rgba(212,175,55,0.15); border: 1px solid #d4af37; border-radius: 40px; padding: 8px 12px; cursor: pointer; transition: all 0.3s; }
+        
+        .refresh-btn { 
+            background: rgba(212,175,55,0.15); 
+            border: 1px solid #d4af37; 
+            border-radius: 40px; 
+            padding: 8px 12px; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+        }
         .refresh-btn:hover { background: rgba(212,175,55,0.3); transform: rotate(180deg); }
+        
         .status-pending { color: #f59e0b; font-weight: 700; }
         .status-approved { color: #10b981; font-weight: 700; }
         .status-rejected { color: #dc2626; font-weight: 700; }
+        
         .request-row { background: #0f1117; padding: 16px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #2d3748; }
         .request-img { max-width: 80px; max-height: 80px; border-radius: 8px; cursor: pointer; border: 1px solid #d4af37; }
+        
         .modal { 
             position: fixed; 
             top: 0; 
@@ -141,9 +173,11 @@
             overflow-y: auto; 
             border: 1px solid #d4af37;
         }
+        
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #2d3748; vertical-align: top; }
         th { background: #0f1117; color: #d4af37; font-weight: 600; }
+        
         .loader { 
             position: fixed; 
             top: 0; 
@@ -159,9 +193,12 @@
             color: #d4af37; 
             backdrop-filter: blur(4px);
         }
+        
         .injection-history-item { background: #0f1117; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 3px solid #d4af37; }
+        
         .setting-row { margin-bottom: 16px; }
         .setting-row label { display: block; margin-bottom: 6px; color: #9ca3af; font-weight: 500; }
+        
         .chat-container { 
             display: flex; 
             flex-direction: column; 
@@ -179,8 +216,10 @@
         .chat-image { max-width: 200px; max-height: 200px; border-radius: 12px; margin-top: 8px; cursor: pointer; }
         .chat-input-area { display: flex; gap: 10px; padding: 16px; background: #0f1117; border-top: 1px solid #2d3748; }
         .chat-input-area input { flex: 1; margin-bottom: 0; }
+        
         .agency-row { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid #2d3748; transition: all 0.2s; }
         .agency-row:hover { background: #1a1e26; border-color: rgba(212,175,55,0.3); }
+        
         .permission-group { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
         .permission-checkbox { 
             display: flex; 
@@ -195,9 +234,11 @@
         }
         .permission-checkbox:hover { border-color: #d4af37; }
         .permission-checkbox input { width: auto; margin-bottom: 0; margin-right: 5px; }
+        
         .status-active { color: #10b981; font-weight: 700; }
         .status-closed { color: #dc2626; font-weight: 700; }
         .badge-permission { background: #2d3748; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
+        
         .real-time-indicator { 
             position: fixed; 
             bottom: 20px; 
@@ -212,10 +253,12 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+        
         .loan-card { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #2d3748; }
         .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid #3a423e; cursor: pointer; }
         .loan-detail-row { display: flex; margin-bottom: 8px; }
         .loan-detail-label { width: 130px; color: #9ca3af; }
+        
         .password-wrapper { position: relative; width: 100%; margin-bottom: 12px; }
         .password-wrapper input { width: 100%; margin-bottom: 0; padding-right: 50px; }
         .toggle-password { 
@@ -229,14 +272,19 @@
             border: none; 
             font-size: 18px; 
         }
+        
         .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; display: inline-block; }
         .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
         .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
         .vip-badge-4 { background: linear-gradient(135deg, #d4af37, #b8941e); color: #0a120e; }
+        
         .vip-select { background: #0f1117; border: 1px solid #d4af37; border-radius: 20px; padding: 6px 12px; color: white; cursor: pointer; font-size: 12px; }
         .vip-select option { background: #0f1117; }
+        
         .commission-rate { color: #d4af37; font-weight: bold; }
+        
         .btn-sm { padding: 5px 10px; font-size: 12px; }
+        
         .settings-tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid #2d3748; flex-wrap: wrap; }
         .settings-tab { padding: 10px 20px; cursor: pointer; border-radius: 12px 12px 0 0; background: #0f1117; border: 1px solid #2d3748; border-bottom: none; }
         .settings-tab.active { background: #d4af37; color: #0a120e; border-color: #d4af37; }
@@ -249,19 +297,121 @@
     </style>
 </head>
 <body>
+
+<!-- ===== LOGIN SCREEN ===== -->
 <div id="adminLoginScreen" class="login-screen">
     <div class="login-box">
-        <h2 style="color:#d4af37; margin-bottom: 24px; text-align:center;">LUXCY Admin Portal</h2>
-        <input type="text" id="adminUsername" placeholder="Username">
-        <div class="password-wrapper">
-            <input type="password" id="adminPassword" placeholder="Password">
-            <i class="fas fa-eye toggle-password" onclick="togglePassword('adminPassword', this)"></i>
+        <!-- Logo -->
+        <div style="text-align:center; margin-bottom: 32px;">
+            <div style="
+                width: 72px;
+                height: 72px;
+                background: linear-gradient(135deg, #D4AF37, #F5E7B2);
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 16px;
+                box-shadow: 0 8px 30px rgba(212,175,55,0.2);
+            ">
+                <i class="fas fa-crown" style="font-size: 36px; color: #0a0c10;"></i>
+            </div>
+            <h2 style="
+                font-size: 28px;
+                font-weight: 800;
+                background: linear-gradient(135deg, #D4AF37, #F5E7B2);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                letter-spacing: 2px;
+            ">LUXCY ADMIN</h2>
+            <p style="color: #94a3b8; font-size: 13px; margin-top: 4px;">Premium Control Panel</p>
         </div>
-        <button class="btn-admin" id="adminLoginBtn" style="width:100%;">Login</button>
-        <div id="loginError" style="color: #dc2626; margin-top: 12px; text-align: center;"></div>
+
+        <!-- Login Form -->
+        <div style="margin-bottom: 20px;">
+            <div style="position:relative; margin-bottom: 16px;">
+                <i class="fas fa-user" style="
+                    position: absolute;
+                    left: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #4a5568;
+                "></i>
+                <input type="text" id="adminUsername" placeholder="Username" style="
+                    width: 100%;
+                    padding: 14px 16px 14px 46px;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid #2d3748;
+                    border-radius: 14px;
+                    color: #e2e8f0;
+                    font-size: 14px;
+                    outline: none;
+                    transition: border-color 0.3s;
+                " onfocus="this.style.borderColor='#d4af37'" onblur="this.style.borderColor='#2d3748'">
+            </div>
+            <div style="position:relative; margin-bottom: 20px;">
+                <i class="fas fa-lock" style="
+                    position: absolute;
+                    left: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #4a5568;
+                "></i>
+                <input type="password" id="adminPassword" placeholder="Password" style="
+                    width: 100%;
+                    padding: 14px 16px 14px 46px;
+                    background: rgba(255,255,255,0.04);
+                    border: 1px solid #2d3748;
+                    border-radius: 14px;
+                    color: #e2e8f0;
+                    font-size: 14px;
+                    outline: none;
+                    transition: border-color 0.3s;
+                " onfocus="this.style.borderColor='#d4af37'" onblur="this.style.borderColor='#2d3748'">
+                <i class="fas fa-eye toggle-password" onclick="togglePassword('adminPassword', this)" style="
+                    position: absolute;
+                    right: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    color: #4a5568;
+                    transition: color 0.3s;
+                " onmouseover="this.style.color='#d4af37'" onmouseout="this.style.color='#4a5568'"></i>
+            </div>
+            <button id="adminLoginBtn" style="
+                width: 100%;
+                padding: 14px;
+                background: linear-gradient(135deg, #D4AF37, #F5E7B2);
+                border: none;
+                border-radius: 14px;
+                font-size: 16px;
+                font-weight: 700;
+                color: #0a120e;
+                cursor: pointer;
+                transition: all 0.3s;
+                box-shadow: 0 4px 20px rgba(212,175,55,0.15);
+            " onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 8px 30px rgba(212,175,55,0.25)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(212,175,55,0.15)'">
+                <i class="fas fa-arrow-right-to-bracket" style="margin-right: 8px;"></i>
+                Login
+            </button>
+        </div>
+
+        <!-- Error Message -->
+        <div id="loginError" style="color: #dc2626; text-align: center; font-size: 13px; min-height: 20px;"></div>
+
+        <!-- Connection Status -->
+        <div style="text-align:center; margin-top: 16px; border-top: 1px solid #2d3748; padding-top: 16px;">
+            <span style="color: #4a5568; font-size: 12px;">Secure Admin Access • v2.0</span>
+            <span style="color: #4a5568; font-size: 12px; margin-left: 12px;">
+                <i class="fas fa-circle" id="connectionDot" style="color: #f59e0b; font-size: 6px; margin-right: 4px;"></i>
+                <span id="connectionStatus" style="color: #94a3b8;">Connecting...</span>
+            </span>
+        </div>
     </div>
 </div>
 
+<!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel" style="display:none;">
     <div class="admin-container">
         <div class="sidebar">
@@ -297,7 +447,7 @@
     // VERSION CHECK & CACHE CLEAR
     // ============================================
     (function() {
-        const APP_VERSION = '2.0.9';
+        const APP_VERSION = '2.1.0';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -348,6 +498,10 @@
     console.log('✅ Firebase initialized (compat)');
     console.log('📁 Project:', firebaseConfig.projectId);
 
+    // Update connection status
+    document.getElementById('connectionStatus').textContent = 'Connected';
+    document.getElementById('connectionDot').style.color = '#10b981';
+
     // ============================================
     // GLOBALS
     // ============================================
@@ -374,7 +528,7 @@
         el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${err ? '#dc2626' : '#1a1e26'};padding:8px 20px;border-radius:40px;font-size:12px;z-index:100;font-weight:600;color:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.3);max-width:92%;text-align:center;border-left:3px solid #d4af37;`;
         el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
-        setTimeout(() => el.remove(), 2500);
+        setTimeout(() => el.remove(), 3000);
     }
 
     function showLoader() {
@@ -438,48 +592,216 @@
     }
 
     // ============================================
-    // AUTH FUNCTIONS (COMPAT)
+    // COMPLETE ADMIN LOGIN (MIXED APPROACH)
     // ============================================
-    async function login(username, password) {
+    async function adminLogin(username, password) {
+        const btn = document.getElementById('adminLoginBtn');
+        const originalText = btn.innerHTML;
+        const err = document.getElementById('loginError');
+        err.textContent = '';
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Authenticating...';
+        
         try {
-            // Check agencies
-            const snapA = await db.collection('agencies').get();
-            cachedData.agencies = []; 
-            snapA.forEach(d => cachedData.agencies.push({ id: d.id, ...d.data() }));
+            // === METHOD 1: Check Firebase Admin Users ===
+            console.log('🔍 Checking Firebase admin users...');
+            const snap = await db.collection('users')
+                .where('username', '==', username)
+                .where('role', '==', 'admin')
+                .get();
             
-            const agencyMatch = cachedData.agencies.find(a => a.username === username && a.password === password && a.status === 'active');
-            if (agencyMatch) {
-                return { success: true, data: agencyMatch, role: 'agency', perms: agencyMatch.permissions || {} };
-            }
-            
-            // Check admin users
-            const snap = await db.collection('users').where('username', '==', username).where('role', '==', 'admin').get();
             if (!snap.empty) {
                 const data = snap.docs[0].data();
                 if (data.password === password) {
-                    return { success: true, data: { id: snap.docs[0].id, ...data }, role: 'admin', perms: { all: true } };
+                    admin = { 
+                        id: snap.docs[0].id, 
+                        username: data.username, 
+                        role: 'admin', 
+                        perms: { all: true },
+                        loginTime: Date.now() 
+                    };
+                    sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                    toast('✅ Welcome, ' + admin.username + ' (Firebase)');
+                    showDashboard();
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return true;
                 }
             }
             
-            // Hardcoded fallback
-            if (username === 'hein' && password === '123456') {
-                return { success: true, data: { id: 'master', username: 'hein' }, role: 'master', perms: { all: true } };
-            }
-            if (username === 'admin' && password === 'admin123') {
-                return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
+            // === METHOD 2: Check Firebase Agencies ===
+            console.log('🔍 Checking Firebase agencies...');
+            const agencySnap = await db.collection('agencies')
+                .where('username', '==', username)
+                .where('password', '==', password)
+                .where('status', '==', 'active')
+                .get();
+            
+            if (!agencySnap.empty) {
+                const data = agencySnap.docs[0].data();
+                admin = { 
+                    id: agencySnap.docs[0].id, 
+                    username: data.username, 
+                    role: 'agency', 
+                    perms: data.permissions || {},
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                toast('✅ Welcome, ' + admin.username + ' (Agency)');
+                showDashboard();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return true;
             }
             
-            return { success: false };
+            // === METHOD 3: Hardcoded Master Admin ===
+            console.log('🔍 Checking hardcoded master admin...');
+            if (username === 'hein' && password === '123456') {
+                admin = { 
+                    id: 'master', 
+                    username: 'hein', 
+                    role: 'master', 
+                    perms: { all: true },
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                toast('✅ Welcome, Master ' + admin.username);
+                showDashboard();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return true;
+            }
+            
+            // === METHOD 4: Hardcoded Admin Fallback ===
+            console.log('🔍 Checking hardcoded admin fallback...');
+            if (username === 'admin' && password === 'admin123') {
+                admin = { 
+                    id: 'admin', 
+                    username: 'admin', 
+                    role: 'admin', 
+                    perms: { all: true },
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                toast('✅ Welcome, ' + admin.username + ' (Fallback)');
+                showDashboard();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return true;
+            }
+            
+            err.textContent = '❌ Invalid username or password';
+            toast('❌ Invalid credentials', true);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return false;
+            
         } catch (e) {
             console.error('Login error:', e);
+            
+            // === FALLBACK: If Firebase fails, try hardcoded ===
+            console.log('⚠️ Firebase error, trying hardcoded fallback...');
             if (username === 'admin' && password === 'admin123') {
-                return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
+                admin = { 
+                    id: 'admin', 
+                    username: 'admin', 
+                    role: 'admin', 
+                    perms: { all: true },
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                toast('✅ Welcome, ' + admin.username + ' (Emergency Fallback)');
+                showDashboard();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return true;
             }
+            
             if (username === 'hein' && password === '123456') {
-                return { success: true, data: { id: 'master', username: 'hein' }, role: 'master', perms: { all: true } };
+                admin = { 
+                    id: 'master', 
+                    username: 'hein', 
+                    role: 'master', 
+                    perms: { all: true },
+                    loginTime: Date.now() 
+                };
+                sessionStorage.setItem('adminSession', JSON.stringify(admin));
+                toast('✅ Welcome, Master ' + admin.username + ' (Emergency Fallback)');
+                showDashboard();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return true;
             }
-            return { success: false };
+            
+            err.textContent = '❌ Login error: ' + e.message;
+            toast('❌ Login error: ' + e.message, true);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return false;
         }
+    }
+
+    // ============================================
+    // SHOW DASHBOARD
+    // ============================================
+    function showDashboard() {
+        document.getElementById('adminLoginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadBaseData();
+        const saved = localStorage.getItem('adminSection');
+        renderSection(saved || 'dashboard');
+        applyPermissionsToNav();
+    }
+
+    // ============================================
+    // CHECK ADMIN SESSION
+    // ============================================
+    function checkAdminSession() {
+        const s = sessionStorage.getItem('adminSession');
+        if (s) {
+            try {
+                const d = JSON.parse(s);
+                if (Date.now() - d.loginTime < 24 * 60 * 60 * 1000) {
+                    admin = d;
+                    console.log('✅ Session restored for:', admin.username);
+                    return true;
+                }
+                sessionStorage.removeItem('adminSession');
+            } catch (e) {
+                sessionStorage.removeItem('adminSession');
+            }
+        }
+        return false;
+    }
+
+    // ============================================
+    // APPLY PERMISSIONS TO NAV
+    // ============================================
+    function applyPermissionsToNav() {
+        if (!admin) return;
+        const perms = admin.perms || {};
+        if (perms.all || admin.role === 'master' || admin.username === 'hein') {
+            document.querySelectorAll('.nav-item').forEach(nav => nav.style.display = 'flex');
+            return;
+        }
+        const navMap = {
+            'users': 'canManageMembers',
+            'vip': 'canManageVIP',
+            'injection': 'canInject',
+            'addOrder': 'canManageOrders',
+            'rechargeRequests': 'canManageRecharge',
+            'withdrawRequests': 'canManageWithdraw',
+            'loanRequests': 'canManageLoans',
+            'background': 'canEditSettings',
+            'chat': 'canChat',
+            'agency': 'canManageAgencies'
+        };
+        for (const [navId, permKey] of Object.entries(navMap)) {
+            const navElement = document.querySelector(`.nav-item[data-section="${navId}"]`);
+            if (navElement) navElement.style.display = perms[permKey] ? 'flex' : 'none';
+        }
+        document.querySelector('.nav-item[data-section="dashboard"]').style.display = 'flex';
     }
 
     // ============================================
@@ -490,42 +812,26 @@
         const password = document.getElementById('adminPassword').value;
         const err = document.getElementById('loginError');
         err.textContent = '';
-        const btn = this;
         
         if (!username || !password) {
-            err.textContent = 'Please enter username and password';
+            err.textContent = '⚠️ Please enter username and password';
             return;
         }
         
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Logging in...';
-        
-        try {
-            const res = await login(username, password);
-            if (res.success) {
-                admin = { 
-                    id: res.data.id, 
-                    username: res.data.username, 
-                    role: res.role, 
-                    perms: res.perms, 
-                    loginTime: Date.now() 
-                };
-                sessionStorage.setItem('adminSession', JSON.stringify(admin));
-                document.getElementById('adminLoginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadBaseData();
-                renderSection('dashboard');
-                toast(`✅ Welcome, ${admin.username}!`);
-            } else {
-                err.textContent = '❌ Invalid username or password';
-            }
-        } catch(e) {
-            console.error('Login error:', e);
-            err.textContent = '❌ Login error: ' + e.message;
-        }
-        btn.disabled = false;
-        btn.innerHTML = 'Login';
+        await adminLogin(username, password);
     };
+
+    // Enter key support
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('adminLoginBtn').click();
+        }
+    });
+    document.getElementById('adminUsername').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('adminPassword').focus();
+        }
+    });
 
     // ============================================
     // GOOGLE LOGIN
@@ -540,10 +846,7 @@
                 const d = snap.docs[0].data();
                 admin = { id: snap.docs[0].id, username: d.username, role: 'admin', perms: {all:true}, loginTime: Date.now() };
                 sessionStorage.setItem('adminSession', JSON.stringify(admin));
-                document.getElementById('adminLoginScreen').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadBaseData();
-                renderSection('dashboard');
+                showDashboard();
                 toast(`✅ Welcome Admin, ${admin.username}`);
             } else {
                 toast('This Google account is not registered as an Admin.', true);
@@ -553,19 +856,6 @@
             toast("Google Login failed: " + error.message, true);
         }
     });
-
-    function checkSession() {
-        const s = sessionStorage.getItem('adminSession');
-        if (s) {
-            const d = JSON.parse(s);
-            if (Date.now() - d.loginTime < 24*60*60*1000) {
-                admin = d;
-                return true;
-            }
-            sessionStorage.removeItem('adminSession');
-        }
-        return false;
-    }
 
     // ============================================
     // DATA LOADING
@@ -652,7 +942,7 @@
     }
 
     // ============================================
-    // RENDER FUNCTIONS (အတိုချုံးထားတယ်)
+    // RENDER FUNCTIONS
     // ============================================
     function renderSection(section) {
         currentSection = section;
@@ -820,7 +1110,7 @@
         document.getElementById('amCancel').onclick = () => document.body.removeChild(modal);
     }
 
-    // ---- USER ACTIONS (window functions) ----
+    // ---- USER ACTIONS ----
     window.setupOrder = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
@@ -894,25 +1184,6 @@
         } catch(e) { toast('Error: '+e.message, true); }
     };
 
-    // ---- APPLY VIP ----
-    window.applyVIP = async (id) => {
-        const u = cachedData.users.find(x => x.id === id);
-        if (!u) return;
-        const sel = document.getElementById(`vipSel_${id}`);
-        if (!sel) return;
-        const val = parseInt(sel.value);
-        if (val === 0) {
-            if (u.manualVIPLevel) {
-                await db.collection('users').doc(id).update({ manualVIPLevel: null });
-                toast('Auto mode');
-            } else toast('Already auto');
-        } else {
-            await db.collection('users').doc(id).update({ manualVIPLevel: val });
-            toast(`VIP ${val} set`);
-        }
-        renderSection('vip');
-    };
-
     // ---- VIP ----
     function renderVIP(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency').sort((a,b) => (b.balance||0) - (a.balance||0));
@@ -955,7 +1226,26 @@
         `;
     }
 
-    // ---- INJECTION (အတိုချုံး) ----
+    // ---- APPLY VIP ----
+    window.applyVIP = async (id) => {
+        const u = cachedData.users.find(x => x.id === id);
+        if (!u) return;
+        const sel = document.getElementById(`vipSel_${id}`);
+        if (!sel) return;
+        const val = parseInt(sel.value);
+        if (val === 0) {
+            if (u.manualVIPLevel) {
+                await db.collection('users').doc(id).update({ manualVIPLevel: null });
+                toast('Auto mode');
+            } else toast('Already auto');
+        } else {
+            await db.collection('users').doc(id).update({ manualVIPLevel: val });
+            toast(`VIP ${val} set`);
+        }
+        renderSection('vip');
+    };
+
+    // ---- INJECTION ----
     function renderInjection(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency');
         main.innerHTML = `
@@ -1213,7 +1503,7 @@
         document.getElementById('histClose').onclick = () => document.body.removeChild(modal);
     };
 
-    // ---- ORDERS (အတိုချုံး) ----
+    // ---- ORDERS ----
     function renderOrders(main) {
         main.innerHTML = `
             <div class="admin-card">
@@ -1426,7 +1716,7 @@
         renderSection('loanRequests');
     };
 
-    // ---- AGENCY (အတိုချုံး) ----
+    // ---- AGENCY ----
     function renderAgency(main) {
         main.innerHTML = `
             <div class="admin-card">
@@ -1561,7 +1851,7 @@
         };
     }
 
-    // ---- CHAT (အတိုချုံး) ----
+    // ---- CHAT ----
     function renderChat(main) {
         const customers = cachedData.users.filter(u => u.role !== 'admin' && u.role !== 'agency' && !u.disabled);
         main.innerHTML = `
@@ -1654,6 +1944,7 @@
         document.getElementById('adminUsername').value = '';
         document.getElementById('adminPassword').value = '';
         auth.signOut().catch(console.error);
+        toast('Signed out');
     };
 
     document.getElementById('refreshAdminBtn').onclick = async () => {
@@ -1666,7 +1957,7 @@
     // ============================================
     // INIT
     // ============================================
-    if (checkSession()) {
+    if (checkAdminSession()) {
         (async () => {
             const snapA = await db.collection('agencies').get();
             cachedData.agencies = []; snapA.forEach(d => cachedData.agencies.push({ id: d.id, ...d.data() }));
@@ -1679,6 +1970,7 @@
 
             document.getElementById('adminLoginScreen').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
+            applyPermissionsToNav();
             if (!unsubscribers['users']) {
                 unsubscribers['users'] = db.collection('users').limit(500).onSnapshot((snap) => {
                     cachedData.users = [];
@@ -1700,7 +1992,7 @@
         document.getElementById('adminPanel').style.display = 'none';
     }
 
-    console.log('✅ LUXCY Admin Panel loaded (compat)');
+    console.log('✅ LUXCY Admin Panel loaded (Mixed Approach)');
 </script>
 </body>
 </html>
