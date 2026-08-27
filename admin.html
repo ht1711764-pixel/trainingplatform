@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY ADMIN | Premium Control Panel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- ✅ FIXED: Google Fonts link ကိုပြင်ထားတယ် -->
+    <!-- ✅ FIXED: Font Awesome alternative CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* CSS အားလုံး ဒီမှာ... */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0c10; color: #e2e8f0; height: 100vh; overflow: hidden; }
         
@@ -360,7 +359,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.7';
+        const APP_VERSION = '2.0.8';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -645,21 +644,6 @@
             console.error("Google Login Error:", error);
             toast("Google Login failed: " + error.message, true);
         }
-    }
-
-    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-
-    function checkSession() {
-        const s = sessionStorage.getItem('adminSession');
-        if (s) {
-            const d = JSON.parse(s);
-            if (Date.now() - d.loginTime < 24*60*60*1000) {
-                admin = d;
-                return true;
-            }
-            sessionStorage.removeItem('adminSession');
-        }
-        return false;
     }
 
     // ===== DATA LOADING =====
@@ -1078,7 +1062,7 @@
         `;
     }
 
-    // ---- APPLY VIP - FIXED ----
+    // ---- APPLY VIP - FIXED (delete error ဖြေရှင်းပြီး) ----
     window.applyVIP = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
@@ -1087,6 +1071,7 @@
         const val = parseInt(sel.value);
         if (val === 0) {
             if (u.manualVIPLevel) {
+                // ✅ FIXED: delete အစား null ကိုသုံးပါ
                 await updateDoc(doc(db,'users',id), { manualVIPLevel: null });
                 toast('Auto mode');
             } else {
