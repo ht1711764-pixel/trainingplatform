@@ -4,92 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY | Luxury Travel & Earnings Platform</title>
-    <!-- Font Awesome + Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap 5 + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <style>
-        /* ===== ROOT VARIABLES - Gradient-Rich Glassmorphism ===== */
         :root {
-            --lux-gold: #D4AF37;
-            --lux-gold-light: #F5E7B2;
-            --lux-gold-dark: #C9A03D;
-            --lux-bg-dark: #0a0c10;
-            --lux-card-bg: rgba(20, 25, 35, 0.65);
-            --lux-border-gold: rgba(212, 175, 55, 0.35);
-            --lux-text-light: rgba(255,255,255,0.92);
-            --lux-text-muted: rgba(255,255,255,0.6);
-            --lux-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            --lux-radius: 28px;
-            --glass-blur: blur(18px);
-            --gradient-primary: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D, #E8D5A3);
-            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            --gold: #D4AF37;
+            --gold-light: #F5E7B2;
+            --gold-dark: #C9A03D;
+            --bg-dark: #0a0c10;
+            --bg-card: rgba(20, 25, 35, 0.85);
+            --border-gold: rgba(212, 175, 55, 0.25);
+            --text-light: rgba(255,255,255,0.92);
+            --text-muted: rgba(255,255,255,0.5);
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --radius: 24px;
+            --glass-blur: blur(16px);
+            --gradient-gold: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
+            --gradient-dark: linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--lux-bg-dark);
-            color: var(--lux-text-light);
+            background: var(--bg-dark);
+            color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
         }
         .app-container {
             width: 100%;
             min-height: 100vh;
-            background: radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.12) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 50%),
-                        linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
+            background: var(--gradient-dark);
             overflow-y: auto;
             position: relative;
             transition: background 0.4s ease;
         }
-        /* ===== MARQUEE ICON STRIP ===== */
-        .icon-marquee {
-            background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
-            border-radius: 60px;
-            padding: 10px 0;
-            margin-bottom: 24px;
-            border: 1px solid var(--lux-border-gold);
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-        }
-        .icon-marquee-track {
-            display: inline-block;
-            animation: marqueeScroll 28s linear infinite;
-            padding-left: 100%;
-        }
-        .icon-marquee-track i {
-            font-size: 26px;
-            margin: 0 20px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            opacity: 0.9;
-            transition: 0.3s;
-            filter: drop-shadow(0 0 8px rgba(212,175,55,0.2));
-        }
-        .icon-marquee-track i:hover {
-            opacity: 1;
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 15px rgba(212,175,55,0.5));
-        }
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        /* ===== PAGE & CARDS - GLASSMORPHISM ===== */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1a1e26; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        
         .page { display: none; padding: 28px 22px 100px; min-height: 100vh; position: relative; z-index: 1; }
-        .active-page { display: block; animation: pageEnter 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
-        @keyframes pageEnter { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .active-page { display: block; animation: pageEnter 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+        @keyframes pageEnter { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
         .luxury-header {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 60px;
             padding: 12px 24px;
@@ -99,13 +59,13 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            border: 1px solid var(--lux-border-gold);
-            box-shadow: var(--lux-shadow);
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow);
         }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .luxury-logo {
             width: 48px; height: 48px;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             border-radius: 16px;
             display: flex;
             align-items: center;
@@ -118,30 +78,60 @@
             font-family: 'Playfair Display', serif;
             font-size: 24px;
             font-weight: 800;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             letter-spacing: 2px;
             text-shadow: 0 0 30px rgba(212,175,55,0.15);
         }
+        
+        .refresh-btn {
+            background: rgba(212,175,55,0.12);
+            border: 1px solid var(--gold);
+            border-radius: 40px;
+            padding: 8px 18px;
+            cursor: pointer;
+            color: var(--gold);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .refresh-btn:hover { background: rgba(212,175,55,0.25); transform: scale(1.02); }
+        .refresh-btn:active { transform: rotate(180deg); }
+        .signout-icon {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-gold);
+            border-radius: 40px;
+            padding: 8px 18px;
+            cursor: pointer;
+            color: var(--gold);
+            transition: all 0.3s;
+        }
+        .signout-icon:hover { background: rgba(220,38,38,0.15); border-color: #dc2626; color: #dc2626; }
+        
         .card-lux {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
-            border-radius: var(--lux-radius);
+            border-radius: var(--radius);
             padding: 28px;
             margin-bottom: 24px;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: var(--lux-shadow);
+            box-shadow: var(--shadow);
         }
         .card-lux:hover {
             transform: translateY(-4px);
-            border-color: rgba(212, 175, 55, 0.6);
+            border-color: rgba(212, 175, 55, 0.5);
             box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.05);
         }
+        
         .btn-lux {
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             border: none;
             padding: 14px 24px;
             border-radius: 60px;
@@ -153,37 +143,43 @@
             transition: all 0.3s;
             box-shadow: 0 4px 20px rgba(212,175,55,0.25);
             letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-lux::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s;
         }
         .btn-lux:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.4); }
-        .btn-lux:hover::before { opacity: 1; }
         .btn-outline-lux {
             background: transparent;
-            border: 2px solid var(--lux-gold);
-            color: var(--lux-gold-light);
+            border: 2px solid var(--gold);
+            color: var(--gold-light);
             font-weight: 700;
             box-shadow: none;
         }
-        .btn-outline-lux:hover {
-            background: rgba(212,175,55,0.15);
-            box-shadow: 0 0 30px rgba(212,175,55,0.15);
+        .btn-outline-lux:hover { background: rgba(212,175,55,0.1); box-shadow: 0 0 30px rgba(212,175,55,0.15); }
+        .btn-google {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-gold);
+            color: var(--text-light);
+            padding: 14px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            margin-top: 12px;
         }
+        .btn-google:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.1); background: rgba(255,255,255,0.1); }
+        .btn-google i { font-size: 20px; color: #EA4335; }
+        
         .input-lux {
             background: rgba(0,0,0,0.5);
             backdrop-filter: blur(8px);
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             padding: 14px 20px;
             border-radius: 60px;
             width: 100%;
@@ -193,27 +189,17 @@
             outline: none;
             transition: all 0.3s;
         }
-        .input-lux:focus { 
-            border-color: var(--lux-gold); 
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.2), 0 0 30px rgba(212,175,55,0.05);
+        .input-lux:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.15), 0 0 30px rgba(212,175,55,0.05);
             background: rgba(0,0,0,0.7);
         }
-        .input-lux::placeholder { color: rgba(255,255,255,0.4); }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-        .text-gold { color: var(--lux-gold); }
-        .text-gold-light { color: var(--lux-gold-light); }
+        .input-lux::placeholder { color: rgba(255,255,255,0.35); }
         
-        /* ===== VIP BADGES ===== */
-        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
-        .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
-        .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
-        .vip-badge-4 { background: var(--gradient-primary); color: #0a120e; }
-        
-        /* ===== BOTTOM NAV - GLASS ===== */
         .bottom-nav-lux {
             background: rgba(5, 8, 6, 0.92);
             backdrop-filter: var(--glass-blur);
-            border-top: 1px solid var(--lux-border-gold);
+            border-top: 1px solid var(--border-gold);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -229,29 +215,64 @@
             align-items: center;
             gap: 4px;
             font-size: 10px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.4);
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
             padding: 4px 12px;
             border-radius: 20px;
+            border: none;
+            background: transparent;
         }
-        .nav-item-lux i { font-size: 22px; transition: all 0.3s; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent; opacity: 0.5; }
-        .nav-item-lux.active { color: var(--lux-gold); background: rgba(212,175,55,0.1); }
-        .nav-item-lux.active i { opacity: 1; transform: scale(1.1); }
-        .nav-item-lux:hover { color: var(--lux-gold); transform: translateY(-2px); }
+        .nav-item-lux i { font-size: 22px; transition: all 0.3s; color: rgba(255,255,255,0.4); }
+        .nav-item-lux.active { color: var(--gold); background: rgba(212,175,55,0.08); }
+        .nav-item-lux.active i { color: var(--gold); transform: scale(1.1); }
+        .nav-item-lux:hover { color: var(--gold); transform: translateY(-2px); }
         .hidden-nav { display: none !important; }
         
-        /* ===== CHAT - IMPROVED GLASS ===== */
+        .vip-badge-1 { background: linear-gradient(135deg, #6c757d, #495057); color: white; padding: 4px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; }
+        .vip-badge-2 { background: linear-gradient(135deg, #28a745, #1e7e34); color: white; }
+        .vip-badge-3 { background: linear-gradient(135deg, #17a2b8, #0f6b7a); color: white; }
+        .vip-badge-4 { background: var(--gradient-gold); color: #0a120e; }
+        
+        .balance-badge-lux {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 36px;
+            padding: 24px 28px;
+            border: 1px solid var(--gold);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .balance-badge-lux::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .balance-badge-lux .amount {
+            font-size: 52px;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
         .chat-container {
             display: flex;
             flex-direction: column;
             height: calc(100vh - 180px);
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 32px;
             overflow: hidden;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
         }
         .chat-messages {
             flex: 1;
@@ -260,7 +281,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0,0,0,0.2);
         }
         .chat-message {
             max-width: 80%;
@@ -273,16 +294,16 @@
         }
         .chat-message.sent {
             align-self: flex-end;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             color: #0a120e;
             border-bottom-right-radius: 4px;
             box-shadow: 0 4px 20px rgba(212,175,55,0.2);
         }
         .chat-message.received {
             align-self: flex-start;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
             color: #ffffff;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             border-bottom-left-radius: 4px;
         }
         .chat-message .chat-time {
@@ -297,7 +318,7 @@
             border-radius: 12px;
             margin-top: 8px;
             cursor: pointer;
-            border: 1px solid var(--lux-gold);
+            border: 1px solid var(--gold);
         }
         .chat-input-area {
             display: flex;
@@ -305,18 +326,18 @@
             padding: 16px 20px;
             background: rgba(0,0,0,0.4);
             backdrop-filter: blur(8px);
-            border-top: 1px solid var(--lux-border-gold);
+            border-top: 1px solid var(--border-gold);
             align-items: center;
         }
         .chat-input-area .input-lux { margin-bottom: 0; flex: 1; padding: 14px 20px; font-size: 15px; min-height: 52px; }
         .chat-input-area .btn-lux { width: auto; padding: 12px 28px; white-space: nowrap; font-size: 15px; min-height: 52px; }
-        .chat-input-area .chat-btn-icon {
-            background: rgba(212,175,55,0.12);
-            border: 1px solid var(--lux-border-gold);
+        .chat-btn-icon {
+            background: rgba(212,175,55,0.08);
+            border: 1px solid var(--border-gold);
             border-radius: 40px;
             padding: 10px 16px;
             cursor: pointer;
-            color: var(--lux-gold);
+            color: var(--gold);
             transition: all 0.3s;
             min-height: 52px;
             display: flex;
@@ -325,13 +346,12 @@
             font-size: 20px;
             backdrop-filter: blur(4px);
         }
-        .chat-input-area .chat-btn-icon:hover {
-            background: rgba(212,175,55,0.25);
-            border-color: var(--lux-gold);
+        .chat-btn-icon:hover {
+            background: rgba(212,175,55,0.2);
+            border-color: var(--gold);
             box-shadow: 0 0 25px rgba(212,175,55,0.15);
         }
         
-        /* ===== MODAL - GLASS ===== */
         .modal {
             position: fixed;
             top: 0; left: 0;
@@ -344,7 +364,7 @@
             backdrop-filter: blur(16px);
         }
         .modal-content {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 40px;
             padding: 32px;
@@ -352,11 +372,10 @@
             max-width: 550px;
             max-height: 85vh;
             overflow-y: auto;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
         
-        /* ===== POPUP AD ===== */
         .popup-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -374,13 +393,13 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         .popup-card {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 40px;
             padding: 32px;
             max-width: 480px;
             width: 92%;
-            border: 1px solid var(--lux-gold);
+            border: 1px solid var(--gold);
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             position: relative;
             text-align: center;
@@ -390,13 +409,13 @@
             max-height: 250px;
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
         }
         .popup-close-btn {
             position: absolute;
             top: 12px;
             right: 16px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
             border: none;
             color: #fff;
             font-size: 24px;
@@ -411,90 +430,220 @@
             backdrop-filter: blur(4px);
         }
         .popup-close-btn:hover {
-            background: rgba(220,38,38,0.5);
+            background: rgba(220,38,38,0.4);
             transform: rotate(90deg);
         }
         .popup-title {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
             font-weight: 700;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 12px;
         }
-        .popup-subtitle { color: var(--lux-text-light); font-size: 16px; line-height: 1.6; }
+        .popup-subtitle { color: var(--text-light); font-size: 16px; line-height: 1.6; }
         
-        /* ===== P2P & KYC SPECIFIC ===== */
-        .kyc-status-badge {
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
+        .upload-area-sm {
+            border: 2px dashed var(--border-gold);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+            cursor: pointer;
+            margin-bottom: 12px;
+            color: rgba(255,255,255,0.6);
+            transition: all 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        .upload-area-sm:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+        
+        .injection-badge {
+            background: linear-gradient(135deg, #f59e0b, #ea580c);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 700;
+            animation: pulse 1s infinite;
             display: inline-block;
         }
-        .kyc-pending { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid #f59e0b; }
-        .kyc-approved { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; }
-        .kyc-rejected { background: rgba(220,38,38,0.2); color: #dc2626; border: 1px solid #dc2626; }
-        .kyc-none { background: rgba(255,255,255,0.05); color: var(--lux-text-muted); border: 1px solid var(--lux-border-gold); }
-        
-        .p2p-order-card {
+        .order-detail-card.injection-order { border: 2px solid #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.2); }
+        .order-image {
+            width: 100%;
+            height: 180px;
             background: rgba(0,0,0,0.3);
-            border-radius: 20px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-gold);
+        }
+        .amount-big {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .receipt-img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 16px;
+            margin-top: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px;
+            border: 1px solid var(--gold);
+        }
+        .history-item {
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--gold);
+        }
+        .wallet-address-box {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
             padding: 18px;
-            margin-bottom: 14px;
-            border: 1px solid var(--lux-border-gold);
+            border-radius: 20px;
+            word-break: break-all;
+            margin: 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border: 1px solid var(--gold);
+        }
+        .wallet-address-text {
+            font-family: monospace;
+            font-size: 14px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
+        .copy-btn {
+            background: var(--gradient-gold);
+            color: #0a120e;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
             transition: all 0.3s;
         }
-        .p2p-order-card:hover {
-            border-color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
+        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(212,175,55,0.2); }
+        .profile-photo-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 0 0 4px rgba(212,175,55,0.15), 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            cursor: pointer;
         }
-        .currency-flag { font-size: 28px; margin-right: 8px; }
-        .exchange-rate-display {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 12px 16px;
+        .profile-photo-large:hover { transform: scale(1.03); }
+        .profile-photo-large img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-photo-large i { font-size: 64px; color: #0a120e; }
+        .photo-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 75px;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(212,175,55,0.15);
+        }
+        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-preview i { font-size: 80px; color: #0a120e; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 18px;
             text-align: center;
-            font-size: 14px;
-            color: var(--lux-text-muted);
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid rgba(212,175,55,0.1);
+            transition: all 0.3s;
         }
-        .exchange-rate-display strong { color: var(--lux-gold); font-size: 18px; }
-        
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .page { padding: 16px 12px 100px; }
-            .luxury-header { padding: 10px 16px; border-radius: 40px; }
-            .luxury-brand { font-size: 20px; }
-            .icon-marquee-track i { font-size: 20px; margin: 0 12px; }
-            .btn-lux { font-size: 14px; padding: 12px 18px; }
-            .card-lux { padding: 20px; }
-            .modal-content { padding: 24px; }
-            .bottom-nav-lux { padding: 8px 12px 20px; }
-            .nav-item-lux i { font-size: 20px; }
-            .popup-card { padding: 24px; }
-            .popup-title { font-size: 22px; }
-            .chat-input-area { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
-            .chat-input-area .input-lux { min-height: 44px; font-size: 14px; }
-            .chat-input-area .btn-lux { min-height: 44px; padding: 10px 18px; font-size: 14px; }
-            .chat-input-area .chat-btn-icon { min-height: 44px; padding: 8px 12px; font-size: 18px; }
+        .stat-card:hover { border-color: var(--border-gold); box-shadow: 0 0 30px rgba(212,175,55,0.05); }
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
-        @media (max-width: 480px) {
-            .luxury-brand { font-size: 18px; }
-            .icon-marquee-track i { font-size: 16px; margin: 0 8px; }
-            .btn-lux { font-size: 13px; padding: 10px 14px; }
-            .card-lux { padding: 16px; }
-            .chat-message { max-width: 95%; font-size: 14px; }
-            .popup-card { padding: 18px; }
-            .nav-item-lux { padding: 2px 8px; font-size: 9px; }
-            .nav-item-lux i { font-size: 18px; }
+        .stat-label { color: var(--text-muted); }
+        .invite-card {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 16px;
+            text-align: center;
+            border: 1px solid var(--border-gold);
         }
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: #1a1e26; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--lux-gold); border-radius: 10px; }
-        
+        .invite-code {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .live-feed-container {
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+        .live-feed-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(212,175,55,0.08);
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .live-feed-item:last-child { border-bottom: none; }
+        .progress-bar {
+            background: rgba(255,255,255,0.06);
+            border-radius: 20px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--gradient-gold);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
         .real-time-indicator {
             position: fixed;
             bottom: 90px;
@@ -511,43 +660,23 @@
             border: 1px solid rgba(255,255,255,0.1);
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
-        
-        .upload-area-sm {
-            border: 2px dashed var(--lux-border-gold);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            background: rgba(0,0,0,0.2);
-            cursor: pointer;
-            margin-bottom: 12px;
-            color: rgba(255,255,255,0.6);
-            transition: all 0.3s;
+        .commission-info {
+            background: rgba(212,175,55,0.04);
             backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(212,175,55,0.1);
         }
-        .upload-area-sm:hover { border-color: var(--lux-gold); background: rgba(212,175,55,0.05); }
-        
-        .injection-badge {
-            background: linear-gradient(135deg, #f59e0b, #ea580c);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            animation: pulse 1s infinite;
-            display: inline-block;
-        }
-        .order-detail-card.injection-order {
-            border: 2px solid #f59e0b;
-            box-shadow: 0 0 30px rgba(245,158,11,0.2);
-        }
-        
+        .commission-info h4 { color: var(--gold); margin-bottom: 16px; }
+        .commission-info p { color: var(--text-light); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
         .company-section {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 40px;
             padding: 40px;
             margin-bottom: 30px;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
         }
         .company-stats {
             display: grid;
@@ -559,14 +688,11 @@
         .stat-number {
             font-size: 36px;
             font-weight: 800;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .company-description { color: var(--lux-text-light); line-height: 1.8; }
-        .company-description p { margin-bottom: 12px; }
-        
         .logo-container {
             display: flex;
             gap: 20px;
@@ -577,85 +703,21 @@
         .logo-item {
             width: 80px;
             height: 80px;
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             overflow: hidden;
             transition: all 0.3s;
         }
-        .logo-item:hover {
-            border-color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.1);
-            transform: translateY(-4px);
-        }
+        .logo-item:hover { border-color: var(--gold); box-shadow: 0 0 30px rgba(212,175,55,0.1); transform: translateY(-4px); }
         .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .logo-item i { font-size: 40px; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        
-        .photo-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 75px;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid var(--lux-gold);
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(212,175,55,0.15);
-        }
-        .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-preview i { font-size: 80px; color: #0a120e; }
-        .profile-photo-large {
-            width: 120px;
-            height: 120px;
-            border-radius: 60px;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid var(--lux-gold);
-            overflow: hidden;
-            box-shadow: 0 0 0 4px rgba(212,175,55,0.15), 0 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-        .profile-photo-large:hover { transform: scale(1.03); }
-        .profile-photo-large img { width: 100%; height: 100%; object-fit: cover; }
-        .profile-photo-large i { font-size: 64px; color: #0a120e; }
-        
-        .balance-badge-lux {
-            background: var(--lux-card-bg);
-            backdrop-filter: var(--glass-blur);
-            border-radius: 36px;
-            padding: 24px 28px;
-            border: 1px solid var(--lux-gold);
-            box-shadow: var(--lux-shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        .balance-badge-lux::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .balance-badge-lux .amount {
-            font-size: 52px;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
+        .logo-item i { font-size: 40px; background: var(--gradient-gold); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .company-description { color: var(--text-light); line-height: 1.8; }
+        .company-description p { margin-bottom: 12px; }
         .services-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -663,270 +725,81 @@
             margin-bottom: 48px;
         }
         .service-card {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 28px;
             padding: 32px 24px;
             text-align: center;
             cursor: pointer;
             transition: all 0.4s;
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
         }
-        .service-card:hover {
-            transform: translateY(-8px);
-            background: rgba(212,175,55,0.06);
-            border-color: rgba(212,175,55,0.6);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+        .service-card:hover { transform: translateY(-8px); background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .service-icon {
             font-size: 48px;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 20px;
         }
-        .service-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--lux-gold-light);
-            margin-bottom: 12px;
-        }
-        .service-desc {
-            font-size: 13px;
-            color: var(--lux-text-muted);
-        }
+        .service-title { font-size: 20px; font-weight: 700; color: var(--gold-light); margin-bottom: 12px; }
+        .service-desc { font-size: 13px; color: var(--text-muted); }
         @media (max-width: 992px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 576px) { .services-grid { grid-template-columns: 1fr; } }
         
         .luxury-hero {
-            background: var(--lux-card-bg);
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
             border-radius: 48px;
             padding: 60px 48px;
             margin-bottom: 40px;
-            border: 1px solid var(--lux-border-gold);
-            box-shadow: var(--lux-shadow);
+            border: 1px solid var(--border-gold);
+            box-shadow: var(--shadow);
         }
         .hero-title {
             font-family: 'Playfair Display', serif;
             font-size: 64px;
             font-weight: 800;
-            background: var(--gradient-primary);
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             margin-bottom: 20px;
             text-shadow: 0 0 60px rgba(212,175,55,0.1);
         }
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--lux-text-light);
-            margin-bottom: 40px;
-            max-width: 550px;
-            line-height: 1.6;
-        }
+        .hero-subtitle { font-size: 18px; color: var(--text-light); margin-bottom: 40px; max-width: 550px; line-height: 1.6; }
         @media (max-width: 768px) { .hero-title { font-size: 36px; } .luxury-hero { padding: 32px 24px; } }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .stat-card {
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(4px);
-            border-radius: 24px;
-            padding: 18px;
-            text-align: center;
-            border: 1px solid rgba(212,175,55,0.1);
-            transition: all 0.3s;
-        }
-        .stat-card:hover {
-            border-color: var(--lux-border-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-        }
-        .stat-value {
-            font-size: 24px;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .stat-label { color: var(--lux-text-muted); }
-        
-        .invite-card {
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(4px);
-            border-radius: 24px;
-            padding: 16px;
-            margin-top: 16px;
-            text-align: center;
-            border: 1px solid var(--lux-border-gold);
-        }
-        .invite-code {
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: 3px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .live-feed-container {
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(4px);
-            border-radius: 24px;
-            padding: 16px;
-            margin-top: 20px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid rgba(212,175,55,0.1);
-        }
-        .live-feed-item {
-            padding: 10px;
-            border-bottom: 1px solid rgba(212,175,55,0.08);
-            font-size: 12px;
-            color: var(--lux-text-light);
-        }
-        .live-feed-item:last-child { border-bottom: none; }
-        
-        .progress-bar {
-            background: rgba(255,255,255,0.06);
-            border-radius: 20px;
-            height: 8px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            background: var(--gradient-primary);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s;
-        }
-        
-        .wallet-address-box {
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
-            padding: 18px;
-            border-radius: 20px;
-            word-break: break-all;
-            margin: 16px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid var(--lux-gold);
-        }
-        .wallet-address-text {
-            font-family: monospace;
-            font-size: 14px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
-        }
-        .copy-btn {
-            background: var(--gradient-primary);
-            color: #0a120e;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s;
-        }
-        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(212,175,55,0.2); }
-        
-        .amount-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 20px 0;
-        }
-        .amount-btn {
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(4px);
-            border: 1px solid var(--lux-border-gold);
-            padding: 10px 18px;
-            border-radius: 40px;
-            cursor: pointer;
-            text-align: center;
-            color: var(--lux-gold-light);
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 60px;
-        }
-        .amount-btn:hover {
-            background: rgba(212,175,55,0.1);
-            border-color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-        }
-        .amount-btn.active {
-            background: rgba(212,175,55,0.15);
-            border-color: var(--lux-gold);
-        }
-        
-        .order-detail-card {
-            background: var(--lux-card-bg);
+        .icon-marquee {
+            background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
-            border-radius: 32px;
-            padding: 24px;
+            border-radius: 60px;
+            padding: 10px 0;
             margin-bottom: 24px;
-            border: 1px solid var(--lux-gold);
-            position: relative;
+            border: 1px solid var(--border-gold);
             overflow: hidden;
-        }
-        .order-image {
+            white-space: nowrap;
             width: 100%;
-            height: 180px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            overflow: hidden;
-            border: 1px solid var(--lux-border-gold);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
         }
-        .amount-big {
-            font-size: 28px;
-            font-weight: 800;
-            background: var(--gradient-primary);
+        .icon-marquee-track {
+            display: inline-block;
+            animation: marqueeScroll 28s linear infinite;
+            padding-left: 100%;
+        }
+        .icon-marquee-track i {
+            font-size: 26px;
+            margin: 0 20px;
+            background: var(--gradient-gold);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            opacity: 0.9;
+            transition: 0.3s;
+            filter: drop-shadow(0 0 8px rgba(212,175,55,0.2));
         }
-        
-        .receipt-img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 16px;
-            margin-top: 12px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px;
-            border: 1px solid var(--lux-gold);
-        }
-        
-        .history-item {
-            background: rgba(0,0,0,0.25);
-            backdrop-filter: blur(4px);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--lux-gold);
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(212,175,55,0.06);
-        }
-        .info-row:last-child { border-bottom: none; }
+        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
         
         .language-selector {
             display: flex;
@@ -945,130 +818,96 @@
             border-radius: 16px;
             background: rgba(0,0,0,0.2);
             backdrop-filter: blur(4px);
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             transition: all 0.3s;
         }
         .lang-option:hover, .lang-option.active {
-            border-color: var(--lux-gold);
+            border-color: var(--gold);
             background: rgba(212,175,55,0.08);
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(212,175,55,0.05);
         }
-        .lang-name { color: var(--lux-text-light); font-size: 13px; }
-        
-        .commission-info {
-            background: rgba(212,175,55,0.04);
-            backdrop-filter: blur(4px);
-            border-radius: 24px;
-            padding: 20px;
-            margin-top: 20px;
-            border: 1px solid rgba(212,175,55,0.1);
+        .lang-name { color: var(--text-light); font-size: 13px; }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(212,175,55,0.06);
         }
-        .commission-info h4 { color: var(--lux-gold); margin-bottom: 16px; }
-        .commission-info p { color: var(--lux-text-light); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
-        
+        .info-row:last-child { border-bottom: none; }
+        .amount-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .amount-btn {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--border-gold);
+            padding: 10px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            text-align: center;
+            color: var(--gold-light);
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 60px;
+        }
+        .amount-btn:hover { background: rgba(212,175,55,0.1); border-color: var(--gold); }
+        .amount-btn.active { background: rgba(212,175,55,0.15); border-color: var(--gold); }
+        .stars { display: flex; gap: 10px; cursor: pointer; margin-top: 10px; flex-wrap: wrap; }
+        .stars i { font-size: 28px; color: rgba(255,255,255,0.15); transition: all 0.3s; }
+        .stars i.active-star { color: #F5B042; text-shadow: 0 0 30px rgba(245,176,66,0.3); }
+        .stars i:hover { transform: scale(1.1); }
         .back-btn {
             background: rgba(0,0,0,0.3);
             backdrop-filter: blur(4px);
-            border: 1px solid var(--lux-border-gold);
+            border: 1px solid var(--border-gold);
             border-radius: 40px;
             padding: 10px 20px;
             cursor: pointer;
-            color: var(--lux-gold);
+            color: var(--gold);
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 24px;
             transition: all 0.3s;
         }
-        .back-btn:hover {
-            background: rgba(212,175,55,0.08);
-            transform: translateX(-3px);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-        }
+        .back-btn:hover { background: rgba(212,175,55,0.08); transform: translateX(-3px); }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .text-gold { color: var(--gold); }
+        .text-gold-light { color: var(--gold-light); }
+        .text-muted { color: var(--text-muted); }
+        .text-light { color: var(--text-light); }
         
-        .stars { display: flex; gap: 10px; cursor: pointer; margin-top: 10px; flex-wrap: wrap; }
-        .stars i { font-size: 28px; color: rgba(255,255,255,0.15); transition: all 0.3s; }
-        .stars i.active-star { color: #F5B042; text-shadow: 0 0 30px rgba(245,176,66,0.3); }
-        .stars i:hover { transform: scale(1.1); }
-        
-        /* ===== P2P Page Styles ===== */
-        .p2p-tab {
-            padding: 10px 24px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--lux-border-gold);
-            color: var(--lux-text-muted);
+        @media (max-width: 768px) {
+            .page { padding: 16px 12px 100px; }
+            .luxury-header { padding: 10px 16px; border-radius: 40px; }
+            .luxury-brand { font-size: 20px; }
+            .icon-marquee-track i { font-size: 20px; margin: 0 12px; }
+            .btn-lux { font-size: 14px; padding: 12px 18px; }
+            .card-lux { padding: 20px; }
+            .modal-content { padding: 24px; }
+            .bottom-nav-lux { padding: 8px 12px 20px; }
+            .nav-item-lux i { font-size: 20px; }
+            .popup-card { padding: 24px; }
+            .popup-title { font-size: 22px; }
+            .chat-input-area { padding: 12px 14px; gap: 8px; flex-wrap: wrap; }
+            .chat-input-area .input-lux { min-height: 44px; font-size: 14px; }
+            .chat-input-area .btn-lux { min-height: 44px; padding: 10px 18px; font-size: 14px; }
+            .chat-input-area .chat-btn-icon { min-height: 44px; padding: 8px 12px; font-size: 18px; }
+            .balance-badge-lux .amount { font-size: 32px; }
         }
-        .p2p-tab.active {
-            background: rgba(212,175,55,0.12);
-            border-color: var(--lux-gold);
-            color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-        }
-        .p2p-tab:hover {
-            border-color: var(--lux-gold);
-            color: var(--lux-gold-light);
-        }
-        .currency-selector {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-        }
-        .currency-option {
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--lux-border-gold);
-            color: var(--lux-text-muted);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .currency-option.active {
-            background: rgba(212,175,55,0.12);
-            border-color: var(--lux-gold);
-            color: var(--lux-gold);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
-        }
-        .currency-option:hover {
-            border-color: var(--lux-gold);
-            color: var(--lux-gold-light);
-        }
-        .currency-option .flag { font-size: 24px; }
-        .p2p-action-btn {
-            padding: 12px 30px;
-            border-radius: 40px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 120px;
-        }
-        .p2p-action-btn.buy {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-        }
-        .p2p-action-btn.sell {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-        }
-        .p2p-action-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 30px rgba(212,175,55,0.15);
-        }
-        .p2p-action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        @media (max-width: 480px) {
+            .luxury-brand { font-size: 18px; }
+            .icon-marquee-track i { font-size: 16px; margin: 0 8px; }
+            .btn-lux { font-size: 13px; padding: 10px 14px; }
+            .card-lux { padding: 16px; }
+            .chat-message { max-width: 95%; font-size: 14px; }
+            .popup-card { padding: 18px; }
+            .nav-item-lux { padding: 2px 8px; font-size: 9px; }
+            .nav-item-lux i { font-size: 18px; }
         }
     </style>
 </head>
@@ -1080,9 +919,8 @@
     <div id="landingPage" class="page active-page">
         <div class="luxury-header">
             <div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="brandName">LUXCY</div></div>
-            <div class="company-info-btn" id="companyInfoBtn" style="background:rgba(212,175,55,0.08);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:10px;color:var(--lux-gold);font-weight:600;"><i class="fas fa-info-circle"></i><span id="companyInfoText">About Company</span></div>
+            <div class="company-info-btn" id="companyInfoBtn" style="background:rgba(212,175,55,0.08);backdrop-filter:blur(8px);border:1px solid var(--border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:10px;color:var(--gold);font-weight:600;"><i class="fas fa-info-circle"></i><span id="companyInfoText">About Company</span></div>
         </div>
-        <!-- MARQUEE ICON STRIP -->
         <div class="icon-marquee">
             <div class="icon-marquee-track">
                 <i class="fas fa-plane"></i><i class="fas fa-hotel"></i><i class="fas fa-train"></i><i class="fas fa-tasks"></i>
@@ -1090,15 +928,11 @@
                 <i class="fas fa-bus"></i><i class="fas fa-bicycle"></i><i class="fas fa-map-marked-alt"></i><i class="fas fa-passport"></i>
                 <i class="fas fa-credit-card"></i><i class="fas fa-wallet"></i><i class="fas fa-coins"></i><i class="fas fa-gem"></i>
                 <i class="fas fa-rocket"></i><i class="fas fa-crown"></i><i class="fas fa-shield-alt"></i><i class="fas fa-lock"></i>
-                <i class="fas fa-key"></i><i class="fas fa-ticket-alt"></i><i class="fas fa-bed"></i><i class="fas fa-utensils"></i>
-                <i class="fas fa-dumbbell"></i><i class="fas fa-swimmer"></i><i class="fas fa-sun"></i><i class="fas fa-moon"></i>
-                <i class="fas fa-cloud-sun"></i><i class="fas fa-snowflake"></i><i class="fas fa-tree"></i><i class="fas fa-mountain"></i>
-                <i class="fas fa-camera"></i><i class="fas fa-video"></i><i class="fas fa-music"></i><i class="fas fa-headphones"></i>
             </div>
         </div>
         <div id="logoContainer" class="logo-container"></div>
         <div class="luxury-hero">
-            <div class="hero-badge" style="display:inline-block;background:rgba(212,175,55,0.1);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--lux-gold);margin-bottom:20px;letter-spacing:2px;">PREMIUM TRAVEL & EARNINGS</div>
+            <div class="hero-badge" style="display:inline-block;background:rgba(212,175,55,0.1);backdrop-filter:blur(8px);border:1px solid var(--border-gold);border-radius:40px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--gold);margin-bottom:20px;letter-spacing:2px;">PREMIUM TRAVEL & EARNINGS</div>
             <h1 class="hero-title" id="heroTitle">LUXCY</h1>
             <p class="hero-subtitle" id="heroSubtitle">Experience luxury travel while earning daily commissions. Book flights, hotels, trains and complete tasks to grow your wealth.</p>
             <div class="services-grid">
@@ -1108,24 +942,24 @@
                 <div class="service-card"><div class="service-icon"><i class="fas fa-tasks"></i></div><div class="service-title" id="serviceTasksTitle">Task Platform</div><div class="service-desc" id="serviceTasksDesc">Earn up to 1% daily</div></div>
             </div>
             <div class="action-buttons-home" style="display:flex;gap:20px;justify-content:center;margin-top:40px;flex-wrap:wrap;">
-                <button class="btn-home btn-login" id="landingLoginBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;border:none;background:var(--gradient-primary);color:#0a120e;box-shadow:0 5px 25px rgba(212,175,55,0.25);"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
-                <button class="btn-home btn-register" id="landingRegisterBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;background:transparent;border:2px solid var(--lux-gold);color:var(--lux-gold-light);"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
+                <button class="btn-home btn-login" id="landingLoginBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;border:none;background:var(--gradient-gold);color:#0a120e;box-shadow:0 5px 25px rgba(212,175,55,0.25);"><i class="fas fa-sign-in-alt"></i> <span id="loginBtnText">Login</span></button>
+                <button class="btn-home btn-register" id="landingRegisterBtn" style="padding:16px 48px;border-radius:60px;font-weight:700;font-size:16px;cursor:pointer;transition:all 0.3s;background:transparent;border:2px solid var(--gold);color:var(--gold-light);"><i class="fas fa-user-plus"></i> <span id="registerBtnText">Register</span></button>
             </div>
             <div style="position:relative;margin:16px 0 8px;width:100%;margin-top:20px;">
-                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
-                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or continue with</span>
+                <div style="border-top:1px solid var(--border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--text-muted);font-size:11px;">or continue with</span>
             </div>
-            <button class="btn-google" id="landingGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);margin-top:12px;"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign in with Google</button>
+            <button class="btn-google" id="landingGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
         </div>
         <div class="company-section" id="companySection">
             <div class="company-header" style="display:flex;align-items:center;gap:24px;margin-bottom:30px;flex-wrap:wrap;">
-                <div class="company-logo" id="companyLogo" style="width:80px;height:80px;background:var(--gradient-primary);border-radius:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(212,175,55,0.1);"><i class="fas fa-globe-asia" style="font-size:48px;color:#0a0c10;"></i></div>
-                <div><div class="company-name" id="companyNameText" style="font-family:'Playfair Display',serif;font-size:32px;font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent;">LUXCY Travel & Task</div><div class="text-muted" id="companyTaglineText" style="color:var(--lux-text-muted);">Global Luxury Travel & Earning Platform</div></div>
+                <div class="company-logo" id="companyLogo" style="width:80px;height:80px;background:var(--gradient-gold);border-radius:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(212,175,55,0.1);"><i class="fas fa-globe-asia" style="font-size:48px;color:#0a0c10;"></i></div>
+                <div><div class="company-name" id="companyNameText" style="font-family:'Playfair Display',serif;font-size:32px;font-weight:800;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;">LUXCY Travel & Task</div><div class="text-muted" id="companyTaglineText" style="color:var(--text-muted);">Global Luxury Travel & Earning Platform</div></div>
             </div>
             <div class="company-stats">
-                <div class="stat-item"><div class="stat-number" id="stat1Number">50M+</div><div class="stat-label" id="stat1Label" style="color:var(--lux-text-muted);">Happy Customers</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat2Number">200+</div><div class="stat-label" id="stat2Label" style="color:var(--lux-text-muted);">Countries & Regions</div></div>
-                <div class="stat-item"><div class="stat-number" id="stat3Number">1M+</div><div class="stat-label" id="stat3Label" style="color:var(--lux-text-muted);">Daily Bookings</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat1Number">50M+</div><div class="stat-label" id="stat1Label" style="color:var(--text-muted);">Happy Customers</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat2Number">200+</div><div class="stat-label" id="stat2Label" style="color:var(--text-muted);">Countries & Regions</div></div>
+                <div class="stat-item"><div class="stat-number" id="stat3Number">1M+</div><div class="stat-label" id="stat3Label" style="color:var(--text-muted);">Daily Bookings</div></div>
             </div>
             <div class="company-description" id="companyDescription"><p>LUXCY is a premier luxury travel and task platform that combines affordable travel bookings with earning opportunities.</p><p>With over 50 million satisfied customers worldwide, we provide flights, hotels, train tickets, and car rentals at the best prices.</p><p>Join millions of users who trust LUXCY for their travel needs and extra income. 24/7 customer support, secure payments, and best price guarantee.</p></div>
         </div>
@@ -1134,63 +968,69 @@
     <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage" class="page">
         <div class="back-btn" id="backToLandingFromLogin"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
-        <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:var(--gradient-primary);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--lux-text-muted);">Premium Task Ecosystem</p></div>
-        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button>
+        <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--text-muted);">Premium Task Ecosystem</p></div>
+        <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button>
             <div style="position:relative;margin:16px 0 8px;width:100%;">
-                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
-                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or</span>
+                <div style="border-top:1px solid var(--border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--text-muted);font-size:11px;">or</span>
             </div>
-            <button class="btn-google" id="loginGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign in with Google</button>
-            <div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--lux-text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Register →</span></div>
+            <button class="btn-google" id="loginGoogleBtn"><i class="fab fa-google"></i> Sign in with Google</button>
+            <div class="flex-between" style="margin-top:20px;"><span class="text-muted" id="forgotPasswordText" style="color:var(--text-muted);">Forgot Password?</span><span id="goToRegisterBtn" style="color:var(--gold);font-weight:800;cursor:pointer;">Register →</span></div>
         </div>
     </div>
 
     <!-- ===== REGISTER PAGE ===== -->
     <div id="registerPage" class="page">
         <div class="back-btn" id="backToLandingFromRegister"><i class="fas fa-arrow-left"></i> <span id="backToHomeTextReg">Back to Home</span></div>
-        <div style="text-align:center;margin-bottom:20px;"><h2 style="color:var(--lux-gold);font-family:'Playfair Display',serif;" id="registerTitle">Create Account</h2></div>
-        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--lux-gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button>
+        <div style="text-align:center;margin-bottom:20px;"><h2 style="color:var(--gold);font-family:'Playfair Display',serif;" id="registerTitle">Create Account</h2></div>
+        <div class="card-lux"><input class="input-lux" id="regUsername" placeholder="Username"><input class="input-lux" id="regEmail" placeholder="Email"><input class="input-lux" id="regPhone" placeholder="Phone Number"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div><input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)"><button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button>
             <div style="position:relative;margin:16px 0 8px;width:100%;">
-                <div style="border-top:1px solid var(--lux-border-gold);position:absolute;top:50%;left:0;right:0;"></div>
-                <span style="background:var(--lux-card-bg);position:relative;padding:0 12px;color:var(--lux-text-muted);font-size:11px;">or</span>
+                <div style="border-top:1px solid var(--border-gold);position:absolute;top:50%;left:0;right:0;"></div>
+                <span style="background:var(--bg-card);position:relative;padding:0 12px;color:var(--text-muted);font-size:11px;">or</span>
             </div>
-            <button class="btn-google" id="registerGoogleBtn" style="background:#ffffff;border:1px solid var(--lux-border-gold);color:var(--lux-text-light);padding:14px 24px;border-radius:60px;font-weight:700;cursor:pointer;transition:all 0.3s;font-size:16px;width:100%;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,0.2);"><i class="fab fa-google" style="font-size:20px;color:#EA4335;"></i> Sign up with Google</button>
-            <div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--lux-gold);font-weight:800;cursor:pointer;">Login</span></div>
+            <button class="btn-google" id="registerGoogleBtn"><i class="fab fa-google"></i> Sign up with Google</button>
+            <div style="text-align:center;margin-top:18px;" id="haveAccountText">Have account? <span id="goToLoginFromRegBtn" style="color:var(--gold);font-weight:800;cursor:pointer;">Login</span></div>
         </div>
     </div>
 
     <!-- ===== HOME PAGE ===== -->
     <div id="homePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">LUXCY</div></div><div style="display:flex;gap:12px;"><div class="refresh-btn" id="refreshHomeBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div><div class="signout-icon" id="signOutBtnHome" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div></div></div>
-        <div class="flex-between" style="margin-bottom:16px;"><div><span class="text-muted" id="welcomeText" style="color:var(--lux-text-muted);">Welcome</span> <strong id="homeFullName" style="color:var(--lux-gold);font-size:20px;">---</strong></div><div><span class="text-muted" id="vipLevelText" style="color:var(--lux-text-muted);">VIP Level</span> <strong id="homeVipLevel" class="text-gold">VIP 1</strong></div></div>
-        <div class="balance-badge-lux"><div class="text-muted" id="accountBalanceText" style="color:var(--lux-text-muted);">Account Balance</div><div class="amount" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light" style="color:var(--lux-text-light);"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
-        <div class="card-lux"><div class="flex-between"><div><span class="text-muted" id="todayEarningsText" style="color:var(--lux-text-muted);">Today's Earnings</span><br><strong id="todayEarningsHome" class="text-gold" style="font-size:24px;">S/ 0.00</strong></div><div><span class="text-muted" id="yesterdayText" style="color:var(--lux-text-muted);">Yesterday</span><br><strong id="yesterdayEarnings" class="text-gold">S/ 0.00</strong></div><div><span class="text-muted" id="totalCommissionText" style="color:var(--lux-text-muted);">Total Commission</span><br><strong id="totalCommissionHome" class="text-gold">S/ 0.00</strong></div></div></div>
+        <div class="luxury-header">
+            <div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">LUXCY</div></div>
+            <div style="display:flex;gap:12px;">
+                <button class="refresh-btn" id="refreshHomeBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button>
+                <div class="signout-icon" id="signOutBtnHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
+            </div>
+        </div>
+        <div class="flex-between" style="margin-bottom:16px;"><div><span class="text-muted" id="welcomeText" style="color:var(--text-muted);">Welcome</span> <strong id="homeFullName" style="color:var(--gold);font-size:20px;">---</strong></div><div><span class="text-muted" id="vipLevelText" style="color:var(--text-muted);">VIP Level</span> <strong id="homeVipLevel" class="text-gold">VIP 1</strong></div></div>
+        <div class="balance-badge-lux"><div class="text-muted" id="accountBalanceText" style="color:var(--text-muted);">Account Balance</div><div class="amount" id="balanceAmount">S/ 0.00</div><div class="flex-between"><span class="text-light" style="color:var(--text-light);"><i class="fas fa-chart-line"></i> <span id="rateText">Rate</span>: <span id="commissionRate">0.5%</span></span><span class="text-light" style="color:var(--text-light);"><i class="fas fa-calendar-day"></i> <span id="todayText">Today</span>: <span id="todayOrdersCount">0</span>/<span id="dailyOrderMax">0</span></span></div></div>
+        <div class="card-lux"><div class="flex-between"><div><span class="text-muted" id="todayEarningsText" style="color:var(--text-muted);">Today's Earnings</span><br><strong id="todayEarningsHome" class="text-gold" style="font-size:24px;">S/ 0.00</strong></div><div><span class="text-muted" id="yesterdayText" style="color:var(--text-muted);">Yesterday</span><br><strong id="yesterdayEarnings" class="text-gold">S/ 0.00</strong></div><div><span class="text-muted" id="totalCommissionText" style="color:var(--text-muted);">Total Commission</span><br><strong id="totalCommissionHome" class="text-gold">S/ 0.00</strong></div></div></div>
         <div class="flex-between" style="gap:16px;margin-bottom:20px;"><button class="btn-lux" id="rechargeHomeBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;"><i class="fas fa-plus-circle"></i> <span id="rechargeText">Recharge</span></button><button class="btn-lux" id="withdrawHomeBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;"><i class="fas fa-minus-circle"></i> <span id="withdrawText">Withdraw</span></button></div>
-        <div class="invite-card"><div class="text-muted" id="referralCodeText" style="color:var(--lux-text-muted);">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay">------</div></div>
-        <div class="card-lux" style="padding:16px;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">VIP1 (0.5%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP2 (0.7%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP3 (0.8%)</span><span class="text-light" style="color:var(--lux-text-light);">VIP4 (1.0%)</span></div><div class="flex-between text-muted" style="font-size:11px;margin-top:8px;color:var(--lux-text-muted);"><span>Min: S/0</span><span>Min: S/100</span><span>Min: S/500</span><span>Min: S/1500</span></div></div>
+        <div class="invite-card"><div class="text-muted" id="referralCodeText" style="color:var(--text-muted);">Your Referral Code</div><div class="invite-code" id="referralCodeDisplay">------</div></div>
+        <div class="card-lux" style="padding:16px;"><div class="flex-between"><span class="text-light" style="color:var(--text-light);">VIP1 (0.5%)</span><span class="text-light" style="color:var(--text-light);">VIP2 (0.7%)</span><span class="text-light" style="color:var(--text-light);">VIP3 (0.8%)</span><span class="text-light" style="color:var(--text-light);">VIP4 (1.0%)</span></div><div class="flex-between text-muted" style="font-size:11px;margin-top:8px;color:var(--text-muted);"><span>Min: S/0</span><span>Min: S/100</span><span>Min: S/500</span><span>Min: S/1500</span></div></div>
         <div class="live-feed-container"><div class="text-gold" style="margin-bottom:12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div><div id="liveFeedList"></div></div>
     </div>
 
     <!-- ===== WORK PAGE ===== -->
     <div id="workPage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-briefcase"></i></div><div class="luxury-brand" id="shoppingTasksText">Shopping Tasks</div></div><div class="refresh-btn" id="refreshWorkBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
-        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText" style="color:var(--lux-text-light);">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin:16px 0;"><div class="progress-fill" id="taskProgressFill"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-briefcase"></i></div><div class="luxury-brand" id="shoppingTasksText">Shopping Tasks</div></div><button class="refresh-btn" id="refreshWorkBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button></div>
+        <div class="card-lux"><div class="flex-between"><strong class="text-light" id="taskProgressText" style="color:var(--text-light);">Task Progress</strong><span class="text-gold" id="taskCounterWork">0/0</span></div><div class="progress-bar" style="margin:16px 0;"><div class="progress-fill" id="taskProgressFill"></div></div><button class="btn-lux" id="startWorkingBtn"><i class="fas fa-play"></i> <span id="startOrderText">Start Order</span></button></div>
         <div id="currentOrderDisplay" style="display:none;"></div>
     </div>
 
     <!-- ===== ORDER HISTORY PAGE ===== -->
     <div id="orderPage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-clipboard-list"></i></div><div class="luxury-brand" id="orderHistoryText">Order History</div></div><div class="refresh-btn" id="refreshOrderBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-clipboard-list"></i></div><div class="luxury-brand" id="orderHistoryText">Order History</div></div><button class="refresh-btn" id="refreshOrderBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button></div>
         <div id="completedOrdersList"></div>
     </div>
 
-    <!-- ===== MINE PAGE ===== -->
+    <!-- ===== MINE PAGE (KYC နဲ့ P2P ဖယ်ရှားပြီး) ===== -->
     <div id="minePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-user"></i></div><div class="luxury-brand" id="myProfileText">My Profile</div></div><div class="refresh-btn" id="refreshMineBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-user"></i></div><div class="luxury-brand" id="myProfileText">My Profile</div></div><button class="refresh-btn" id="refreshMineBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button></div>
         <div class="card-lux">
             <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
                 <div class="profile-photo-large" id="mineProfilePhoto"><i class="fas fa-user-circle"></i></div>
-                <div><strong id="mineFullName" style="color:var(--lux-gold);font-size:28px;font-family:'Playfair Display',serif;">---</strong><div style="margin-top:12px;"><span class="badge-lux" id="mineVipLevel">VIP 1</span></div><div class="text-muted" style="margin-top:10px;color:var(--lux-text-muted);">⭐ <span id="creditText">Credit</span>: <span id="creditScore" style="color:var(--lux-gold);font-weight:700;font-size:18px;">0</span></div></div>
+                <div><strong id="mineFullName" style="color:var(--gold);font-size:28px;font-family:'Playfair Display',serif;">---</strong><div style="margin-top:12px;"><span class="badge-lux" id="mineVipLevel">VIP 1</span></div><div class="text-muted" style="margin-top:10px;color:var(--text-muted);">⭐ <span id="creditText">Credit</span>: <span id="creditScore" style="color:var(--gold);font-weight:700;font-size:18px;">0</span></div></div>
             </div>
         </div>
         <div class="stats-grid">
@@ -1198,17 +1038,6 @@
             <div class="stat-card"><div class="stat-value" id="mineTodayOrders">0</div><div class="stat-label" id="todayOrdersText">Today's Orders</div></div>
             <div class="stat-card"><div class="stat-value" id="mineTodayEarn">S/ 0.0000</div><div class="stat-label" id="todayEarningsTextMine">Today's Earnings</div></div>
             <div class="stat-card"><div class="stat-value" id="mineTotalComm">S/ 0.0000</div><div class="stat-label" id="totalCommissionTextMine">Total Commission</div></div>
-        </div>
-        
-        <!-- KYC Status Display -->
-        <div class="card-lux">
-            <div class="flex-between">
-                <div><span class="text-muted">KYC Verification</span></div>
-                <div id="kycStatusDisplay"><span class="kyc-status-badge kyc-none">Not Verified</span></div>
-            </div>
-            <div id="kycActionBtnContainer" style="margin-top:12px;">
-                <button class="btn-lux btn-outline-lux" id="kycApplyBtn"><i class="fas fa-id-card"></i> Apply for KYC</button>
-            </div>
         </div>
         
         <div class="flex-between" style="gap:16px;margin-bottom:20px;">
@@ -1225,7 +1054,7 @@
             <button class="btn-outline-lux btn-lux" id="withdrawHistoryBtn" style="flex:1;"><i class="fas fa-list"></i> <span id="withdrawHistoryText">Withdraw History</span></button>
         </div>
         <div class="card-lux" style="margin-bottom:20px;">
-            <div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay" style="color:var(--lux-text-light);">Not set</span></div>
+            <div class="info-row"><span class="info-label" style="color:var(--text-muted);"><i class="fas fa-wallet"></i> <span id="walletAddressText">Wallet Address</span>:</span><span class="info-value" id="walletAddressDisplay" style="color:var(--text-light);">Not set</span></div>
         </div>
         <div class="commission-info">
             <h4><i class="fas fa-chart-line"></i> <span id="howCommissionsText">How Commissions Work</span></h4>
@@ -1233,7 +1062,7 @@
             <p>• <strong class="text-gold">VIP 1:</strong> 0.5% | <strong class="text-gold">VIP 2:</strong> 0.7% | <strong class="text-gold">VIP 3:</strong> 0.8% | <strong class="text-gold">VIP 4:</strong> 1.0%</p>
             <p>• <span id="commDesc2">Referral bonus: 10% of referral's earnings</span></p>
             <p>• <span id="commDesc3">Daily task limit based on assigned orders</span></p>
-            <p class="text-muted" style="margin-top:12px;font-size:11px;color:var(--lux-text-muted);"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
+            <p class="text-muted" style="margin-top:12px;font-size:11px;color:var(--text-muted);"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
         </div>
         <div class="card-lux" style="margin-top:20px;">
             <div style="text-align:center;margin-bottom:16px;"><span class="text-gold"><i class="fas fa-globe"></i> <span id="selectLanguageText">Select Language</span></span></div>
@@ -1245,12 +1074,12 @@
                 <div class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span class="lang-name">Russian</span></div>
             </div>
         </div>
-        <div class="signout-icon" id="signOutBtnMine" style="justify-content:center;margin-top:16px;text-align:center;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:12px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><span id="signOutText">Sign Out</span></div>
+        <div class="signout-icon" id="signOutBtnMine" style="justify-content:center;margin-top:16px;text-align:center;"><span id="signOutText">Sign Out</span></div>
     </div>
 
-    <!-- ===== SERVICE PAGE - IMPROVED CHAT ===== -->
+    <!-- ===== SERVICE PAGE ===== -->
     <div id="servicePage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-headset"></i></div><div class="luxury-brand" id="customerServiceText">Customer Service</div></div><div class="refresh-btn" id="refreshServiceBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
+        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-headset"></i></div><div class="luxury-brand" id="customerServiceText">Customer Service</div></div><button class="refresh-btn" id="refreshServiceBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button></div>
         <div class="chat-container">
             <div class="chat-messages" id="customerChatMessages"></div>
             <div class="chat-input-area">
@@ -1263,90 +1092,35 @@
         </div>
     </div>
 
-    <!-- ===== P2P PAGE ===== -->
-    <div id="p2pPage" class="page">
-        <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-exchange-alt"></i></div><div class="luxury-brand" id="p2pTitle">P2P Exchange</div></div><div class="refresh-btn" id="refreshP2PBtn" style="background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);border:1px solid var(--lux-border-gold);border-radius:40px;padding:8px 18px;cursor:pointer;color:var(--lux-gold);transition:all 0.3s;"><i class="fas fa-sync-alt"></i></div></div>
-        
-        <!-- KYC Required Warning -->
-        <div id="p2pKycWarning" class="card-lux" style="border-color:#f59e0b; display:none;">
-            <div style="text-align:center;">
-                <i class="fas fa-exclamation-triangle" style="font-size:48px;color:#f59e0b;margin-bottom:16px;"></i>
-                <h3 style="color:#f59e0b;">KYC Verification Required</h3>
-                <p style="color:var(--lux-text-muted);">Please complete your KYC verification to access P2P trading.</p>
-                <button class="btn-lux" id="p2pGoKycBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;width:auto;padding:12px 32px;margin-top:12px;"><i class="fas fa-id-card"></i> Apply for KYC</button>
-            </div>
-        </div>
-        
-        <!-- Currency Selection -->
-        <div class="card-lux">
-            <h5 class="text-gold" style="margin-bottom:16px;"><i class="fas fa-coins"></i> Select Currency</h5>
-            <div class="currency-selector" id="p2pCurrencySelector">
-                <div class="currency-option active" data-currency="thb"><span class="flag">🇹🇭</span> THB</div>
-                <div class="currency-option" data-currency="uah"><span class="flag">🇺🇦</span> UAH</div>
-                <div class="currency-option" data-currency="rub"><span class="flag">🇷🇺</span> RUB</div>
-                <div class="currency-option" data-currency="tjs"><span class="flag">🇹🇯</span> TJS</div>
-                <div class="currency-option" data-currency="uzs"><span class="flag">🇺🇿</span> UZS</div>
-            </div>
-            <div class="exchange-rate-display">
-                <span>Current Rate: 1 USDT = </span>
-                <strong id="p2pExchangeRate">0.00</strong>
-                <span id="p2pCurrencyLabel">THB</span>
-                <div style="margin-top:6px;font-size:11px;color:var(--lux-text-muted);">
-                    <span>Buy: <span id="p2pBuyRate">0.00</span> | Sell: <span id="p2pSellRate">0.00</span></span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Buy/Sell Action -->
-        <div class="card-lux">
-            <div style="display:flex;gap:12px;margin-bottom:16px;">
-                <button class="p2p-tab active" data-action="buy" id="p2pBuyTab"><i class="fas fa-arrow-down" style="color:#10b981;"></i> Buy USDT</button>
-                <button class="p2p-tab" data-action="sell" id="p2pSellTab"><i class="fas fa-arrow-up" style="color:#f59e0b;"></i> Sell USDT</button>
-            </div>
-            
-            <div id="p2pOrderForm">
-                <div class="flex-between" style="margin-bottom:12px;">
-                    <span class="text-muted">Your Balance: <strong id="p2pUserBalance">0.00 USDT</strong></span>
-                    <span class="text-muted">Available: <strong id="p2pAvailableBalance">0.00 USDT</strong></span>
-                </div>
-                <input type="number" class="input-lux" id="p2pAmount" placeholder="Enter amount in USDT" step="0.01" min="1">
-                <div class="amount-buttons" id="p2pQuickAmounts">
-                    <div class="amount-btn" data-amt="10">10</div>
-                    <div class="amount-btn" data-amt="50">50</div>
-                    <div class="amount-btn" data-amt="100">100</div>
-                    <div class="amount-btn" data-amt="500">500</div>
-                </div>
-                <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
-                    <button class="p2p-action-btn buy" id="p2pSubmitBuy" style="flex:1;"><i class="fas fa-arrow-down"></i> Buy USDT</button>
-                    <button class="p2p-action-btn sell" id="p2pSubmitSell" style="flex:1;"><i class="fas fa-arrow-up"></i> Sell USDT</button>
-                </div>
-                <div id="p2pOrderStatus" style="margin-top:12px;text-align:center;font-size:13px;color:var(--lux-text-muted);"></div>
-            </div>
-        </div>
-        
-        <!-- Order History -->
-        <div class="card-lux">
-            <h5 class="text-gold" style="margin-bottom:16px;"><i class="fas fa-history"></i> My P2P Orders</h5>
-            <div id="p2pOrderHistory">
-                <p style="color:var(--lux-text-muted);text-align:center;padding:20px;">No orders yet.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== BOTTOM NAV - ADDED P2P ===== -->
+    <!-- ===== BOTTOM NAV (P2P ဖယ်ရှားပြီး) ===== -->
     <div class="bottom-nav-lux hidden-nav" id="bottomNav">
         <div class="nav-item-lux" data-nav="home"><i class="fas fa-home"></i><span id="navHome">Home</span></div>
         <div class="nav-item-lux" data-nav="work"><i class="fas fa-briefcase"></i><span id="navWork">Work</span></div>
         <div class="nav-item-lux" data-nav="order"><i class="fas fa-clipboard-list"></i><span id="navOrder">Order</span></div>
-        <div class="nav-item-lux" data-nav="p2p"><i class="fas fa-exchange-alt"></i><span id="navP2P">P2P</span></div>
         <div class="nav-item-lux" data-nav="mine"><i class="fas fa-user"></i><span id="navMine">Mine</span></div>
         <div class="nav-item-lux" data-nav="service"><i class="fas fa-headset"></i><span id="navService">Service</span></div>
     </div>
 </div>
 
 <script type="module">
+    // ===== VERSION CHECK & CACHE CLEAR =====
+    (function() {
+        const APP_VERSION = '2.0.3';
+        const storedVersion = localStorage.getItem('app_version');
+        if (!storedVersion || storedVersion !== APP_VERSION) {
+            localStorage.clear();
+            sessionStorage.clear();
+            localStorage.setItem('app_version', APP_VERSION);
+            console.log('🔄 App version:', APP_VERSION, 'Cache cleared');
+            if (storedVersion) {
+                setTimeout(() => location.reload(), 300);
+            }
+        }
+    })();
+
+    // ===== FIREBASE IMPORTS =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     // ===== FIREBASE CONFIG - tripnew-2026 =====
@@ -1377,19 +1151,8 @@
     let unsubscribeLogos = null;
     let unsubscribeCompany = null;
     let unsubscribeInjections = null;
-    let unsubscribeP2POrders = null;
     let currentLang = localStorage.getItem('lang') || 'en';
     let popupAdsCache = [];
-    let p2pOrders = [];
-    let p2pRates = { 
-        thb: { buy: 34.50, sell: 34.00, label: 'THB' },
-        uah: { buy: 41.20, sell: 40.80, label: 'UAH' },
-        rub: { buy: 91.50, sell: 90.80, label: 'RUB' },
-        tjs: { buy: 10.80, sell: 10.50, label: 'TJS' },
-        uzs: { buy: 12750, sell: 12650, label: 'UZS' }
-    };
-    let selectedCurrency = 'thb';
-    let p2pAction = 'buy';
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
     function getVIPLevel(user) {
@@ -1404,7 +1167,39 @@
     function getVIPBadgeClass(level) { return level === 1 ? 'vip-badge-1' : (level === 2 ? 'vip-badge-2' : (level === 3 ? 'vip-badge-3' : 'vip-badge-4')); }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
-    // ==================== GOOGLE LOGIN FUNCTION ====================
+    // ==================== TOAST FUNCTION ====================
+    function toast(msg, err = false) {
+        const el = document.createElement('div');
+        el.className = `toast-msg ${err ? 'error' : ''}`;
+        el.style.cssText = `
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+            background: ${err ? '#dc2626' : 'rgba(30,42,36,0.92)'};
+            backdrop-filter: blur(12px); padding: 12px 28px; border-radius: 40px;
+            font-size: 13px; z-index: 100; font-weight: 700; color: white;
+            border-left: 3px solid var(--gold);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            max-width: 92%; text-align: center;
+        `;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+    }
+
+    // ==================== REAL-TIME STATUS ====================
+    function updateRealtimeStatus(message = 'Connected') {
+        const indicator = document.getElementById('realTimeIndicator');
+        if (indicator) {
+            indicator.style.display = 'flex';
+            indicator.innerHTML = `<i class="fas fa-circle" style="color:#10b981;font-size:8px;margin-right:6px;"></i> ${message}`;
+            clearTimeout(indicator._timeout);
+            indicator._timeout = setTimeout(() => {
+                indicator.style.display = 'none';
+                indicator.innerHTML = '<i class="fas fa-sync-alt fa-fw"></i> Live';
+            }, 3000);
+        }
+    }
+
+    // ==================== GOOGLE LOGIN ====================
     async function handleGoogleLogin() {
         try {
             const result = await signInWithPopup(auth, googleProvider);
@@ -1453,28 +1248,26 @@
             subscribeToUser(currentUser.id);
             subscribeToWithdrawals(currentUser.id);
             subscribeToInjections(currentUser.id);
-            subscribeToP2POrders(currentUser.id);
             updateUI();
             loadBackgrounds();
             startSettingsSubscription();
             const lastPage = localStorage.getItem("customerLastPage");
             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
             startChatSubscription();
-            await updateKycStatus();
-            updateP2PAccess();
             await checkAndShowPopupAds();
+            updateRealtimeStatus('Google Login ✅');
         } catch (error) {
             console.error("Google Login Error:", error);
-            alert("Google Login failed: " + error.message);
+            toast("Google Login failed: " + error.message, true);
         }
     }
 
-    // Attach Google Login to buttons
+    // Attach Google Login buttons
     document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
 
-    // ==================== LANGUAGE SYSTEM ====================
+    // ==================== TRANSLATIONS ====================
     const translations = {
         en: {
             heroTitle: "LUXCY", heroSubtitle: "Experience luxury travel while earning daily commissions.",
@@ -1501,7 +1294,7 @@
             commDesc2: "Referral bonus: 10% of referral's earnings", commDesc3: "Daily task limit based on assigned orders",
             secureText: "All transactions are secure and instant", selectLanguageText: "Select Language",
             signOutText: "Sign Out", customerServiceText: "Customer Service", sendText: "Send",
-            navHome: "Home", navWork: "Work", navOrder: "Order", navMine: "Mine", navService: "Service", navP2P: "P2P",
+            navHome: "Home", navWork: "Work", navOrder: "Order", navMine: "Mine", navService: "Service",
             orderAmount: "Order Amount", profitEarned: "Profit", afterCompletionBalance: "After Completion Balance",
             serviceQuality: "Service Quality", productQuality: "Product Quality", salesExperience: "Sales Experience",
             submitComplete: "Submit & Complete", processing: "Processing...", insufficientBalance: "Insufficient Balance!",
@@ -1513,17 +1306,7 @@
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save", cancel: "Cancel",
             bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!",
-            referralEarned: "Referral Bonus Earned!",
-            p2pTitle: "P2P Exchange", p2pKycRequired: "KYC Verification Required", p2pKycMessage: "Please complete your KYC verification to access P2P trading.",
-            p2pBuy: "Buy USDT", p2pSell: "Sell USDT", p2pBalance: "Your Balance", p2pAvailable: "Available",
-            p2pAmount: "Enter amount in USDT", p2pNoOrders: "No orders yet.",
-            p2pOrderPending: "Pending", p2pOrderCompleted: "Completed", p2pOrderCancelled: "Cancelled",
-            p2pWaitingForAdmin: "Waiting for admin to process...", p2pAdminProcessed: "Admin has processed your order.",
-            p2pUploadReceipt: "Upload Payment Receipt", p2pPaymentComplete: "Payment Complete",
-            p2pOrderSubmitted: "Order submitted! Waiting for admin.",
-            kycApply: "Apply for KYC", kycStatus: "KYC Verification", kycVerified: "Verified", kycPending: "Pending", kycRejected: "Rejected", kycNone: "Not Verified",
-            kycDocType: "Document Type", kycFront: "Front Side", kycBack: "Back Side", kycSubmit: "Submit KYC",
-            kycWaiting: "Waiting for admin to review..."
+            referralEarned: "Referral Bonus Earned!"
         },
         th: {
             heroTitle: "LUXCY", heroSubtitle: "สัมผัสการเดินทางสุดหรูพร้อมรับรายได้ทุกวัน",
@@ -1550,7 +1333,7 @@
             commDesc2: "โบนัสแนะนำ: 10% ของรายได้จากผู้แนะนำ", commDesc3: "ขีดจำกัดงานรายวันขึ้นอยู่กับออเดอร์ที่ได้รับ",
             secureText: "ธุรกรรมทั้งหมดปลอดภัยและทันที", selectLanguageText: "เลือกภาษา",
             signOutText: "ออกจากระบบ", customerServiceText: "บริการลูกค้า", sendText: "ส่ง",
-            navHome: "หน้าหลัก", navWork: "งาน", navOrder: "คำสั่งซื้อ", navMine: "ของฉัน", navService: "บริการ", navP2P: "P2P",
+            navHome: "หน้าหลัก", navWork: "งาน", navOrder: "คำสั่งซื้อ", navMine: "ของฉัน", navService: "บริการ",
             orderAmount: "จำนวนเงินสั่งซื้อ", profitEarned: "กำไร", afterCompletionBalance: "ยอดคงเหลือหลังทำเสร็จ",
             serviceQuality: "คุณภาพการบริการ", productQuality: "คุณภาพสินค้า", salesExperience: "ประสบการณ์การขาย",
             submitComplete: "ส่งและทำเสร็จ", processing: "กำลังดำเนินการ...", insufficientBalance: "ยอดเงินไม่เพียงพอ!",
@@ -1562,17 +1345,7 @@
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก", cancel: "ยกเลิก",
             bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!",
-            referralEarned: "ได้รับโบนัสแนะนำ!",
-            p2pTitle: "P2P แลกเปลี่ยน", p2pKycRequired: "ต้องยืนยันตัวตน KYC", p2pKycMessage: "กรุณายืนยันตัวตน KYC เพื่อใช้บริการ P2P",
-            p2pBuy: "ซื้อ USDT", p2pSell: "ขาย USDT", p2pBalance: "ยอดเงินของคุณ", p2pAvailable: "ที่มีอยู่",
-            p2pAmount: "ป้อนจำนวน USDT", p2pNoOrders: "ยังไม่มีคำสั่งซื้อ",
-            p2pOrderPending: "รอดำเนินการ", p2pOrderCompleted: "เสร็จสิ้น", p2pOrderCancelled: "ยกเลิก",
-            p2pWaitingForAdmin: "รอผู้ดูแลระบบดำเนินการ...", p2pAdminProcessed: "ผู้ดูแลระบบดำเนินการแล้ว",
-            p2pUploadReceipt: "อัปโหลดหลักฐานการชำระเงิน", p2pPaymentComplete: "ชำระเงินเสร็จสิ้น",
-            p2pOrderSubmitted: "ส่งคำสั่งซื้อแล้ว! รอผู้ดูแลระบบ",
-            kycApply: "ยืนยันตัวตน KYC", kycStatus: "สถานะ KYC", kycVerified: "ยืนยันแล้ว", kycPending: "รอตรวจสอบ", kycRejected: "ถูกปฏิเสธ", kycNone: "ยังไม่ยืนยัน",
-            kycDocType: "ประเภทเอกสาร", kycFront: "ด้านหน้า", kycBack: "ด้านหลัง", kycSubmit: "ส่ง KYC",
-            kycWaiting: "รอผู้ดูแลระบบตรวจสอบ..."
+            referralEarned: "ได้รับโบนัสแนะนำ!"
         },
         es: {
             heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones diarias.",
@@ -1599,7 +1372,7 @@
             commDesc2: "Bono por referido: 10% de las ganancias del referido", commDesc3: "Límite diario de tareas basado en órdenes asignadas",
             secureText: "Todas las transacciones son seguras e instantáneas", selectLanguageText: "Seleccionar Idioma",
             signOutText: "Cerrar Sesión", customerServiceText: "Servicio al Cliente", sendText: "Enviar",
-            navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio", navP2P: "P2P",
+            navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio",
             orderAmount: "Monto de la Orden", profitEarned: "Ganancia", afterCompletionBalance: "Saldo Después de Completar",
             serviceQuality: "Calidad del Servicio", productQuality: "Calidad del Producto", salesExperience: "Experiencia de Venta",
             submitComplete: "Enviar y Completar", processing: "Procesando...", insufficientBalance: "¡Saldo Insuficiente!",
@@ -1611,17 +1384,7 @@
             okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar", cancel: "Cancelar",
             bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
-            referralEarned: "¡Bono por Referido Ganado!",
-            p2pTitle: "Intercambio P2P", p2pKycRequired: "Verificación KYC Requerida", p2pKycMessage: "Completa tu verificación KYC para acceder al trading P2P.",
-            p2pBuy: "Comprar USDT", p2pSell: "Vender USDT", p2pBalance: "Tu Saldo", p2pAvailable: "Disponible",
-            p2pAmount: "Ingresa monto en USDT", p2pNoOrders: "Sin órdenes aún.",
-            p2pOrderPending: "Pendiente", p2pOrderCompleted: "Completado", p2pOrderCancelled: "Cancelado",
-            p2pWaitingForAdmin: "Esperando procesamiento del administrador...", p2pAdminProcessed: "El administrador ha procesado tu orden.",
-            p2pUploadReceipt: "Subir Comprobante de Pago", p2pPaymentComplete: "Pago Completado",
-            p2pOrderSubmitted: "¡Orden enviada! Esperando al administrador.",
-            kycApply: "Solicitar KYC", kycStatus: "Verificación KYC", kycVerified: "Verificado", kycPending: "Pendiente", kycRejected: "Rechazado", kycNone: "No Verificado",
-            kycDocType: "Tipo de Documento", kycFront: "Lado Frontal", kycBack: "Lado Posterior", kycSubmit: "Enviar KYC",
-            kycWaiting: "Esperando revisión del administrador..."
+            referralEarned: "¡Bono por Referido Ganado!"
         },
         uk: {
             heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь розкішними подорожами та заробляйте щоденні комісії.",
@@ -1648,7 +1411,7 @@
             commDesc2: "Реферальний бонус: 10% від заробітку реферала", commDesc3: "Денний ліміт завдань на основі призначених замовлень",
             secureText: "Всі транзакції безпечні та миттєві", selectLanguageText: "Виберіть мову",
             signOutText: "Вийти", customerServiceText: "Служба підтримки", sendText: "Надіслати",
-            navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Мій профіль", navService: "Підтримка", navP2P: "P2P",
+            navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Мій профіль", navService: "Підтримка",
             orderAmount: "Сума замовлення", profitEarned: "Прибуток", afterCompletionBalance: "Баланс після виконання",
             serviceQuality: "Якість обслуговування", productQuality: "Якість продукту", salesExperience: "Досвід продажів",
             submitComplete: "Відправити та завершити", processing: "Обробка...", insufficientBalance: "Недостатньо коштів!",
@@ -1660,17 +1423,7 @@
             okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса гаманця USDT TRC20", copy: "Копіювати",
             uploadPhoto: "Завантажити фото", save: "Зберегти", cancel: "Скасувати",
             bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
-            referralEarned: "Реферальний бонус отримано!",
-            p2pTitle: "P2P Обмін", p2pKycRequired: "Потрібна KYC верифікація", p2pKycMessage: "Будь ласка, пройдіть KYC верифікацію для доступу до P2P торгівлі.",
-            p2pBuy: "Купити USDT", p2pSell: "Продати USDT", p2pBalance: "Ваш баланс", p2pAvailable: "Доступно",
-            p2pAmount: "Введіть суму в USDT", p2pNoOrders: "Ще немає замовлень.",
-            p2pOrderPending: "Очікується", p2pOrderCompleted: "Завершено", p2pOrderCancelled: "Скасовано",
-            p2pWaitingForAdmin: "Очікується обробка адміністратором...", p2pAdminProcessed: "Адміністратор обробив ваше замовлення.",
-            p2pUploadReceipt: "Завантажити квитанцію", p2pPaymentComplete: "Платіж завершено",
-            p2pOrderSubmitted: "Замовлення надіслано! Очікуйте адміністратора.",
-            kycApply: "Подати заявку на KYC", kycStatus: "KYC Верифікація", kycVerified: "Верифіковано", kycPending: "На розгляді", kycRejected: "Відхилено", kycNone: "Не верифіковано",
-            kycDocType: "Тип документа", kycFront: "Лицьова сторона", kycBack: "Зворотна сторона", kycSubmit: "Відправити KYC",
-            kycWaiting: "Очікування перевірки адміністратором..."
+            referralEarned: "Реферальний бонус отримано!"
         },
         ru: {
             heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь роскошными путешествиями и зарабатывайте ежедневные комиссии.",
@@ -1697,7 +1450,7 @@
             commDesc2: "Реферальный бонус: 10% от заработка реферала", commDesc3: "Дневной лимит заданий на основе назначенных заказов",
             secureText: "Все транзакции безопасны и мгновенны", selectLanguageText: "Выберите язык",
             signOutText: "Выйти", customerServiceText: "Служба поддержки", sendText: "Отправить",
-            navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Мой профиль", navService: "Поддержка", navP2P: "P2P",
+            navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Мой профиль", navService: "Поддержка",
             orderAmount: "Сумма заказа", profitEarned: "Прибыль", afterCompletionBalance: "Баланс после завершения",
             serviceQuality: "Качество обслуживания", productQuality: "Качество продукта", salesExperience: "Опыт продаж",
             submitComplete: "Отправить и завершить", processing: "Обработка...", insufficientBalance: "Недостаточно средств!",
@@ -1709,39 +1462,10 @@
             okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес кошелька USDT TRC20", copy: "Копировать",
             uploadPhoto: "Загрузить фото", save: "Сохранить", cancel: "Отмена",
             bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
-            referralEarned: "Реферальный бонус получен!",
-            p2pTitle: "P2P Обмен", p2pKycRequired: "Требуется KYC верификация", p2pKycMessage: "Пожалуйста, пройдите KYC верификацию для доступа к P2P торговле.",
-            p2pBuy: "Купить USDT", p2pSell: "Продать USDT", p2pBalance: "Ваш баланс", p2pAvailable: "Доступно",
-            p2pAmount: "Введите сумму в USDT", p2pNoOrders: "Нет заказов.",
-            p2pOrderPending: "Ожидается", p2pOrderCompleted: "Завершено", p2pOrderCancelled: "Отменено",
-            p2pWaitingForAdmin: "Ожидание обработки администратором...", p2pAdminProcessed: "Администратор обработал ваш заказ.",
-            p2pUploadReceipt: "Загрузить квитанцию", p2pPaymentComplete: "Оплата завершена",
-            p2pOrderSubmitted: "Заказ отправлен! Ожидайте администратора.",
-            kycApply: "Подать заявку на KYC", kycStatus: "KYC Верификация", kycVerified: "Верифицирован", kycPending: "На рассмотрении", kycRejected: "Отклонен", kycNone: "Не верифицирован",
-            kycDocType: "Тип документа", kycFront: "Лицевая сторона", kycBack: "Обратная сторона", kycSubmit: "Отправить KYC",
-            kycWaiting: "Ожидание проверки администратором..."
+            referralEarned: "Реферальный бонус получен!"
         }
     };
 
-    // ==================== TOAST FUNCTION ====================
-    function toast(msg, err = false) {
-        const el = document.createElement('div');
-        el.className = `toast-msg ${err ? 'error' : ''}`;
-        el.style.cssText = `
-            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-            background: ${err ? '#dc2626' : 'rgba(30,42,36,0.92)'};
-            backdrop-filter: blur(12px); padding: 12px 28px; border-radius: 40px;
-            font-size: 13px; z-index: 100; font-weight: 700; color: white;
-            border-left: 3px solid var(--lux-gold);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            max-width: 92%; text-align: center;
-        `;
-        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
-        document.body.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
-    }
-
-    // ==================== APPLY LANGUAGE ====================
     function applyLanguage(lang) {
         const dict = translations[lang] || translations.en;
         currentLang = lang;
@@ -1771,13 +1495,8 @@
             howCommissionsText: dict.howCommissionsText, commDesc1: dict.commDesc1, commDesc2: dict.commDesc2, commDesc3: dict.commDesc3,
             secureText: dict.secureText, selectLanguageText: dict.selectLanguageText, signOutText: dict.signOutText,
             customerServiceText: dict.customerServiceText, sendText: dict.sendText,
-            navHome: dict.navHome, navWork: dict.navWork, navOrder: dict.navOrder, navMine: dict.navMine, navService: dict.navService, navP2P: dict.navP2P,
-            loginBtnTextLogin: dict.loginBtnText,
-            p2pTitle: dict.p2pTitle, p2pKycRequired: dict.p2pKycRequired, p2pKycMessage: dict.p2pKycMessage,
-            p2pBuy: dict.p2pBuy, p2pSell: dict.p2pSell, p2pBalance: dict.p2pBalance, p2pAvailable: dict.p2pAvailable,
-            p2pAmount: dict.p2pAmount, p2pNoOrders: dict.p2pNoOrders,
-            kycApply: dict.kycApply, kycStatus: dict.kycStatus, kycVerified: dict.kycVerified, kycPending: dict.kycPending, kycRejected: dict.kycRejected, kycNone: dict.kycNone,
-            kycDocType: dict.kycDocType, kycFront: dict.kycFront, kycBack: dict.kycBack, kycSubmit: dict.kycSubmit, kycWaiting: dict.kycWaiting
+            navHome: dict.navHome, navWork: dict.navWork, navOrder: dict.navOrder, navMine: dict.navMine, navService: dict.navService,
+            loginBtnTextLogin: dict.loginBtnText
         };
         for (const [id, text] of Object.entries(elements)) { const el = document.getElementById(id); if (el) el.innerText = text; }
         if (currentUser) updateUI();
@@ -1820,351 +1539,6 @@
             }
             toast(`🎁 Referral Bonus Earned! +S/ ${referralBonus.toFixed(4)}`);
         } catch (error) { console.error("Referral commission error:", error); }
-    }
-
-    // ==================== KYC SYSTEM ====================
-    async function applyKyc(docType, frontImage, backImage) {
-        if (!currentUser) return;
-        const kycData = {
-            userId: currentUser.id,
-            username: currentUser.username,
-            docType: docType,
-            frontImage: frontImage,
-            backImage: backImage,
-            status: 'pending',
-            submittedAt: new Date().toISOString()
-        };
-        const id = Date.now().toString();
-        await setDoc(doc(db, "kycRequests", id), { ...kycData, id });
-        toast("KYC application submitted! Waiting for admin review.");
-        updateKycStatus();
-    }
-
-    async function getKycStatus(userId) {
-        try {
-            const q = query(collection(db, "kycRequests"), where("userId", "==", userId), orderBy("submittedAt", "desc"));
-            const snapshot = await getDocs(q);
-            if (!snapshot.empty) {
-                const doc = snapshot.docs[0];
-                return { id: doc.id, ...doc.data() };
-            }
-            return null;
-        } catch (e) { return null; }
-    }
-
-    async function updateKycStatus() {
-        if (!currentUser) return;
-        const kyc = await getKycStatus(currentUser.id);
-        const statusDisplay = document.getElementById("kycStatusDisplay");
-        const actionContainer = document.getElementById("kycActionBtnContainer");
-        if (!statusDisplay) return;
-        
-        if (!kyc) {
-            statusDisplay.innerHTML = `<span class="kyc-status-badge kyc-none">Not Verified</span>`;
-            if (actionContainer) actionContainer.innerHTML = `<button class="btn-lux btn-outline-lux" id="kycApplyBtn"><i class="fas fa-id-card"></i> Apply for KYC</button>`;
-            document.getElementById("kycApplyBtn")?.addEventListener('click', showKycModal);
-            return;
-        }
-        
-        const status = kyc.status;
-        const statusMap = {
-            'pending': { class: 'kyc-pending', label: 'Pending Review' },
-            'approved': { class: 'kyc-approved', label: 'Verified ✅' },
-            'rejected': { class: 'kyc-rejected', label: 'Rejected ❌' }
-        };
-        const info = statusMap[status] || statusMap['pending'];
-        statusDisplay.innerHTML = `<span class="kyc-status-badge ${info.class}">${info.label}</span>`;
-        
-        if (status === 'pending') {
-            if (actionContainer) actionContainer.innerHTML = `<div style="text-align:center;padding:8px;color:#f59e0b;"><i class="fas fa-clock"></i> Waiting for admin review...</div>`;
-        } else if (status === 'approved') {
-            if (actionContainer) actionContainer.innerHTML = `<div style="text-align:center;padding:8px;color:#10b981;"><i class="fas fa-check-circle"></i> KYC Verified</div>`;
-        } else if (status === 'rejected') {
-            if (actionContainer) actionContainer.innerHTML = `<div style="text-align:center;padding:8px;color:#dc2626;"><i class="fas fa-times-circle"></i> KYC Rejected. <button class="btn-lux btn-outline-lux" id="kycRetryBtn" style="width:auto;padding:8px 20px;margin-top:8px;">Apply Again</button></div>`;
-            document.getElementById("kycRetryBtn")?.addEventListener('click', showKycModal);
-        }
-        updateP2PAccess();
-    }
-
-    function showKycModal() {
-        const dict = translations[currentLang] || translations.en;
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h2 class="text-gold" style="text-align:center;margin-bottom:20px;"><i class="fas fa-id-card"></i> ${dict.kycApply}</h2>
-                <div class="mb-2"><label class="text-gold">${dict.kycDocType}</label>
-                    <select id="kycDocType" class="form-control bg-dark text-white border-secondary">
-                        <option value="nrc">NRC (National ID)</option>
-                        <option value="driver">Driver License</option>
-                        <option value="passport">Passport</option>
-                    </select>
-                </div>
-                <div class="upload-area-sm" id="kycFrontUpload"><i class="fas fa-upload"></i> ${dict.kycFront}<input type="file" id="kycFrontInput" accept="image/*" style="display:none;"></div>
-                <div id="kycFrontPreview"></div>
-                <div class="upload-area-sm" id="kycBackUpload"><i class="fas fa-upload"></i> ${dict.kycBack}<input type="file" id="kycBackInput" accept="image/*" style="display:none;"></div>
-                <div id="kycBackPreview"></div>
-                <button class="btn-lux" id="kycSubmitBtn">${dict.kycSubmit}</button>
-                <button class="btn-outline-lux btn-lux" id="kycCancelBtn">${dict.cancel}</button>
-                <div id="kycStatusMsg" class="mt-2 text-center"></div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        
-        let frontData = null, backData = null;
-        
-        modal.querySelector("#kycFrontUpload").onclick = () => modal.querySelector("#kycFrontInput").click();
-        modal.querySelector("#kycFrontInput").onchange = async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const compressed = await compressImage(file, 400, 400, 0.6);
-                frontData = compressed;
-                modal.querySelector("#kycFrontPreview").innerHTML = `<img src="${compressed}" style="max-width:100%;max-height:150px;border-radius:12px;border:1px solid var(--lux-gold);margin-top:8px;">`;
-            }
-        };
-        modal.querySelector("#kycBackUpload").onclick = () => modal.querySelector("#kycBackInput").click();
-        modal.querySelector("#kycBackInput").onchange = async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const compressed = await compressImage(file, 400, 400, 0.6);
-                backData = compressed;
-                modal.querySelector("#kycBackPreview").innerHTML = `<img src="${compressed}" style="max-width:100%;max-height:150px;border-radius:12px;border:1px solid var(--lux-gold);margin-top:8px;">`;
-            }
-        };
-        
-        modal.querySelector("#kycSubmitBtn").onclick = async () => {
-            const docType = modal.querySelector("#kycDocType").value;
-            if (!frontData || !backData) {
-                modal.querySelector("#kycStatusMsg").innerHTML = '<span style="color:#dc2626;">Please upload both front and back images.</span>';
-                return;
-            }
-            await applyKyc(docType, frontData, backData);
-            document.body.removeChild(modal);
-        };
-        modal.querySelector("#kycCancelBtn").onclick = () => document.body.removeChild(modal);
-    }
-
-    // ==================== P2P SYSTEM ====================
-    function updateP2PAccess() {
-        const warningDiv = document.getElementById("p2pKycWarning");
-        const formDiv = document.getElementById("p2pOrderForm");
-        if (!warningDiv || !formDiv) return;
-        
-        if (!currentUser) {
-            warningDiv.style.display = 'block';
-            formDiv.style.display = 'none';
-            return;
-        }
-        
-        getKycStatus(currentUser.id).then(kyc => {
-            if (kyc && kyc.status === 'approved') {
-                warningDiv.style.display = 'none';
-                formDiv.style.display = 'block';
-            } else {
-                warningDiv.style.display = 'block';
-                formDiv.style.display = 'none';
-            }
-        });
-    }
-
-    async function subscribeToP2POrders(userId) {
-        if (unsubscribeP2POrders) unsubscribeP2POrders();
-        const q = query(collection(db, "p2pOrders"), where("userId", "==", userId), orderBy("createdAt", "desc"));
-        unsubscribeP2POrders = onSnapshot(q, (snapshot) => {
-            p2pOrders = [];
-            snapshot.forEach(doc => p2pOrders.push({ id: doc.id, ...doc.data() }));
-            renderP2POrders();
-        });
-    }
-
-    function renderP2POrders() {
-        const container = document.getElementById("p2pOrderHistory");
-        if (!container) return;
-        const dict = translations[currentLang] || translations.en;
-        if (p2pOrders.length === 0) {
-            container.innerHTML = `<p style="color:var(--lux-text-muted);text-align:center;padding:20px;">${dict.p2pNoOrders}</p>`;
-            return;
-        }
-        container.innerHTML = p2pOrders.map(order => {
-            const statusMap = {
-                'pending': { class: 'text-warning', label: dict.p2pOrderPending },
-                'completed': { class: 'text-success', label: dict.p2pOrderCompleted },
-                'cancelled': { class: 'text-danger', label: dict.p2pOrderCancelled }
-            };
-            const status = statusMap[order.status] || statusMap['pending'];
-            const actionLabel = order.type === 'buy' ? 'Buy' : 'Sell';
-            const amountInCurrency = (order.amount * order.rate).toFixed(2);
-            return `
-                <div class="p2p-order-card">
-                    <div class="flex-between">
-                        <div><strong class="text-gold">${actionLabel}</strong> ${order.amount} USDT</div>
-                        <span class="${status.class}">${status.label}</span>
-                    </div>
-                    <div class="text-muted" style="font-size:13px;">Rate: ${order.rate} ${order.currency.toUpperCase()} | Total: ${amountInCurrency} ${order.currency.toUpperCase()}</div>
-                    <div class="text-muted" style="font-size:11px;">${new Date(order.createdAt).toLocaleString()}</div>
-                    ${order.status === 'pending' && order.adminBankDetails ? `
-                        <div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.2);border-radius:12px;border:1px solid var(--lux-border-gold);">
-                            <div style="font-size:13px;color:var(--lux-text-light);">
-                                <div><strong>Bank:</strong> ${order.adminBankDetails.bankName}</div>
-                                <div><strong>Account:</strong> ${order.adminBankDetails.accountNumber}</div>
-                                <div><strong>Account Name:</strong> ${order.adminBankDetails.accountName}</div>
-                            </div>
-                            <div style="margin-top:10px;">
-                                ${!order.receiptImage ? `
-                                    <div class="upload-area-sm" style="padding:10px;font-size:13px;" id="uploadReceipt_${order.id}">
-                                        <i class="fas fa-cloud-upload-alt"></i> ${dict.p2pUploadReceipt}
-                                        <input type="file" accept="image/*" style="display:none;" id="receiptInput_${order.id}">
-                                    </div>
-                                    <div id="receiptPreview_${order.id}"></div>
-                                    <button class="btn-lux" style="width:auto;padding:8px 24px;margin-top:8px;font-size:13px;" id="confirmPaymentBtn_${order.id}">${dict.p2pPaymentComplete}</button>
-                                ` : `
-                                    <div style="color:#10b981;"><i class="fas fa-check-circle"></i> Receipt uploaded. Waiting for admin confirmation.</div>
-                                    <img src="${order.receiptImage}" style="max-width:100px;max-height:100px;border-radius:8px;margin-top:8px;border:1px solid var(--lux-gold);">
-                                `}
-                            </div>
-                        </div>
-                    ` : ''}
-                    ${order.status === 'completed' ? `<div style="margin-top:8px;color:#10b981;"><i class="fas fa-check-circle"></i> Order completed successfully!</div>` : ''}
-                    ${order.status === 'pending' && !order.adminBankDetails ? `<div style="margin-top:8px;color:#f59e0b;"><i class="fas fa-clock"></i> ${dict.p2pWaitingForAdmin}</div>` : ''}
-                </div>
-            `;
-        }).join('');
-        
-        // Attach event listeners for receipt upload
-        p2pOrders.forEach(order => {
-            if (order.status === 'pending' && !order.receiptImage) {
-                const uploadBtn = document.getElementById(`uploadReceipt_${order.id}`);
-                if (uploadBtn) {
-                    const input = document.getElementById(`receiptInput_${order.id}`);
-                    uploadBtn.onclick = () => input.click();
-                    input.onchange = async (e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                            const compressed = await compressImage(file, 400, 400, 0.6);
-                            document.getElementById(`receiptPreview_${order.id}`).innerHTML = `<img src="${compressed}" style="max-width:100px;max-height:100px;border-radius:8px;border:1px solid var(--lux-gold);margin-top:8px;">`;
-                            input.compressedData = compressed;
-                        }
-                    };
-                }
-                const confirmBtn = document.getElementById(`confirmPaymentBtn_${order.id}`);
-                if (confirmBtn) {
-                    confirmBtn.onclick = async () => {
-                        const input = document.getElementById(`receiptInput_${order.id}`);
-                        if (!input || !input.compressedData) {
-                            alert("Please upload a receipt image first.");
-                            return;
-                        }
-                        await updateDoc(doc(db, "p2pOrders", order.id), {
-                            receiptImage: input.compressedData,
-                            receiptUploadedAt: new Date().toISOString()
-                        });
-                        toast("Payment receipt uploaded! Waiting for admin confirmation.");
-                    };
-                }
-            }
-        });
-    }
-
-    async function submitP2POrder(type, amount, currency) {
-        if (!currentUser) { alert("Please login first."); return; }
-        if (amount <= 0) { alert("Enter valid amount."); return; }
-        
-        const rate = type === 'buy' ? p2pRates[currency].buy : p2pRates[currency].sell;
-        if (!rate) { alert("Invalid currency."); return; }
-        
-        // Check if user has enough USDT for sell
-        if (type === 'sell' && amount > (currentUser.balance || 0)) {
-            alert("Insufficient USDT balance.");
-            return;
-        }
-        
-        const orderData = {
-            userId: currentUser.id,
-            username: currentUser.username,
-            type: type,
-            amount: amount,
-            currency: currency,
-            rate: rate,
-            total: amount * rate,
-            status: 'pending',
-            adminBankDetails: null,
-            receiptImage: null,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-        
-        const id = Date.now().toString();
-        await setDoc(doc(db, "p2pOrders", id), { ...orderData, id });
-        
-        // If selling, deduct USDT from user balance immediately
-        if (type === 'sell') {
-            currentUser.balance = (currentUser.balance || 0) - amount;
-            await saveCurrentUser();
-            updateUI();
-        }
-        
-        toast("P2P order submitted! Waiting for admin.");
-        updateP2PAccess();
-    }
-
-    // ==================== FIREBASE HELPERS ====================
-    async function saveOrderToHistory(userId, orderData) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        await addDoc(ordersRef, { ...orderData, timestamp: new Date().toISOString() });
-        await deleteOldOrdersIfNeeded(userId, 50);
-    }
-    async function getUserOrders(userId) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        const orders = [];
-        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-        return orders;
-    }
-    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        if (snapshot.size > maxOrders) {
-            const toDelete = [];
-            let count = 0;
-            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
-            for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
-        }
-    }
-
-    // ==================== INJECTION SYSTEM ====================
-    function subscribeToInjections(userId) {
-        if (unsubscribeInjections) unsubscribeInjections();
-        const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
-        unsubscribeInjections = onSnapshot(q, async (snapshot) => {
-            const pendingInjections = [];
-            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-            if (pendingInjections.length > 0 && currentUser) {
-                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                currentUser.pendingInjections = pendingInjections;
-                await saveCurrentUser();
-                const dict = translations[currentLang] || translations.en;
-                toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
-                if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
-            }
-        });
-    }
-    async function markInjectionAsUsed(injectionId) {
-        const injectionRef = doc(db, "injections", injectionId);
-        await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
-    }
-    async function checkAndApplyInjections() {
-        if (!currentUser) return [];
-        const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
-        const snapshot = await getDocs(q);
-        const pendingInjections = [];
-        snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-        if (pendingInjections.length > 0) {
-            pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-            currentUser.pendingInjections = pendingInjections;
-            await saveCurrentUser();
-        }
-        return pendingInjections;
     }
 
     // ==================== POPUP ADS SYSTEM ====================
@@ -2268,6 +1642,7 @@
                 if (data.stat1Label) document.getElementById("stat1Label").innerText = data.stat1Label;
                 if (data.stat2Label) document.getElementById("stat2Label").innerText = data.stat2Label;
                 if (data.stat3Label) document.getElementById("stat3Label").innerText = data.stat3Label;
+                updateRealtimeStatus('Company info updated ✅');
             }
         });
     }
@@ -2275,7 +1650,7 @@
     function showCompanyInfoModal() {
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 style="color:var(--lux-gold);margin-bottom:20px;">${dict.companyModalTitle || "About LUXCY"}</h2><div style="display:flex;justify-content:center;margin-bottom:20px;"><div id="modalCompanyLogo" style="width:100px;height:100px;background:rgba(212,175,55,0.1);border-radius:20px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-globe-asia" style="font-size:60px;color:var(--lux-gold);"></i></div></div><div id="modalCompanyDesc" style="color:var(--lux-text-light);line-height:1.6;margin-bottom:20px;">LUXCY is a premier luxury travel and task platform.</div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:16px;"><h3 style="color:var(--lux-gold);margin-bottom:10px;"><i class="fas fa-bullseye"></i> ${dict.companyModalMission || "Our Mission"}</h3><p style="color:var(--lux-text-light);">To provide seamless travel experiences and financial freedom.</p></div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:20px;"><h3 style="color:var(--lux-gold);margin-bottom:10px;"><i class="fas fa-eye"></i> ${dict.companyModalVision || "Our Vision"}</h3><p style="color:var(--lux-text-light);">To become the world's leading integrated travel and earning platform.</p></div><button class="btn-lux" id="closeCompanyModal" style="width:100%;">${dict.close || "Close"}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 style="color:var(--gold);margin-bottom:20px;">${dict.companyModalTitle || "About LUXCY"}</h2><div style="display:flex;justify-content:center;margin-bottom:20px;"><div id="modalCompanyLogo" style="width:100px;height:100px;background:rgba(212,175,55,0.1);border-radius:20px;display:flex;align-items:center;justify-content:center;"><i class="fas fa-globe-asia" style="font-size:60px;color:var(--gold);"></i></div></div><div id="modalCompanyDesc" style="color:var(--text-light);line-height:1.6;margin-bottom:20px;">LUXCY is a premier luxury travel and task platform.</div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:16px;"><h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-bullseye"></i> ${dict.companyModalMission || "Our Mission"}</h3><p style="color:var(--text-light);">To provide seamless travel experiences and financial freedom.</p></div><div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:20px;"><h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-eye"></i> ${dict.companyModalVision || "Our Vision"}</h3><p style="color:var(--text-light);">To become the world's leading integrated travel and earning platform.</p></div><button class="btn-lux" id="closeCompanyModal" style="width:100%;">${dict.close || "Close"}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("closeCompanyModal").onclick = () => document.body.removeChild(modal);
     }
@@ -2291,9 +1666,7 @@
                 if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
                 await checkAndApplyInjections();
                 updateUI();
-                updateKycStatus();
-                updateP2PAccess();
-                toast("Account updated!");
+                updateRealtimeStatus('Account synced ✅');
                 const indicator = document.getElementById("realTimeIndicator");
                 indicator.style.display = "flex";
                 setTimeout(() => { indicator.style.display = "none"; }, 2000);
@@ -2340,6 +1713,7 @@
                 const s = docSnap.data();
                 if(s.customerName) { document.getElementById("loginWebsiteName").innerText = s.customerName; document.getElementById("homeWebsiteName").innerText = s.homePageName || s.customerName; document.getElementById("brandName").innerText = s.customerName || "LUXCY"; }
                 if(s.customerTagline) document.getElementById("loginWebsiteTagline").innerText = s.customerTagline;
+                updateRealtimeStatus('Settings updated ✅');
             }
         });
     }
@@ -2418,12 +1792,9 @@
         let pct = dailyLimit ? (completedCount / dailyLimit) * 100 : 0;
         document.getElementById("taskProgressFill").style.width = pct + "%";
         const completedOrders = userOrders.filter(o => o.status === "completed");
-        document.getElementById("completedOrdersList").innerHTML = completedOrders.length ? completedOrders.slice(0, 20).map(o => `<div class="card-lux"><div class="flex-between"><strong class="text-light" style="color:var(--lux-text-light);">${o.name}</strong><span class="text-gold">${dict.completed || "Completed"}</span></div><div class="text-light" style="color:var(--lux-text-light);">Amount: S/ ${o.amount?.toFixed(2) || 0} | Profit: +S/ ${(o.profit || 0).toFixed(4)}</div><div class="text-muted" style="color:var(--lux-text-muted);">${o.date || o.timestamp ? new Date(o.timestamp).toLocaleString() : ''}</div></div>`).join("") : `<div class="card-lux"><div class="text-light" style="color:var(--lux-text-light);">${dict.noRecords || "No completed orders"}</div></div>`;
+        document.getElementById("completedOrdersList").innerHTML = completedOrders.length ? completedOrders.slice(0, 20).map(o => `<div class="card-lux"><div class="flex-between"><strong class="text-light" style="color:var(--text-light);">${o.name}</strong><span class="text-gold">${dict.completed || "Completed"}</span></div><div class="text-light" style="color:var(--text-light);">Amount: S/ ${o.amount?.toFixed(2) || 0} | Profit: +S/ ${(o.profit || 0).toFixed(4)}</div><div class="text-muted" style="color:var(--text-muted);">${o.date || o.timestamp ? new Date(o.timestamp).toLocaleString() : ''}</div></div>`).join("") : `<div class="card-lux"><div class="text-light" style="color:var(--text-light);">${dict.noRecords || "No completed orders"}</div></div>`;
         updateMineAvatar();
-        
-        // Update P2P balance display
-        document.getElementById("p2pUserBalance").innerText = balance.toFixed(2);
-        document.getElementById("p2pAvailableBalance").innerText = balance.toFixed(2);
+        updateRealtimeStatus('UI updated ✅');
     }
 
     function updateMineAvatar() {
@@ -2433,7 +1804,7 @@
         }
     }
 
-    // ==================== ORDER SYSTEM WITH INJECTION + REFERRAL ====================
+    // ==================== ORDER SYSTEM ====================
     async function getRandomOrderTemplate() {
         let orders = await loadCustomOrders();
         if(orders.length === 0) return { id: 0, name: "Default Order", image: null, price: 10 };
@@ -2490,14 +1861,14 @@
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div");
         modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content warning-modal" style="text-align:center;"><div class="warning-icon" style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div><h2 class="warning-title" style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2><p class="warning-message" style="color:var(--lux-text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p><button class="btn-warning-modal" id="warningOkayBtn" style="background:#dc2626;color:white;border:none;padding:12px 28px;border-radius:40px;font-weight:700;cursor:pointer;width:100%;transition:all 0.2s;">${dict.okay || "Okay"}</button></div>`;
+        modal.innerHTML = `<div class="modal-content warning-modal" style="text-align:center;"><div class="warning-icon" style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div><h2 class="warning-title" style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2><p class="warning-message" style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p><button class="btn-warning-modal" id="warningOkayBtn" style="background:#dc2626;color:white;border:none;padding:12px 28px;border-radius:40px;font-weight:700;cursor:pointer;width:100%;transition:all 0.2s;">${dict.okay || "Okay"}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("warningOkayBtn").onclick = () => { document.body.removeChild(modal); showPage("work"); if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj); else if (currentOrder) displayOrder(currentOrder); };
     }
 
     function displayOrder(order) {
         const dict = translations[currentLang] || translations.en;
-        let imgHtml = order.imageData ? `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:48px;color:var(--lux-gold);"></i>';
+        let imgHtml = order.imageData ? `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:48px;color:var(--gold);"></i>';
         let afterOrderBalance = currentUser.balance + order.netCommission;
         const insufficient = currentUser.balance < order.amount;
         const isInjection = order.isInjection || false;
@@ -2505,17 +1876,17 @@
         const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
         let injectionInfoHtml = '';
         if (isInjection && order.injectionDetails) {
-            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;"><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💵 Total Order Amount:</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div></div>`;
+            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;"><div class="flex-between"><span class="text-light" style="color:var(--text-light);">💰 Original Balance:</span><span class="text-gold">S/ ${order.injectionDetails.originalBalance.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ S/ ${order.injectionDetails.extraAmount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--text-light);">💵 Total Order Amount:</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ S/ ${order.netCommission.toFixed(4)}</span></div></div>`;
         }
         document.getElementById("currentOrderDisplay").innerHTML = `
             <div class="order-detail-card ${injectionClass}">
                 ${injectionBadge}
                 <div class="order-image">${imgHtml}</div>
-                <h2 style="color:var(--lux-gold-light);">${order.name}</h2>
-                <div class="text-light" style="color:var(--lux-text-light);">Order #: ${order.orderNumber}</div>
+                <h2 style="color:var(--gold-light);">${order.name}</h2>
+                <div class="text-light" style="color:var(--text-light);">Order #: ${order.orderNumber}</div>
                 ${injectionInfoHtml}
-                ${!injectionInfoHtml ? `<div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">${dict.orderAmount}</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--lux-text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>` : ''}
-                <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--lux-gold);"><span class="text-light" style="color:var(--lux-text-light);">${dict.afterCompletionBalance}</span><strong style="color:var(--lux-gold-light);font-size:20px;">S/ ${afterOrderBalance.toFixed(2)}</strong></div>
+                ${!injectionInfoHtml ? `<div class="flex-between"><span class="text-light" style="color:var(--text-light);">${dict.orderAmount}</span><span class="amount-big">S/ ${order.amount.toFixed(2)}</span></div><div class="flex-between"><span class="text-light" style="color:var(--text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ S/ ${order.netCommission.toFixed(4)}</span></div>` : ''}
+                <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gold);"><span class="text-light" style="color:var(--text-light);">${dict.afterCompletionBalance}</span><strong style="color:var(--gold-light);font-size:20px;">S/ ${afterOrderBalance.toFixed(2)}</strong></div>
                 ${!insufficient ? `
                 <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
                 <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
@@ -2583,6 +1954,7 @@
         currentUser.currentOrderObj = newOrder;
         await saveCurrentUser();
         displayOrder(newOrder);
+        updateRealtimeStatus('New order loaded ✅');
     }
 
     function refreshWorkPageOrder() {
@@ -2613,7 +1985,7 @@
         let modal = document.createElement("div"); modal.className = "modal";
         let settings = await loadSystemSettings();
         let walletAddr = settings.usdtWalletAddress || "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box"><div><div class="text-muted" style="color:var(--lux-text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons"><div class="amount-btn" data-amt="50">50</div><div class="amount-btn" data-amt="100">100</div><div class="amount-btn" data-amt="500">500</div><div class="amount-btn" data-amt="1000">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box"><div><div class="text-muted" style="color:var(--text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons"><div class="amount-btn" data-amt="50">50</div><div class="amount-btn" data-amt="100">100</div><div class="amount-btn" data-amt="500">500</div><div class="amount-btn" data-amt="1000">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
         document.body.appendChild(modal);
         modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText(walletAddr); alert("Wallet address copied!"); };
         modal.querySelectorAll(".amount-btn").forEach(btn => btn.onclick = () => { modal.querySelector("#rechargeAmount").value = btn.dataset.amt; });
@@ -2649,8 +2021,8 @@
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
         let html = `<div class="modal-content"><h2 class="text-gold" style="margin-bottom:20px;">${title}</h2>`;
-        if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;color:var(--lux-text-light);">${dict.noRecords}</p>`;
-        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item"><div class="flex-between"><strong style="color:var(--lux-text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div><div style="color:var(--lux-text-light);">Amount: S/ ${item.amount}</div><div class="text-muted" style="color:var(--lux-text-muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img">`:''}${item.adminNote?`<div class="text-muted" style="color:var(--lux-text-muted);">Note: ${item.adminNote}</div>`:''}</div>`; });
+        if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;color:var(--text-light);">${dict.noRecords}</p>`;
+        else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { html += `<div class="history-item"><div class="flex-between"><strong style="color:var(--text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div><div style="color:var(--text-light);">Amount: S/ ${item.amount}</div><div class="text-muted" style="color:var(--text-muted);">${new Date(item.timestamp).toLocaleString()}</div>${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img">`:''}${item.adminNote?`<div class="text-muted" style="color:var(--text-muted);">Note: ${item.adminNote}</div>`:''}</div>`; });
         html += `<button class="btn-lux" id="closeHistoryModal" style="margin-top:16px;">${dict.close}</button></div>`;
         modal.innerHTML = html; document.body.appendChild(modal);
         document.getElementById("closeHistoryModal").onclick = () => document.body.removeChild(modal);
@@ -2668,12 +2040,75 @@
                 snapshot.forEach(doc => { const msg = doc.data(); if ((msg.to === 'admin' && msg.from === currentUser.username) || (msg.from === 'admin' && msg.to === currentUser.username)) relevant.push(msg); });
                 relevant.sort((a,b) => a.id - b.id);
                 container.innerHTML = '';
-                relevant.forEach(msg => { const isSent = msg.from === currentUser.username; const div = document.createElement('div'); div.className = `chat-message ${isSent ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text || ''}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--lux-gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || ''}</div>`; container.appendChild(div); });
+                relevant.forEach(msg => { const isSent = msg.from === currentUser.username; const div = document.createElement('div'); div.className = `chat-message ${isSent ? 'sent' : 'received'}`; div.innerHTML = `<div>${msg.text || ''}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)" style="max-width:200px;max-height:150px;border-radius:12px;margin-top:8px;cursor:pointer;border:1px solid var(--gold);">` : ''}<div class="chat-time" style="font-size:10px;opacity:0.7;margin-top:4px;text-align:right;">${msg.time || ''}</div>`; container.appendChild(div); });
                 container.scrollTop = container.scrollHeight;
+                updateRealtimeStatus('Chat updated ✅');
             }
         });
     }
     async function sendChatMessage(text, imageData = null) { if (!currentUser) return; await setDoc(doc(db, "chatMessages", (Date.now() + Math.random()).toString()), { id: Date.now() + Math.random(), from: currentUser.username, to: 'admin', text: text, image: imageData, time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) }); }
+
+    // ==================== INJECTION SYSTEM ====================
+    function subscribeToInjections(userId) {
+        if (unsubscribeInjections) unsubscribeInjections();
+        const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
+        unsubscribeInjections = onSnapshot(q, async (snapshot) => {
+            const pendingInjections = [];
+            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+            if (pendingInjections.length > 0 && currentUser) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                currentUser.pendingInjections = pendingInjections;
+                await saveCurrentUser();
+                const dict = translations[currentLang] || translations.en;
+                toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
+                if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
+                updateRealtimeStatus('New injection received ✅');
+            }
+        });
+    }
+    async function markInjectionAsUsed(injectionId) {
+        const injectionRef = doc(db, "injections", injectionId);
+        await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
+    }
+    async function checkAndApplyInjections() {
+        if (!currentUser) return [];
+        const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
+        const snapshot = await getDocs(q);
+        const pendingInjections = [];
+        snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+        if (pendingInjections.length > 0) {
+            pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+            currentUser.pendingInjections = pendingInjections;
+            await saveCurrentUser();
+        }
+        return pendingInjections;
+    }
+
+    // ==================== FIREBASE HELPERS ====================
+    async function saveOrderToHistory(userId, orderData) {
+        const ordersRef = collection(db, "users", userId, "orders");
+        await addDoc(ordersRef, { ...orderData, timestamp: new Date().toISOString() });
+        await deleteOldOrdersIfNeeded(userId, 50);
+    }
+    async function getUserOrders(userId) {
+        const ordersRef = collection(db, "users", userId, "orders");
+        const q = query(ordersRef, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        const orders = [];
+        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+        return orders;
+    }
+    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
+        const ordersRef = collection(db, "users", userId, "orders");
+        const q = query(ordersRef, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        if (snapshot.size > maxOrders) {
+            const toDelete = [];
+            let count = 0;
+            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
+            for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
+        }
+    }
 
     // ==================== MODALS ====================
     function showBindWalletModal() {
@@ -2688,7 +2123,7 @@
     function showPersonalDetailsModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="profilePreview">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Credit Score:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.creditScore || 100}</span></div><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Balance:</span><span class="info-value" style="color:var(--lux-text-light);">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row"><span class="info-label" style="color:var(--lux-text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--lux-text-light);">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">Personal Details</h2><div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;"><div class="photo-preview" id="profilePreview">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;"></i>'}</div></div><button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button><div class="info-row"><span class="info-label" style="color:var(--text-muted);">Credit Score:</span><span class="info-value" style="color:var(--text-light);">${currentUser.creditScore || 100}</span></div><div class="info-row"><span class="info-label" style="color:var(--text-muted);">Balance:</span><span class="info-value" style="color:var(--text-light);">S/ ${(currentUser.balance||0).toFixed(2)}</span></div><div class="info-row"><span class="info-label" style="color:var(--text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--text-light);">${currentUser.invitationCode || 'N/A'}</span></div><button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button></div>`;
         document.body.appendChild(modal);
         document.getElementById("uploadPhotoBtn").onclick = () => { document.body.removeChild(modal); showUploadPhotoModal(); };
         document.getElementById("closePersonalModal").onclick = () => document.body.removeChild(modal);
@@ -2697,12 +2132,12 @@
     async function showLoanServiceModal() {
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">${dict.loanService}</h2><p class="text-light" style="color:var(--lux-text-light);margin-bottom:16px;">Apply for a loan</p><div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div><div class="doc-type-selector" style="display:flex;gap:12px;margin:12px 0;"><div class="doc-option active" data-type="nrc" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(212,175,55,0.2);border:1px solid var(--lux-gold);color:var(--lux-gold-light);">NRC</div><div class="doc-option" data-type="driver" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--lux-border-gold);color:var(--lux-text-muted);">Driver License</div><div class="doc-option" data-type="passport" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--lux-border-gold);color:var(--lux-text-muted);">Passport</div></div><div class="flex-between" style="gap:12px;"><div class="upload-area-sm" id="frontUpload" style="flex:1;">Front Side<input type="file" id="frontInput" accept="image/*" style="display:none;"></div><div class="upload-area-sm" id="backUpload" style="flex:1;">Back Side<input type="file" id="backInput" accept="image/*" style="display:none;"></div></div><input type="number" id="loanAmount" class="input-lux" placeholder="Loan Amount"><button class="btn-lux" id="submitLoanBtn" style="margin-top:16px;">Submit Loan Request</button><button class="btn-outline-lux btn-lux" id="closeLoanModal" style="margin-top:12px;">Cancel</button></div>`;
+        modal.innerHTML = `<div class="modal-content"><h2 class="text-gold">${dict.loanService}</h2><p class="text-light" style="color:var(--text-light);margin-bottom:16px;">Apply for a loan</p><div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div><div class="doc-type-selector" style="display:flex;gap:12px;margin:12px 0;"><div class="doc-option active" data-type="nrc" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(212,175,55,0.2);border:1px solid var(--gold);color:var(--gold-light);">NRC</div><div class="doc-option" data-type="driver" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--border-gold);color:var(--text-muted);">Driver License</div><div class="doc-option" data-type="passport" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--border-gold);color:var(--text-muted);">Passport</div></div><div class="flex-between" style="gap:12px;"><div class="upload-area-sm" id="frontUpload" style="flex:1;">Front Side<input type="file" id="frontInput" accept="image/*" style="display:none;"></div><div class="upload-area-sm" id="backUpload" style="flex:1;">Back Side<input type="file" id="backInput" accept="image/*" style="display:none;"></div></div><input type="number" id="loanAmount" class="input-lux" placeholder="Loan Amount"><button class="btn-lux" id="submitLoanBtn" style="margin-top:16px;">Submit Loan Request</button><button class="btn-outline-lux btn-lux" id="closeLoanModal" style="margin-top:12px;">Cancel</button></div>`;
         document.body.appendChild(modal);
         modal.querySelector("#uploadBankArea").onclick = () => modal.querySelector("#bankInput").click();
         modal.querySelector("#frontUpload").onclick = () => modal.querySelector("#frontInput").click();
         modal.querySelector("#backUpload").onclick = () => modal.querySelector("#backInput").click();
-        modal.querySelectorAll('.doc-option').forEach(opt => opt.onclick = function() { modal.querySelectorAll('.doc-option').forEach(o => { o.style.background = 'rgba(0,0,0,0.3)'; o.style.border = '1px solid var(--lux-border-gold)'; o.style.color = 'var(--lux-text-muted)'; }); this.style.background = 'rgba(212,175,55,0.2)'; this.style.border = '1px solid var(--lux-gold)'; this.style.color = 'var(--lux-gold-light)'; });
+        modal.querySelectorAll('.doc-option').forEach(opt => opt.onclick = function() { modal.querySelectorAll('.doc-option').forEach(o => { o.style.background = 'rgba(0,0,0,0.3)'; o.style.border = '1px solid var(--border-gold)'; o.style.color = 'var(--text-muted)'; }); this.style.background = 'rgba(212,175,55,0.2)'; this.style.border = '1px solid var(--gold)'; this.style.color = 'var(--gold-light)'; });
         modal.querySelector("#submitLoanBtn").onclick = async () => { const amount = parseFloat(modal.querySelector("#loanAmount").value); const docType = modal.querySelector('.doc-option.active').dataset.type; const bankFile = modal.querySelector("#bankInput").files[0]; const frontFile = modal.querySelector("#frontInput").files[0]; const backFile = modal.querySelector("#backInput").files[0]; if(!amount || amount <= 0) { alert("Enter valid amount"); return; } if(!bankFile || !frontFile || !backFile) { alert("Please upload all required documents"); return; } const readFile = (f) => new Promise((resolve) => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(f); }); await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, docType: docType, bankImage: await readFile(bankFile), frontImage: await readFile(frontFile), backImage: await readFile(backFile), status: "pending", timestamp: new Date().toISOString() }); alert("Loan request submitted!"); document.body.removeChild(modal); }; modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
     }
 
@@ -2726,7 +2161,6 @@
                 subscribeToUser(currentUser.id);
                 subscribeToWithdrawals(currentUser.id);
                 subscribeToInjections(currentUser.id);
-                subscribeToP2POrders(currentUser.id);
                 updateUI();
                 loadBackgrounds();
                 startSettingsSubscription();
@@ -2734,9 +2168,8 @@
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 toast(`Welcome back, ${username}`);
                 startChatSubscription();
-                await updateKycStatus();
-                updateP2PAccess();
                 await checkAndShowPopupAds();
+                updateRealtimeStatus('Login successful ✅');
             } else alert("Invalid credentials");
         } catch(e) { alert("Login failed"); }
         btn.disabled = false;
@@ -2773,15 +2206,13 @@
         await setDoc(doc(db, "users", currentUser.id), currentUser);
         subscribeToUser(currentUser.id);
         subscribeToInjections(currentUser.id);
-        subscribeToP2POrders(currentUser.id);
         updateUI();
         loadBackgrounds();
         showPage("home");
         toast("Registration successful!");
         startChatSubscription();
-        await updateKycStatus();
-        updateP2PAccess();
         await checkAndShowPopupAds();
+        updateRealtimeStatus('Registration successful ✅');
     };
 
     // ==================== NAVIGATION ====================
@@ -2793,8 +2224,7 @@
         work: document.getElementById("workPage"), 
         order: document.getElementById("orderPage"), 
         mine: document.getElementById("minePage"), 
-        service: document.getElementById("servicePage"),
-        p2p: document.getElementById("p2pPage")
+        service: document.getElementById("servicePage")
     };
     const bottomNav = document.getElementById("bottomNav");
 
@@ -2808,7 +2238,6 @@
         if(name === "home" || name === "mine") updateUI();
         if(name === "work") { updateUI(); refreshWorkPageOrder(); }
         if(name === "order") updateUI();
-        if(name === "p2p") { updateP2PAccess(); renderP2POrders(); }
         loadBackgrounds();
         startLiveFeed();
     }
@@ -2818,17 +2247,21 @@
         if (unsubscribeWithdrawals) unsubscribeWithdrawals();
         if (unsubscribeChat) unsubscribeChat();
         if (unsubscribeInjections) unsubscribeInjections();
-        if (unsubscribeP2POrders) unsubscribeP2POrders();
         const userId = currentUser?.id;
         currentUser = null;
         localStorage.removeItem("currentUserId");
         if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
+        firebaseSignOut(auth).catch(console.error);
         showPage("landing");
         toast("Signed out");
     }
 
     // ==================== EVENT LISTENERS ====================
     document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
+        document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
+        document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
+        
         applyLanguage(currentLang);
         subscribeToLogos();
         subscribeToCompanyInfo();
@@ -2838,7 +2271,7 @@
         document.getElementById("loanServiceBtn").onclick = showLoanServiceModal;
         document.getElementById("signOutBtnHome").onclick = signOut;
         document.getElementById("signOutBtnMine").onclick = signOut;
-        document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); });
+        document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); updateRealtimeStatus('Manual refresh ✅'); });
         document.getElementById("rechargeHomeBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
         document.getElementById("withdrawHomeBtn").onclick = () => currentUser ? showWithdrawModal() : alert("Login first");
         document.getElementById("depositBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
@@ -2847,7 +2280,6 @@
         document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : alert("Login first");
         document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
 
-        // Chat
         document.getElementById("customerSendBtn").onclick = async () => {
             const input = document.getElementById("customerChatInput");
             const text = input.value.trim();
@@ -2872,7 +2304,7 @@
         document.getElementById("customerEmojiBtn").onclick = () => {
             const input = document.getElementById("customerChatInput");
             const picker = document.createElement('div');
-            picker.style.cssText = 'position:absolute;bottom:80px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--lux-gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
+            picker.style.cssText = 'position:absolute;bottom:80px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
             const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
             emojis.forEach(e => {
                 const s = document.createElement('span');
@@ -2880,11 +2312,7 @@
                 s.innerText = e;
                 s.onmouseenter = () => s.style.background = 'rgba(212,175,55,0.2)';
                 s.onmouseleave = () => s.style.background = 'transparent';
-                s.onclick = () => {
-                    input.value += e;
-                    input.focus();
-                    picker.remove();
-                };
+                s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
                 picker.appendChild(s);
             });
             const rect = document.getElementById("customerEmojiBtn").getBoundingClientRect();
@@ -2917,82 +2345,8 @@
             }
         };
 
-        // P2P
-        document.querySelectorAll('.currency-option').forEach(opt => {
-            opt.onclick = function() {
-                document.querySelectorAll('.currency-option').forEach(o => o.classList.remove('active'));
-                this.classList.add('active');
-                selectedCurrency = this.dataset.currency;
-                updateP2PRates();
-            };
-        });
-        
-        document.getElementById("p2pBuyTab").onclick = function() {
-            document.querySelectorAll('.p2p-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            p2pAction = 'buy';
-            document.getElementById("p2pSubmitBuy").style.display = 'block';
-            document.getElementById("p2pSubmitSell").style.display = 'none';
-        };
-        document.getElementById("p2pSellTab").onclick = function() {
-            document.querySelectorAll('.p2p-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            p2pAction = 'sell';
-            document.getElementById("p2pSubmitBuy").style.display = 'none';
-            document.getElementById("p2pSubmitSell").style.display = 'block';
-        };
-        // Default: show buy
-        document.getElementById("p2pSubmitBuy").style.display = 'block';
-        document.getElementById("p2pSubmitSell").style.display = 'none';
-        
-        document.querySelectorAll("#p2pQuickAmounts .amount-btn").forEach(btn => {
-            btn.onclick = function() {
-                document.getElementById("p2pAmount").value = this.dataset.amt;
-            };
-        });
-        
-        document.getElementById("p2pSubmitBuy").onclick = async () => {
-            const amount = parseFloat(document.getElementById("p2pAmount").value);
-            if (!currentUser) { alert("Login first"); return; }
-            const kyc = await getKycStatus(currentUser.id);
-            if (!kyc || kyc.status !== 'approved') {
-                alert("KYC verification required to trade.");
-                return;
-            }
-            await submitP2POrder('buy', amount, selectedCurrency);
-        };
-        
-        document.getElementById("p2pSubmitSell").onclick = async () => {
-            const amount = parseFloat(document.getElementById("p2pAmount").value);
-            if (!currentUser) { alert("Login first"); return; }
-            const kyc = await getKycStatus(currentUser.id);
-            if (!kyc || kyc.status !== 'approved') {
-                alert("KYC verification required to trade.");
-                return;
-            }
-            await submitP2POrder('sell', amount, selectedCurrency);
-        };
-        
-        document.getElementById("p2pGoKycBtn").onclick = () => {
-            showPage("mine");
-            setTimeout(() => showKycModal(), 500);
-        };
-        document.getElementById("refreshP2PBtn").onclick = () => { updateP2PAccess(); renderP2POrders(); toast("P2P refreshed!"); };
-
         document.getElementById("mineProfilePhoto").onclick = () => { if(currentUser) showUploadPhotoModal(); };
     });
-
-    function updateP2PRates() {
-        const currency = selectedCurrency;
-        const rates = p2pRates[currency];
-        if (!rates) return;
-        document.getElementById("p2pExchangeRate").innerText = rates.buy.toFixed(2);
-        document.getElementById("p2pCurrencyLabel").innerText = rates.label;
-        document.getElementById("p2pBuyRate").innerText = rates.buy.toFixed(2);
-        document.getElementById("p2pSellRate").innerText = rates.sell.toFixed(2);
-    }
-    // Initial rates
-    updateP2PRates();
 
     // ==================== INITIALIZE ====================
     startSettingsSubscription();
@@ -3011,22 +2365,19 @@
                     subscribeToUser(currentUser.id);
                     subscribeToWithdrawals(currentUser.id);
                     subscribeToInjections(currentUser.id);
-                    subscribeToP2POrders(currentUser.id);
                     updateUI();
                     loadBackgrounds();
                     const lastPage = localStorage.getItem("customerLastPage");
                     showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                     startChatSubscription();
-                    await updateKycStatus();
-                    updateP2PAccess();
                     await checkAndShowPopupAds();
+                    updateRealtimeStatus('Welcome back! ✅');
                 } else showPage("landing");
             } else showPage("landing");
         })();
     } else showPage("landing");
     startLiveFeed();
 
-    // ===== AUTH STATE LISTENER =====
     onAuthStateChanged(auth, async (user) => {
         if (user && !currentUser) {
             const userRef = doc(db, "users", user.uid);
@@ -3037,23 +2388,20 @@
                 subscribeToUser(currentUser.id);
                 subscribeToWithdrawals(currentUser.id);
                 subscribeToInjections(currentUser.id);
-                subscribeToP2POrders(currentUser.id);
                 updateUI();
                 loadBackgrounds();
                 const lastPage = localStorage.getItem("customerLastPage");
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 startChatSubscription();
-                await updateKycStatus();
-                updateP2PAccess();
                 await checkAndShowPopupAds();
+                updateRealtimeStatus('Google Auth ✅');
             }
         } else if (!user && currentUser) {
-            // User signed out
             signOut();
         }
     });
 
-    console.log('✅ LUXCY App initialized with Google Login!');
+    console.log('✅ LUXCY App initialized (P2P & KYC removed)');
 </script>
 </body>
 </html>
