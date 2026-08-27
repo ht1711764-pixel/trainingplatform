@@ -358,7 +358,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.5';
+        const APP_VERSION = '2.0.6';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -370,6 +370,23 @@
             }
         }
     })();
+
+    // ===== TOGGLE PASSWORD - GLOBAL FUNCTION =====
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        if (input) {
+            if (input.type === 'password') {
+                input.type = 'text';
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            }
+        }
+    }
+    window.togglePassword = togglePassword;
 
     // ===== FIREBASE IMPORTS =====
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
@@ -519,7 +536,6 @@
             return { success: false };
         } catch (e) {
             console.error('Login error:', e);
-            // If Firebase fails, try hardcoded login
             if (username === 'admin' && password === 'admin123') {
                 return { success: true, data: { id: 'admin', username: 'admin' }, role: 'admin', perms: { all: true } };
             }
@@ -567,7 +583,6 @@
             }
         } catch(e) {
             console.error('Login error:', e);
-            // Try hardcoded login as fallback
             if (username === 'admin' && password === 'admin123') {
                 admin = { 
                     id: 'admin', 
@@ -1061,14 +1076,24 @@
         `;
     }
 
+    // ---- APPLY VIP - FIXED ----
     window.applyVIP = async (id) => {
         const u = cachedData.users.find(x => x.id === id);
         if (!u) return;
         const sel = document.getElementById(`vipSel_${id}`);
         if (!sel) return;
         const val = parseInt(sel.value);
-        if (val === 0) { if (u.manualVIPLevel) { await updateDoc(doc(db,'users',id), { manualVIPLevel: delete u.manualVIPLevel }); toast('Auto mode'); } else toast('Already auto'); }
-        else { await updateDoc(doc(db,'users',id), { manualVIPLevel: val }); toast(`VIP ${val} set`); }
+        if (val === 0) {
+            if (u.manualVIPLevel) {
+                await updateDoc(doc(db,'users',id), { manualVIPLevel: null });
+                toast('Auto mode');
+            } else {
+                toast('Already auto');
+            }
+        } else {
+            await updateDoc(doc(db,'users',id), { manualVIPLevel: val });
+            toast(`VIP ${val} set`);
+        }
         renderSection('vip');
     };
 
