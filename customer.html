@@ -1024,7 +1024,7 @@
         <div id="completedOrdersList"></div>
     </div>
 
-    <!-- ===== MINE PAGE (KYC နဲ့ P2P ဖယ်ရှားပြီး) ===== -->
+    <!-- ===== MINE PAGE ===== -->
     <div id="minePage" class="page">
         <div class="luxury-header"><div class="logo-area"><div class="luxury-logo"><i class="fas fa-user"></i></div><div class="luxury-brand" id="myProfileText">My Profile</div></div><button class="refresh-btn" id="refreshMineBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button></div>
         <div class="card-lux">
@@ -1092,7 +1092,7 @@
         </div>
     </div>
 
-    <!-- ===== BOTTOM NAV (P2P ဖယ်ရှားပြီး) ===== -->
+    <!-- ===== BOTTOM NAV ===== -->
     <div class="bottom-nav-lux hidden-nav" id="bottomNav">
         <div class="nav-item-lux" data-nav="home"><i class="fas fa-home"></i><span id="navHome">Home</span></div>
         <div class="nav-item-lux" data-nav="work"><i class="fas fa-briefcase"></i><span id="navWork">Work</span></div>
@@ -1105,7 +1105,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.3';
+        const APP_VERSION = '2.0.4';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -1153,6 +1153,7 @@
     let unsubscribeInjections = null;
     let currentLang = localStorage.getItem('lang') || 'en';
     let popupAdsCache = [];
+    let isProcessingOrder = false;
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
     function getVIPLevel(user) {
@@ -1179,11 +1180,27 @@
             border-left: 3px solid var(--gold);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             max-width: 92%; text-align: center;
+            animation: toastIn 0.3s ease;
         `;
         el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
-        setTimeout(() => el.remove(), 3000);
+        setTimeout(() => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(-50%) translateY(20px)';
+            el.style.transition = 'all 0.3s ease';
+            setTimeout(() => el.remove(), 300);
+        }, 3000);
     }
+
+    // Add toast animation
+    const styleSheet = document.createElement("style");
+    styleSheet.textContent = `
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+        }
+    `;
+    document.head.appendChild(styleSheet);
 
     // ==================== REAL-TIME STATUS ====================
     function updateRealtimeStatus(message = 'Connected') {
@@ -1226,7 +1243,7 @@
                     superior: null,
                     referralEarnings: 0,
                     regTime: new Date().toISOString(),
-                    tasks: { completed:0, total:0 },
+                    tasks: { completed: 0, total: 0 },
                     orders: [],
                     todayOrders: 0,
                     todayEarnings: 0,
@@ -1537,7 +1554,8 @@
                 await saveCurrentUser();
                 updateUI();
             }
-            toast(`🎁 Referral Bonus Earned! +S/ ${referralBonus.toFixed(4)}`);
+            const dict = translations[currentLang] || translations.en;
+            toast(`🎁 ${dict.referralEarned} +S/ ${referralBonus.toFixed(4)}`);
         } catch (error) { console.error("Referral commission error:", error); }
     }
 
@@ -1908,34 +1926,77 @@
             let submitBtn = document.getElementById("submitOrderFromCardBtn");
             if (submitBtn) {
                 submitBtn.onclick = async function() {
-                    if(submitBtn.disabled) return;
-                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { alert("Please provide all ratings"); return; }
-                    submitBtn.disabled = true; submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
+                    if(submitBtn.disabled || isProcessingOrder) return;
+                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { 
+                        toast("Please provide all ratings", true);
+                        return; 
+                    }
+                    isProcessingOrder = true;
+                    submitBtn.disabled = true; 
+                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
                     try {
-                        let profitEarned = currentOrder.netCommission;
+                        // ✅ Save order reference before modifying
+                        const orderToComplete = currentOrder;
+                        if (!orderToComplete) {
+                            throw new Error("No order to complete");
+                        }
+                        
+                        const profitEarned = orderToComplete.netCommission || 0;
+                        
+                        // ✅ Update user data
                         if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
                         currentUser.balance = (currentUser.balance || 0) + profitEarned;
                         currentUser.todayEarnings = (currentUser.todayEarnings || 0) + profitEarned;
                         currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
                         currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
-                        currentOrder.status = "completed";
-                        currentOrder.ratings = { ...currentRatings };
-                        currentOrder.date = new Date().toLocaleString();
-                        currentOrder.profit = profitEarned;
-                        await saveOrderToHistory(currentUser.id, currentOrder);
+                        
+                        // ✅ Save order to history with proper timestamp
+                        const orderHistoryData = {
+                            ...orderToComplete,
+                            status: "completed",
+                            ratings: { ...currentRatings },
+                            date: new Date().toLocaleString(),
+                            profit: profitEarned,
+                            timestamp: new Date().toISOString()
+                        };
+                        await saveOrderToHistory(currentUser.id, orderHistoryData);
+                        
+                        // ✅ Save user to Firestore
                         currentUser.currentOrderObj = null;
                         await saveCurrentUser();
+                        
+                        // ✅ Process referral commission
+                        await processReferralCommission(currentUser.id, profitEarned);
+                        
+                        // ✅ Clear current order and update UI
                         currentOrder = null;
                         updateUI();
-                        await processReferralCommission(currentUser.id, profitEarned);
-                        if (currentOrder?.isInjection) toast(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`);
-                        else toast(`Order Completed! +S/ ${profitEarned.toFixed(4)}`);
-                        let dailyLimit = currentUser.tasks.total;
-                        let completedCount = currentUser.tasks.completed;
-                        if(completedCount >= dailyLimit && dailyLimit > 0) document.getElementById("currentOrderDisplay").style.display = "none";
-                        else await loadNextOrderAutomatically();
-                    } catch(err) { console.error(err); alert("Error: " + err.message); }
-                    submitBtn.disabled = false; submitBtn.innerHTML = dict.submitComplete;
+                        
+                        // ✅ Show success message
+                        if (orderToComplete.isInjection) {
+                            toast(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`);
+                        } else {
+                            toast(`Order Completed! +S/ ${profitEarned.toFixed(4)}`);
+                        }
+                        
+                        // ✅ Load next order if available
+                        let dailyLimit = currentUser.tasks.total || 0;
+                        let completedCount = currentUser.tasks.completed || 0;
+                        if(completedCount >= dailyLimit && dailyLimit > 0) {
+                            document.getElementById("currentOrderDisplay").style.display = "none";
+                            toast("🎉 All orders completed for today!");
+                        } else {
+                            await loadNextOrderAutomatically();
+                        }
+                        
+                    } catch(err) { 
+                        console.error("Order completion error:", err); 
+                        toast("Error: " + err.message, true);
+                    } finally {
+                        isProcessingOrder = false;
+                        submitBtn.disabled = false; 
+                        submitBtn.innerHTML = dict.submitComplete;
+                    }
                 };
             }
         } else {
@@ -1945,16 +2006,30 @@
     }
 
     async function loadNextOrderAutomatically() {
-        let dailyLimit = currentUser.tasks?.total || 0;
-        let completedCount = currentUser.tasks?.completed || 0;
-        if(completedCount >= dailyLimit && dailyLimit > 0) { document.getElementById("currentOrderDisplay").style.display = "none"; return; }
-        let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { document.getElementById("currentOrderDisplay").style.display = "none"; toast("Insufficient balance! Please recharge.", true); return; }
-        let newOrder = await getNextOrder();
-        currentUser.currentOrderObj = newOrder;
-        await saveCurrentUser();
-        displayOrder(newOrder);
-        updateRealtimeStatus('New order loaded ✅');
+        try {
+            let dailyLimit = currentUser.tasks?.total || 0;
+            let completedCount = currentUser.tasks?.completed || 0;
+            if(completedCount >= dailyLimit && dailyLimit > 0) { 
+                document.getElementById("currentOrderDisplay").style.display = "none"; 
+                toast("🎉 All orders completed for today!");
+                return; 
+            }
+            let settings = await loadSystemSettings();
+            if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
+                document.getElementById("currentOrderDisplay").style.display = "none"; 
+                toast("Insufficient balance! Please recharge.", true); 
+                return; 
+            }
+            let newOrder = await getNextOrder();
+            currentOrder = newOrder;
+            currentUser.currentOrderObj = newOrder;
+            await saveCurrentUser();
+            displayOrder(newOrder);
+            updateRealtimeStatus('New order loaded ✅');
+        } catch (error) {
+            console.error("❌ Error loading next order:", error);
+            toast("Error loading next order: " + error.message, true);
+        }
     }
 
     function refreshWorkPageOrder() {
@@ -1968,16 +2043,64 @@
     }
 
     document.getElementById("startWorkingBtn").onclick = async () => {
-        if(!currentUser) { alert("Login first"); return; }
+        if(!currentUser) { toast("Please login first", true); return; }
         let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
-        if(dailyLimit === 0) { alert("No orders assigned by admin"); return; }
-        if(completedCount >= dailyLimit) { alert("All orders completed for today!"); return; }
+        if(dailyLimit === 0) { toast("No orders assigned by admin", true); return; }
+        if(completedCount >= dailyLimit) { toast("All orders completed for today!", true); return; }
         if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
         let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { alert(`Minimum balance S/ ${settings.minBalanceForOrder} required to start an order.`); return; }
+        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
+            toast(`Minimum balance S/ ${settings.minBalanceForOrder} required to start an order.`, true); 
+            return; 
+        }
         await loadNextOrderAutomatically();
     };
+
+    // ==================== SAVE ORDER TO HISTORY (FIXED) ====================
+    async function saveOrderToHistory(userId, orderData) {
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            if (orderData.id) {
+                const orderDocRef = doc(ordersRef, orderData.id.toString());
+                await setDoc(orderDocRef, {
+                    ...orderData,
+                    timestamp: orderData.timestamp || new Date().toISOString()
+                });
+            } else {
+                await addDoc(ordersRef, {
+                    ...orderData,
+                    timestamp: orderData.timestamp || new Date().toISOString()
+                });
+            }
+            await deleteOldOrdersIfNeeded(userId, 50);
+            console.log("✅ Order saved successfully:", orderData.id);
+        } catch (error) {
+            console.error("❌ Error saving order:", error);
+            throw error;
+        }
+    }
+
+    async function getUserOrders(userId) {
+        const ordersRef = collection(db, "users", userId, "orders");
+        const q = query(ordersRef, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        const orders = [];
+        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+        return orders;
+    }
+
+    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
+        const ordersRef = collection(db, "users", userId, "orders");
+        const q = query(ordersRef, orderBy("timestamp", "desc"));
+        const snapshot = await getDocs(q);
+        if (snapshot.size > maxOrders) {
+            const toDelete = [];
+            let count = 0;
+            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
+            for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
+        }
+    }
 
     // ==================== RECHARGE MODAL ====================
     async function showRechargeModal() {
@@ -1987,15 +2110,15 @@
         let walletAddr = settings.usdtWalletAddress || "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf";
         modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2><div class="wallet-address-box"><div><div class="text-muted" style="color:var(--text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div><div class="wallet-address-text" id="walletAddressTextDisplay">${walletAddr}</div></div><button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button></div><input type="number" id="rechargeAmount" class="input-lux" placeholder="Amount (USDT)" value="100"><div class="amount-buttons"><div class="amount-btn" data-amt="50">50</div><div class="amount-btn" data-amt="100">100</div><div class="amount-btn" data-amt="500">500</div><div class="amount-btn" data-amt="1000">1000</div></div><div class="upload-area-sm" id="uploadReceiptArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadReceipt}<input type="file" id="receiptInput" accept="image/*" style="display:none;"></div><div id="receiptPreview"></div><button class="btn-lux" id="submitRechargeBtn" style="margin-top:16px;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeRechargeModal" style="margin-top:12px;">${dict.cancel}</button></div>`;
         document.body.appendChild(modal);
-        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText(walletAddr); alert("Wallet address copied!"); };
+        modal.querySelector("#copyWalletBtn").onclick = () => { navigator.clipboard.writeText(walletAddr); toast("Wallet address copied!"); };
         modal.querySelectorAll(".amount-btn").forEach(btn => btn.onclick = () => { modal.querySelector("#rechargeAmount").value = btn.dataset.amt; });
         modal.querySelector("#uploadReceiptArea").onclick = () => modal.querySelector("#receiptInput").click();
         modal.querySelector("#receiptInput").onchange = async (e) => { const file = e.target.files[0]; if(file) { const compressed = await compressImage(file, 400, 400, 0.5); modal.querySelector("#receiptPreview").innerHTML = `<img src="${compressed}" class="receipt-img">`; modal.querySelector("#receiptInput").compressedData = compressed; } };
         modal.querySelector("#submitRechargeBtn").onclick = async () => {
             const amount = parseFloat(modal.querySelector("#rechargeAmount").value);
             const file = modal.querySelector("#receiptInput").files[0];
-            if(isNaN(amount) || amount < 1) { alert(dict.enterValidAmount); return; }
-            if(!file) { alert(dict.uploadReceipt); return; }
+            if(isNaN(amount) || amount < 1) { toast(dict.enterValidAmount, true); return; }
+            if(!file) { toast(dict.uploadReceipt, true); return; }
             const imgData = modal.querySelector("#receiptInput").compressedData;
             await setDoc(doc(db, "rechargeRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, receiptImage: imgData, status: "pending", timestamp: new Date().toISOString() });
             document.body.removeChild(modal);
@@ -2010,7 +2133,7 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content"><h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.withdraw}</h2><input type="text" id="withdrawWallet" class="input-lux" placeholder="USDT TRC20 Wallet Address"><input type="number" id="withdrawAmount" class="input-lux" placeholder="Amount" step="0.01"><div class="flex-between" style="gap:12px;"><button class="btn-lux" id="confirmWithdrawBtn" style="flex:1;">${dict.submit}</button><button class="btn-outline-lux btn-lux" id="closeWithdrawModal" style="flex:1;">${dict.cancel}</button></div></div>`;
         document.body.appendChild(modal);
-        document.getElementById("confirmWithdrawBtn").onclick = async () => { let wallet = document.getElementById("withdrawWallet").value.trim(); let amount = parseFloat(document.getElementById("withdrawAmount").value); if(!wallet) { alert("Enter wallet address"); return; } if(isNaN(amount) || amount < 1) { alert("Enter valid amount"); return; } if(amount > currentUser.balance) { alert("Insufficient balance"); return; } currentUser.balance -= amount; await saveCurrentUser(); updateUI(); await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, walletAddress: wallet, status: "pending", timestamp: new Date().toISOString() }); document.body.removeChild(modal); toast("Withdraw request submitted!"); };
+        document.getElementById("confirmWithdrawBtn").onclick = async () => { let wallet = document.getElementById("withdrawWallet").value.trim(); let amount = parseFloat(document.getElementById("withdrawAmount").value); if(!wallet) { toast("Enter wallet address", true); return; } if(isNaN(amount) || amount < 1) { toast("Enter valid amount", true); return; } if(amount > currentUser.balance) { toast("Insufficient balance", true); return; } currentUser.balance -= amount; await saveCurrentUser(); updateUI(); await setDoc(doc(db, "withdrawRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, walletAddress: wallet, status: "pending", timestamp: new Date().toISOString() }); document.body.removeChild(modal); toast("Withdraw request submitted!"); };
         document.getElementById("closeWithdrawModal").onclick = () => document.body.removeChild(modal);
     }
 
@@ -2084,32 +2207,6 @@
         return pendingInjections;
     }
 
-    // ==================== FIREBASE HELPERS ====================
-    async function saveOrderToHistory(userId, orderData) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        await addDoc(ordersRef, { ...orderData, timestamp: new Date().toISOString() });
-        await deleteOldOrdersIfNeeded(userId, 50);
-    }
-    async function getUserOrders(userId) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        const orders = [];
-        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-        return orders;
-    }
-    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        if (snapshot.size > maxOrders) {
-            const toDelete = [];
-            let count = 0;
-            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
-            for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
-        }
-    }
-
     // ==================== MODALS ====================
     function showBindWalletModal() {
         const dict = translations[currentLang] || translations.en;
@@ -2138,7 +2235,7 @@
         modal.querySelector("#frontUpload").onclick = () => modal.querySelector("#frontInput").click();
         modal.querySelector("#backUpload").onclick = () => modal.querySelector("#backInput").click();
         modal.querySelectorAll('.doc-option').forEach(opt => opt.onclick = function() { modal.querySelectorAll('.doc-option').forEach(o => { o.style.background = 'rgba(0,0,0,0.3)'; o.style.border = '1px solid var(--border-gold)'; o.style.color = 'var(--text-muted)'; }); this.style.background = 'rgba(212,175,55,0.2)'; this.style.border = '1px solid var(--gold)'; this.style.color = 'var(--gold-light)'; });
-        modal.querySelector("#submitLoanBtn").onclick = async () => { const amount = parseFloat(modal.querySelector("#loanAmount").value); const docType = modal.querySelector('.doc-option.active').dataset.type; const bankFile = modal.querySelector("#bankInput").files[0]; const frontFile = modal.querySelector("#frontInput").files[0]; const backFile = modal.querySelector("#backInput").files[0]; if(!amount || amount <= 0) { alert("Enter valid amount"); return; } if(!bankFile || !frontFile || !backFile) { alert("Please upload all required documents"); return; } const readFile = (f) => new Promise((resolve) => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(f); }); await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, docType: docType, bankImage: await readFile(bankFile), frontImage: await readFile(frontFile), backImage: await readFile(backFile), status: "pending", timestamp: new Date().toISOString() }); alert("Loan request submitted!"); document.body.removeChild(modal); }; modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
+        modal.querySelector("#submitLoanBtn").onclick = async () => { const amount = parseFloat(modal.querySelector("#loanAmount").value); const docType = modal.querySelector('.doc-option.active').dataset.type; const bankFile = modal.querySelector("#bankInput").files[0]; const frontFile = modal.querySelector("#frontInput").files[0]; const backFile = modal.querySelector("#backInput").files[0]; if(!amount || amount <= 0) { toast("Enter valid amount", true); return; } if(!bankFile || !frontFile || !backFile) { toast("Please upload all required documents", true); return; } const readFile = (f) => new Promise((resolve) => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(f); }); await setDoc(doc(db, "loanRequests", Date.now().toString()), { id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, amount: amount, docType: docType, bankImage: await readFile(bankFile), frontImage: await readFile(frontFile), backImage: await readFile(backFile), status: "pending", timestamp: new Date().toISOString() }); toast("Loan request submitted!"); document.body.removeChild(modal); }; modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
     }
 
     // ==================== LOGIN / REGISTER ====================
@@ -2153,7 +2250,7 @@
             const snapshot = await getDocs(q);
             if (!snapshot.empty) {
                 currentUser = { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
-                if (currentUser.disabled) { alert("Account disabled"); btn.disabled = false; btn.innerHTML = 'Login'; return; }
+                if (currentUser.disabled) { toast("Account disabled", true); btn.disabled = false; btn.innerHTML = 'Login'; return; }
                 if(!currentUser.orders) currentUser.orders = [];
                 if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
                 await checkAndApplyInjections();
@@ -2170,8 +2267,8 @@
                 startChatSubscription();
                 await checkAndShowPopupAds();
                 updateRealtimeStatus('Login successful ✅');
-            } else alert("Invalid credentials");
-        } catch(e) { alert("Login failed"); }
+            } else toast("Invalid credentials", true);
+        } catch(e) { toast("Login failed: " + e.message, true); }
         btn.disabled = false;
         btn.innerHTML = 'Login';
     };
@@ -2193,14 +2290,14 @@
         const confirm = document.getElementById("regConfirmPass").value;
         const withdrawPass = document.getElementById("regWithdrawPass").value;
         const invite = document.getElementById("regInvite").value.trim();
-        if(!username || !email || !password || !withdrawPass || !invite) { alert("All fields required"); return; }
-        if(password !== confirm) { alert("Passwords do not match"); return; }
+        if(!username || !email || !password || !withdrawPass || !invite) { toast("All fields required", true); return; }
+        if(password !== confirm) { toast("Passwords do not match", true); return; }
         const q = query(collection(db, "users"), where("username", "==", username));
         const snapshot = await getDocs(q);
-        if (!snapshot.empty) { alert("Username exists"); return; }
+        if (!snapshot.empty) { toast("Username exists", true); return; }
         const refQ = query(collection(db, "users"), where("invitationCode", "==", invite));
         const refSnapshot = await getDocs(refQ);
-        if (refSnapshot.empty) { alert("Invalid invitation code"); return; }
+        if (refSnapshot.empty) { toast("Invalid invitation code", true); return; }
         const referrer = refSnapshot.docs[0].data();
         currentUser = { id: Date.now().toString(), username, email, phone, password, withdrawPassword: withdrawPass, balance: 0, invitationCode: "LXC"+Math.random().toString(36).substring(2,8).toUpperCase(), superior: referrer.username, referralEarnings:0, regTime: new Date().toISOString(), tasks: { completed:0, total:0 }, orders:[], todayOrders:0, todayEarnings:0, totalCommission:0, creditScore:100, disabled:false, walletAddress:null, currentOrderObj:null, hasActiveOrder:false, role:"customer" };
         await setDoc(doc(db, "users", currentUser.id), currentUser);
@@ -2272,12 +2369,12 @@
         document.getElementById("signOutBtnHome").onclick = signOut;
         document.getElementById("signOutBtnMine").onclick = signOut;
         document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); updateRealtimeStatus('Manual refresh ✅'); });
-        document.getElementById("rechargeHomeBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
-        document.getElementById("withdrawHomeBtn").onclick = () => currentUser ? showWithdrawModal() : alert("Login first");
-        document.getElementById("depositBtn").onclick = () => currentUser ? showRechargeModal() : alert("Login first");
-        document.getElementById("withdrawBtn").onclick = () => currentUser ? showWithdrawModal() : alert("Login first");
-        document.getElementById("rechargeHistoryBtn").onclick = () => currentUser ? showRechargeHistory() : alert("Login first");
-        document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : alert("Login first");
+        document.getElementById("rechargeHomeBtn").onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
+        document.getElementById("withdrawHomeBtn").onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
+        document.getElementById("depositBtn").onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
+        document.getElementById("withdrawBtn").onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
+        document.getElementById("rechargeHistoryBtn").onclick = () => currentUser ? showRechargeHistory() : toast("Please login first", true);
+        document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : toast("Please login first", true);
         document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
 
         document.getElementById("customerSendBtn").onclick = async () => {
@@ -2401,7 +2498,7 @@
         }
     });
 
-    console.log('✅ LUXCY App initialized (P2P & KYC removed)');
+    console.log('✅ LUXCY App initialized (Error Fixed v2.0.4)');
 </script>
 </body>
 </html>
