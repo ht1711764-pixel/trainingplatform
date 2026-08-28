@@ -881,6 +881,23 @@
         .text-muted { color: var(--text-muted); }
         .text-light { color: var(--text-light); }
         
+        .btn-delete-data {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(220,38,38,0.25);
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+        }
+        .btn-delete-data:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 30px rgba(220,38,38,0.4); }
+        
         @media (max-width: 768px) {
             .page { padding: 16px 12px 100px; }
             .luxury-header { padding: 10px 16px; border-radius: 40px; }
@@ -1064,6 +1081,18 @@
             <p>• <span id="commDesc3">Daily task limit based on assigned orders</span></p>
             <p class="text-muted" style="margin-top:12px;font-size:11px;color:var(--text-muted);"><i class="fas fa-shield-alt"></i> <span id="secureText">All transactions are secure and instant</span></p>
         </div>
+        
+        <!-- ===== DELETE BROWSING DATA BUTTON ===== -->
+        <div class="card-lux" style="margin-top:20px;border:1px solid #dc2626;">
+            <div style="text-align:center;margin-bottom:12px;">
+                <span style="color:#dc2626;font-weight:700;"><i class="fas fa-trash-alt"></i> <span id="deleteDataText">Clear Local Data</span></span>
+                <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">This will clear all cached data and reload the app to fix display issues.</p>
+            </div>
+            <button class="btn-delete-data" id="deleteBrowsingDataBtn">
+                <i class="fas fa-broom"></i> <span id="deleteDataBtnText">Delete Browsing Data & Refresh</span>
+            </button>
+        </div>
+        
         <div class="card-lux" style="margin-top:20px;">
             <div style="text-align:center;margin-bottom:16px;"><span class="text-gold"><i class="fas fa-globe"></i> <span id="selectLanguageText">Select Language</span></span></div>
             <div class="language-selector" id="languageSelector">
@@ -1105,7 +1134,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.4';
+        const APP_VERSION = '2.0.5';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -1284,6 +1313,88 @@
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
 
+    // ==================== DELETE BROWSING DATA FUNCTION ====================
+    function deleteBrowsingData() {
+        // Show confirmation dialog
+        const confirmDelete = confirm(
+            "⚠️ WARNING: This will delete all local data including:\n\n" +
+            "• Login session\n" +
+            "• Cached files\n" +
+            "• Local storage data\n" +
+            "• Session storage data\n" +
+            "• Cookies\n\n" +
+            "✅ Your account data on the server will NOT be deleted.\n\n" +
+            "Click OK to continue or Cancel to stop."
+        );
+        
+        if (!confirmDelete) return;
+        
+        try {
+            // 1. Clear localStorage
+            localStorage.clear();
+            console.log("✅ localStorage cleared");
+            
+            // 2. Clear sessionStorage
+            sessionStorage.clear();
+            console.log("✅ sessionStorage cleared");
+            
+            // 3. Clear cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            console.log("✅ Cookies cleared");
+            
+            // 4. Clear cache using Cache API (if available)
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+                console.log("✅ Cache cleared");
+            }
+            
+            // 5. Clear IndexedDB (if available)
+            if ('indexedDB' in window) {
+                indexedDB.databases().then(function(dbs) {
+                    dbs.forEach(function(db) {
+                        indexedDB.deleteDatabase(db.name);
+                    });
+                }).catch(function() {
+                    // Some browsers don't support databases() method
+                    console.log("⚠️ Could not clear IndexedDB");
+                });
+            }
+            
+            // 6. Clear service workers (if any)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    registrations.forEach(function(registration) {
+                        registration.unregister();
+                    });
+                });
+                console.log("✅ Service workers cleared");
+            }
+            
+            // Show success message
+            toast("✅ All local data cleared! Refreshing page...");
+            
+            // Reload page after 1.5 seconds
+            setTimeout(function() {
+                window.location.reload(true); // true = force reload from server
+            }, 1500);
+            
+        } catch (error) {
+            console.error("❌ Error clearing data:", error);
+            toast("Error clearing data: " + error.message, true);
+        }
+    }
+
+    // Attach delete data button
+    document.getElementById('deleteBrowsingDataBtn').onclick = deleteBrowsingData;
+
     // ==================== TRANSLATIONS ====================
     const translations = {
         en: {
@@ -1323,7 +1434,9 @@
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save", cancel: "Cancel",
             bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!",
-            referralEarned: "Referral Bonus Earned!"
+            referralEarned: "Referral Bonus Earned!",
+            deleteDataText: "Clear Local Data",
+            deleteDataBtnText: "Delete Browsing Data & Refresh"
         },
         th: {
             heroTitle: "LUXCY", heroSubtitle: "สัมผัสการเดินทางสุดหรูพร้อมรับรายได้ทุกวัน",
@@ -1362,7 +1475,9 @@
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก", cancel: "ยกเลิก",
             bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!",
-            referralEarned: "ได้รับโบนัสแนะนำ!"
+            referralEarned: "ได้รับโบนัสแนะนำ!",
+            deleteDataText: "ล้างข้อมูลในเครื่อง",
+            deleteDataBtnText: "ล้างข้อมูลทั้งหมด & รีเฟรช"
         },
         es: {
             heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones diarias.",
@@ -1401,7 +1516,9 @@
             okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar", cancel: "Cancelar",
             bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
-            referralEarned: "¡Bono por Referido Ganado!"
+            referralEarned: "¡Bono por Referido Ganado!",
+            deleteDataText: "Borrar Datos Locales",
+            deleteDataBtnText: "Borrar Datos & Refrescar"
         },
         uk: {
             heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь розкішними подорожами та заробляйте щоденні комісії.",
@@ -1440,7 +1557,9 @@
             okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса гаманця USDT TRC20", copy: "Копіювати",
             uploadPhoto: "Завантажити фото", save: "Зберегти", cancel: "Скасувати",
             bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
-            referralEarned: "Реферальний бонус отримано!"
+            referralEarned: "Реферальний бонус отримано!",
+            deleteDataText: "Очистити локальні дані",
+            deleteDataBtnText: "Видалити дані & оновити"
         },
         ru: {
             heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь роскошными путешествиями и зарабатывайте ежедневные комиссии.",
@@ -1479,7 +1598,9 @@
             okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес кошелька USDT TRC20", copy: "Копировать",
             uploadPhoto: "Загрузить фото", save: "Сохранить", cancel: "Отмена",
             bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
-            referralEarned: "Реферальный бонус получен!"
+            referralEarned: "Реферальный бонус получен!",
+            deleteDataText: "Очистить локальные данные",
+            deleteDataBtnText: "Удалить данные & обновить"
         }
     };
 
@@ -1513,7 +1634,9 @@
             secureText: dict.secureText, selectLanguageText: dict.selectLanguageText, signOutText: dict.signOutText,
             customerServiceText: dict.customerServiceText, sendText: dict.sendText,
             navHome: dict.navHome, navWork: dict.navWork, navOrder: dict.navOrder, navMine: dict.navMine, navService: dict.navService,
-            loginBtnTextLogin: dict.loginBtnText
+            loginBtnTextLogin: dict.loginBtnText,
+            deleteDataText: dict.deleteDataText,
+            deleteDataBtnText: dict.deleteDataBtnText
         };
         for (const [id, text] of Object.entries(elements)) { const el = document.getElementById(id); if (el) el.innerText = text; }
         if (currentUser) updateUI();
@@ -1755,9 +1878,28 @@
         const cleanUser = { ...currentUser };
         delete cleanUser.orders;
         delete cleanUser.pendingInjections;
+        
+        // ✅ FIX: Sanitize currentOrderObj to remove undefined values
+        if (cleanUser.currentOrderObj) {
+            const order = cleanUser.currentOrderObj;
+            cleanUser.currentOrderObj = {
+                id: order.id || Date.now(),
+                name: order.name || 'Default Order',
+                imageData: order.imageData || null,
+                amount: order.amount || 0,
+                netCommission: order.netCommission || 0,
+                rate: order.rate || 0,
+                orderNumber: order.orderNumber || 'ORD' + Math.floor(Math.random() * 1e9),
+                profit: order.profit || 0,
+                isInjection: order.isInjection || false,
+                injectionDetails: order.injectionDetails || null
+            };
+        }
+        
         await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
         localStorage.setItem("currentUserId", currentUser.id);
     }
+    
     async function loadSystemSettings() { const docRef = doc(db, "systemSettings", "main"); const docSnap = await getDoc(docRef); if (docSnap.exists()) return docSnap.data(); return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; }
     async function loadCustomOrders() { const snapshot = await getDocs(collection(db, "customOrders")); const orders = []; snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); return orders; }
 
@@ -1825,7 +1967,9 @@
     // ==================== ORDER SYSTEM ====================
     async function getRandomOrderTemplate() {
         let orders = await loadCustomOrders();
-        if(orders.length === 0) return { id: 0, name: "Default Order", image: null, price: 10 };
+        if(orders.length === 0) {
+            return { id: 0, name: "Default Order", image: null, price: 10 };
+        }
         return orders[Math.floor(Math.random() * orders.length)];
     }
 
@@ -1860,17 +2004,39 @@
             let fee = gross * 0.01;
             netCommission = gross - fee;
         }
+        
+        // ✅ FIX: Ensure order name is never undefined
+        let orderName = 'Default Order';
+        if (injection) {
+            orderName = injection.orderName || tpl.name || 'Premium Task Order';
+        } else {
+            orderName = tpl.name || 'Premium Task Order';
+        }
+        
+        // ✅ FIX: Ensure imageData is null if undefined
+        let imageData = null;
+        if (injection?.imageData) {
+            imageData = injection.imageData;
+        } else if (tpl.image) {
+            imageData = tpl.image;
+        }
+        
         const order = {
             id: Date.now(),
-            name: injection ? (injection.orderName || tpl.name) : tpl.name,
-            imageData: injection?.imageData || tpl.image || null,
+            name: orderName,
+            imageData: imageData,
             amount: amount,
-            netCommission: netCommission,
+            netCommission: netCommission || 0,
             rate: injection?.commissionRate || (commissionRate * 100),
             orderNumber: "ORD" + Math.floor(Math.random() * 1e9),
-            profit: netCommission,
+            profit: netCommission || 0,
             isInjection: isInjection,
-            injectionDetails: isInjection ? { extraAmount: injection?.extraAmount || 0, customCommission: netCommission, originalBalance: balance, injectionId: injection?.id } : null
+            injectionDetails: isInjection ? { 
+                extraAmount: injection?.extraAmount || 0, 
+                customCommission: netCommission || 0, 
+                originalBalance: balance, 
+                injectionId: injection?.id 
+            } : null
         };
         return order;
     }
@@ -1935,7 +2101,6 @@
                     submitBtn.disabled = true; 
                     submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
                     try {
-                        // ✅ Save order reference before modifying
                         const orderToComplete = currentOrder;
                         if (!orderToComplete) {
                             throw new Error("No order to complete");
@@ -1943,14 +2108,12 @@
                         
                         const profitEarned = orderToComplete.netCommission || 0;
                         
-                        // ✅ Update user data
                         if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
                         currentUser.balance = (currentUser.balance || 0) + profitEarned;
                         currentUser.todayEarnings = (currentUser.todayEarnings || 0) + profitEarned;
                         currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
                         currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
                         
-                        // ✅ Save order to history with proper timestamp
                         const orderHistoryData = {
                             ...orderToComplete,
                             status: "completed",
@@ -1961,25 +2124,20 @@
                         };
                         await saveOrderToHistory(currentUser.id, orderHistoryData);
                         
-                        // ✅ Save user to Firestore
                         currentUser.currentOrderObj = null;
                         await saveCurrentUser();
                         
-                        // ✅ Process referral commission
                         await processReferralCommission(currentUser.id, profitEarned);
                         
-                        // ✅ Clear current order and update UI
                         currentOrder = null;
                         updateUI();
                         
-                        // ✅ Show success message
                         if (orderToComplete.isInjection) {
                             toast(`🎉 SPECIAL BONUS ORDER COMPLETED! +S/ ${profitEarned.toFixed(4)} 🎉`);
                         } else {
                             toast(`Order Completed! +S/ ${profitEarned.toFixed(4)}`);
                         }
                         
-                        // ✅ Load next order if available
                         let dailyLimit = currentUser.tasks.total || 0;
                         let completedCount = currentUser.tasks.completed || 0;
                         if(completedCount >= dailyLimit && dailyLimit > 0) {
@@ -2021,6 +2179,15 @@
                 return; 
             }
             let newOrder = await getNextOrder();
+            
+            // ✅ FIX: Check if newOrder is valid before saving
+            if (!newOrder || !newOrder.name) {
+                console.error("❌ Invalid order generated:", newOrder);
+                toast("Error: Could not generate valid order. Please try again.", true);
+                document.getElementById("currentOrderDisplay").style.display = "none";
+                return;
+            }
+            
             currentOrder = newOrder;
             currentUser.currentOrderObj = newOrder;
             await saveCurrentUser();
@@ -2029,6 +2196,7 @@
         } catch (error) {
             console.error("❌ Error loading next order:", error);
             toast("Error loading next order: " + error.message, true);
+            document.getElementById("currentOrderDisplay").style.display = "none";
         }
     }
 
@@ -2057,7 +2225,7 @@
         await loadNextOrderAutomatically();
     };
 
-    // ==================== SAVE ORDER TO HISTORY (FIXED) ====================
+    // ==================== SAVE ORDER TO HISTORY ====================
     async function saveOrderToHistory(userId, orderData) {
         try {
             const ordersRef = collection(db, "users", userId, "orders");
@@ -2498,7 +2666,7 @@
         }
     });
 
-    console.log('✅ LUXCY App initialized (Error Fixed v2.0.4)');
+    console.log('✅ LUXCY App initialized (Error Fixed v2.0.5 with Delete Browsing Data)');
 </script>
 </body>
 </html>

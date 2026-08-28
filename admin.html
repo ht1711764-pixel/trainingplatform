@@ -60,6 +60,8 @@
         .btn-warning { background: linear-gradient(105deg, #f59e0b, #d97706); color: white; border: none; }
         .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
         .btn-secondary { background: #4a5568; color: white; border: none; }
+        .btn-clear-order { background: linear-gradient(105deg, #8b5cf6, #7c3aed); color: white; border: none; }
+        .btn-clear-order:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
         
         input, select, textarea { 
             background: #0f1117; 
@@ -305,7 +307,8 @@
         
         .commission-rate { color: #d4af37; font-weight: bold; }
         
-        .btn-sm { padding: 5px 10px; font-size: 12px; }
+        .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-sm:hover { transform: scale(1.05); }
         
         .settings-tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid #2d3748; flex-wrap: wrap; }
         .settings-tab { padding: 10px 20px; cursor: pointer; border-radius: 12px 12px 0 0; background: #0f1117; border: 1px solid #2d3748; border-bottom: none; }
@@ -347,6 +350,21 @@
             color: #9ca3af;
             margin-top: 6px;
             display: block;
+        }
+        .action-buttons-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .action-buttons-wrap .btn-sm {
+            margin: 2px;
+            white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+            .action-buttons-wrap .btn-sm {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
         }
     </style>
 </head>
@@ -399,7 +417,7 @@
 <script type="module">
     // ==================== VERSION CHECK & FORCE REFRESH ====================
     (function() {
-        const APP_VERSION = '2.1.6';
+        const APP_VERSION = '2.1.7';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -545,7 +563,6 @@
             users = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
-                // ✅ Parse tasks properly
                 if (!data.tasks) {
                     data.tasks = { completed: 0, total: 0 };
                 } else {
@@ -554,11 +571,9 @@
                         total: parseInt(data.tasks.total) || 0
                     };
                 }
-                // ✅ Parse balance properly
                 if (!data.balance) data.balance = 0;
                 else data.balance = parseFloat(data.balance) || 0;
                 
-                // ✅ Parse todayEarnings and totalCommission
                 if (!data.todayEarnings) data.todayEarnings = 0;
                 else data.todayEarnings = parseFloat(data.todayEarnings) || 0;
                 
@@ -568,7 +583,6 @@
                 users.push({ id: doc.id, ...data });
             });
             
-            // ✅ Update dashboard tasks if on dashboard
             if (currentSection === 'dashboard') {
                 updateDashboardTasks();
             }
@@ -663,11 +677,9 @@
     }
 
     async function authenticateUser(username, password) {
-        // Check agencies
         const agencyMatch = agencies.find(a => a.username === username && a.password === password && a.status === 'active');
         if (agencyMatch) return { success: true, userData: agencyMatch, type: 'agency', permissions: agencyMatch.permissions || {} };
         
-        // Check admin users collection
         const adminQuery = query(collection(db, "users"), where("username", "==", username), where("role", "==", "admin"));
         const adminSnapshot = await getDocs(adminQuery);
         if (!adminSnapshot.empty) {
@@ -675,10 +687,7 @@
             if (adminData.password === password) return { success: true, userData: { id: adminSnapshot.docs[0].id, ...adminData }, type: 'admin', permissions: { all: true } };
         }
         
-        // Hardcoded master admin
         if (username === "hein" && password === "123456") return { success: true, userData: { id: "master_admin", username: "hein", role: "master" }, type: 'master', permissions: { all: true } };
-        
-        // Hardcoded admin fallback
         if (username === "admin" && password === "admin123") return { success: true, userData: { id: "admin", username: "admin", role: "admin" }, type: 'admin', permissions: { all: true } };
         
         return { success: false };
@@ -727,7 +736,6 @@
                 } else errorDiv.innerHTML = '<span style="color:#dc2626;">Invalid username or password</span>';
             } catch(e) { 
                 console.error('Login error:', e);
-                // Try hardcoded fallback if Firebase fails
                 if (username === "admin" && password === "admin123") {
                     pending2fa = true;
                     pendingUserData = { success: true, userData: { id: "admin", username: "admin", role: "admin" }, type: 'admin', permissions: { all: true } };
@@ -1255,9 +1263,71 @@
         });
     }
 
-    // ==================== USER ACTIONS ====================
-    window.setupOrder = async (userId) => { let u = users.find(u=>u.id===userId); if(u) { let c = parseInt(prompt("Add/remove orders (+/-):",0)); if(!isNaN(c)) { if(!u.tasks) u.tasks={completed:0,total:0}; if(c>0) u.tasks.total+=c; else if(c<0) { let r=Math.abs(c); if(u.tasks.total>=r) { u.tasks.total-=r; if(u.tasks.completed>u.tasks.total) u.tasks.completed=u.tasks.total; } } await setDoc(doc(db, "users", userId), u, { merge: true }); renderSection("users"); } } };
-    window.setupBalance = async (userId) => { let u = users.find(u=>u.id===userId); if(u) { let b = prompt("New balance:", u.balance); if(b && !isNaN(parseFloat(b))) { u.balance=parseFloat(b); await setDoc(doc(db, "users", userId), u, { merge: true }); renderSection("users"); } } };
+    // ==================== USER ACTIONS (FIXED with currentOrderObj clearing) ====================
+    
+    // ✅ FIXED: Setup Orders - clears currentOrderObj
+    window.setupOrder = async (userId) => { 
+        let u = users.find(u=>u.id===userId); 
+        if(u) { 
+            let c = parseInt(prompt("Add/remove orders (+/-):",0)); 
+            if(!isNaN(c)) { 
+                if(!u.tasks) u.tasks={completed:0,total:0}; 
+                if(c>0) u.tasks.total+=c; 
+                else if(c<0) { 
+                    let r=Math.abs(c); 
+                    if(u.tasks.total>=r) { 
+                        u.tasks.total-=r; 
+                        if(u.tasks.completed>u.tasks.total) u.tasks.completed=u.tasks.total; 
+                    } 
+                }
+                // ✅ FIX: Clear currentOrderObj when orders are changed by admin
+                if (u.currentOrderObj) {
+                    u.currentOrderObj = null;
+                    console.log(`✅ Cleared currentOrderObj for user ${u.username} after order change`);
+                }
+                await setDoc(doc(db, "users", userId), u, { merge: true }); 
+                renderSection("users"); 
+                toast(`✅ Orders updated for ${u.username}. Current order cleared.`);
+            } 
+        } 
+    };
+    
+    // ✅ FIXED: Setup Balance - clears currentOrderObj
+    window.setupBalance = async (userId) => { 
+        let u = users.find(u=>u.id===userId); 
+        if(u) { 
+            let b = prompt("New balance:", u.balance); 
+            if(b && !isNaN(parseFloat(b))) { 
+                u.balance=parseFloat(b); 
+                // ✅ FIX: Clear currentOrderObj when balance is changed by admin
+                if (u.currentOrderObj) {
+                    u.currentOrderObj = null;
+                    console.log(`✅ Cleared currentOrderObj for user ${u.username} after balance change`);
+                }
+                await setDoc(doc(db, "users", userId), u, { merge: true }); 
+                renderSection("users"); 
+                toast(`✅ Balance updated for ${u.username}. Current order cleared.`);
+            } 
+        } 
+    };
+    
+    // ✅ NEW: Reset user's current order
+    window.resetUserCurrentOrder = async (userId) => {
+        let u = users.find(u=>u.id===userId);
+        if(u) {
+            if (u.currentOrderObj) {
+                u.currentOrderObj = null;
+                await setDoc(doc(db, "users", userId), u, { merge: true });
+                renderSection("users");
+                toast(`✅ Current order cleared for ${u.username}`);
+            } else {
+                toast(`ℹ️ ${u.username} has no active order`);
+            }
+        } else {
+            toast("User not found", true);
+        }
+    };
+    
     window.changeLoginPwd = async (userId) => { let u = users.find(u=>u.id===userId); if(u) { let p = prompt("New login password:"); if(p) { u.password=p; await setDoc(doc(db, "users", userId), u, { merge: true }); renderSection("users"); } } };
     window.changeWithdrawPwd = async (userId) => { let u = users.find(u=>u.id===userId); if(u) { let p = prompt("New withdraw password:"); if(p) { u.withdrawPassword=p; await setDoc(doc(db, "users", userId), u, { merge: true }); renderSection("users"); } } };
     window.adjustCredit = async (userId) => { let u = users.find(u=>u.id===userId); if(u) { let a = parseInt(prompt("Add/remove credit (+/-):",0)); if(!isNaN(a)) { u.creditScore=(u.creditScore||100)+a; await setDoc(doc(db, "users", userId), u, { merge: true }); renderSection("users"); } } };
@@ -1333,7 +1403,6 @@
                     </div>
                 </div>
             </div>`;
-            // ✅ Update tasks progress after render
             setTimeout(updateDashboardTasks, 100);
         }
         
@@ -1355,7 +1424,7 @@
             main.innerHTML = html;
         }
         
-        // MEMBER MANAGEMENT SECTION
+        // MEMBER MANAGEMENT SECTION (FIXED with Clear Order button)
         else if(section === "users") {
             if (!checkPermission('canManageMembers')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2><p>You don't have permission to access Member Management.</p></div>`; return; }
             let filtered = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
@@ -1364,11 +1433,36 @@
                 filtered.forEach(u => {
                     const level = getVIPLevel(u.balance||0);
                     const vipClass = getVIPBadgeClass(level);
-                    tbody += `<tr><td>${u.id.substring(0,8)}</td><td><strong>${escapeHtml(u.username)}</strong><br>${u.email||''}<br>${u.phone||''}</td><td>S/ ${(u.balance||0).toFixed(2)}<br>Credit: ${u.creditScore||100}</td><td><span class="${vipClass}">VIP ${level}</span></td><td>${u.invitationCode||'N/A'}</td><td>${u.tasks?.completed||0}/${u.tasks?.total||0}</td><td>${u.walletAddress?u.walletAddress.substring(0,10)+'...':'Not set'}</td><td style="display:flex;flex-wrap:wrap;gap:5px;"><button class="btn-warning btn-sm" onclick="window.setupOrder('${u.id}')">📦 Orders</button><button class="btn-info btn-sm" onclick="window.setupBalance('${u.id}')">💰 Balance</button><button class="btn-admin btn-sm" onclick="window.changeLoginPwd('${u.id}')">🔑 Login</button><button class="btn-admin btn-sm" onclick="window.changeWithdrawPwd('${u.id}')">💳 Withdraw</button><button class="btn-info btn-sm" onclick="window.adjustCredit('${u.id}')">⭐ Credit</button><button class="btn-admin btn-sm" onclick="window.changeWallet('${u.id}')">🏦 Wallet</button><button class="btn-danger btn-sm" onclick="window.toggleDisable('${u.id}')">${u.disabled?'Enable':'Disable'}</button></td></tr>`;
+                    const hasActiveOrder = u.currentOrderObj ? '🟢' : '⚪';
+                    tbody += `<tr>
+                        <td>${u.id.substring(0,8)}</td>
+                        <td><strong>${escapeHtml(u.username)}</strong><br>${u.email||''}<br>${u.phone||''}</td>
+                        <td>S/ ${(u.balance||0).toFixed(2)}<br>Credit: ${u.creditScore||100}</td>
+                        <td><span class="${vipClass}">VIP ${level}</span></td>
+                        <td>${u.invitationCode||'N/A'}</td>
+                        <td>${u.tasks?.completed||0}/${u.tasks?.total||0} ${hasActiveOrder}</td>
+                        <td>${u.walletAddress?u.walletAddress.substring(0,10)+'...':'Not set'}</td>
+                        <td><div class="action-buttons-wrap">
+                            <button class="btn-warning btn-sm" onclick="window.setupOrder('${u.id}')">📦 Orders</button>
+                            <button class="btn-info btn-sm" onclick="window.setupBalance('${u.id}')">💰 Balance</button>
+                            <button class="btn-admin btn-sm" onclick="window.changeLoginPwd('${u.id}')">🔑 Login</button>
+                            <button class="btn-admin btn-sm" onclick="window.changeWithdrawPwd('${u.id}')">💳 Withdraw</button>
+                            <button class="btn-info btn-sm" onclick="window.adjustCredit('${u.id}')">⭐ Credit</button>
+                            <button class="btn-admin btn-sm" onclick="window.changeWallet('${u.id}')">🏦 Wallet</button>
+                            <button class="btn-danger btn-sm" onclick="window.toggleDisable('${u.id}')">${u.disabled?'Enable':'Disable'}</button>
+                            <button class="btn-clear-order btn-sm" onclick="window.resetUserCurrentOrder('${u.id}')" title="Clear current order to fix amount issues">🔄 Clear Order</button>
+                        </div></td>
+                    </tr>`;
                 });
                 document.getElementById("userTableBody").innerHTML = tbody || "<tr><td colspan='8'>No users</td></tr>";
             }
-            main.innerHTML = `<div class="admin-card"><div class="flex-between"><h2>👥 Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div><div class="search-box"><input id="userSearch" placeholder="Search..."><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div><div style="overflow-x: auto;"><table><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
+            main.innerHTML = `<div class="admin-card"><div class="flex-between"><h2>👥 Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div>
+                <div style="color:#9ca3af; font-size:12px; margin-bottom:12px;">
+                    <span>🟢 = Has active order | ⚪ = No active order</span>
+                    <span style="margin-left:16px;">💡 Use "Clear Order" button if user sees wrong order amount after admin changes.</span>
+                </div>
+                <div class="search-box"><input id="userSearch" placeholder="Search..."><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div>
+                <div style="overflow-x: auto;"><table><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div></div>`;
             renderUserTable();
             document.getElementById("searchBtn").onclick = () => { let v = document.getElementById("userSearch").value.toLowerCase(); filtered = users.filter(u => u.role!=='admin' && u.role!=='agency' && (u.username.toLowerCase().includes(v)||(u.email||'').toLowerCase().includes(v)||(u.phone||'').includes(v))); renderUserTable(); };
             document.getElementById("resetSearchBtn").onclick = () => { document.getElementById("userSearch").value = ""; filtered = users.filter(u => u.role!=='admin' && u.role!=='agency'); renderUserTable(); };
@@ -1396,7 +1490,6 @@
             document.getElementById("injectionSearchBtn").onclick = renderInjectionTable;
             document.getElementById("resetInjectionSearchBtn").onclick = () => { document.getElementById("injectionSearchPhone").value = ""; document.getElementById("injectionSearchEmail").value = ""; renderInjectionTable(); };
             
-            // Real-time injection history
             const historyContainer = document.createElement('div');
             historyContainer.id = 'injectionHistoryList';
             historyContainer.style.marginTop = '24px';
