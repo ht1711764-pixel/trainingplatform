@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY ADMIN | Premium Control Panel</title>
-
     <link rel="icon" type="image/png" href="https://i.imgur.com/Zzubag0.png">
     <link rel="apple-touch-icon" href="https://i.imgur.com/Zzubag0.png">
     <meta name="theme-color" content="#d4af37">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -79,6 +77,7 @@
             margin-bottom: 12px; 
             outline: none; 
             transition: border-color 0.2s;
+            font-family: inherit;
         }
         input:focus, select:focus, textarea:focus { border-color: #d4af37; }
         textarea { min-height: 80px; resize: vertical; }
@@ -145,6 +144,7 @@
             box-shadow: 0 8px 30px rgba(212,175,55,0.4);
         }
         .login-logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .login-logo-box i { font-size: 44px; color: #0a120e; }
         
         .admin-logo-box {
             width: 48px; height: 48px;
@@ -155,6 +155,7 @@
             box-shadow: 0 4px 15px rgba(212,175,55,0.3);
         }
         .admin-logo-box img { width: 100%; height: 100%; object-fit: cover; }
+        .admin-logo-box i { font-size: 24px; color: #0a120e; }
         
         .badge { background: #d4af37; color: #0a120e; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         
@@ -380,24 +381,144 @@
         .action-buttons-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
         .action-buttons-wrap .btn-sm { margin: 2px; white-space: nowrap; }
 
-        /* Session card for admin */
-        .session-card {
+        /* ============ SESSION CARD ============ */
+        .session-card-item {
             background: #0f1117;
             border-radius: 12px;
             padding: 12px;
             margin-bottom: 10px;
-            border-left: 3px solid #d4af37;
         }
-        .session-row {
+        .session-header {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
-            font-size: 12px;
-            border-bottom: 1px solid rgba(212,175,55,0.05);
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 6px;
         }
-        .session-row:last-child { border-bottom: none; }
-        .session-status-active { color: #10b981; font-weight: 700; font-size: 10px; }
-        .session-status-ended { color: #94a3b8; font-weight: 700; font-size: 10px; }
+        .session-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        .session-badge-current { background: rgba(16,185,129,0.2); color: #10b981; }
+        .session-badge-active { background: rgba(245,158,11,0.2); color: #f59e0b; }
+        .session-badge-ended { background: rgba(120,120,120,0.2); color: #94a3b8; }
+        .session-row-item {
+            font-size: 12px;
+            color: #9ca3af;
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+        }
+        .session-row-item span:last-child {
+            color: #e2e8f0;
+            font-family: monospace;
+        }
+
+        /* ============ SUCCESS/ERROR MODAL ============ */
+        .success-icon-box {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(16,185,129,0.15);
+            border: 3px solid #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+        .success-icon-box i { font-size: 56px; color: #10b981; }
+        .error-icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(220,38,38,0.15);
+            border: 3px solid #dc2626;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+        .error-icon-box i { font-size: 44px; color: #dc2626; }
+
+        /* ============ ORDER HISTORY CARD (admin view) ============ */
+        .history-order-card {
+            background: #0f1117;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 3px solid #d4af37;
+            border: 1px solid #2d3748;
+        }
+        .history-order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .history-order-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 4px;
+        }
+        .history-order-id {
+            font-size: 11px;
+            color: #94a3b8;
+            font-family: monospace;
+        }
+        .history-order-badge {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(16,185,129,0.3);
+        }
+        .history-order-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(212,175,55,0.1);
+        }
+        .history-detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .history-detail-label {
+            font-size: 10px;
+            color: #9ca3af;
+            text-transform: uppercase;
+        }
+        .history-detail-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        .history-detail-value.profit { color: #10b981; }
+        .history-detail-value.gold { color: #d4af37; }
+        .history-order-ratings {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(212,175,55,0.1);
+            flex-wrap: wrap;
+        }
+        .rating-chip {
+            background: rgba(212,175,55,0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #f5e7b2;
+            border: 1px solid rgba(212,175,55,0.2);
+        }
         
         @media (max-width: 768px) {
             .sidebar { width: 100%; position: fixed; left: 0; top: 0; height: auto; max-height: 300px; z-index: 100; }
@@ -406,6 +527,7 @@
             .admin-logo-box { width: 40px; height: 40px; }
             table { font-size: 12px; }
             th, td { padding: 8px; }
+            .history-order-details { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -415,9 +537,9 @@
 <div id="adminLoginScreen" class="login-screen">
     <div class="login-box">
         <div class="login-logo-box">
-            <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\' style=\'color:#0a120e;font-size:40px;\'></i>';">
+            <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
         </div>
-        <h2 style="color:#d4af37; margin-bottom: 24px; text-align:center; font-family:'Inter';">LUXCY Admin Portal</h2>
+        <h2 style="color:#d4af37; margin-bottom: 24px; text-align:center;">LUXCY Admin Portal</h2>
         <input type="text" id="adminUsername" placeholder="Username">
         <div class="password-wrapper">
             <input type="password" id="adminPassword" placeholder="Password">
@@ -442,7 +564,7 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; gap:10px;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <div class="admin-logo-box">
-                        <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\' style=\'color:#0a120e;font-size:22px;\'></i>';">
+                        <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
                     </div>
                     <h2 style="color:#d4af37; font-size:16px;">LUXCY ADMIN</h2>
                 </div>
@@ -470,13 +592,13 @@
 <script type="module">
     // ==================== VERSION CHECK ====================
     (function() {
-        const APP_VERSION = '3.0.0';
+        const APP_VERSION = '2.1.9';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
             sessionStorage.clear();
             localStorage.setItem('admin_version', APP_VERSION);
-            log('🔄 Admin version:', APP_VERSION);
+            console.log('🔄 Admin version:', APP_VERSION);
             if (storedVersion) setTimeout(() => location.reload(), 300);
         }
     })();
@@ -489,7 +611,7 @@
     // ==================== FIREBASE ====================
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit, increment } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getAuth, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
@@ -559,7 +681,7 @@
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
 
-    // ==================== LOADER & TOAST ====================
+    // ==================== LOADER ====================
     function showLoader(text = 'Loading...') { 
         let l = document.getElementById('globalLoader');
         if (!l) {
@@ -576,24 +698,21 @@
         if (l) l.style.display = 'none';
     }
 
-    function toast(msg, type = 'success') {
-        const colors = { success: 'rgba(30,42,36,0.95)', error: 'rgba(60,20,20,0.95)', warning: 'rgba(60,45,15,0.95)', info: 'rgba(20,35,55,0.95)' };
-        const border = { success: '#10b981', error: '#dc2626', warning: '#f59e0b', info: '#3b82f6' };
-        const icons = { success: 'fa-circle-check', error: 'fa-exclamation-triangle', warning: 'fa-exclamation-circle', info: 'fa-info-circle' };
+    // ==================== TOAST ====================
+    function toast(msg, err = false) {
         const el = document.createElement('div');
-        el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${colors[type]};backdrop-filter:blur(12px);padding:12px 28px;border-radius:40px;font-size:13px;z-index:10000;font-weight:700;color:#fff;border-left:3px solid ${border[type]};box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:92%;text-align:center;`;
-        el.innerHTML = `<i class="fas ${icons[type]}"></i> ${msg}`;
+        el.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:${err ? '#dc2626' : '#1a1e26'};padding:10px 24px;border-radius:40px;font-size:13px;z-index:10000;font-weight:600;color:#fff;box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:92%;text-align:center;border-left:3px solid #d4af37;`;
+        el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${escapeHtml(msg)}`;
         document.body.appendChild(el);
         setTimeout(() => { el.style.transition = 'all 0.3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
     }
 
+    // ==================== SUCCESS MODAL ====================
     function showSuccessModal(title, message, onClose) {
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `<div class="modal-content" style="text-align:center;max-width:420px;">
-            <div style="width:100px;height:100px;border-radius:50%;background:rgba(16,185,129,0.15);border:3px solid #10b981;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-                <i class="fas fa-check" style="font-size:56px;color:#10b981;"></i>
-            </div>
+            <div class="success-icon-box"><i class="fas fa-check"></i></div>
             <h2 style="color:#10b981;font-size:22px;margin-bottom:12px;">${escapeHtml(title)}</h2>
             <p style="color:#e2e8f0;line-height:1.6;margin-bottom:24px;">${message}</p>
             <button class="btn-admin" id="successModalClose" style="width:100%;">Done</button>
@@ -604,13 +723,12 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
+    // ==================== ERROR MODAL ====================
     function showErrorModal(title, message) {
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `<div class="modal-content" style="text-align:center;max-width:420px;">
-            <div style="width:80px;height:80px;border-radius:50%;background:rgba(220,38,38,0.15);border:3px solid #dc2626;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
-                <i class="fas fa-times" style="font-size:44px;color:#dc2626;"></i>
-            </div>
+            <div class="error-icon-box"><i class="fas fa-times"></i></div>
             <h2 style="color:#dc2626;font-size:22px;margin-bottom:12px;">${escapeHtml(title)}</h2>
             <p style="color:#e2e8f0;line-height:1.6;margin-bottom:24px;">${escapeHtml(message)}</p>
             <button class="btn-admin" id="errorModalClose" style="width:100%;">Okay</button>
@@ -621,6 +739,7 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
+    // ==================== CONFIRM MODAL ====================
     function showConfirmModal(title, message, onConfirm, confirmText = 'Confirm') {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -752,7 +871,7 @@
         } catch (e) { 
             hideLoader();
             logErr("Load error:", e); 
-            toast('Data load failed: ' + e.message, 'error');
+            toast('Data load failed: ' + e.message, true);
         }
     }
 
@@ -899,6 +1018,7 @@
             if (el) el.style.display = p[permKey] ? 'flex' : 'none';
         }
         document.querySelector('.nav-item[data-section="dashboard"]').style.display = 'flex';
+        document.querySelector('.nav-item[data-section="sessions"]').style.display = 'flex';
     }
     
     function checkAdminSession() {
@@ -1004,6 +1124,7 @@
                             <button class="btn-danger btn-sm" onclick="window.toggleDisable('${u.id}')">${u.disabled ? 'Enable' : 'Disable'}</button>
                             <button class="btn-clear-order btn-sm" onclick="window.resetUserCurrentOrder('${u.id}')">🔄 Clear Order</button>
                             <button class="btn-info btn-sm" onclick="window.viewUserSessions('${u.id}')">🛡️ Sessions</button>
+                            <button class="btn-info btn-sm" onclick="window.viewUserOrders('${u.id}')">📜 Orders</button>
                         </div></td>
                     </tr>`;
                 });
@@ -1136,7 +1257,6 @@
                 renderInjectionTable();
             };
             
-            // Show recent injections
             const historyContainer = document.getElementById('injectionHistoryList');
             historyContainer.innerHTML = '<h3 style="color:#d4af37;margin-bottom:12px;">📜 Recent Injections</h3>';
             if (injections.length === 0) {
@@ -1186,7 +1306,7 @@
             
             main.innerHTML = `<div class="admin-card">
                 <h2>➕ Add New Order Template</h2>
-                <p style="color:#9ca3af;font-size:13px;margin-bottom:16px;">These templates are used for random order generation. Default order names are excluded.</p>
+                <p style="color:#9ca3af;font-size:13px;margin-bottom:16px;">These templates are used for random order generation.</p>
                 <input id="newOrderName" placeholder="Order Name (e.g., Premium Travel Package)">
                 <input type="number" id="newOrderPrice" placeholder="Price" step="0.01">
                 <input type="file" id="orderImage" accept="image/*">
@@ -1201,7 +1321,7 @@
                 if (isProcessing) return;
                 const name = document.getElementById("newOrderName").value.trim();
                 const price = parseFloat(document.getElementById("newOrderPrice").value) || 0;
-                if (!name) { toast('Enter order name', 'error'); return; }
+                if (!name) { toast('Enter order name', true); return; }
                 
                 isProcessing = true;
                 const file = document.getElementById("orderImage").files[0];
@@ -1347,16 +1467,16 @@
                 filtered.forEach(s => {
                     const isActive = s.status === 'active';
                     const borderColor = isActive ? '#10b981' : '#4a5568';
-                    html += `<div class="session-card" style="border-left-color:${borderColor};">
-                        <div class="flex-between" style="margin-bottom:8px;">
+                    html += `<div class="session-card-item" style="border-left:3px solid ${borderColor};">
+                        <div class="session-header">
                             <strong style="color:#d4af37;font-size:14px;">👤 ${escapeHtml(s.username || 'Unknown')}</strong>
-                            <span class="${isActive ? 'session-status-active' : 'session-status-ended'}">${isActive ? '● ACTIVE' : '○ ENDED'}</span>
+                            <span class="session-badge ${isActive ? 'session-badge-active' : 'session-badge-ended'}">${isActive ? '● ACTIVE' : '○ ENDED'}</span>
                         </div>
-                        <div class="session-row"><span style="color:#9ca3af;">IP Address</span><span style="color:#e2e8f0;font-family:monospace;">${escapeHtml(s.ip || 'Unknown')}</span></div>
-                        <div class="session-row"><span style="color:#9ca3af;">Device</span><span style="color:#e2e8f0;">${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</span></div>
-                        <div class="session-row"><span style="color:#9ca3af;">OS</span><span style="color:#e2e8f0;">${escapeHtml(s.os || 'Unknown')}</span></div>
-                        <div class="session-row"><span style="color:#9ca3af;">Login</span><span style="color:#e2e8f0;">${s.loginTime ? new Date(s.loginTime).toLocaleString() : '?'}</span></div>
-                        <div class="session-row"><span style="color:#9ca3af;">Last Active</span><span style="color:#e2e8f0;">${s.lastActive ? new Date(s.lastActive).toLocaleString() : '?'}</span></div>
+                        <div class="session-row-item"><span>IP Address</span><span>${escapeHtml(s.ip || 'Unknown')}</span></div>
+                        <div class="session-row-item"><span>Device</span><span>${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</span></div>
+                        <div class="session-row-item"><span>OS</span><span>${escapeHtml(s.os || 'Unknown')}</span></div>
+                        <div class="session-row-item"><span>Login</span><span>${s.loginTime ? new Date(s.loginTime).toLocaleString() : '?'}</span></div>
+                        <div class="session-row-item"><span>Last Active</span><span>${s.lastActive ? new Date(s.lastActive).toLocaleString() : '?'}</span></div>
                         ${isActive ? `<button class="btn-danger btn-sm" style="margin-top:8px;" onclick="window.endSession('${s.id}')">End Session</button>` : ''}
                     </div>`;
                 });
@@ -1413,22 +1533,21 @@
             };
             
             document.getElementById("adminSendBtn").onclick = async () => {
-                if (!selectedChatUser) { toast('Select a user first', 'warning'); return; }
+                if (!selectedChatUser) { toast('Select a user first', true); return; }
                 const input = document.getElementById("adminChatInput");
                 const text = input.value.trim();
                 if (!text) return;
                 try {
-                    const participants = [selectedChatUser, 'admin'].sort();
                     await setDoc(doc(db, "chatMessages", Date.now().toString()), {
+                        id: Date.now(),
                         from: 'admin',
                         to: selectedChatUser,
-                        participants: participants,
                         text: text,
                         image: null,
-                        timestamp: new Date().toISOString()
+                        time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false })
                     });
                     input.value = '';
-                } catch(e) { toast('Send failed', 'error'); }
+                } catch(e) { toast('Send failed', true); }
             };
         }
     }
@@ -1437,16 +1556,16 @@
     async function loadChatForUser(username) {
         if (!username) return;
         try {
-            const q = query(
-                collection(db, "chatMessages"),
-                where("participants", "array-contains", username),
-                orderBy("timestamp", "desc"),
-                limit(50)
-            );
+            const q = query(collection(db, "chatMessages"), limit(200));
             const snap = await getDocs(q);
             const messages = [];
-            snap.forEach(d => messages.push({ id: d.id, ...d.data() }));
-            messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            snap.forEach(d => {
+                const m = d.data();
+                if ((m.from === username && m.to === 'admin') || (m.from === 'admin' && m.to === username)) {
+                    messages.push({ id: d.id, ...m });
+                }
+            });
+            messages.sort((a, b) => (a.id || 0) - (b.id || 0));
             
             const container = document.getElementById("adminChatMessages");
             if (!container) return;
@@ -1455,8 +1574,7 @@
                 const isSent = msg.from === 'admin';
                 const div = document.createElement('div');
                 div.className = `chat-message ${isSent ? 'sent' : 'received'}`;
-                const timeStr = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : (msg.time || '');
-                div.innerHTML = `<div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)">` : ''}<div class="chat-time">${timeStr}</div>`;
+                div.innerHTML = `<div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)">` : ''}<div class="chat-time">${escapeHtml(msg.time || '')}</div>`;
                 container.appendChild(div);
             });
             container.scrollTop = container.scrollHeight;
@@ -1466,13 +1584,9 @@
     async function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
         if (currentSection !== 'chat' || !selectedChatUser) return;
-        const q = query(
-            collection(db, "chatMessages"),
-            where("participants", "array-contains", selectedChatUser),
-            orderBy("timestamp", "desc"),
-            limit(50)
-        );
-        unsubscribeChat = onSnapshot(q, () => loadChatForUser(selectedChatUser));
+        unsubscribeChat = onSnapshot(query(collection(db, "chatMessages"), limit(200)), () => {
+            if (selectedChatUser) loadChatForUser(selectedChatUser);
+        });
     }
 
     // ============ USER ACTIONS ============
@@ -1520,7 +1634,7 @@
             await setDoc(doc(db, "users", userId), u, { merge: true });
             renderSection("users");
             toast(`Current order cleared for ${u.username}`);
-        } else toast(`${u.username} has no active order`, 'info');
+        } else toast(`${u.username} has no active order`);
     };
 
     window.changeLoginPwd = async (userId) => {
@@ -1565,6 +1679,7 @@
         toast(u.disabled ? 'User disabled' : 'User enabled');
     };
 
+    // ============ VIEW USER SESSIONS ============
     window.viewUserSessions = async (userId) => {
         const userSessions = sessions.filter(s => s.userId === userId);
         const u = users.find(x => x.id === userId);
@@ -1581,15 +1696,15 @@
         } else {
             userSessions.forEach(s => {
                 const isActive = s.status === 'active';
-                html += `<div class="session-card" style="border-left-color:${isActive ? '#10b981' : '#4a5568'};">
-                    <div class="flex-between" style="margin-bottom:8px;">
+                html += `<div class="session-card-item" style="border-left:3px solid ${isActive ? '#10b981' : '#4a5568'};">
+                    <div class="session-header">
                         <strong style="color:#d4af37;font-size:13px;">${escapeHtml(s.ip || 'Unknown')}</strong>
-                        <span class="${isActive ? 'session-status-active' : 'session-status-ended'}">${isActive ? '● ACTIVE' : '○ ENDED'}</span>
+                        <span class="session-badge ${isActive ? 'session-badge-active' : 'session-badge-ended'}">${isActive ? '● ACTIVE' : '○ ENDED'}</span>
                     </div>
-                    <div class="session-row"><span style="color:#9ca3af;">Device</span><span>${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</span></div>
-                    <div class="session-row"><span style="color:#9ca3af;">OS</span><span>${escapeHtml(s.os || 'Unknown')}</span></div>
-                    <div class="session-row"><span style="color:#9ca3af;">Login</span><span>${s.loginTime ? new Date(s.loginTime).toLocaleString() : '?'}</span></div>
-                    <div class="session-row"><span style="color:#9ca3af;">Last Active</span><span>${s.lastActive ? new Date(s.lastActive).toLocaleString() : '?'}</span></div>
+                    <div class="session-row-item"><span>Device</span><span>${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</span></div>
+                    <div class="session-row-item"><span>OS</span><span>${escapeHtml(s.os || 'Unknown')}</span></div>
+                    <div class="session-row-item"><span>Login</span><span>${s.loginTime ? new Date(s.loginTime).toLocaleString() : '?'}</span></div>
+                    <div class="session-row-item"><span>Last Active</span><span>${s.lastActive ? new Date(s.lastActive).toLocaleString() : '?'}</span></div>
                 </div>`;
             });
         }
@@ -1600,6 +1715,80 @@
         document.getElementById("closeUserSessionsModal").onclick = () => modal.remove();
     };
 
+    // ============ VIEW USER ORDERS ============
+    window.viewUserOrders = async (userId) => {
+        const u = users.find(x => x.id === userId);
+        if (!u) return;
+        
+        showLoader('Loading orders...');
+        try {
+            const q = query(collection(db, "users", userId, "orders"), orderBy("timestamp", "desc"), limit(50));
+            const snap = await getDocs(q);
+            const orders = [];
+            snap.forEach(d => orders.push({ id: d.id, ...d.data() }));
+            hideLoader();
+            
+            const modal = document.createElement("div");
+            modal.className = "modal";
+            let html = `<div class="modal-content" style="max-width:700px;">
+                <h2 style="color:#d4af37;margin-bottom:20px;">📜 Orders for ${escapeHtml(u.username)}</h2>
+                <div style="max-height:60vh;overflow-y:auto;">`;
+            
+            if (orders.length === 0) {
+                html += `<p style="color:#9ca3af;text-align:center;padding:40px;">No orders found.</p>`;
+            } else {
+                orders.forEach(o => {
+                    const ratings = o.ratings || { service: 0, quality: 0, sales: 0 };
+                    const stars = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
+                    const date = o.date || (o.timestamp ? new Date(o.timestamp).toLocaleString() : 'Unknown');
+                    
+                    html += `<div class="history-order-card">
+                        <div class="history-order-header">
+                            <div>
+                                <div class="history-order-title"><i class="fas fa-box" style="color:#d4af37;"></i> ${escapeHtml(o.name || 'Order')}</div>
+                                <div class="history-order-id">${escapeHtml(o.orderNumber || o.id)}</div>
+                            </div>
+                            <span class="history-order-badge"><i class="fas fa-check-circle"></i> COMPLETED</span>
+                        </div>
+                        <div class="history-order-details">
+                            <div class="history-detail-item">
+                                <span class="history-detail-label">Amount</span>
+                                <span class="history-detail-value">${formatMoney(o.amount || 0)}</span>
+                            </div>
+                            <div class="history-detail-item">
+                                <span class="history-detail-label">Commission</span>
+                                <span class="history-detail-value profit">+ ${formatMoney(o.profit || 0)}</span>
+                            </div>
+                            <div class="history-detail-item">
+                                <span class="history-detail-label">Rate</span>
+                                <span class="history-detail-value gold">${(o.rate || 0).toFixed(2)}%</span>
+                            </div>
+                            <div class="history-detail-item">
+                                <span class="history-detail-label">Type</span>
+                                <span class="history-detail-value">${o.isInjection ? '🎁 Bonus' : 'Standard'}</span>
+                            </div>
+                        </div>
+                        <div class="history-order-ratings">
+                            <span class="rating-chip">Service: <strong>${stars(ratings.service || 0)}</strong></span>
+                            <span class="rating-chip">Product: <strong>${stars(ratings.quality || 0)}</strong></span>
+                            <span class="rating-chip">Sales: <strong>${stars(ratings.sales || 0)}</strong></span>
+                        </div>
+                        <div style="font-size:11px;color:#9ca3af;margin-top:10px;"><i class="fas fa-clock"></i> ${date}</div>
+                    </div>`;
+                });
+            }
+            
+            html += `</div><button class="btn-admin" id="closeUserOrdersModal" style="width:100%;margin-top:16px;">Close</button></div>`;
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+            document.getElementById("closeUserOrdersModal").onclick = () => modal.remove();
+        } catch (e) {
+            hideLoader();
+            showErrorModal('Error', e.message);
+        }
+    };
+
+    // ============ END SESSION ============
     window.endSession = async (sessionId) => {
         showConfirmModal('End Session?', 'This will log the user out of this device.', async () => {
             try {
@@ -1610,6 +1799,7 @@
         }, 'End Session');
     };
 
+    // ============ VIP MANUAL ============
     window.applyManualVIP = async (userId) => {
         const u = users.find(u => u.id === userId);
         if (!u) return;
@@ -1621,7 +1811,7 @@
                 delete u.manualVIPLevel;
                 await setDoc(doc(db, "users", userId), u, { merge: true });
                 toast(`VIP set to AUTO for ${u.username}`);
-            } else toast('Already in AUTO mode', 'info');
+            } else toast('Already in AUTO mode');
         } else {
             u.manualVIPLevel = val;
             await setDoc(doc(db, "users", userId), u, { merge: true });
@@ -1630,6 +1820,7 @@
         renderSection('vip');
     };
 
+    // ============ APPROVE/REJECT ============
     window.approveRecharge = async (reqId) => {
         if (isProcessing) return;
         isProcessing = true;
@@ -1711,7 +1902,7 @@
                 }
                 modal.remove();
                 renderSection(type === "recharge" ? "rechargeRequests" : "withdrawRequests");
-                toast('Request rejected', 'info');
+                toast('Request rejected');
             } catch(e) { showErrorModal('Failed', e.message); }
         };
         document.getElementById("cancelReject").onclick = () => modal.remove();
@@ -1747,7 +1938,7 @@
                 loan.rejectedAt = new Date().toISOString();
                 await setDoc(doc(db, "loanRequests", loanId), loan, { merge: true });
                 renderSection("loanRequests");
-                toast('Loan rejected', 'info');
+                toast('Loan rejected');
             }
         } catch(e) { showErrorModal('Failed', e.message); }
     };
@@ -1941,7 +2132,7 @@
             <div style="font-size:48px;letter-spacing:8px;background:#0f1117;padding:20px;border-radius:16px;margin:20px 0;font-family:monospace;color:#d4af37;">${code}</div>
             <p style="color:#f59e0b;margin-bottom:16px;"><i class="fas fa-clock"></i> Valid 5 minutes</p>
             <div style="display:flex;gap:12px;justify-content:center;">
-                <button class="btn-admin" onclick="navigator.clipboard.writeText('${code}'); window.toast && window.toast('Copied!')">Copy</button>
+                <button class="btn-admin" onclick="navigator.clipboard.writeText('${code}'); alert('Copied!')">Copy</button>
                 <button class="btn-secondary btn-admin" id="closeCodeModal">Close</button>
             </div>
         </div>`;
@@ -2206,16 +2397,10 @@
         document.getElementById("closeAdd").onclick = () => modal.remove();
     }
 
-    // ============ SAVE ALL DATA ============
-    async function saveAllData() {
-        for (const order of customOrders) {
-            await setDoc(doc(db, "customOrders", order.id), order);
-        }
-    }
-
     // ============ NAVIGATION ============
     document.querySelectorAll(".nav-item").forEach(n => {
         n.onclick = function() {
+            if (!this.dataset.section && this.id !== 'adminLogoutBtn') return;
             document.querySelectorAll(".nav-item").forEach(x => x.classList.remove("active"));
             this.classList.add("active");
             showLoader('Loading...');
@@ -2245,7 +2430,7 @@
         document.getElementById("adminPassword").value = "";
         document.getElementById("admin2faCode").value = "";
         document.getElementById("loginError").innerHTML = "";
-        toast('Signed out', 'info');
+        toast('Signed out');
     };
 
     // ============ INITIALIZE ============
