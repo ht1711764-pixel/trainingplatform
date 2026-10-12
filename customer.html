@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY | Luxury Travel & Earnings Platform</title>
+
+    <!-- ============================================================ -->
+    <!-- ✅ FAVICON (Browser Tab Logo) — သင့် Logo URL ကို ဒီမှာထည့်ပါ -->
+    <!-- ============================================================ -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/Zzubag0.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/Zzubag0.png">
+    <meta name="theme-color" content="#d4af37">
+    <!-- ============================================================ -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -72,8 +81,10 @@
             justify-content: center;
             flex-shrink: 0;
             box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+            overflow: hidden;
         }
         .luxury-logo i { font-size: 28px; color: #0a0c10; }
+        .luxury-logo img { width: 100%; height: 100%; object-fit: cover; }
         .luxury-brand {
             font-family: 'Playfair Display', serif;
             font-size: 24px;
@@ -935,7 +946,13 @@
     <!-- ===== LANDING PAGE ===== -->
     <div id="landingPage" class="page active-page">
         <div class="luxury-header">
-            <div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="brandName">LUXCY</div></div>
+            <div class="logo-area">
+                <div class="luxury-logo" id="luxuryLogoBox">
+                    <!-- ✅ Logo Image — သင့် URL ကို ဒီမှာထည့်ပါ -->
+                    <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY Logo" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+                </div>
+                <div class="luxury-brand" id="brandName">LUXCY</div>
+            </div>
             <div class="company-info-btn" id="companyInfoBtn" style="background:rgba(212,175,55,0.08);backdrop-filter:blur(8px);border:1px solid var(--border-gold);border-radius:40px;padding:10px 20px;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:10px;color:var(--gold);font-weight:600;"><i class="fas fa-info-circle"></i><span id="companyInfoText">About Company</span></div>
         </div>
         <div class="icon-marquee">
@@ -985,7 +1002,14 @@
     <!-- ===== LOGIN PAGE ===== -->
     <div id="loginPage" class="page">
         <div class="back-btn" id="backToLandingFromLogin"><i class="fas fa-arrow-left"></i> <span id="backToHomeText">Back to Home</span></div>
-        <div style="text-align:center;margin:20px 0 30px;"><div class="luxury-logo" style="margin:0 auto 16px;width:70px;height:70px;"><i class="fas fa-crown" style="font-size:40px;"></i></div><h1 style="font-size:42px;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1><p class="text-muted" id="loginWebsiteTagline" style="color:var(--text-muted);">Premium Task Ecosystem</p></div>
+        <div style="text-align:center;margin:20px 0 30px;">
+            <div class="luxury-logo" id="loginLogoBox" style="margin:0 auto 16px;width:70px;height:70px;">
+                <!-- ✅ Logo Image -->
+                <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\' style=\'font-size:40px;\'></i>';">
+            </div>
+            <h1 style="font-size:42px;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:'Playfair Display',serif;" id="loginWebsiteName">LUXCY</h1>
+            <p class="text-muted" id="loginWebsiteTagline" style="color:var(--text-muted);">Premium Task Ecosystem</p>
+        </div>
         <div class="card-lux"><input type="text" class="input-lux" id="loginUsername" placeholder="Username"><div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div><button class="btn-lux" id="doLoginBtn"><i class="fas fa-arrow-right-to-bracket"></i> <span id="loginBtnTextLogin">Login</span></button>
             <div style="position:relative;margin:16px 0 8px;width:100%;">
                 <div style="border-top:1px solid var(--border-gold);position:absolute;top:50%;left:0;right:0;"></div>
@@ -1013,7 +1037,13 @@
     <!-- ===== HOME PAGE ===== -->
     <div id="homePage" class="page">
         <div class="luxury-header">
-            <div class="logo-area"><div class="luxury-logo"><i class="fas fa-crown"></i></div><div class="luxury-brand" id="homeWebsiteName">LUXCY</div></div>
+            <div class="logo-area">
+                <div class="luxury-logo" id="homeLogoBox">
+                    <!-- ✅ Logo Image -->
+                    <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+                </div>
+                <div class="luxury-brand" id="homeWebsiteName">LUXCY</div>
+            </div>
             <div style="display:flex;gap:12px;">
                 <button class="refresh-btn" id="refreshHomeBtn"><i class="fas fa-sync-alt"></i> <span>Sync</span></button>
                 <div class="signout-icon" id="signOutBtnHome"><i class="fas fa-sign-out-alt"></i> <span id="exitText">Exit</span></div>
@@ -1134,7 +1164,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.5';
+        const APP_VERSION = '2.0.6';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -1221,7 +1251,6 @@
         }, 3000);
     }
 
-    // Add toast animation
     const styleSheet = document.createElement("style");
     styleSheet.textContent = `
         @keyframes toastIn {
@@ -1308,91 +1337,46 @@
         }
     }
 
-    // Attach Google Login buttons
     document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
     document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
 
-    // ==================== DELETE BROWSING DATA FUNCTION ====================
+    // ==================== DELETE BROWSING DATA ====================
     function deleteBrowsingData() {
-        // Show confirmation dialog
         const confirmDelete = confirm(
             "⚠️ WARNING: This will delete all local data including:\n\n" +
-            "• Login session\n" +
-            "• Cached files\n" +
-            "• Local storage data\n" +
-            "• Session storage data\n" +
-            "• Cookies\n\n" +
+            "• Login session\n• Cached files\n• Local storage data\n" +
+            "• Session storage data\n• Cookies\n\n" +
             "✅ Your account data on the server will NOT be deleted.\n\n" +
             "Click OK to continue or Cancel to stop."
         );
-        
         if (!confirmDelete) return;
-        
         try {
-            // 1. Clear localStorage
             localStorage.clear();
-            console.log("✅ localStorage cleared");
-            
-            // 2. Clear sessionStorage
             sessionStorage.clear();
-            console.log("✅ sessionStorage cleared");
-            
-            // 3. Clear cookies
             document.cookie.split(";").forEach(function(c) {
-                document.cookie = c
-                    .replace(/^ +/, "")
-                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
-            console.log("✅ Cookies cleared");
-            
-            // 4. Clear cache using Cache API (if available)
             if ('caches' in window) {
-                caches.keys().then(function(names) {
-                    for (let name of names) {
-                        caches.delete(name);
-                    }
-                });
-                console.log("✅ Cache cleared");
+                caches.keys().then(function(names) { for (let name of names) caches.delete(name); });
             }
-            
-            // 5. Clear IndexedDB (if available)
             if ('indexedDB' in window) {
                 indexedDB.databases().then(function(dbs) {
-                    dbs.forEach(function(db) {
-                        indexedDB.deleteDatabase(db.name);
-                    });
-                }).catch(function() {
-                    // Some browsers don't support databases() method
-                    console.log("⚠️ Could not clear IndexedDB");
-                });
+                    dbs.forEach(function(db) { indexedDB.deleteDatabase(db.name); });
+                }).catch(function() {});
             }
-            
-            // 6. Clear service workers (if any)
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    registrations.forEach(function(registration) {
-                        registration.unregister();
-                    });
+                    registrations.forEach(function(registration) { registration.unregister(); });
                 });
-                console.log("✅ Service workers cleared");
             }
-            
-            // Show success message
             toast("✅ All local data cleared! Refreshing page...");
-            
-            // Reload page after 1.5 seconds
-            setTimeout(function() {
-                window.location.reload(true); // true = force reload from server
-            }, 1500);
-            
+            setTimeout(function() { window.location.reload(true); }, 1500);
         } catch (error) {
             console.error("❌ Error clearing data:", error);
             toast("Error clearing data: " + error.message, true);
         }
     }
-
-    // Attach delete data button
     document.getElementById('deleteBrowsingDataBtn').onclick = deleteBrowsingData;
 
     // ==================== TRANSLATIONS ====================
@@ -1432,7 +1416,7 @@
             companyModalTitle: "About LUXCY", companyModalMission: "Our Mission", companyModalVision: "Our Vision",
             pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order before starting a new one.",
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
-            uploadPhoto: "Upload Photo", save: "Save", cancel: "Cancel",
+            uploadPhoto: "Upload Photo", save: "Save",
             bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!",
             referralEarned: "Referral Bonus Earned!",
             deleteDataText: "Clear Local Data",
@@ -1473,7 +1457,7 @@
             companyModalTitle: "เกี่ยวกับ LUXCY", companyModalMission: "พันธกิจของเรา", companyModalVision: "วิสัยทัศน์ของเรา",
             pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้นก่อนเริ่มใหม่",
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
-            uploadPhoto: "อัปโหลดรูป", save: "บันทึก", cancel: "ยกเลิก",
+            uploadPhoto: "อัปโหลดรูป", save: "บันทึก",
             bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!",
             referralEarned: "ได้รับโบนัสแนะนำ!",
             deleteDataText: "ล้างข้อมูลในเครื่อง",
@@ -1514,7 +1498,7 @@
             companyModalTitle: "Acerca de LUXCY", companyModalMission: "Nuestra Misión", companyModalVision: "Nuestra Visión",
             pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual antes de iniciar una nueva.",
             okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
-            uploadPhoto: "Subir Foto", save: "Guardar", cancel: "Cancelar",
+            uploadPhoto: "Subir Foto", save: "Guardar",
             bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
             referralEarned: "¡Bono por Referido Ganado!",
             deleteDataText: "Borrar Datos Locales",
@@ -1555,7 +1539,7 @@
             companyModalTitle: "Про LUXCY", companyModalMission: "Наша місія", companyModalVision: "Наша візія",
             pendingOrderWarning: "У вас є незавершене замовлення!", pendingOrderMessage: "Будь ласка, завершіть поточне замовлення перед початком нового.",
             okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса гаманця USDT TRC20", copy: "Копіювати",
-            uploadPhoto: "Завантажити фото", save: "Зберегти", cancel: "Скасувати",
+            uploadPhoto: "Завантажити фото", save: "Зберегти",
             bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
             referralEarned: "Реферальний бонус отримано!",
             deleteDataText: "Очистити локальні дані",
@@ -1596,7 +1580,7 @@
             companyModalTitle: "О LUXCY", companyModalMission: "Наша миссия", companyModalVision: "Наше видение",
             pendingOrderWarning: "У вас есть незавершенный заказ!", pendingOrderMessage: "Пожалуйста, завершите текущий заказ перед началом нового.",
             okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес кошелька USDT TRC20", copy: "Копировать",
-            uploadPhoto: "Загрузить фото", save: "Сохранить", cancel: "Отмена",
+            uploadPhoto: "Загрузить фото", save: "Сохранить",
             bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
             referralEarned: "Реферальный бонус получен!",
             deleteDataText: "Очистить локальные данные",
@@ -1649,7 +1633,7 @@
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
 
-    // ==================== REFERRAL COMMISSION SYSTEM ====================
+    // ==================== REFERRAL COMMISSION ====================
     async function processReferralCommission(userId, profitAmount) {
         if (profitAmount <= 0) return;
         try {
@@ -1682,7 +1666,7 @@
         } catch (error) { console.error("Referral commission error:", error); }
     }
 
-    // ==================== POPUP ADS SYSTEM ====================
+    // ==================== POPUP ADS ====================
     async function checkAndShowPopupAds() {
         if (!currentUser) return;
         try {
@@ -1879,7 +1863,6 @@
         delete cleanUser.orders;
         delete cleanUser.pendingInjections;
         
-        // ✅ FIX: Sanitize currentOrderObj to remove undefined values
         if (cleanUser.currentOrderObj) {
             const order = cleanUser.currentOrderObj;
             cleanUser.currentOrderObj = {
@@ -2005,7 +1988,6 @@
             netCommission = gross - fee;
         }
         
-        // ✅ FIX: Ensure order name is never undefined
         let orderName = 'Default Order';
         if (injection) {
             orderName = injection.orderName || tpl.name || 'Premium Task Order';
@@ -2013,7 +1995,6 @@
             orderName = tpl.name || 'Premium Task Order';
         }
         
-        // ✅ FIX: Ensure imageData is null if undefined
         let imageData = null;
         if (injection?.imageData) {
             imageData = injection.imageData;
@@ -2180,7 +2161,6 @@
             }
             let newOrder = await getNextOrder();
             
-            // ✅ FIX: Check if newOrder is valid before saving
             if (!newOrder || !newOrder.name) {
                 console.error("❌ Invalid order generated:", newOrder);
                 toast("Error: Could not generate valid order. Please try again.", true);
@@ -2666,7 +2646,7 @@
         }
     });
 
-    console.log('✅ LUXCY App initialized (Error Fixed v2.0.5 with Delete Browsing Data)');
+    console.log('✅ LUXCY App initialized (v2.0.6 with Favicon Support)');
 </script>
 </body>
 </html>

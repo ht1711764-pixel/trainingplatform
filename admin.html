@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>LUXCY ADMIN | Premium Control Panel</title>
+
+    <!-- ============================================================ -->
+    <!-- ✅ FAVICON (Browser Tab Logo) — Admin Panel -->
+    <!-- ============================================================ -->
+    <link rel="icon" type="image/png" href="https://i.imgur.com/Zzubag0.png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/Zzubag0.png">
+    <meta name="theme-color" content="#d4af37">
+    <!-- ============================================================ -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -360,6 +369,51 @@
             margin: 2px;
             white-space: nowrap;
         }
+
+        /* ✅ LOGO STYLES */
+        .admin-logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #d4af37, #f5e7b2, #c9a03d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+            flex-shrink: 0;
+        }
+        .admin-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .admin-logo-box i {
+            font-size: 24px;
+            color: #0a120e;
+        }
+        .login-logo-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #d4af37, #f5e7b2, #c9a03d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(212,175,55,0.4);
+        }
+        .login-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .login-logo-box i {
+            font-size: 44px;
+            color: #0a120e;
+        }
+
         @media (max-width: 768px) {
             .action-buttons-wrap .btn-sm {
                 font-size: 10px;
@@ -369,8 +423,15 @@
     </style>
 </head>
 <body>
+
+<!-- ===== ADMIN LOGIN SCREEN ===== -->
 <div id="adminLoginScreen" class="login-screen">
     <div class="login-box">
+        <!-- ✅ LOGIN LOGO -->
+        <div class="login-logo-box">
+            <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" 
+                 onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+        </div>
         <h2 style="color:#d4af37; margin-bottom: 24px; text-align:center;">LUXCY Admin Portal</h2>
         <input type="text" id="adminUsername" placeholder="Username">
         <div class="password-wrapper">
@@ -389,11 +450,19 @@
     </div>
 </div>
 
+<!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel" style="display:none;">
     <div class="admin-container">
         <div class="sidebar">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
-                <h2 style="color:#d4af37; font-size:20px;">LUXCY ADMIN</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; gap:10px;">
+                <!-- ✅ SIDEBAR LOGO -->
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="admin-logo-box">
+                        <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY"
+                             onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+                    </div>
+                    <h2 style="color:#d4af37; font-size:18px;">LUXCY ADMIN</h2>
+                </div>
                 <div class="refresh-btn" id="refreshAdminBtn"><i class="fas fa-sync-alt"></i></div>
             </div>
             <div class="nav-item active" data-section="dashboard">📊 Dashboard</div>
@@ -417,7 +486,7 @@
 <script type="module">
     // ==================== VERSION CHECK & FORCE REFRESH ====================
     (function() {
-        const APP_VERSION = '2.1.7';
+        const APP_VERSION = '2.1.8';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -556,7 +625,7 @@
         }
     }
 
-    // ==================== REAL-TIME USER SUBSCRIPTION (FIXED) ====================
+    // ==================== REAL-TIME USER SUBSCRIPTION ====================
     function subscribeToUsers() {
         if (unsubscribeUsers) unsubscribeUsers();
         unsubscribeUsers = onSnapshot(query(collection(db, "users"), limit(500)), (snapshot) => {
@@ -1263,9 +1332,7 @@
         });
     }
 
-    // ==================== USER ACTIONS (FIXED with currentOrderObj clearing) ====================
-    
-    // ✅ FIXED: Setup Orders - clears currentOrderObj
+    // ==================== USER ACTIONS ====================
     window.setupOrder = async (userId) => { 
         let u = users.find(u=>u.id===userId); 
         if(u) { 
@@ -1280,7 +1347,6 @@
                         if(u.tasks.completed>u.tasks.total) u.tasks.completed=u.tasks.total; 
                     } 
                 }
-                // ✅ FIX: Clear currentOrderObj when orders are changed by admin
                 if (u.currentOrderObj) {
                     u.currentOrderObj = null;
                     console.log(`✅ Cleared currentOrderObj for user ${u.username} after order change`);
@@ -1292,14 +1358,12 @@
         } 
     };
     
-    // ✅ FIXED: Setup Balance - clears currentOrderObj
     window.setupBalance = async (userId) => { 
         let u = users.find(u=>u.id===userId); 
         if(u) { 
             let b = prompt("New balance:", u.balance); 
             if(b && !isNaN(parseFloat(b))) { 
                 u.balance=parseFloat(b); 
-                // ✅ FIX: Clear currentOrderObj when balance is changed by admin
                 if (u.currentOrderObj) {
                     u.currentOrderObj = null;
                     console.log(`✅ Cleared currentOrderObj for user ${u.username} after balance change`);
@@ -1311,7 +1375,6 @@
         } 
     };
     
-    // ✅ NEW: Reset user's current order
     window.resetUserCurrentOrder = async (userId) => {
         let u = users.find(u=>u.id===userId);
         if(u) {
@@ -1424,7 +1487,7 @@
             main.innerHTML = html;
         }
         
-        // MEMBER MANAGEMENT SECTION (FIXED with Clear Order button)
+        // MEMBER MANAGEMENT SECTION
         else if(section === "users") {
             if (!checkPermission('canManageMembers')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2><p>You don't have permission to access Member Management.</p></div>`; return; }
             let filtered = users.filter(u => u.role !== 'admin' && u.role !== 'agency');
