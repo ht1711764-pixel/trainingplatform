@@ -7,6 +7,11 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/Zzubag0.png">
     <link rel="apple-touch-icon" href="https://i.imgur.com/Zzubag0.png">
     <meta name="theme-color" content="#d4af37">
+    
+    <!-- ✅ Preconnect for faster loading -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -611,6 +616,56 @@
         .package-stat-value { font-size: 24px; font-weight: 800; color: #d4af37; }
         .package-stat-label { font-size: 11px; color: #9ca3af; margin-top: 4px; text-transform: uppercase; }
         
+        /* ✅ Loading overlay */
+        .app-loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0c10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 99999;
+            transition: opacity 0.5s;
+        }
+        .app-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .app-loading-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #d4af37, #f5e7b2, #c9a03d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 40px rgba(212,175,55,0.4);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .app-loading-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+        .app-loading-logo i { font-size: 56px; color: #0a120e; }
+        .app-loading-text {
+            color: #d4af37;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 4px;
+        }
+        .app-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212,175,55,0.2);
+            border-top-color: #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
         @media (max-width: 992px) {
             .package-editor-grid { grid-template-columns: 1fr; }
             .package-stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -629,8 +684,17 @@
 </head>
 <body>
 
+<!-- ✅ Loading overlay -->
+<div id="appLoadingOverlay" class="app-loading-overlay">
+    <div class="app-loading-logo">
+        <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+    </div>
+    <div class="app-loading-text">LUXCY ADMIN</div>
+    <div class="app-loading-spinner"></div>
+</div>
+
 <!-- ===== LOGIN SCREEN ===== -->
-<div id="adminLoginScreen" class="login-screen">
+<div id="adminLoginScreen" class="login-screen" style="display:none;">
     <div class="login-box">
         <div class="login-logo-box">
             <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
@@ -690,7 +754,7 @@
 <script type="module">
     // ==================== VERSION CHECK ====================
     (function() {
-        const APP_VERSION = '2.2.0';
+        const APP_VERSION = '3.0.0';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.setItem('admin_version', APP_VERSION);
@@ -701,10 +765,10 @@
     const log = () => {};
     const logErr = console.error.bind(console);
 
-    // ==================== FIREBASE ====================
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit, increment } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    // ==================== ✅ Firebase 10.7.0 ====================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, deleteDoc, onSnapshot, orderBy, limit, increment } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getAuth, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
@@ -750,6 +814,14 @@
     let adminSession = null;
     let pendingUserData = null;
     let isProcessing = false;
+    let subscriptionsStarted = {
+        users: false,
+        packages: false,
+        packagePurchases: false,
+        injections: false,
+        sessions: false,
+        settings: false
+    };
 
     // ✅ VIP Packages
     let vipPackages = {
@@ -885,81 +957,127 @@
         }
     }
 
-    // ==================== SUBSCRIPTIONS ====================
+    // ==================== ✅ LAZY SUBSCRIPTIONS ====================
     function subscribeToUsers() {
-        if (unsubscribeUsers) unsubscribeUsers();
-        unsubscribeUsers = onSnapshot(query(collection(db, "users"), limit(500)), (snapshot) => {
-            users = [];
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                if (!data.tasks) data.tasks = { completed: 0, total: 0 };
-                else data.tasks = { completed: parseInt(data.tasks.completed) || 0, total: parseInt(data.tasks.total) || 0 };
-                data.balance = parseFloat(data.balance) || 0;
-                data.todayEarnings = parseFloat(data.todayEarnings) || 0;
-                data.totalCommission = parseFloat(data.totalCommission) || 0;
-                users.push({ id: doc.id, ...data });
-            });
-            if (currentSection === 'dashboard') updateDashboardTasks();
-            if (['users', 'vip', 'injection', 'dashboard'].includes(currentSection)) renderSection(currentSection);
-        }, (error) => logErr("User subscription error:", error));
+        if (subscriptionsStarted.users || unsubscribeUsers) return;
+        subscriptionsStarted.users = true;
+        try {
+            unsubscribeUsers = onSnapshot(query(collection(db, "users"), limit(500)), (snapshot) => {
+                users = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (!data.tasks) data.tasks = { completed: 0, total: 0 };
+                    else data.tasks = { completed: parseInt(data.tasks.completed) || 0, total: parseInt(data.tasks.total) || 0 };
+                    data.balance = parseFloat(data.balance) || 0;
+                    data.todayEarnings = parseFloat(data.todayEarnings) || 0;
+                    data.totalCommission = parseFloat(data.totalCommission) || 0;
+                    users.push({ id: doc.id, ...data });
+                });
+                if (currentSection === 'dashboard') updateDashboardTasks();
+                if (['users', 'vip', 'injection', 'dashboard'].includes(currentSection)) renderSection(currentSection);
+            }, (error) => logErr("User subscription error:", error));
+        } catch (e) {}
     }
 
     function startSettingsSubscription() {
-        if (unsubscribeSettings) unsubscribeSettings();
-        unsubscribeSettings = onSnapshot(doc(db, "systemSettings", "main"), (docSnap) => {
-            if (docSnap.exists()) {
-                systemSettings = docSnap.data();
-                if (currentSection === 'background') renderSection('background');
-            }
-        });
+        if (subscriptionsStarted.settings || unsubscribeSettings) return;
+        subscriptionsStarted.settings = true;
+        try {
+            unsubscribeSettings = onSnapshot(doc(db, "systemSettings", "main"), (docSnap) => {
+                if (docSnap.exists()) {
+                    systemSettings = docSnap.data();
+                    if (currentSection === 'background') renderSection('background');
+                }
+            });
+        } catch (e) {}
     }
 
     function subscribeToVipPackages() {
-        if (unsubscribePackages) unsubscribePackages();
-        unsubscribePackages = onSnapshot(doc(db, "systemSettings", "vipPackages"), (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                Object.keys(vipPackages).forEach(key => {
-                    if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
-                });
-                if (currentSection === 'packages') renderSection('packages');
-            }
-        });
+        if (subscriptionsStarted.packages || unsubscribePackages) return;
+        subscriptionsStarted.packages = true;
+        try {
+            unsubscribePackages = onSnapshot(doc(db, "systemSettings", "vipPackages"), (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    Object.keys(vipPackages).forEach(key => {
+                        if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
+                    });
+                    if (currentSection === 'packages') renderSection('packages');
+                }
+            });
+        } catch (e) {}
     }
 
     function subscribeToPackagePurchases() {
-        if (unsubscribePackagePurchases) unsubscribePackagePurchases();
-        unsubscribePackagePurchases = onSnapshot(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200)), (snapshot) => {
-            packagePurchases = [];
-            snapshot.forEach(doc => packagePurchases.push({ id: doc.id, ...doc.data() }));
-            if (currentSection === 'packageHistory') renderSection('packageHistory');
-            if (currentSection === 'dashboard') renderSection('dashboard');
-        }, (error) => logErr("Package purchases subscription error:", error));
+        if (subscriptionsStarted.packagePurchases || unsubscribePackagePurchases) return;
+        subscriptionsStarted.packagePurchases = true;
+        try {
+            unsubscribePackagePurchases = onSnapshot(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200)), (snapshot) => {
+                packagePurchases = [];
+                snapshot.forEach(doc => packagePurchases.push({ id: doc.id, ...doc.data() }));
+                if (currentSection === 'packageHistory') renderSection('packageHistory');
+                if (currentSection === 'dashboard') renderSection('dashboard');
+            }, (error) => logErr("Package purchases error:", error));
+        } catch (e) {}
     }
 
     function subscribeToInjectionsRealtime() {
-        if (unsubscribeInjections) unsubscribeInjections();
-        unsubscribeInjections = onSnapshot(query(collection(db, "injections"), orderBy("createdAt", "desc"), limit(200)), (snapshot) => {
-            injections = [];
-            snapshot.forEach(doc => injections.push({ id: doc.id, ...doc.data() }));
-            if (currentSection === 'injection') renderSection('injection');
-        });
+        if (subscriptionsStarted.injections || unsubscribeInjections) return;
+        subscriptionsStarted.injections = true;
+        try {
+            unsubscribeInjections = onSnapshot(query(collection(db, "injections"), orderBy("createdAt", "desc"), limit(200)), (snapshot) => {
+                injections = [];
+                snapshot.forEach(doc => injections.push({ id: doc.id, ...doc.data() }));
+                if (currentSection === 'injection') renderSection('injection');
+            });
+        } catch (e) {}
     }
 
     function subscribeToSessions() {
-        if (unsubscribeSessions) unsubscribeSessions();
-        unsubscribeSessions = onSnapshot(query(collection(db, "sessions"), orderBy("loginTime", "desc"), limit(200)), (snapshot) => {
-            sessions = [];
-            snapshot.forEach(doc => sessions.push({ id: doc.id, ...doc.data() }));
-            if (currentSection === 'sessions') renderSection('sessions');
-        }, (error) => logErr("Sessions subscription error:", error));
+        if (subscriptionsStarted.sessions || unsubscribeSessions) return;
+        subscriptionsStarted.sessions = true;
+        try {
+            unsubscribeSessions = onSnapshot(query(collection(db, "sessions"), orderBy("loginTime", "desc"), limit(200)), (snapshot) => {
+                sessions = [];
+                snapshot.forEach(doc => sessions.push({ id: doc.id, ...doc.data() }));
+                if (currentSection === 'sessions') renderSection('sessions');
+            }, (error) => logErr("Sessions subscription error:", error));
+        } catch (e) {}
     }
 
-    // ==================== LOAD ALL DATA ====================
+    // ==================== ✅ PARALLEL DATA LOADING ====================
     async function loadAllData() {
         try {
             showLoader('Loading data...');
-            const usersSnap = await getDocs(query(collection(db, "users"), limit(500)));
+            
+            // ✅ Promise.all() - all queries run in PARALLEL
+            const [
+                usersSnap,
+                ordersSnap,
+                rechargeSnap,
+                withdrawSnap,
+                injSnap,
+                loanSnap,
+                agencySnap,
+                sessSnap,
+                pkgPurchasesSnap,
+                pkgDoc,
+                settingsDoc
+            ] = await Promise.all([
+                getDocs(query(collection(db, "users"), limit(500))),
+                getDocs(query(collection(db, "customOrders"), limit(100))),
+                getDocs(query(collection(db, "rechargeRequests"), orderBy("timestamp", "desc"), limit(200))),
+                getDocs(query(collection(db, "withdrawRequests"), orderBy("timestamp", "desc"), limit(200))),
+                getDocs(query(collection(db, "injections"), orderBy("createdAt", "desc"), limit(200))),
+                getDocs(query(collection(db, "loanRequests"), orderBy("timestamp", "desc"), limit(200))),
+                getDocs(query(collection(db, "agencies"), limit(100))),
+                getDocs(query(collection(db, "sessions"), orderBy("loginTime", "desc"), limit(200))),
+                getDocs(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200))),
+                getDoc(doc(db, "systemSettings", "vipPackages")),
+                getDoc(doc(db, "systemSettings", "main"))
+            ]);
+            
+            // Process users
             users = [];
             usersSnap.forEach(doc => {
                 const data = doc.data();
@@ -971,42 +1089,25 @@
                 users.push({ id: doc.id, ...data });
             });
             
-            const ordersSnap = await getDocs(query(collection(db, "customOrders"), limit(100)));
             customOrders = []; ordersSnap.forEach(doc => customOrders.push({ id: doc.id, ...doc.data() }));
-            
-            const rechargeSnap = await getDocs(query(collection(db, "rechargeRequests"), orderBy("timestamp", "desc"), limit(200)));
             rechargeRequests = []; rechargeSnap.forEach(doc => rechargeRequests.push({ id: doc.id, ...doc.data() }));
-            
-            const withdrawSnap = await getDocs(query(collection(db, "withdrawRequests"), orderBy("timestamp", "desc"), limit(200)));
             withdrawRequests = []; withdrawSnap.forEach(doc => withdrawRequests.push({ id: doc.id, ...doc.data() }));
-            
-            const injSnap = await getDocs(query(collection(db, "injections"), orderBy("createdAt", "desc"), limit(200)));
             injections = []; injSnap.forEach(doc => injections.push({ id: doc.id, ...doc.data() }));
-            
-            const loanSnap = await getDocs(query(collection(db, "loanRequests"), orderBy("timestamp", "desc"), limit(200)));
             loanRequests = []; loanSnap.forEach(doc => loanRequests.push({ id: doc.id, ...doc.data() }));
-            
-            const agencySnap = await getDocs(query(collection(db, "agencies"), limit(100)));
             agencies = []; agencySnap.forEach(doc => agencies.push({ id: doc.id, ...doc.data() }));
-            
-            const sessSnap = await getDocs(query(collection(db, "sessions"), orderBy("loginTime", "desc"), limit(200)));
             sessions = []; sessSnap.forEach(doc => sessions.push({ id: doc.id, ...doc.data() }));
-            
-            const pkgPurchasesSnap = await getDocs(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200)));
             packagePurchases = []; pkgPurchasesSnap.forEach(doc => packagePurchases.push({ id: doc.id, ...doc.data() }));
             
-            const pkgDoc = await getDoc(doc(db, "systemSettings", "vipPackages"));
             if (pkgDoc.exists()) {
                 const data = pkgDoc.data();
                 Object.keys(vipPackages).forEach(key => {
                     if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
                 });
             }
-            
-            const settingsDoc = await getDoc(doc(db, "systemSettings", "main"));
             if (settingsDoc.exists()) systemSettings = settingsDoc.data();
             
             hideLoader();
+            console.log('✅ Data loaded in parallel');
         } catch (e) { 
             hideLoader();
             logErr("Load error:", e); 
@@ -1041,9 +1142,11 @@
     }
 
     async function authenticateUser(username, password) {
+        // Check agency first
         const agencyMatch = agencies.find(a => a.username === username && a.password === password && a.status === 'active');
         if (agencyMatch) return { success: true, userData: agencyMatch, type: 'agency', permissions: agencyMatch.permissions || {} };
         
+        // Check admin in users collection
         const adminQuery = query(collection(db, "users"), where("username", "==", username), where("role", "==", "admin"), limit(1));
         const adminSnapshot = await getDocs(adminQuery);
         if (!adminSnapshot.empty) {
@@ -1051,6 +1154,7 @@
             if (adminData.password === password) return { success: true, userData: { id: adminSnapshot.docs[0].id, ...adminData }, type: 'admin', permissions: { all: true } };
         }
         
+        // Master credentials
         if (username === "hein" && password === "123456") return { success: true, userData: { id: "master_admin", username: "hein", role: "master" }, type: 'master', permissions: { all: true } };
         if (username === "admin" && password === "admin123") return { success: true, userData: { id: "admin", username: "admin", role: "admin" }, type: 'admin', permissions: { all: true } };
         
@@ -1073,7 +1177,11 @@
             errorDiv.innerHTML = '';
             
             try {
-                await loadAllData();
+                // ✅ Load only agencies for auth (not all data)
+                const agencySnap = await getDocs(query(collection(db, "agencies"), limit(100)));
+                agencies = [];
+                agencySnap.forEach(doc => agencies.push({ id: doc.id, ...doc.data() }));
+                
                 const authResult = await authenticateUser(username, password);
                 if (authResult.success) {
                     const code = generate2FACode();
@@ -1127,14 +1235,16 @@
                 document.getElementById("adminLoginScreen").style.display = "none";
                 document.getElementById("adminPanel").style.display = "block";
                 applyPermissionsToNav();
+                
+                // ✅ Start subscriptions after login (LAZY)
                 subscribeToUsers();
                 startSettingsSubscription();
                 subscribeToVipPackages();
                 subscribeToPackagePurchases();
                 subscribeToInjectionsRealtime();
                 subscribeToSessions();
+                
                 renderSection('dashboard');
-                startChatSubscription();
                 pendingUserData = null;
                 toast(`Welcome, ${adminSession.username}!`);
             } else errorDiv.innerHTML = '<span style="color:#dc2626;">Invalid code</span>';
@@ -1186,6 +1296,13 @@
         currentSection = section;
         localStorage.setItem("adminCurrentSection", section);
         const main = document.getElementById("mainContent");
+        
+        // ✅ Trigger lazy subscriptions based on section
+        if (section === 'dashboard' || section === 'users') subscribeToUsers();
+        if (section === 'sessions') subscribeToSessions();
+        if (section === 'injection') subscribeToInjectionsRealtime();
+        if (section === 'packages' || section === 'packageHistory') { subscribeToVipPackages(); subscribeToPackagePurchases(); }
+        if (section === 'background') startSettingsSubscription();
 
         // ============ DASHBOARD ============
         if (section === "dashboard") {
@@ -1520,6 +1637,15 @@
         else if (section === "rechargeRequests") {
             if (!checkPermission('canManageRecharge')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
             
+            // ✅ Load recharge requests if not loaded
+            if (rechargeRequests.length === 0) {
+                getDocs(query(collection(db, "rechargeRequests"), orderBy("timestamp", "desc"), limit(200))).then(snap => {
+                    rechargeRequests = [];
+                    snap.forEach(doc => rechargeRequests.push({ id: doc.id, ...doc.data() }));
+                    renderSection("rechargeRequests");
+                });
+            }
+            
             let html = `<div class="admin-card"><h2>💸 Recharge Requests</h2>`;
             if (rechargeRequests.length === 0) {
                 html += `<p style="color:#9ca3af;text-align:center;padding:40px;">No requests</p>`;
@@ -1547,6 +1673,14 @@
         else if (section === "withdrawRequests") {
             if (!checkPermission('canManageWithdraw')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
             
+            if (withdrawRequests.length === 0) {
+                getDocs(query(collection(db, "withdrawRequests"), orderBy("timestamp", "desc"), limit(200))).then(snap => {
+                    withdrawRequests = [];
+                    snap.forEach(doc => withdrawRequests.push({ id: doc.id, ...doc.data() }));
+                    renderSection("withdrawRequests");
+                });
+            }
+            
             let html = `<div class="admin-card"><h2>🏦 Withdraw Requests</h2>`;
             if (withdrawRequests.length === 0) {
                 html += `<p style="color:#9ca3af;text-align:center;padding:40px;">No requests</p>`;
@@ -1573,6 +1707,14 @@
         // ============ LOAN REQUESTS ============
         else if (section === "loanRequests") {
             if (!checkPermission('canManageLoans')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
+            
+            if (loanRequests.length === 0) {
+                getDocs(query(collection(db, "loanRequests"), orderBy("timestamp", "desc"), limit(200))).then(snap => {
+                    loanRequests = [];
+                    snap.forEach(doc => loanRequests.push({ id: doc.id, ...doc.data() }));
+                    renderSection("loanRequests");
+                });
+            }
             
             let html = `<div class="admin-card"><h2>💰 Loan Requests</h2>`;
             if (loanRequests.length === 0) {
@@ -1730,7 +1872,7 @@
                 <h2 style="color:#d4af37;">👑 VIP Package Management</h2>
                 <button class="btn-admin" id="resetPackagesBtn"><i class="fas fa-undo"></i> Reset Default</button>
             </div>
-            <p style="color:#9ca3af;font-size:13px;margin:12px 0 20px;">Edit package settings below. Changes will be saved to Firestore and instantly reflected on customer.html.</p>
+            <p style="color:#9ca3af;font-size:13px;margin:12px 0 20px;">Edit package settings below. Changes saved to Firestore instantly reflect on customer.html.</p>
             
             <div class="package-editor-grid" id="packageEditorGrid">
                 ${packageOrder.map(key => {
@@ -2791,9 +2933,7 @@
             if (!this.dataset.section && this.id !== 'adminLogoutBtn') return;
             document.querySelectorAll(".nav-item").forEach(x => x.classList.remove("active"));
             this.classList.add("active");
-            showLoader('Loading...');
             renderSection(this.dataset.section);
-            setTimeout(hideLoader, 300);
         };
     });
 
@@ -2806,6 +2946,10 @@
         if (unsubscribePackages) unsubscribePackages();
         if (unsubscribePackagePurchases) unsubscribePackagePurchases();
         if (timerInterval) clearInterval(timerInterval);
+        
+        // Reset subscription flags
+        subscriptionsStarted = { users: false, packages: false, packagePurchases: false, injections: false, sessions: false, settings: false };
+        
         pending2fa = false;
         adminSession = null;
         sessionStorage.removeItem('adminSession');
@@ -2823,22 +2967,54 @@
         toast('Signed out');
     };
 
-    // ==================== INITIALIZE ====================
-    if (checkAdminSession()) {
-        (async () => {
-            await loadAllData();
-            document.getElementById("adminLoginScreen").style.display = "none";
-            document.getElementById("adminPanel").style.display = "block";
-            subscribeToUsers();
-            startSettingsSubscription();
-            subscribeToVipPackages();
-            subscribeToPackagePurchases();
-            subscribeToInjectionsRealtime();
-            subscribeToSessions();
-            applyPermissionsToNav();
-            const saved = localStorage.getItem("adminCurrentSection");
-            renderSection(saved || 'dashboard');
-        })();
+    // ==================== ✅ FAST APP START ====================
+    async function startApp() {
+        try {
+            console.log('🚀 Starting LUXCY Admin v3.0.0 (Optimized)');
+            
+            // ✅ Hide loading overlay immediately
+            const overlay = document.getElementById('appLoadingOverlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                setTimeout(() => overlay.remove(), 500);
+            }
+            
+            // ✅ Check for existing session
+            if (checkAdminSession()) {
+                document.getElementById("adminLoginScreen").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                applyPermissionsToNav();
+                
+                // ✅ Start subscriptions
+                subscribeToUsers();
+                startSettingsSubscription();
+                subscribeToVipPackages();
+                subscribeToPackagePurchases();
+                subscribeToInjectionsRealtime();
+                subscribeToSessions();
+                
+                // ✅ Load essential data in background
+                loadAllData().catch(e => console.log('Background load:', e.message));
+                
+                const saved = localStorage.getItem("adminCurrentSection");
+                renderSection(saved || 'dashboard');
+            } else {
+                // Show login screen
+                document.getElementById("adminLoginScreen").style.display = "flex";
+                document.getElementById("adminPanel").style.display = "none";
+            }
+            
+            console.log('✅ Admin ready');
+        } catch (e) {
+            console.error('❌ App start error:', e);
+            document.getElementById("adminLoginScreen").style.display = "flex";
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startApp);
+    } else {
+        startApp();
     }
 </script>
 </body>

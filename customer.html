@@ -7,6 +7,13 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/Zzubag0.png">
     <link rel="apple-touch-icon" href="https://i.imgur.com/Zzubag0.png">
     <meta name="theme-color" content="#d4af37">
+    
+    <!-- ✅ Preconnect for faster loading -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -111,7 +118,6 @@
             font-size: 12px;
         }
         .refresh-btn:hover { background: rgba(212,175,55,0.25); transform: scale(1.02); }
-        .refresh-btn:active { transform: rotate(180deg); }
         .signout-icon {
             background: rgba(0,0,0,0.3);
             backdrop-filter: blur(8px);
@@ -889,10 +895,7 @@
             border-left: 4px solid var(--gold);
             transition: all 0.3s;
         }
-        .history-order-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-2px);
-        }
+        .history-order-card:hover { border-color: var(--gold); transform: translateY(-2px); }
         .history-order-header {
             display: flex;
             justify-content: space-between;
@@ -901,17 +904,8 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .history-order-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--gold-light);
-            margin-bottom: 4px;
-        }
-        .history-order-id {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
+        .history-order-title { font-size: 16px; font-weight: 700; color: var(--gold-light); margin-bottom: 4px; }
+        .history-order-id { font-size: 11px; color: var(--text-muted); font-family: monospace; }
         .history-order-badge {
             background: rgba(16,185,129,0.15);
             color: #10b981;
@@ -929,21 +923,9 @@
             padding-top: 12px;
             border-top: 1px solid rgba(212,175,55,0.1);
         }
-        .history-detail-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .history-detail-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        .history-detail-value {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-light);
-        }
+        .history-detail-item { display: flex; flex-direction: column; gap: 4px; }
+        .history-detail-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .history-detail-value { font-size: 14px; font-weight: 700; color: var(--text-light); }
         .history-detail-value.profit { color: #10b981; }
         .history-detail-value.gold { color: var(--gold); }
         .history-order-ratings {
@@ -962,14 +944,7 @@
             color: var(--gold-light);
             border: 1px solid rgba(212,175,55,0.2);
         }
-        .history-order-date {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .history-order-date { font-size: 11px; color: var(--text-muted); margin-top: 10px; display: flex; align-items: center; gap: 6px; }
 
         .success-icon-box {
             width: 100px;
@@ -996,39 +971,14 @@
         }
         .error-icon-box i { font-size: 44px; color: #dc2626; }
 
-        .session-card-item {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 10px;
-        }
-        .session-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .session-badge {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-        }
+        .session-card-item { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 14px; margin-bottom: 10px; }
+        .session-header { display: flex; justify-content: space-between; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+        .session-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
         .session-badge-current { background: rgba(16,185,129,0.2); color: #10b981; }
         .session-badge-active { background: rgba(245,158,11,0.2); color: #f59e0b; }
         .session-badge-ended { background: rgba(120,120,120,0.2); color: #94a3b8; }
-        .session-row-item {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-        }
-        .session-row-item span:last-child {
-            color: var(--text-light);
-            font-family: monospace;
-        }
+        .session-row-item { font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; padding: 3px 0; }
+        .session-row-item span:last-child { color: var(--text-light); font-family: monospace; }
 
         /* ============ VIP PACKAGE CARDS ============ */
         .packages-grid {
@@ -1072,12 +1022,7 @@
         .package-card.platinum { border-color: var(--platinum-1); }
         .package-card.platinum:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(229,228,226,0.3); }
 
-        .package-icon {
-            font-size: 52px;
-            margin-bottom: 16px;
-            display: block;
-            transition: transform 0.4s;
-        }
+        .package-icon { font-size: 52px; margin-bottom: 16px; display: block; transition: transform 0.4s; }
         .package-card:hover .package-icon { transform: scale(1.15) rotate(5deg); }
         .package-card.bronze .package-icon { color: var(--bronze-1); }
         .package-card.silver .package-icon { color: var(--silver-1); }
@@ -1108,10 +1053,7 @@
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
 
-        .package-features {
-            text-align: left;
-            margin: 16px 0;
-        }
+        .package-features { text-align: left; margin: 16px 0; }
         .package-feature {
             display: flex;
             align-items: center;
@@ -1137,11 +1079,7 @@
             background-clip: text;
             color: transparent;
         }
-        .package-price-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-        }
+        .package-price-label { font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
         .package-btn {
             background: var(--gradient-gold);
             border: none;
@@ -1186,10 +1124,7 @@
             backdrop-filter: blur(20px);
             animation: modalFadeIn 0.4s ease;
         }
-        @keyframes modalFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
         .package-confirm-box {
             background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
@@ -1206,28 +1141,14 @@
             from { opacity: 0; transform: rotateY(90deg) scale(0.8); }
             to { opacity: 1; transform: rotateY(0deg) scale(1); }
         }
-        .confirm-package-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            display: block;
-            animation: iconBounce 0.8s ease;
-        }
+        .confirm-package-icon { font-size: 64px; margin-bottom: 16px; display: block; animation: iconBounce 0.8s ease; }
         @keyframes iconBounce {
             0% { transform: scale(0); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        .confirm-package-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-        }
-        .confirm-package-subtitle {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
+        .confirm-package-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 800; margin-bottom: 8px; }
+        .confirm-package-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
         .confirm-details {
             background: rgba(0,0,0,0.3);
             border-radius: 20px;
@@ -1242,14 +1163,8 @@
             font-size: 14px;
             color: var(--text-light);
         }
-        .confirm-detail-row span:last-child {
-            font-weight: 700;
-            color: var(--gold);
-        }
-        .confirm-buttons {
-            display: flex;
-            gap: 12px;
-        }
+        .confirm-detail-row span:last-child { font-weight: 700; color: var(--gold); }
+        .confirm-buttons { display: flex; gap: 12px; }
         .confirm-buttons button {
             flex: 1;
             padding: 14px 20px;
@@ -1260,10 +1175,7 @@
             transition: all 0.3s;
             border: none;
         }
-        .confirm-yes-btn {
-            background: var(--gradient-gold);
-            color: #0a120e;
-        }
+        .confirm-yes-btn { background: var(--gradient-gold); color: #0a120e; }
         .confirm-yes-btn:hover { transform: scale(1.03); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
         .confirm-no-btn {
             background: rgba(255,255,255,0.05);
@@ -1279,16 +1191,8 @@
             padding: 20px;
             margin-bottom: 20px;
         }
-        .insufficient-warning h4 {
-            color: #dc2626;
-            margin-bottom: 12px;
-            font-size: 16px;
-        }
-        .insufficient-warning p {
-            color: var(--text-light);
-            font-size: 13px;
-            margin-bottom: 6px;
-        }
+        .insufficient-warning h4 { color: #dc2626; margin-bottom: 12px; font-size: 16px; }
+        .insufficient-warning p { color: var(--text-light); font-size: 13px; margin-bottom: 6px; }
 
         .purchase-success-anim {
             position: fixed;
@@ -1357,6 +1261,58 @@
             margin-left: 8px;
         }
 
+        /* ✅ Loading overlay for smooth experience */
+        .app-loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #0a0c10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 99999;
+            transition: opacity 0.5s;
+        }
+        .app-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .app-loading-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: var(--gradient-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 40px rgba(212,175,55,0.4);
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        .app-loading-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+        .app-loading-logo i { font-size: 56px; color: #0a120e; }
+        .app-loading-text {
+            color: var(--gold);
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 4px;
+            font-family: 'Playfair Display', serif;
+        }
+        .app-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(212,175,55,0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         /* ============ RESPONSIVE ============ */
         @media (max-width: 992px) {
             .packages-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -1412,7 +1368,17 @@
     </style>
 </head>
 <body>
-<div class="app-container" id="appContainer">
+
+<!-- ✅ Loading overlay (shows immediately, hides when ready) -->
+<div id="appLoadingOverlay" class="app-loading-overlay">
+    <div class="app-loading-logo">
+        <img src="https://i.imgur.com/Zzubag0.png" alt="LUXCY" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\'fas fa-crown\'></i>';">
+    </div>
+    <div class="app-loading-text">LUXCY</div>
+    <div class="app-loading-spinner"></div>
+</div>
+
+<div class="app-container" id="appContainer" style="display:none;">
     <div id="realTimeIndicator" class="real-time-indicator"><i class="fas fa-sync-alt fa-fw"></i> Live</div>
 
     <!-- ===== LANDING PAGE ===== -->
@@ -1482,7 +1448,7 @@
         </div>
         <div class="card-lux">
             <input type="text" class="input-lux" id="loginUsername" placeholder="Username">
-            <div class="password-wrapper" style="position:relative;">
+            <div style="position:relative;">
                 <input type="password" class="input-lux" id="loginPass" placeholder="Password" style="padding-right:50px;">
                 <i class="fas fa-eye toggle-password" onclick="togglePassword('loginPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i>
             </div>
@@ -1504,9 +1470,9 @@
             <input class="input-lux" id="regUsername" placeholder="Username">
             <input class="input-lux" id="regEmail" placeholder="Email">
             <input class="input-lux" id="regPhone" placeholder="Phone Number">
-            <div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
-            <div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
-            <div class="password-wrapper" style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
+            <div style="position:relative;"><input type="password" class="input-lux" id="regPass" placeholder="Login Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
+            <div style="position:relative;"><input type="password" class="input-lux" id="regConfirmPass" placeholder="Confirm Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regConfirmPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
+            <div style="position:relative;"><input type="password" class="input-lux" id="regWithdrawPass" placeholder="Withdraw Password" style="padding-right:50px;"><i class="fas fa-eye toggle-password" onclick="togglePassword('regWithdrawPass', this)" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--gold);"></i></div>
             <input type="text" class="input-lux" id="regInvite" placeholder="Invitation Code (Required)">
             <button class="btn-lux" id="doRegisterBtn"><span id="registerNowText">Register Now</span></button>
             <div style="position:relative;margin:16px 0 8px;width:100%;">
@@ -1572,7 +1538,6 @@
             </div>
         </div>
         
-        <!-- ✅ VIP PACKAGES CONTAINER (filled dynamically) -->
         <div id="vipPackagesContainer"></div>
         
         <div class="live-feed-container">
@@ -1704,21 +1669,20 @@
 </div>
 
 <script type="module">
-    // ===== VERSION CHECK =====
+    // ==================== VERSION CHECK ====================
     (function() {
-        const APP_VERSION = '2.3.0';
+        const APP_VERSION = '3.0.0';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
-            localStorage.removeItem('app_version');
             localStorage.setItem('app_version', APP_VERSION);
             console.log('🔄 App version updated to:', APP_VERSION);
         }
     })();
 
-    // ===== FIREBASE IMPORTS =====
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    // ==================== ✅ Firebase 10.7.0 (Faster) ====================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
@@ -1726,14 +1690,21 @@
         projectId: "tripnew-2026",
         storageBucket: "tripnew-2026.firebasestorage.app",
         messagingSenderId: "225456579056",
-        appId: "1:225456579056:web:10f984841bdb63c9c73d35",
-        measurementId: "G-J0MYZLMJT0"
+        appId: "1:225456579056:web:10f984841bdb63c9c73d35"
     };
     
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
     const googleProvider = new GoogleAuthProvider();
+
+    // ✅ Enable offline persistence for faster loads
+    try {
+        enableIndexedDbPersistence(db).catch((err) => {
+            if (err.code === 'failed-precondition') console.log('⚠️ Persistence failed: multiple tabs');
+            else if (err.code === 'unimplemented') console.log('⚠️ Persistence not supported');
+        });
+    } catch (e) {}
 
     // ==================== GLOBALS ====================
     let currentUser = null;
@@ -1756,12 +1727,10 @@
     let sessionId = null;
     let deviceInfo = null;
     let appInitialized = false;
-    
-    // ✅ Cache order templates for random image selection
-    let cachedOrderTemplates = [];
     let templatesLoaded = false;
+    let cachedOrderTemplates = [];
 
-    // Default VIP Packages
+    // VIP Packages
     let vipPackages = {
         bronze: { id: 'bronze', name: 'Bronze', icon: 'fa-medal', orderCount: 40, commissionRate: 0.05, price: 0, description: 'Perfect starter package', popular: false },
         silver: { id: 'silver', name: 'Silver', icon: 'fa-award', orderCount: 45, commissionRate: 0.07, price: 0, description: 'Great for growing users', popular: false },
@@ -1857,66 +1826,29 @@
         }
     }
 
-    function showLoader(msg = 'Loading...') {
-        let l = document.getElementById('tempLoader');
-        if (!l) {
-            l = document.createElement('div');
-            l.id = 'tempLoader';
-            l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px;color:#D4AF37;font-weight:700;';
-            document.body.appendChild(l);
-        }
-        l.innerHTML = `<div style="width:50px;height:50px;border:4px solid rgba(212,175,55,0.2);border-top-color:#D4AF37;border-radius:50%;animation:spin 1s linear infinite;"></div><div>${escapeHtml(msg)}</div>`;
-        l.style.display = 'flex';
-    }
-    function hideLoader() {
-        const l = document.getElementById('tempLoader');
-        if (l) l.remove();
-    }
-    
-    const spinStyle = document.createElement('style');
-    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-    document.head.appendChild(spinStyle);
-
-    // ==================== ✅ LOAD ORDER TEMPLATES ====================
-    async function loadOrderTemplates() {
-        try {
-            const snapshot = await getDocs(collection(db, "customOrders"));
+    // ==================== ✅ FAST TEMPLATE LOADER (Background) ====================
+    function loadOrderTemplatesBackground() {
+        // Don't await this - let it load in background
+        getDocs(collection(db, "customOrders")).then(snapshot => {
             cachedOrderTemplates = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 cachedOrderTemplates.push({ id: doc.id, ...data });
             });
             templatesLoaded = true;
-            console.log(`✅ Loaded ${cachedOrderTemplates.length} order templates`);
-            return cachedOrderTemplates;
-        } catch (e) {
-            console.error('❌ Load order templates error:', e);
+            console.log(`✅ ${cachedOrderTemplates.length} templates loaded (background)`);
+        }).catch(e => {
+            console.warn('⚠️ Template load failed:', e.message);
             templatesLoaded = true;
-            return [];
-        }
+        });
     }
 
-    // ✅ Get a random order template (for image selection)
     function getRandomTemplate() {
         if (cachedOrderTemplates.length === 0) return null;
         return cachedOrderTemplates[Math.floor(Math.random() * cachedOrderTemplates.length)];
     }
 
-    // ✅ Get random image from templates
-    function getRandomOrderImage() {
-        const tpl = getRandomTemplate();
-        if (tpl && tpl.image) return tpl.image;
-        return null;
-    }
-
-    // ✅ Get random order name from templates
-    function getRandomOrderName() {
-        const tpl = getRandomTemplate();
-        if (tpl && tpl.name) return tpl.name;
-        return 'Premium Task Order';
-    }
-
-    // ==================== DEVICE INFO ====================
+    // ==================== DEVICE ====================
     function getDeviceInfo() {
         const ua = navigator.userAgent;
         let deviceType = 'Desktop', browser = 'Unknown', os = 'Unknown';
@@ -1926,10 +1858,8 @@
         else if (ua.indexOf('Safari') > -1 && ua.indexOf('Chrome') === -1) browser = 'Safari';
         else if (ua.indexOf('Firefox') > -1) browser = 'Firefox';
         else if (ua.indexOf('Edg') > -1) browser = 'Edge';
-        else if (ua.indexOf('Opera') > -1 || ua.indexOf('OPR') > -1) browser = 'Opera';
         if (ua.indexOf('Windows') > -1) os = 'Windows';
         else if (ua.indexOf('Mac') > -1) os = 'macOS';
-        else if (ua.indexOf('Linux') > -1) os = 'Linux';
         else if (ua.indexOf('Android') > -1) os = 'Android';
         else if (ua.indexOf('iPhone') > -1 || ua.indexOf('iPad') > -1) os = 'iOS';
         return { deviceType, browser, os, userAgent: ua.substring(0, 100), language: navigator.language || 'en', platform: navigator.platform || 'Unknown' };
@@ -1958,7 +1888,7 @@
                 status: 'active'
             });
             sessionStorage.setItem('currentSessionId', sessionId);
-        } catch (e) { console.error('Session register failed:', e); }
+        } catch (e) {}
     }
 
     async function updateSessionActivity() {
@@ -1981,57 +1911,49 @@
 
     async function showDeviceSessionModal() {
         if (!currentUser) return;
-        showLoader('Loading sessions...');
-        try {
-            const sessions = await getUserSessions(currentUser.id);
-            hideLoader();
-            const ip = await getClientIP();
-            const activeSessions = sessions.filter(s => s.status === 'active');
-            
-            let sessionsHtml = '';
-            if (sessions.length === 0) {
-                sessionsHtml = '<p style="text-align:center;color:var(--text-muted);padding:20px;">No session history.</p>';
-            } else {
-                sessions.forEach(s => {
-                    const isCurrent = s.sessionId === sessionId;
-                    const isActive = s.status === 'active';
-                    const borderColor = isCurrent ? '#10b981' : (isActive ? '#f59e0b' : '#4a5568');
-                    const badgeClass = isCurrent ? 'session-badge-current' : (isActive ? 'session-badge-active' : 'session-badge-ended');
-                    const badgeText = isCurrent ? 'CURRENT' : (isActive ? 'ACTIVE' : 'ENDED');
-                    sessionsHtml += `<div class="session-card-item" style="border-left:3px solid ${borderColor};">
-                        <div class="session-header">
-                            <strong style="color:var(--text-light);font-size:13px;">${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</strong>
-                            <span class="session-badge ${badgeClass}">${badgeText}</span>
-                        </div>
-                        <div class="session-row-item"><span>IP:</span><span>${escapeHtml(s.ip || '?')}</span></div>
-                        <div class="session-row-item"><span>OS:</span><span>${escapeHtml(s.os || '?')}</span></div>
-                        <div class="session-row-item"><span>Login:</span><span>${new Date(s.loginTime).toLocaleString()}</span></div>
-                        <div class="session-row-item"><span>Last Active:</span><span>${new Date(s.lastActive).toLocaleString()}</span></div>
-                    </div>`;
-                });
-            }
-            
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.innerHTML = `<div class="modal-content" style="max-width:600px;">
-                <h2 style="color:var(--gold);font-size:22px;margin-bottom:20px;text-align:center;font-family:'Playfair Display',serif;">🛡️ Device & Session Info</h2>
-                <div style="background:rgba(212,175,55,0.08);border-radius:16px;padding:14px;margin-bottom:16px;border:1px solid var(--gold);">
-                    <div class="session-row-item"><span>Your IP:</span><span style="color:var(--gold);font-weight:700;">${escapeHtml(ip)}</span></div>
-                    <div class="session-row-item"><span>Device:</span><span>${escapeHtml(deviceInfo.deviceType)}</span></div>
-                    <div class="session-row-item"><span>Browser:</span><span>${escapeHtml(deviceInfo.browser)}</span></div>
-                    <div class="session-row-item"><span>OS:</span><span>${escapeHtml(deviceInfo.os)}</span></div>
-                    <div class="session-row-item"><span>Language:</span><span>${escapeHtml(deviceInfo.language)}</span></div>
-                </div>
-                <h3 style="color:var(--gold);font-size:15px;margin-bottom:12px;">Session History (${activeSessions.length} active)</h3>
-                <div style="max-height:50vh;overflow-y:auto;padding-right:4px;">${sessionsHtml}</div>
-                <button class="btn-lux" id="closeDeviceModal" style="margin-top:16px;">Close</button>
-            </div>`;
-            document.body.appendChild(modal);
-            document.getElementById('closeDeviceModal').onclick = () => modal.remove();
-        } catch (e) {
-            hideLoader();
-            showErrorModal('Error', e.message);
+        const sessions = await getUserSessions(currentUser.id);
+        const ip = await getClientIP();
+        const activeSessions = sessions.filter(s => s.status === 'active');
+        
+        let sessionsHtml = '';
+        if (sessions.length === 0) {
+            sessionsHtml = '<p style="text-align:center;color:var(--text-muted);padding:20px;">No session history.</p>';
+        } else {
+            sessions.forEach(s => {
+                const isCurrent = s.sessionId === sessionId;
+                const isActive = s.status === 'active';
+                const borderColor = isCurrent ? '#10b981' : (isActive ? '#f59e0b' : '#4a5568');
+                const badgeClass = isCurrent ? 'session-badge-current' : (isActive ? 'session-badge-active' : 'session-badge-ended');
+                const badgeText = isCurrent ? 'CURRENT' : (isActive ? 'ACTIVE' : 'ENDED');
+                sessionsHtml += `<div class="session-card-item" style="border-left:3px solid ${borderColor};">
+                    <div class="session-header">
+                        <strong style="color:var(--text-light);font-size:13px;">${escapeHtml(s.deviceType || '?')} - ${escapeHtml(s.browser || '?')}</strong>
+                        <span class="session-badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                    <div class="session-row-item"><span>IP:</span><span>${escapeHtml(s.ip || '?')}</span></div>
+                    <div class="session-row-item"><span>OS:</span><span>${escapeHtml(s.os || '?')}</span></div>
+                    <div class="session-row-item"><span>Login:</span><span>${new Date(s.loginTime).toLocaleString()}</span></div>
+                    <div class="session-row-item"><span>Last Active:</span><span>${new Date(s.lastActive).toLocaleString()}</span></div>
+                </div>`;
+            });
         }
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `<div class="modal-content" style="max-width:600px;">
+            <h2 style="color:var(--gold);font-size:22px;margin-bottom:20px;text-align:center;font-family:'Playfair Display',serif;">🛡️ Device & Session Info</h2>
+            <div style="background:rgba(212,175,55,0.08);border-radius:16px;padding:14px;margin-bottom:16px;border:1px solid var(--gold);">
+                <div class="session-row-item"><span>Your IP:</span><span style="color:var(--gold);font-weight:700;">${escapeHtml(ip)}</span></div>
+                <div class="session-row-item"><span>Device:</span><span>${escapeHtml(deviceInfo?.deviceType || '?')}</span></div>
+                <div class="session-row-item"><span>Browser:</span><span>${escapeHtml(deviceInfo?.browser || '?')}</span></div>
+                <div class="session-row-item"><span>OS:</span><span>${escapeHtml(deviceInfo?.os || '?')}</span></div>
+            </div>
+            <h3 style="color:var(--gold);font-size:15px;margin-bottom:12px;">Session History (${activeSessions.length} active)</h3>
+            <div style="max-height:50vh;overflow-y:auto;padding-right:4px;">${sessionsHtml}</div>
+            <button class="btn-lux" id="closeDeviceModal" style="margin-top:16px;">Close</button>
+        </div>`;
+        document.body.appendChild(modal);
+        document.getElementById('closeDeviceModal').onclick = () => modal.remove();
     }
 
     // ==================== REFERRAL ====================
@@ -2063,7 +1985,7 @@
                 updateUI();
             }
             toast(`🎁 Referral Bonus +${formatMoney(referralBonus)}`);
-        } catch (error) { console.error("Referral commission error:", error); }
+        } catch (error) {}
     }
 
     // ==================== SAVE USER ====================
@@ -2094,9 +2016,7 @@
         try {
             await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
             localStorage.setItem("currentUserId", currentUser.id);
-        } catch (e) {
-            console.error('Save user error:', e);
-        }
+        } catch (e) {}
     }
     
     async function loadSystemSettings() { 
@@ -2133,12 +2053,11 @@
         });
     }
 
-    // ==================== SUBSCRIPTIONS ====================
+    // ==================== SUBSCRIPTIONS (Lazy) ====================
     function subscribeToLogos() {
         if (unsubscribeLogos) unsubscribeLogos();
         try {
-            const logosRef = doc(db, "systemSettings", "logos");
-            unsubscribeLogos = onSnapshot(logosRef, (docSnap) => {
+            unsubscribeLogos = onSnapshot(doc(db, "systemSettings", "logos"), (docSnap) => {
                 if (docSnap.exists()) {
                     const logos = docSnap.data();
                     const logoContainer = document.getElementById("logoContainer");
@@ -2162,23 +2081,17 @@
     function subscribeToCompanyInfo() {
         if (unsubscribeCompany) unsubscribeCompany();
         try {
-            const companyRef = doc(db, "systemSettings", "companyInfo");
-            unsubscribeCompany = onSnapshot(companyRef, (docSnap) => {
+            unsubscribeCompany = onSnapshot(doc(db, "systemSettings", "companyInfo"), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     const setTxt = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerText = val; };
                     const setHtml = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerHTML = val; };
-                    
                     setTxt("companyNameText", data.companyName);
                     setTxt("companyTaglineText", data.companyTagline);
                     setHtml("companyDescription", data.companyDescription);
                     setTxt("stat1Number", data.stat1Number);
                     setTxt("stat2Number", data.stat2Number);
                     setTxt("stat3Number", data.stat3Number);
-                    setTxt("stat1Label", data.stat1Label);
-                    setTxt("stat2Label", data.stat2Label);
-                    setTxt("stat3Label", data.stat3Label);
-                    
                     if (data.companyLogo) { 
                         const logoEl = document.getElementById("companyLogo"); 
                         if (logoEl) logoEl.innerHTML = `<img src="${data.companyLogo}" style="width:60px;height:60px;object-fit:contain;">`; 
@@ -2191,22 +2104,17 @@
     function subscribeToVipPackages() {
         if (unsubscribePackages) unsubscribePackages();
         try {
-            const packagesRef = doc(db, "systemSettings", "vipPackages");
-            unsubscribePackages = onSnapshot(packagesRef, (docSnap) => {
+            unsubscribePackages = onSnapshot(doc(db, "systemSettings", "vipPackages"), (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     Object.keys(vipPackages).forEach(key => {
                         if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
                     });
                     renderVipPackages();
-                    updateRealtimeStatus('VIP Packages updated ✅');
                 } else {
                     renderVipPackages();
                 }
-            }, (error) => {
-                console.log('⚠️ VIP packages subscribe error:', error.message);
-                renderVipPackages();
-            });
+            }, () => renderVipPackages());
         } catch (e) {
             renderVipPackages();
         }
@@ -2215,8 +2123,7 @@
     function subscribeToUser(userId) {
         if (unsubscribeUser) unsubscribeUser();
         try {
-            const userRef = doc(db, "users", userId);
-            unsubscribeUser = onSnapshot(userRef, async (docSnap) => {
+            unsubscribeUser = onSnapshot(doc(db, "users", userId), async (docSnap) => {
                 if (docSnap.exists()) {
                     const userData = docSnap.data();
                     currentUser = { id: docSnap.id, ...userData };
@@ -2224,7 +2131,6 @@
                     if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
                     await checkAndApplyInjections();
                     updateUI();
-                    updateRealtimeStatus('Account synced ✅');
                 }
             });
         } catch (e) {}
@@ -2270,8 +2176,7 @@
     function startSettingsSubscription() {
         if (unsubscribeSettings) unsubscribeSettings();
         try {
-            const settingsRef = doc(db, "systemSettings", "main");
-            unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
+            unsubscribeSettings = onSnapshot(doc(db, "systemSettings", "main"), (docSnap) => {
                 if (docSnap.exists()) {
                     const s = docSnap.data();
                     const setTxt = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerText = val; };
@@ -2286,7 +2191,7 @@
         } catch (e) {}
     }
 
-    // ==================== ✅ RENDER VIP PACKAGES ====================
+    // ==================== RENDER VIP PACKAGES ====================
     function renderVipPackages() {
         try {
             const container = document.getElementById("vipPackagesContainer");
@@ -2307,29 +2212,16 @@
             packageOrder.forEach(key => {
                 const pkg = vipPackages[key];
                 if (!pkg) return;
-                
                 html += `
                     <div class="package-card ${key}" data-package="${key}">
                         ${pkg.popular ? '<div class="package-popular-badge">POPULAR</div>' : ''}
                         <i class="fas ${pkg.icon} package-icon"></i>
                         <div class="package-name">${escapeHtml(pkg.name)}</div>
                         <div class="package-features">
-                            <div class="package-feature">
-                                <i class="fas fa-shopping-bag"></i>
-                                <span><strong>${pkg.orderCount}</strong> Orders</span>
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-percentage"></i>
-                                <span><strong>${pkg.commissionRate}%</strong> Commission</span>
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-clock"></i>
-                                <span>Daily Tasks</span>
-                            </div>
-                            <div class="package-feature">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Instant Activation</span>
-                            </div>
+                            <div class="package-feature"><i class="fas fa-shopping-bag"></i><span><strong>${pkg.orderCount}</strong> Orders</span></div>
+                            <div class="package-feature"><i class="fas fa-percentage"></i><span><strong>${pkg.commissionRate}%</strong> Commission</span></div>
+                            <div class="package-feature"><i class="fas fa-clock"></i><span>Daily Tasks</span></div>
+                            <div class="package-feature"><i class="fas fa-shield-alt"></i><span>Instant Activation</span></div>
                         </div>
                         <div class="package-price">${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</div>
                         <div class="package-price-label">${pkg.price > 0 ? 'One-time payment' : 'No payment required'}</div>
@@ -2342,14 +2234,9 @@
             container.innerHTML = html;
             
             container.querySelectorAll('.package-card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const key = card.getAttribute('data-package');
-                    showPackageConfirmModal(key);
-                });
+                card.addEventListener('click', () => showPackageConfirmModal(card.getAttribute('data-package')));
             });
-        } catch (e) {
-            console.error('❌ Render VIP packages error:', e);
-        }
+        } catch (e) {}
     }
 
     function showPackageConfirmModal(packageKey) {
@@ -2376,20 +2263,11 @@
                 <div class="confirm-package-title" style="color:${iconColor};">${escapeHtml(pkg.name)} Package</div>
                 <div class="confirm-package-subtitle">${escapeHtml(pkg.description)}</div>
                 <div class="confirm-details">
-                    <div class="confirm-detail-row">
-                        <span><i class="fas fa-shopping-bag"></i> Orders</span>
-                        <span>${pkg.orderCount}</span>
-                    </div>
-                    <div class="confirm-detail-row">
-                        <span><i class="fas fa-percentage"></i> Commission Rate</span>
-                        <span>${pkg.commissionRate}%</span>
-                    </div>
-                    <div class="confirm-detail-row">
-                        <span><i class="fas fa-tag"></i> Package Price</span>
-                        <span>${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</span>
-                    </div>
+                    <div class="confirm-detail-row"><span><i class="fas fa-shopping-bag"></i> Orders</span><span>${pkg.orderCount}</span></div>
+                    <div class="confirm-detail-row"><span><i class="fas fa-percentage"></i> Commission</span><span>${pkg.commissionRate}%</span></div>
+                    <div class="confirm-detail-row"><span><i class="fas fa-tag"></i> Price</span><span>${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</span></div>
                     <div class="confirm-detail-row" style="border-top:1px solid rgba(212,175,55,0.2);padding-top:12px;margin-top:8px;">
-                        <span><i class="fas fa-wallet"></i> Your Balance</span>
+                        <span><i class="fas fa-wallet"></i> Balance</span>
                         <span style="color:${hasEnough ? '#10b981' : '#dc2626'};">${formatMoney(userBalance)}</span>
                     </div>
                 </div>
@@ -2400,7 +2278,7 @@
             contentHtml += `
                 <div class="insufficient-warning">
                     <h4><i class="fas fa-exclamation-triangle"></i> Insufficient Balance</h4>
-                    <p>You need <strong style="color:var(--gold);">${formatMoney(needed)}</strong> more to purchase this package.</p>
+                    <p>Need <strong style="color:var(--gold);">${formatMoney(needed)}</strong> more.</p>
                 </div>
                 <div class="confirm-buttons">
                     <button class="confirm-no-btn" id="packageCancelBtn">Cancel</button>
@@ -2411,9 +2289,7 @@
             contentHtml += `
                 <div class="confirm-buttons">
                     <button class="confirm-no-btn" id="packageCancelBtn">Cancel</button>
-                    <button class="confirm-yes-btn" id="packageConfirmBtn">
-                        <i class="fas fa-check"></i> Confirm Purchase
-                    </button>
+                    <button class="confirm-yes-btn" id="packageConfirmBtn"><i class="fas fa-check"></i> Confirm Purchase</button>
                 </div>
             `;
         }
@@ -2425,23 +2301,14 @@
         document.getElementById("packageCancelBtn").onclick = () => modal.remove();
         
         if (hasEnough) {
-            document.getElementById("packageConfirmBtn").onclick = () => {
-                modal.remove();
-                processPackagePurchase(packageKey);
-            };
+            document.getElementById("packageConfirmBtn").onclick = () => { modal.remove(); processPackagePurchase(packageKey); };
         } else {
-            document.getElementById("packageRechargeBtn").onclick = () => {
-                modal.remove();
-                showRechargeModal();
-            };
+            document.getElementById("packageRechargeBtn").onclick = () => { modal.remove(); showRechargeModal(); };
         }
         
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) modal.remove();
-        });
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.remove(); });
     }
 
-    // ✅ Process Package Purchase - FIXED with try/catch for permissions
     async function processPackagePurchase(packageKey) {
         if (isProcessingPurchase) return;
         const pkg = vipPackages[packageKey];
@@ -2449,32 +2316,25 @@
         
         const userBalance = currentUser.balance || 0;
         if (userBalance < pkg.price) {
-            showErrorModal('Insufficient Balance', `You need ${formatMoney(pkg.price - userBalance)} more.`);
+            showErrorModal('Insufficient Balance', `Need ${formatMoney(pkg.price - userBalance)} more.`);
             return;
         }
         
         isProcessingPurchase = true;
-        showLoader('Processing purchase...');
         
         try {
-            // 1. Deduct balance
             currentUser.balance = userBalance - pkg.price;
-            
-            // 2. Add order count to user's tasks
             if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
             currentUser.tasks.total = (currentUser.tasks.total || 0) + pkg.orderCount;
-            
-            // 3. Set user's package info
             currentUser.vipPackage = packageKey;
             currentUser.vipPackageName = pkg.name;
             currentUser.vipPackageCommission = pkg.commissionRate;
             currentUser.vipPackageOrderCount = pkg.orderCount;
             currentUser.vipPackagePurchasedAt = new Date().toISOString();
             
-            // 4. Save to Firestore (users collection - always works)
             await saveCurrentUser();
             
-            // 5. Log purchase (OPTIONAL - wrapped in try/catch)
+            // ✅ Try to log (won't fail purchase if permissions denied)
             try {
                 await setDoc(doc(db, "packagePurchases", Date.now().toString()), {
                     id: Date.now().toString(),
@@ -2488,48 +2348,30 @@
                     purchasedAt: new Date().toISOString(),
                     status: 'completed'
                 });
-                console.log('✅ Purchase log saved');
             } catch (logError) {
-                // Silent fail - purchase still succeeds
-                console.log('⚠️ Purchase log skipped (permission):', logError.message);
+                console.log('⚠️ Purchase log skipped:', logError.message);
             }
             
-            // 6. Create random order for the package
             await createRandomOrderForPackage(pkg);
-            
-            hideLoader();
-            
-            // 7. Show success animation
             showPurchaseSuccessAnimation(pkg);
-            
-            // 8. Update UI
             updateUI();
-            updateRealtimeStatus('Package purchased ✅');
             
         } catch (error) {
-            hideLoader();
-            console.error('Package purchase error:', error);
             showErrorModal('Purchase Failed', error.message);
         } finally {
             isProcessingPurchase = false;
         }
     }
 
-    // ✅ Create Random Order for Package (with image from templates)
     async function createRandomOrderForPackage(pkg) {
         if (!currentUser) return;
         
-        // Ensure templates are loaded
-        if (!templatesLoaded) await loadOrderTemplates();
-        
-        // Get random template
         const tpl = getRandomTemplate();
         const orderName = tpl?.name || 'Premium Travel Package';
         const orderImage = tpl?.image || null;
         
         const balance = currentUser.balance || 0;
         const commissionRate = pkg.commissionRate / 100;
-        
         const baseAmount = Math.max(balance * (0.3 + Math.random() * 0.5), 10);
         const amount = parseFloat(baseAmount.toFixed(2));
         const netCommission = parseFloat((amount * commissionRate).toFixed(2));
@@ -2551,9 +2393,6 @@
         
         currentUser.currentOrderObj = order;
         await saveCurrentUser();
-        
-        console.log('✅ Package order created:', orderName, '| Image:', orderImage ? 'YES' : 'NO');
-        return order;
     }
 
     function showPurchaseSuccessAnimation(pkg) {
@@ -2572,7 +2411,6 @@
                 coin.className = "coin";
                 coin.innerHTML = ['💰', '🪙', '⭐', '✨'][Math.floor(Math.random() * 4)];
                 coin.style.left = Math.random() * 100 + '%';
-                coin.style.animationDuration = (1 + Math.random()) + 's';
                 document.body.appendChild(coin);
                 setTimeout(() => coin.remove(), 2500);
             }, i * 80);
@@ -2584,21 +2422,27 @@
                 'Purchase Successful! 🎉',
                 `<strong style="color:var(--gold);font-size:18px;">${escapeHtml(pkg.name)} Package</strong> activated!<br><br>
                 <i class="fas fa-shopping-bag"></i> <strong>${pkg.orderCount}</strong> orders added<br>
-                <i class="fas fa-percentage"></i> Commission rate: <strong style="color:var(--gold);">${pkg.commissionRate}%</strong><br><br>
-                <span style="font-size:13px;color:var(--text-muted);">A random order has been generated. Go to Work page to start!</span>`,
-                () => { showPage("work"); }
+                <i class="fas fa-percentage"></i> Rate: <strong style="color:var(--gold);">${pkg.commissionRate}%</strong>`,
+                () => showPage("work")
             );
         }, 2000);
     }
 
-    // ==================== ✅ GET NEXT ORDER (with random image from templates) ====================
+    // ==================== GET NEXT ORDER ====================
     async function getNextOrder() {
         const balance = currentUser.balance || 0;
         const commissionRate = getCommissionRate(currentUser);
         const nextTaskNumber = (currentUser.tasks?.completed || 0) + 1;
         
-        // Ensure templates loaded
-        if (!templatesLoaded) await loadOrderTemplates();
+        // If templates not loaded yet, try to get them now
+        if (!templatesLoaded) {
+            try {
+                const snapshot = await getDocs(collection(db, "customOrders"));
+                cachedOrderTemplates = [];
+                snapshot.forEach(doc => cachedOrderTemplates.push({ id: doc.id, ...doc.data() }));
+                templatesLoaded = true;
+            } catch (e) {}
+        }
         
         let injection = null;
         if (currentUser.pendingInjections && currentUser.pendingInjections.length > 0) {
@@ -2610,7 +2454,6 @@
             } else injection = null;
         }
         
-        // ✅ Get random template for image
         const randomTpl = getRandomTemplate();
         
         let amount, netCommission, isInjection = false;
@@ -2630,24 +2473,20 @@
             netCommission = gross - fee;
         }
         
-        // ✅ Priority: injection image > template image > null
+        // Priority: injection image > random template image
         let imageData = null;
-        if (injection?.imageData) {
-            imageData = injection.imageData;
-        } else if (randomTpl?.image) {
-            imageData = randomTpl.image;
-        } else if (cachedOrderTemplates.length > 0) {
-            // Try to find any template with an image
-            const templateWithImage = cachedOrderTemplates.find(t => t.image);
-            if (templateWithImage) imageData = templateWithImage.image;
+        if (injection?.imageData) imageData = injection.imageData;
+        else if (randomTpl?.image) imageData = randomTpl.image;
+        else {
+            const withImage = cachedOrderTemplates.find(t => t.image);
+            if (withImage) imageData = withImage.image;
         }
         
-        // ✅ Order name priority: injection name > template name > default
         let orderName = 'Premium Task Order';
         if (injection?.orderName) orderName = injection.orderName;
         else if (randomTpl?.name) orderName = randomTpl.name;
         
-        const order = {
+        return {
             id: Date.now(),
             name: orderName,
             imageData: imageData,
@@ -2664,15 +2503,12 @@
                 injectionId: injection?.id 
             } : null
         };
-        
-        console.log('✅ Order created:', orderName, '| Image:', imageData ? 'YES' : 'NO');
-        return order;
     }
 
     async function markInjectionAsUsed(injectionId) {
         try {
             await updateDoc(doc(db, "injections", injectionId), { used: true, usedAt: new Date().toISOString() });
-        } catch (e) { console.error('Mark injection error:', e); }
+        } catch (e) {}
     }
     
     async function checkAndApplyInjections() {
@@ -2695,10 +2531,9 @@
     function displayOrder(order) {
         const dict = translations[currentLang] || translations.en;
         
-        // ✅ Show image if available, otherwise show default icon
         let imgHtml;
         if (order.imageData) {
-            imgHtml = `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\\'fas fa-box\\' style=\\'font-size:64px;color:var(--gold);\\'></i>';">`;
+            imgHtml = `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\\'fas fa-box\\'></i>';">`;
         } else {
             imgHtml = '<i class="fas fa-box"></i>';
         }
@@ -2765,9 +2600,7 @@
                     star.onclick = () => { 
                         let val = parseInt(star.dataset.value); 
                         currentRatings[cat] = val; 
-                        stars.forEach((s, i) => { 
-                            s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; 
-                        }); 
+                        stars.forEach((s, i) => { s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; }); 
                     }; 
                 });
             });
@@ -2777,8 +2610,7 @@
                 submitBtn.onclick = async function() {
                     if(submitBtn.disabled || isProcessingOrder) return;
                     if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { 
-                        toast("Please provide all ratings", true);
-                        return; 
+                        toast("Please provide all ratings", true); return; 
                     }
                     isProcessingOrder = true;
                     submitBtn.disabled = true; 
@@ -2795,19 +2627,17 @@
                         currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
                         currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
                         
-                        const orderHistoryData = {
+                        await saveOrderToHistory(currentUser.id, {
                             ...orderToComplete,
                             status: "completed",
                             ratings: { ...currentRatings },
                             date: new Date().toLocaleString(),
                             profit: profitEarned,
                             timestamp: new Date().toISOString()
-                        };
-                        await saveOrderToHistory(currentUser.id, orderHistoryData);
+                        });
                         
                         currentUser.currentOrderObj = null;
                         await saveCurrentUser();
-                        
                         await processReferralCommission(currentUser.id, profitEarned);
                         
                         currentOrder = null;
@@ -2822,9 +2652,7 @@
                         if(completedCount >= dailyLimit && dailyLimit > 0) {
                             document.getElementById("currentOrderDisplay").style.display = "none";
                         }
-                        
                     } catch(err) { 
-                        console.error("Order completion error:", err); 
                         showErrorModal('Order Failed', err.message);
                     } finally {
                         isProcessingOrder = false;
@@ -2845,7 +2673,7 @@
         modal.innerHTML = `<div class="modal-content" style="text-align:center;">
             <div style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
             <h2 style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ Warning</h2>
-            <p style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">Please complete your current pending order before starting a new one.</p>
+            <p style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">Please complete your current pending order first.</p>
             <button class="btn-lux" id="warningOkayBtn" style="background:#dc2626;color:white;">Okay</button>
         </div>`;
         document.body.appendChild(modal);
@@ -2863,7 +2691,7 @@
             let completedCount = currentUser.tasks?.completed || 0;
             if(completedCount >= dailyLimit && dailyLimit > 0) { 
                 document.getElementById("currentOrderDisplay").style.display = "none"; 
-                toast("🎉 All orders completed for today!");
+                toast("🎉 All orders completed!");
                 return; 
             }
             let settings = await loadSystemSettings();
@@ -2873,20 +2701,17 @@
                 return; 
             }
             let newOrder = await getNextOrder();
-            
             if (!newOrder || !newOrder.name) {
-                toast("Error: Could not generate valid order.", true);
+                toast("Error: Could not generate order.", true);
                 document.getElementById("currentOrderDisplay").style.display = "none";
                 return;
             }
-            
             currentOrder = newOrder;
             currentUser.currentOrderObj = newOrder;
             await saveCurrentUser();
             displayOrder(newOrder);
         } catch (error) {
-            console.error("❌ Error loading next order:", error);
-            toast("Error loading next order: " + error.message, true);
+            toast("Error loading order: " + error.message, true);
             document.getElementById("currentOrderDisplay").style.display = "none";
         }
     }
@@ -2896,8 +2721,7 @@
         let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
         if(completedCount >= dailyLimit && dailyLimit > 0) { 
-            document.getElementById("currentOrderDisplay").style.display = "none"; 
-            return; 
+            document.getElementById("currentOrderDisplay").style.display = "none"; return; 
         }
         if(currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj);
         else if(currentOrder) displayOrder(currentOrder);
@@ -2909,8 +2733,7 @@
         try {
             const ordersRef = collection(db, "users", userId, "orders");
             if (orderData.id) {
-                const orderDocRef = doc(ordersRef, orderData.id.toString());
-                await setDoc(orderDocRef, {
+                await setDoc(doc(ordersRef, orderData.id.toString()), {
                     ...orderData,
                     timestamp: orderData.timestamp || new Date().toISOString()
                 });
@@ -2920,11 +2743,7 @@
                     timestamp: orderData.timestamp || new Date().toISOString()
                 });
             }
-            await deleteOldOrdersIfNeeded(userId, 50);
-        } catch (error) {
-            console.error("❌ Error saving order:", error);
-            throw error;
-        }
+        } catch (error) { throw error; }
     }
 
     async function getUserOrders(userId) {
@@ -2936,20 +2755,6 @@
             snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
             return orders;
         } catch (e) { return []; }
-    }
-
-    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
-        try {
-            const ordersRef = collection(db, "users", userId, "orders");
-            const q = query(ordersRef, orderBy("timestamp", "desc"));
-            const snapshot = await getDocs(q);
-            if (snapshot.size > maxOrders) {
-                const toDelete = [];
-                let count = 0;
-                for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
-                for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
-            }
-        } catch (e) {}
     }
 
     // ==================== UPDATE UI ====================
@@ -3057,10 +2862,7 @@
             
             updateMineAvatar();
             renderVipPackages();
-            updateRealtimeStatus('UI updated ✅');
-        } catch (e) {
-            console.error('UpdateUI error:', e);
-        }
+        } catch (e) {}
     }
 
     function updateMineAvatar() {
@@ -3082,7 +2884,7 @@
             <div class="wallet-address-box">
                 <div>
                     <div class="text-muted" style="margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div>
-                    <div class="wallet-address-text" id="walletAddressTextDisplay">${escapeHtml(walletAddr)}</div>
+                    <div class="wallet-address-text">${escapeHtml(walletAddr)}</div>
                 </div>
                 <button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button>
             </div>
@@ -3136,7 +2938,7 @@
                     timestamp: new Date().toISOString() 
                 });
                 document.body.removeChild(modal);
-                showSuccessModal('Recharge Submitted!', `Your recharge of <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending admin approval.`);
+                showSuccessModal('Recharge Submitted!', `Your recharge of <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending approval.`);
             } catch (err) {
                 btn.disabled = false;
                 btn.innerHTML = dict.submit;
@@ -3192,7 +2994,7 @@
                     timestamp: new Date().toISOString() 
                 });
                 document.body.removeChild(modal);
-                showSuccessModal('Withdrawal Submitted!', `Your withdrawal of <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending admin approval.`);
+                showSuccessModal('Withdrawal Submitted!', `Your withdrawal of <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending approval.`);
             } catch (err) {
                 btn.disabled = false;
                 btn.innerHTML = dict.submit;
@@ -3204,7 +3006,7 @@
         document.getElementById("closeWithdrawModal").onclick = () => document.body.removeChild(modal);
     }
 
-    // ==================== HISTORY MODALS ====================
+    // ==================== HISTORY ====================
     async function showRechargeHistory() { 
         const q = query(collection(db, "rechargeRequests"), where("userId", "==", currentUser.id)); 
         const snapshot = await getDocs(q); 
@@ -3242,8 +3044,7 @@
     async function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
         try {
-            const q = query(collection(db, "chatMessages"));
-            unsubscribeChat = onSnapshot(q, (snapshot) => {
+            unsubscribeChat = onSnapshot(query(collection(db, "chatMessages")), (snapshot) => {
                 if (document.getElementById("servicePage").classList.contains("active-page")) {
                     const container = document.getElementById("customerChatMessages");
                     if (!container || !currentUser) return;
@@ -3294,10 +3095,7 @@
         document.body.appendChild(modal);
         document.getElementById("saveWalletBtn").onclick = async () => { 
             currentUser.walletAddress = document.getElementById("walletAddressInput").value.trim(); 
-            await saveCurrentUser(); 
-            updateUI(); 
-            document.body.removeChild(modal); 
-            toast("Wallet address updated!"); 
+            await saveCurrentUser(); updateUI(); document.body.removeChild(modal); toast("Wallet address updated!"); 
         };
         document.getElementById("closeWalletModal").onclick = () => document.body.removeChild(modal);
     }
@@ -3344,16 +3142,13 @@
             if (file) {
                 const compressed = await compressImage(file, 400, 400, 0.7);
                 selectedImageData = compressed;
-                const previewDiv = modal.querySelector("#uploadPreview");
-                previewDiv.innerHTML = `<img src="${compressed}">`;
+                modal.querySelector("#uploadPreview").innerHTML = `<img src="${compressed}">`;
             }
         };
         modal.querySelector("#savePhotoBtn").onclick = async () => {
             if (selectedImageData) { 
                 currentUser.profilePhoto = selectedImageData; 
-                await saveCurrentUser(); 
-                updateMineAvatar(); 
-                toast("Profile photo updated!"); 
+                await saveCurrentUser(); updateMineAvatar(); toast("Profile photo updated!"); 
             }
             document.body.removeChild(modal);
         };
@@ -3365,7 +3160,6 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content">
             <h2 class="text-gold">${dict.loanService}</h2>
-            <p class="text-light" style="margin-bottom:16px;">Apply for a loan</p>
             <div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div>
             <div style="display:flex;gap:12px;margin:12px 0;">
                 <div class="doc-option active" data-type="nrc" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(212,175,55,0.2);border:1px solid var(--gold);color:var(--gold-light);">NRC</div>
@@ -3402,25 +3196,15 @@
             const backFile = modal.querySelector("#backInput").files[0]; 
             if(!amount || amount <= 0) { toast("Enter valid amount", true); return; } 
             if(!bankFile || !frontFile || !backFile) { toast("Please upload all documents", true); return; } 
-            const readFile = (f) => new Promise((resolve) => { 
-                const r = new FileReader(); 
-                r.onload = e => resolve(e.target.result); 
-                r.readAsDataURL(f); 
-            }); 
+            const readFile = (f) => new Promise((resolve) => { const r = new FileReader(); r.onload = e => resolve(e.target.result); r.readAsDataURL(f); }); 
             await setDoc(doc(db, "loanRequests", Date.now().toString()), { 
-                id: Date.now().toString(), 
-                userId: currentUser.id, 
-                userName: currentUser.username, 
-                amount: amount, 
-                docType: docType, 
-                bankImage: await readFile(bankFile), 
-                frontImage: await readFile(frontFile), 
-                backImage: await readFile(backFile), 
-                status: "pending", 
-                timestamp: new Date().toISOString() 
+                id: Date.now().toString(), userId: currentUser.id, userName: currentUser.username, 
+                amount: amount, docType: docType, 
+                bankImage: await readFile(bankFile), frontImage: await readFile(frontFile), backImage: await readFile(backFile), 
+                status: "pending", timestamp: new Date().toISOString() 
             }); 
             document.body.removeChild(modal);
-            showSuccessModal('Loan Request Submitted!', `Your loan request for <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending admin review.`);
+            showSuccessModal('Loan Request Submitted!', `Your loan request for <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending review.`);
         }; 
         modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
     }
@@ -3452,7 +3236,6 @@
     // ==================== GOOGLE LOGIN ====================
     async function handleGoogleLogin() {
         try {
-            showLoader('Signing in...');
             const result = await signInWithPopup(auth, googleProvider);
             const gUser = result.user;
             const email = gUser.email;
@@ -3467,11 +3250,9 @@
             } else {
                 const newUser = {
                     id: gUser.uid, username: username, email: email,
-                    phone: '', password: '', withdrawPassword: '',
-                    balance: 0,
+                    phone: '', password: '', withdrawPassword: '', balance: 0,
                     invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
-                    superior: null, referralEarnings: 0,
-                    regTime: new Date().toISOString(),
+                    superior: null, referralEarnings: 0, regTime: new Date().toISOString(),
                     tasks: { completed: 0, total: 0 }, orders: [],
                     todayOrders: 0, todayEarnings: 0, totalCommission: 0,
                     creditScore: 100, disabled: false,
@@ -3491,24 +3272,16 @@
             updateUI();
             loadBackgrounds();
             const lastPage = localStorage.getItem("customerLastPage");
-            hideLoader();
             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
             startChatSubscription();
         } catch (error) {
-            hideLoader();
-            console.error("Google Login Error:", error);
             toast("Google Login failed: " + error.message, true);
         }
     }
 
     // ==================== DELETE BROWSING DATA ====================
     function deleteBrowsingData() {
-        const confirmDelete = confirm(
-            "⚠️ WARNING: This will delete all local data including:\n\n" +
-            "• Login session\n• Cached files\n• Local storage\n• Session storage\n• Cookies\n\n" +
-            "✅ Your account data on server will NOT be deleted.\n\n" +
-            "Click OK to continue."
-        );
+        const confirmDelete = confirm("⚠️ WARNING: This will delete all local data.\n\nClick OK to continue.");
         if (!confirmDelete) return;
         try {
             localStorage.clear();
@@ -3526,7 +3299,7 @@
         }
     }
 
-    // ==================== TRANSLATIONS ====================
+    // ==================== TRANSLATIONS (Condensed) ====================
     const translations = {
         en: {
             heroTitle: "LUXCY", heroSubtitle: "Experience luxury travel while earning daily commissions.",
@@ -3549,30 +3322,29 @@
             totalCommissionTextMine: "Total Commission", depositText: "Deposit", withdrawTextMine: "Withdraw",
             bindWalletText: "Bind Crypto Wallet", personalDetailsText: "Personal Details", loanServiceText: "Loan Service",
             rechargeHistoryText: "Recharge History", withdrawHistoryText: "Withdraw History", walletAddressText: "Wallet Address",
-            howCommissionsText: "How Commissions Work", commDesc1: "Each completed task earns commission based on VIP level",
-            commDesc2: "Referral bonus: 10% of referral's earnings", commDesc3: "Daily task limit based on assigned orders",
-            secureText: "All transactions are secure and instant", selectLanguageText: "Select Language",
+            howCommissionsText: "How Commissions Work", commDesc1: "Each completed task earns commission",
+            commDesc2: "Referral bonus: 10%", commDesc3: "Daily task limit",
+            secureText: "All transactions are secure", selectLanguageText: "Select Language",
             signOutText: "Sign Out", customerServiceText: "Customer Service", sendText: "Send",
             navHome: "Home", navWork: "Work", navOrder: "Order", navMine: "Mine", navService: "Service",
-            orderAmount: "Order Amount", profitEarned: "Profit", afterCompletionBalance: "After Completion Balance",
+            orderAmount: "Order Amount", profitEarned: "Profit", afterCompletionBalance: "After Balance",
             serviceQuality: "Service Quality", productQuality: "Product Quality", salesExperience: "Sales Experience",
             submitComplete: "Submit & Complete", processing: "Processing...", insufficientBalance: "Insufficient Balance!",
             yourBalance: "Your Balance", needAdditional: "Need Additional", rechargeNow: "Recharge Now",
             close: "Close", submit: "Submit", cancel: "Cancel", uploadReceipt: "Upload receipt",
             enterValidAmount: "Enter valid amount", noRecords: "No records.",
-            pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order.",
+            pendingOrderWarning: "Pending order!", pendingOrderMessage: "Complete current order first.",
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save",
-            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "Special bonus order received!",
-            referralEarned: "Referral Bonus Earned!",
-            deleteDataText: "Clear Local Data",
-            deleteDataBtnText: "Delete Browsing Data & Refresh",
+            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "Special bonus order!",
+            referralEarned: "Referral Bonus!",
+            deleteDataText: "Clear Local Data", deleteDataBtnText: "Delete Browsing Data & Refresh",
             deviceSessionText: "Device & Session Info"
         },
         th: {
             heroTitle: "LUXCY", heroSubtitle: "สัมผัสการเดินทางสุดหรูพร้อมรับรายได้ทุกวัน",
             serviceFlightsTitle: "เที่ยวบิน", serviceFlightsDesc: "จองเที่ยวบินทั่วโลก",
-            serviceHotelsTitle: "โรงแรม", serviceHotelsDesc: "ข้อเสนอโรงแรมหรูที่ดีที่สุด",
+            serviceHotelsTitle: "โรงแรม", serviceHotelsDesc: "ข้อเสนอโรงแรมหรู",
             serviceTrainsTitle: "รถไฟ", serviceTrainsDesc: "ตั๋วรถไฟพรีเมียม",
             serviceTasksTitle: "แพลตฟอร์มงาน", serviceTasksDesc: "รับค่าคอมมิชชั่นสูงสุด 1%",
             loginBtnText: "เข้าสู่ระบบ", registerBtnText: "สมัครสมาชิก", companyInfoText: "เกี่ยวกับบริษัท",
@@ -3582,155 +3354,151 @@
             welcomeText: "ยินดีต้อนรับ", vipLevelText: "ระดับ VIP", accountBalanceText: "ยอดเงินคงเหลือ",
             rateText: "อัตรา", todayText: "วันนี้", todayEarningsText: "รายได้วันนี้",
             yesterdayText: "เมื่อวาน", totalCommissionText: "ค่าคอมมิชชั่นทั้งหมด",
-            rechargeText: "เติมเงิน", withdrawText: "ถอนเงิน", referralCodeText: "รหัสแนะนำของคุณ",
-            liveUpdatesText: "อัปเดตค่าคอมมิชชั่นสด", exitText: "ออกจากระบบ",
-            shoppingTasksText: "งานช้อปปิ้ง", taskProgressText: "ความคืบหน้างาน", startOrderText: "เริ่มงาน",
+            rechargeText: "เติมเงิน", withdrawText: "ถอนเงิน", referralCodeText: "รหัสแนะนำ",
+            liveUpdatesText: "อัปเดตค่าคอมมิชชั่น", exitText: "ออก",
+            shoppingTasksText: "งานช้อปปิ้ง", taskProgressText: "ความคืบหน้า", startOrderText: "เริ่มงาน",
             orderHistoryText: "ประวัติงาน", myProfileText: "โปรไฟล์ของฉัน", creditText: "เครดิต",
             totalAssetsText: "สินทรัพย์รวม", todayOrdersText: "ออเดอร์วันนี้", todayEarningsTextMine: "รายได้วันนี้",
-            totalCommissionTextMine: "ค่าคอมมิชชั่นทั้งหมด", depositText: "ฝากเงิน", withdrawTextMine: "ถอนเงิน",
-            bindWalletText: "ผูกกระเป๋าเงินคริปโต", personalDetailsText: "ข้อมูลส่วนตัว", loanServiceText: "บริการสินเชื่อ",
+            totalCommissionTextMine: "ค่าคอมมิชชั่น", depositText: "ฝากเงิน", withdrawTextMine: "ถอนเงิน",
+            bindWalletText: "ผูกกระเป๋าเงิน", personalDetailsText: "ข้อมูลส่วนตัว", loanServiceText: "บริการสินเชื่อ",
             rechargeHistoryText: "ประวัติเติมเงิน", withdrawHistoryText: "ประวัติถอนเงิน", walletAddressText: "ที่อยู่กระเป๋าเงิน",
-            howCommissionsText: "วิธีการทำงานของคอมมิชชั่น", commDesc1: "งานที่ทำสำเร็จแต่ละงานได้รับคอมมิชชั่น",
+            howCommissionsText: "วิธีการทำงาน", commDesc1: "งานที่ทำสำเร็จได้รับคอมมิชชั่น",
             commDesc2: "โบนัสแนะนำ: 10%", commDesc3: "ขีดจำกัดงานรายวัน",
-            secureText: "ธุรกรรมทั้งหมดปลอดภัย", selectLanguageText: "เลือกภาษา",
+            secureText: "ธุรกรรมปลอดภัย", selectLanguageText: "เลือกภาษา",
             signOutText: "ออกจากระบบ", customerServiceText: "บริการลูกค้า", sendText: "ส่ง",
             navHome: "หน้าหลัก", navWork: "งาน", navOrder: "คำสั่งซื้อ", navMine: "ของฉัน", navService: "บริการ",
-            orderAmount: "จำนวนเงินสั่งซื้อ", profitEarned: "กำไร", afterCompletionBalance: "ยอดคงเหลือหลังทำเสร็จ",
-            serviceQuality: "คุณภาพการบริการ", productQuality: "คุณภาพสินค้า", salesExperience: "ประสบการณ์การขาย",
+            orderAmount: "จำนวนเงิน", profitEarned: "กำไร", afterCompletionBalance: "ยอดคงเหลือหลังทำ",
+            serviceQuality: "คุณภาพบริการ", productQuality: "คุณภาพสินค้า", salesExperience: "ประสบการณ์ขาย",
             submitComplete: "ส่งและทำเสร็จ", processing: "กำลังดำเนินการ...", insufficientBalance: "ยอดเงินไม่เพียงพอ!",
             yourBalance: "ยอดเงินของคุณ", needAdditional: "ต้องการเพิ่ม", rechargeNow: "เติมเงินตอนนี้",
             close: "ปิด", submit: "ส่ง", cancel: "ยกเลิก", uploadReceipt: "อัปโหลดหลักฐาน",
-            enterValidAmount: "ใส่จำนวนเงินที่ถูกต้อง", noRecords: "ไม่มีประวัติ",
-            pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้น",
-            okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
+            enterValidAmount: "ใส่จำนวนที่ถูกต้อง", noRecords: "ไม่มีประวัติ",
+            pendingOrderWarning: "มีคำสั่งซื้อค้างอยู่!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างให้เสร็จก่อน",
+            okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่ USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก",
-            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "ได้รับออเดอร์คอมมิชชั่นพิเศษ!",
+            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "ได้รับออเดอร์พิเศษ!",
             referralEarned: "ได้รับโบนัสแนะนำ!",
-            deleteDataText: "ล้างข้อมูลในเครื่อง",
-            deleteDataBtnText: "ล้างข้อมูลทั้งหมด & รีเฟรช",
+            deleteDataText: "ล้างข้อมูล", deleteDataBtnText: "ล้างข้อมูลและรีเฟรช",
             deviceSessionText: "ข้อมูลอุปกรณ์และเซสชัน"
         },
         es: {
-            heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones diarias.",
-            serviceFlightsTitle: "Vuelos", serviceFlightsDesc: "Reserva vuelos en todo el mundo",
-            serviceHotelsTitle: "Hoteles", serviceHotelsDesc: "Las mejores ofertas de hoteles de lujo",
-            serviceTrainsTitle: "Trenes", serviceTrainsDesc: "Billetes de tren premium",
-            serviceTasksTitle: "Plataforma de Tareas", serviceTasksDesc: "Gana hasta un 1% diario",
-            loginBtnText: "Iniciar Sesión", registerBtnText: "Registrarse", companyInfoText: "Sobre la Empresa",
-            backToHomeText: "Volver al Inicio", backToHomeTextReg: "Volver al Inicio",
-            loginWebsiteTagline: "Ecosistema de Tareas Premium", forgotPasswordText: "¿Olvidaste tu contraseña?",
-            registerTitle: "Crear Cuenta", registerNowText: "Registrarse Ahora", haveAccountText: "¿Tienes cuenta?",
-            welcomeText: "Bienvenido", vipLevelText: "Nivel VIP", accountBalanceText: "Saldo de la Cuenta",
-            rateText: "Tasa", todayText: "Hoy", todayEarningsText: "Ganancias de Hoy",
+            heroTitle: "LUXCY", heroSubtitle: "Experimenta viajes de lujo mientras ganas comisiones.",
+            serviceFlightsTitle: "Vuelos", serviceFlightsDesc: "Reserva vuelos",
+            serviceHotelsTitle: "Hoteles", serviceHotelsDesc: "Mejores ofertas",
+            serviceTrainsTitle: "Trenes", serviceTrainsDesc: "Billetes premium",
+            serviceTasksTitle: "Tareas", serviceTasksDesc: "Gana hasta 1%",
+            loginBtnText: "Iniciar", registerBtnText: "Registrarse", companyInfoText: "Sobre Empresa",
+            backToHomeText: "Volver", backToHomeTextReg: "Volver",
+            loginWebsiteTagline: "Ecosistema Premium", forgotPasswordText: "¿Olvidaste?",
+            registerTitle: "Crear Cuenta", registerNowText: "Registrarse", haveAccountText: "¿Tienes cuenta?",
+            welcomeText: "Bienvenido", vipLevelText: "Nivel VIP", accountBalanceText: "Saldo",
+            rateText: "Tasa", todayText: "Hoy", todayEarningsText: "Ganancias Hoy",
             yesterdayText: "Ayer", totalCommissionText: "Comisión Total",
-            rechargeText: "Recargar", withdrawText: "Retirar", referralCodeText: "Tu Código de Referido",
-            liveUpdatesText: "Actualizaciones en Vivo", exitText: "Salir",
-            shoppingTasksText: "Tareas de Compras", taskProgressText: "Progreso", startOrderText: "Iniciar Orden",
-            orderHistoryText: "Historial de Órdenes", myProfileText: "Mi Perfil", creditText: "Crédito",
-            totalAssetsText: "Activos Totales", todayOrdersText: "Órdenes de Hoy", todayEarningsTextMine: "Ganancias de Hoy",
+            rechargeText: "Recargar", withdrawText: "Retirar", referralCodeText: "Código Referido",
+            liveUpdatesText: "Actualizaciones", exitText: "Salir",
+            shoppingTasksText: "Tareas", taskProgressText: "Progreso", startOrderText: "Iniciar",
+            orderHistoryText: "Historial", myProfileText: "Mi Perfil", creditText: "Crédito",
+            totalAssetsText: "Activos", todayOrdersText: "Órdenes Hoy", todayEarningsTextMine: "Ganancias Hoy",
             totalCommissionTextMine: "Comisión Total", depositText: "Depositar", withdrawTextMine: "Retirar",
-            bindWalletText: "Vincular Billetera", personalDetailsText: "Detalles Personales", loanServiceText: "Servicio de Préstamos",
-            rechargeHistoryText: "Historial de Recargas", withdrawHistoryText: "Historial de Retiros", walletAddressText: "Dirección de Billetera",
-            howCommissionsText: "Cómo Funcionan las Comisiones", commDesc1: "Cada tarea completada gana comisión",
-            commDesc2: "Bono por referido: 10%", commDesc3: "Límite diario de tareas",
-            secureText: "Todas las transacciones son seguras", selectLanguageText: "Seleccionar Idioma",
-            signOutText: "Cerrar Sesión", customerServiceText: "Servicio al Cliente", sendText: "Enviar",
+            bindWalletText: "Vincular Billetera", personalDetailsText: "Detalles", loanServiceText: "Préstamos",
+            rechargeHistoryText: "Historial Recargas", withdrawHistoryText: "Historial Retiros", walletAddressText: "Dirección",
+            howCommissionsText: "Cómo Funciona", commDesc1: "Cada tarea gana comisión",
+            commDesc2: "Bono referido: 10%", commDesc3: "Límite diario",
+            secureText: "Transacciones seguras", selectLanguageText: "Idioma",
+            signOutText: "Cerrar Sesión", customerServiceText: "Servicio", sendText: "Enviar",
             navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio",
             orderAmount: "Monto", profitEarned: "Ganancia", afterCompletionBalance: "Saldo Después",
-            serviceQuality: "Calidad del Servicio", productQuality: "Calidad del Producto", salesExperience: "Experiencia",
-            submitComplete: "Enviar y Completar", processing: "Procesando...", insufficientBalance: "¡Saldo Insuficiente!",
-            yourBalance: "Tu Saldo", needAdditional: "Necesitas", rechargeNow: "Recargar Ahora",
-            close: "Cerrar", submit: "Enviar", cancel: "Cancelar", uploadReceipt: "Subir comprobante",
-            enterValidAmount: "Ingresa un monto válido", noRecords: "Sin registros.",
-            pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual.",
-            okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
+            serviceQuality: "Calidad", productQuality: "Producto", salesExperience: "Ventas",
+            submitComplete: "Enviar", processing: "Procesando...", insufficientBalance: "¡Saldo Insuficiente!",
+            yourBalance: "Tu Saldo", needAdditional: "Necesitas", rechargeNow: "Recargar",
+            close: "Cerrar", submit: "Enviar", cancel: "Cancelar", uploadReceipt: "Subir recibo",
+            enterValidAmount: "Monto válido", noRecords: "Sin registros",
+            pendingOrderWarning: "¡Orden pendiente!", pendingOrderMessage: "Completa tu orden.",
+            okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar",
-            bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden especial!",
-            referralEarned: "¡Bono por Referido!",
-            deleteDataText: "Borrar Datos Locales",
-            deleteDataBtnText: "Borrar Datos & Refrescar",
-            deviceSessionText: "Info de Dispositivo"
+            bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Orden especial!",
+            referralEarned: "¡Bono Referido!",
+            deleteDataText: "Borrar Datos", deleteDataBtnText: "Borrar y Refrescar",
+            deviceSessionText: "Info Dispositivo"
         },
         uk: {
-            heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь розкішними подорожами та заробляйте щоденні комісії.",
-            serviceFlightsTitle: "Авіарейси", serviceFlightsDesc: "Бронюйте авіарейси по всьому світу",
-            serviceHotelsTitle: "Готелі", serviceHotelsDesc: "Найкращі пропозиції на готелі",
-            serviceTrainsTitle: "Поїзди", serviceTrainsDesc: "Преміальні квитки на поїзди",
-            serviceTasksTitle: "Платформа Завдань", serviceTasksDesc: "Заробляйте до 1% щодня",
-            loginBtnText: "Увійти", registerBtnText: "Зареєструватися", companyInfoText: "Про компанію",
+            heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь подорожами та заробляйте.",
+            serviceFlightsTitle: "Авіарейси", serviceFlightsDesc: "Бронюйте рейси",
+            serviceHotelsTitle: "Готелі", serviceHotelsDesc: "Найкращі пропозиції",
+            serviceTrainsTitle: "Поїзди", serviceTrainsDesc: "Преміальні квитки",
+            serviceTasksTitle: "Завдання", serviceTasksDesc: "Заробляйте до 1%",
+            loginBtnText: "Увійти", registerBtnText: "Реєстрація", companyInfoText: "Про компанію",
             backToHomeText: "На головну", backToHomeTextReg: "На головну",
-            loginWebsiteTagline: "Преміальна екосистема завдань", forgotPasswordText: "Забули пароль?",
-            registerTitle: "Створити обліковий запис", registerNowText: "Зареєструватися", haveAccountText: "Вже є акаунт?",
-            welcomeText: "Ласкаво просимо", vipLevelText: "Рівень VIP", accountBalanceText: "Баланс акаунта",
+            loginWebsiteTagline: "Преміум екосистема", forgotPasswordText: "Забули пароль?",
+            registerTitle: "Створити акаунт", registerNowText: "Зареєструватися", haveAccountText: "Вже маєте?",
+            welcomeText: "Вітаємо", vipLevelText: "VIP рівень", accountBalanceText: "Баланс",
             rateText: "Ставка", todayText: "Сьогодні", todayEarningsText: "Заробіток сьогодні",
             yesterdayText: "Вчора", totalCommissionText: "Загальна комісія",
-            rechargeText: "Поповнити", withdrawText: "Вивести", referralCodeText: "Ваш реферальний код",
-            liveUpdatesText: "Оновлення комісій", exitText: "Вихід",
-            shoppingTasksText: "Завдання з покупок", taskProgressText: "Прогрес", startOrderText: "Почати замовлення",
-            orderHistoryText: "Історія замовлень", myProfileText: "Мій профіль", creditText: "Кредит",
-            totalAssetsText: "Загальні активи", todayOrdersText: "Замовлення сьогодні", todayEarningsTextMine: "Заробіток сьогодні",
-            totalCommissionTextMine: "Загальна комісія", depositText: "Депозит", withdrawTextMine: "Вивести",
-            bindWalletText: "Прив'язати криптогаманець", personalDetailsText: "Особисті дані", loanServiceText: "Служба кредитування",
-            rechargeHistoryText: "Історія поповнень", withdrawHistoryText: "Історія виведень", walletAddressText: "Адреса гаманця",
-            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне завдання приносить комісію",
-            commDesc2: "Реферальний бонус: 10%", commDesc3: "Денний ліміт завдань",
-            secureText: "Всі транзакції безпечні", selectLanguageText: "Виберіть мову",
-            signOutText: "Вийти", customerServiceText: "Служба підтримки", sendText: "Надіслати",
-            navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Мій профіль", navService: "Підтримка",
+            rechargeText: "Поповнити", withdrawText: "Вивести", referralCodeText: "Реферальний код",
+            liveUpdatesText: "Оновлення", exitText: "Вихід",
+            shoppingTasksText: "Завдання", taskProgressText: "Прогрес", startOrderText: "Почати",
+            orderHistoryText: "Історія", myProfileText: "Профіль", creditText: "Кредит",
+            totalAssetsText: "Активи", todayOrdersText: "Замовлення", todayEarningsTextMine: "Заробіток",
+            totalCommissionTextMine: "Комісія", depositText: "Депозит", withdrawTextMine: "Вивести",
+            bindWalletText: "Прив'язати гаманець", personalDetailsText: "Деталі", loanServiceText: "Кредит",
+            rechargeHistoryText: "Історія поповнень", withdrawHistoryText: "Історія виведень", walletAddressText: "Адреса",
+            howCommissionsText: "Як працює", commDesc1: "Кожне завдання приносить комісію",
+            commDesc2: "Реферальний бонус: 10%", commDesc3: "Денний ліміт",
+            secureText: "Транзакції безпечні", selectLanguageText: "Мова",
+            signOutText: "Вийти", customerServiceText: "Підтримка", sendText: "Надіслати",
+            navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Профіль", navService: "Підтримка",
             orderAmount: "Сума", profitEarned: "Прибуток", afterCompletionBalance: "Баланс після",
-            serviceQuality: "Якість обслуговування", productQuality: "Якість продукту", salesExperience: "Досвід",
-            submitComplete: "Відправити та завершити", processing: "Обробка...", insufficientBalance: "Недостатньо коштів!",
-            yourBalance: "Ваш баланс", needAdditional: "Потрібно", rechargeNow: "Поповнити зараз",
-            close: "Закрити", submit: "Відправити", cancel: "Скасувати", uploadReceipt: "Завантажити квитанцію",
-            enterValidAmount: "Введіть дійсну суму", noRecords: "Немає записів.",
-            pendingOrderWarning: "У вас є незавершене замовлення!", pendingOrderMessage: "Завершіть поточне замовлення.",
-            okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса USDT TRC20", copy: "Копіювати",
-            uploadPhoto: "Завантажити фото", save: "Зберегти",
-            bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення!",
+            serviceQuality: "Якість", productQuality: "Продукт", salesExperience: "Досвід",
+            submitComplete: "Відправити", processing: "Обробка...", insufficientBalance: "Недостатньо!",
+            yourBalance: "Ваш баланс", needAdditional: "Потрібно", rechargeNow: "Поповнити",
+            close: "Закрити", submit: "Відправити", cancel: "Скасувати", uploadReceipt: "Завантажити",
+            enterValidAmount: "Введіть суму", noRecords: "Немає записів",
+            pendingOrderWarning: "Є замовлення!", pendingOrderMessage: "Завершіть поточне.",
+            okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса USDT", copy: "Копіювати",
+            uploadPhoto: "Завантажити", save: "Зберегти",
+            bonusOrder: "СПЕЦІАЛЬНЕ!", injectionMessage: "Спеціальне замовлення!",
             referralEarned: "Реферальний бонус!",
-            deleteDataText: "Очистити локальні дані",
-            deleteDataBtnText: "Видалити дані & оновити",
+            deleteDataText: "Очистити дані", deleteDataBtnText: "Очистити та оновити",
             deviceSessionText: "Інформація про пристрій"
         },
         ru: {
-            heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь роскошными путешествиями и зарабатывайте ежедневные комиссии.",
-            serviceFlightsTitle: "Авиарейсы", serviceFlightsDesc: "Бронируйте авиабилеты по всему миру",
-            serviceHotelsTitle: "Отели", serviceHotelsDesc: "Лучшие предложения на отели",
-            serviceTrainsTitle: "Поезда", serviceTrainsDesc: "Премиальные билеты на поезда",
-            serviceTasksTitle: "Платформа Заданий", serviceTasksDesc: "Зарабатывайте до 1% ежедневно",
-            loginBtnText: "Войти", registerBtnText: "Зарегистрироваться", companyInfoText: "О компании",
+            heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь путешествиями и зарабатывайте.",
+            serviceFlightsTitle: "Авиарейсы", serviceFlightsDesc: "Бронируйте рейсы",
+            serviceHotelsTitle: "Отели", serviceHotelsDesc: "Лучшие предложения",
+            serviceTrainsTitle: "Поезда", serviceTrainsDesc: "Премиум билеты",
+            serviceTasksTitle: "Задания", serviceTasksDesc: "Зарабатывайте до 1%",
+            loginBtnText: "Войти", registerBtnText: "Регистрация", companyInfoText: "О компании",
             backToHomeText: "На главную", backToHomeTextReg: "На главную",
-            loginWebsiteTagline: "Премиальная экосистема заданий", forgotPasswordText: "Забыли пароль?",
-            registerTitle: "Создать аккаунт", registerNowText: "Зарегистрироваться", haveAccountText: "Уже есть аккаунт?",
-            welcomeText: "Добро пожаловать", vipLevelText: "Уровень VIP", accountBalanceText: "Баланс аккаунта",
+            loginWebsiteTagline: "Премиум экосистема", forgotPasswordText: "Забыли пароль?",
+            registerTitle: "Создать аккаунт", registerNowText: "Зарегистрироваться", haveAccountText: "Уже есть?",
+            welcomeText: "Добро пожаловать", vipLevelText: "VIP уровень", accountBalanceText: "Баланс",
             rateText: "Ставка", todayText: "Сегодня", todayEarningsText: "Заработок сегодня",
             yesterdayText: "Вчера", totalCommissionText: "Общая комиссия",
-            rechargeText: "Пополнить", withdrawText: "Вывести", referralCodeText: "Ваш реферальный код",
-            liveUpdatesText: "Обновления комиссий", exitText: "Выход",
-            shoppingTasksText: "Задания по покупкам", taskProgressText: "Прогресс", startOrderText: "Начать заказ",
-            orderHistoryText: "История заказов", myProfileText: "Мой профиль", creditText: "Кредит",
-            totalAssetsText: "Общие активы", todayOrdersText: "Заказы сегодня", todayEarningsTextMine: "Заработок сегодня",
-            totalCommissionTextMine: "Общая комиссия", depositText: "Депозит", withdrawTextMine: "Вывести",
-            bindWalletText: "Привязать криптокошелек", personalDetailsText: "Личные данные", loanServiceText: "Кредитная служба",
-            rechargeHistoryText: "История пополнений", withdrawHistoryText: "История выводов", walletAddressText: "Адрес кошелька",
-            howCommissionsText: "Как работают комиссии", commDesc1: "Каждое задание приносит комиссию",
-            commDesc2: "Реферальный бонус: 10%", commDesc3: "Дневной лимит заданий",
-            secureText: "Все транзакции безопасны", selectLanguageText: "Выберите язык",
-            signOutText: "Выйти", customerServiceText: "Служба поддержки", sendText: "Отправить",
-            navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Мой профиль", navService: "Поддержка",
+            rechargeText: "Пополнить", withdrawText: "Вывести", referralCodeText: "Реферальный код",
+            liveUpdatesText: "Обновления", exitText: "Выход",
+            shoppingTasksText: "Задания", taskProgressText: "Прогресс", startOrderText: "Начать",
+            orderHistoryText: "История", myProfileText: "Профиль", creditText: "Кредит",
+            totalAssetsText: "Активы", todayOrdersText: "Заказы", todayEarningsTextMine: "Заработок",
+            totalCommissionTextMine: "Комиссия", depositText: "Депозит", withdrawTextMine: "Вывести",
+            bindWalletText: "Привязать кошелек", personalDetailsText: "Детали", loanServiceText: "Кредит",
+            rechargeHistoryText: "История пополнений", withdrawHistoryText: "История выводов", walletAddressText: "Адрес",
+            howCommissionsText: "Как работает", commDesc1: "Каждое задание приносит комиссию",
+            commDesc2: "Реферальный бонус: 10%", commDesc3: "Дневной лимит",
+            secureText: "Транзакции безопасны", selectLanguageText: "Язык",
+            signOutText: "Выйти", customerServiceText: "Поддержка", sendText: "Отправить",
+            navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Профиль", navService: "Поддержка",
             orderAmount: "Сумма", profitEarned: "Прибыль", afterCompletionBalance: "Баланс после",
-            serviceQuality: "Качество обслуживания", productQuality: "Качество продукта", salesExperience: "Опыт",
-            submitComplete: "Отправить и завершить", processing: "Обработка...", insufficientBalance: "Недостаточно средств!",
-            yourBalance: "Ваш баланс", needAdditional: "Требуется", rechargeNow: "Пополнить сейчас",
-            close: "Закрыть", submit: "Отправить", cancel: "Отмена", uploadReceipt: "Загрузить квитанцию",
-            enterValidAmount: "Введите сумму", noRecords: "Нет записей.",
-            pendingOrderWarning: "У вас есть незавершенный заказ!", pendingOrderMessage: "Завершите текущий заказ.",
-            okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес USDT TRC20", copy: "Копировать",
-            uploadPhoto: "Загрузить фото", save: "Сохранить",
-            bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ!",
+            serviceQuality: "Качество", productQuality: "Продукт", salesExperience: "Опыт",
+            submitComplete: "Отправить", processing: "Обработка...", insufficientBalance: "Недостаточно!",
+            yourBalance: "Ваш баланс", needAdditional: "Требуется", rechargeNow: "Пополнить",
+            close: "Закрыть", submit: "Отправить", cancel: "Отмена", uploadReceipt: "Загрузить",
+            enterValidAmount: "Введите сумму", noRecords: "Нет записей",
+            pendingOrderWarning: "Есть заказ!", pendingOrderMessage: "Завершите текущий.",
+            okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес USDT", copy: "Копировать",
+            uploadPhoto: "Загрузить", save: "Сохранить",
+            bonusOrder: "СПЕЦИАЛЬНЫЙ!", injectionMessage: "Специальный заказ!",
             referralEarned: "Реферальный бонус!",
-            deleteDataText: "Очистить локальные данные",
-            deleteDataBtnText: "Удалить данные & обновить",
+            deleteDataText: "Очистить данные", deleteDataBtnText: "Очистить и обновить",
             deviceSessionText: "Информация об устройстве"
         }
     };
@@ -3769,8 +3537,7 @@
             customerServiceText: dict.customerServiceText, sendText: dict.sendText,
             navHome: dict.navHome, navWork: dict.navWork, navOrder: dict.navOrder, navMine: dict.navMine, navService: dict.navService,
             loginBtnTextLogin: dict.loginBtnText,
-            deleteDataText: dict.deleteDataText,
-            deleteDataBtnText: dict.deleteDataBtnText,
+            deleteDataText: dict.deleteDataText, deleteDataBtnText: dict.deleteDataBtnText,
             deviceSessionText: dict.deviceSessionText
         };
         for (const [id, text] of Object.entries(elements)) { 
@@ -3836,25 +3603,16 @@
             if (refSnapshot.empty) { toast("Invalid invitation code", true); btn.disabled = false; btn.innerHTML = 'Register Now'; return; }
             const referrer = refSnapshot.docs[0].data();
             currentUser = { 
-                id: Date.now().toString(), 
-                username, email, phone, password, 
-                withdrawPassword: withdrawPass, 
-                balance: 0, 
+                id: Date.now().toString(), username, email, phone, password, 
+                withdrawPassword: withdrawPass, balance: 0, 
                 invitationCode: "LXC"+Math.random().toString(36).substring(2,8).toUpperCase(), 
-                superior: referrer.username, 
-                referralEarnings:0, 
+                superior: referrer.username, referralEarnings:0, 
                 regTime: new Date().toISOString(), 
-                tasks: { completed:0, total:0 }, 
-                orders:[], 
-                todayOrders:0, 
-                todayEarnings:0, 
-                totalCommission:0, 
-                creditScore:100, 
-                disabled:false, 
-                walletAddress:null, 
-                currentOrderObj:null, 
-                hasActiveOrder:false, 
-                role:"customer" 
+                tasks: { completed:0, total:0 }, orders:[], 
+                todayOrders:0, todayEarnings:0, totalCommission:0, 
+                creditScore:100, disabled:false, 
+                walletAddress:null, currentOrderObj:null, 
+                hasActiveOrder:false, role:"customer" 
             };
             await setDoc(doc(db, "users", currentUser.id), currentUser);
             await registerSession();
@@ -3863,7 +3621,7 @@
             updateUI();
             loadBackgrounds();
             showPage("home");
-            showSuccessModal('Welcome!', `Account created successfully. Your invite code: <strong style="color:var(--gold);">${currentUser.invitationCode}</strong>`);
+            showSuccessModal('Welcome!', `Account created. Your invite code: <strong style="color:var(--gold);">${currentUser.invitationCode}</strong>`);
             startChatSubscription();
         } catch(e) { toast("Registration failed: " + e.message, true); }
         btn.disabled = false;
@@ -3917,7 +3675,7 @@
             if(name === "order") updateUI();
             loadBackgrounds();
             startLiveFeed();
-        } catch (e) { console.error('ShowPage error:', e); }
+        } catch (e) {}
     }
 
     function loadBackgrounds() {
@@ -3956,33 +3714,26 @@
         liveFeedInterval = setInterval(add, 5000);
     }
 
-    // ==================== INITIALIZE EVENT LISTENERS ====================
+    // ==================== EVENT LISTENERS ====================
     function initializeEventListeners() {
         try {
             const bind = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
             
-            // Google login
             bind('landingGoogleBtn', handleGoogleLogin);
             bind('loginGoogleBtn', handleGoogleLogin);
             bind('registerGoogleBtn', handleGoogleLogin);
             
-            // Language
             document.querySelectorAll('.lang-option').forEach(opt => opt.onclick = () => applyLanguage(opt.dataset.lang));
             
-            // Mine page
             bind("bindWalletBtn", showBindWalletModal);
             bind("personalDetailsBtn", showPersonalDetailsModal);
             bind("deviceSessionBtn", showDeviceSessionModal);
             bind("loanServiceBtn", showLoanServiceModal);
-            
-            // Sign out
             bind("signOutBtnHome", signOut);
             bind("signOutBtnMine", signOut);
             
-            // Refresh buttons
             document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); });
             
-            // Recharge/Withdraw
             bind("rechargeHomeBtn", () => currentUser ? showRechargeModal() : toast("Please login first", true));
             bind("withdrawHomeBtn", () => currentUser ? showWithdrawModal() : toast("Please login first", true));
             bind("depositBtn", () => currentUser ? showRechargeModal() : toast("Please login first", true));
@@ -3990,7 +3741,6 @@
             bind("rechargeHistoryBtn", () => currentUser ? showRechargeHistory() : toast("Please login first", true));
             bind("withdrawHistoryBtn", () => currentUser ? showWithdrawHistory() : toast("Please login first", true));
             
-            // Start Working
             bind("startWorkingBtn", async () => {
                 if(!currentUser) { toast("Please login first", true); return; }
                 let dailyLimit = currentUser.tasks?.total || 0;
@@ -4006,11 +3756,9 @@
                 await loadNextOrderAutomatically();
             });
             
-            // Login/Register
             bind("doLoginBtn", doLogin);
             bind("doRegisterBtn", doRegister);
             
-            // Navigation
             bind("goToRegisterBtn", () => showPage("register"));
             bind("goToLoginFromRegBtn", () => showPage("login"));
             bind("landingLoginBtn", () => showPage("login"));
@@ -4019,18 +3767,12 @@
             bind("backToLandingFromLogin", () => showPage("landing"));
             bind("backToLandingFromRegister", () => showPage("landing"));
             
-            // Bottom nav
             document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
             
-            // Chat
             bind("customerSendBtn", async () => {
                 const input = document.getElementById("customerChatInput");
                 const text = input.value.trim();
-                if(text) {
-                    await sendChatMessage(text);
-                    input.value = '';
-                    input.focus();
-                }
+                if(text) { await sendChatMessage(text); input.value = ''; input.focus(); }
             });
             
             const chatInput = document.getElementById("customerChatInput");
@@ -4039,16 +3781,11 @@
                     if(e.key === 'Enter') {
                         e.preventDefault();
                         const text = chatInput.value.trim();
-                        if(text) {
-                            await sendChatMessage(text);
-                            chatInput.value = '';
-                            chatInput.focus();
-                        }
+                        if(text) { await sendChatMessage(text); chatInput.value = ''; chatInput.focus(); }
                     }
                 });
             }
             
-            // Emoji
             bind("customerEmojiBtn", () => {
                 const input = document.getElementById("customerChatInput");
                 const picker = document.createElement('div');
@@ -4073,7 +3810,6 @@
                 }, 100);
             });
             
-            // Chat image upload
             bind("customerUploadBtn", () => document.getElementById("customerChatImageInput").click());
             const chatImgInput = document.getElementById("customerChatImageInput");
             if (chatImgInput) {
@@ -4093,41 +3829,41 @@
                 };
             }
             
-            // Profile photo
             bind("mineProfilePhoto", () => { if(currentUser) showUploadPhotoModal(); });
-            
-            // Delete browsing data
             bind('deleteBrowsingDataBtn', deleteBrowsingData);
             
             console.log('✅ Event listeners initialized');
-        } catch (e) { console.error('Init event listeners error:', e); }
+        } catch (e) {}
     }
 
-    // ==================== START APP ====================
+    // ==================== ✅ FAST APP START ====================
     async function startApp() {
         if (appInitialized) return;
         appInitialized = true;
         
         try {
-            console.log('🚀 Starting LUXCY App v2.3.0');
+            console.log('🚀 Starting LUXCY v3.0.0 (Optimized)');
             
-            // Initialize event listeners
+            // 1. Initialize event listeners (instant)
             initializeEventListeners();
             
-            // Apply language
+            // 2. Apply language (instant)
             applyLanguage(currentLang);
             
-            // ✅ Load order templates FIRST (for random image selection)
-            await loadOrderTemplates();
+            // 3. ✅ Load templates in BACKGROUND (don't wait)
+            loadOrderTemplatesBackground();
             
-            // Start subscriptions
-            subscribeToLogos();
-            subscribeToCompanyInfo();
-            subscribeToVipPackages();
-            startSettingsSubscription();
-            loadBackgrounds();
+            // 4. ✅ Show app immediately
+            const overlay = document.getElementById('appLoadingOverlay');
+            const appContainer = document.getElementById('appContainer');
             
-            // Check saved user
+            if (appContainer) appContainer.style.display = 'block';
+            if (overlay) {
+                overlay.classList.add('hidden');
+                setTimeout(() => overlay.remove(), 500);
+            }
+            
+            // 5. ✅ Check saved user and show appropriate page
             let savedUserId = localStorage.getItem("currentUserId");
             if(savedUserId) {
                 try {
@@ -4139,7 +3875,7 @@
                             if(!currentUser.orders) currentUser.orders = [];
                             if(!currentUser.tasks) currentUser.tasks = { completed:0, total:0 };
                             await checkAndApplyInjections();
-                            await registerSession();
+                            registerSession();
                             subscribeToUser(currentUser.id);
                             subscribeToWithdrawals(currentUser.id);
                             subscribeToInjections(currentUser.id);
@@ -4147,7 +3883,6 @@
                             loadBackgrounds();
                             const lastPage = localStorage.getItem("customerLastPage");
                             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
-                            startChatSubscription();
                         } else showPage("landing");
                     } else showPage("landing");
                 } catch (e) { showPage("landing"); }
@@ -4155,12 +3890,17 @@
                 showPage("landing");
             }
             
+            // 6. ✅ Start background tasks
             startLiveFeed();
+            subscribeToLogos();
+            subscribeToCompanyInfo();
+            subscribeToVipPackages();
+            startSettingsSubscription();
             
-            // Session update
+            // 7. Session activity update
             setInterval(() => { if (currentUser && sessionId) updateSessionActivity(); }, 60000);
             
-            // Auth state
+            // 8. Auth state
             onAuthStateChanged(auth, async (user) => {
                 if (user && !currentUser) {
                     try {
@@ -4185,7 +3925,7 @@
                 }
             });
             
-            console.log('✅ LUXCY App initialized successfully');
+            console.log('✅ LUXCY App ready');
         } catch (e) {
             console.error('❌ App start error:', e);
         }
