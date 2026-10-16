@@ -65,7 +65,6 @@
         .btn-info { background: linear-gradient(105deg, #3b82f6, #2563eb); color: white; border: none; }
         .btn-secondary { background: #4a5568; color: white; border: none; }
         .btn-clear-order { background: linear-gradient(105deg, #8b5cf6, #7c3aed); color: white; border: none; }
-        .btn-clear-order:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
         
         input, select, textarea { 
             background: #0f1117; 
@@ -265,7 +264,6 @@
             padding: 16px; 
             margin-bottom: 12px; 
             border: 1px solid #2d3748; 
-            transition: all 0.2s; 
         }
         .agency-row:hover { background: #1a1e26; border-color: rgba(212,175,55,0.3); }
         
@@ -286,7 +284,6 @@
         
         .status-active { color: #10b981; font-weight: 700; }
         .status-closed { color: #dc2626; font-weight: 700; }
-        .badge-permission { background: #2d3748; padding: 2px 8px; border-radius: 12px; font-size: 11px; }
         
         .real-time-indicator { 
             position: fixed; 
@@ -305,8 +302,6 @@
         
         .loan-card { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #2d3748; }
         .loan-img { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid #3a423e; cursor: pointer; margin-right: 8px; }
-        .loan-detail-row { display: flex; margin-bottom: 8px; }
-        .loan-detail-label { width: 130px; color: #9ca3af; }
         
         .timer-text { font-family: monospace; font-size: 18px; letter-spacing: 2px; text-align: center; margin: 8px 0; color: #f59e0b; }
         
@@ -351,10 +346,6 @@
         .settings-tab.active { background: #d4af37; color: #0a120e; border-color: #d4af37; }
         .settings-tab-content { display: none; }
         .settings-tab-content.active { display: block; }
-        .service-card-editor { background: #0f1117; border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid #2d3748; }
-        .logo-upload-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; padding: 10px; background: #0f1117; border-radius: 12px; }
-        .logo-preview { width: 60px; height: 60px; background: #1a1e26; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid #d4af37; }
-        .logo-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
         .tasks-progress-container {
             background: #0f1117; 
@@ -381,7 +372,6 @@
         .action-buttons-wrap { display: flex; flex-wrap: wrap; gap: 5px; }
         .action-buttons-wrap .btn-sm { margin: 2px; white-space: nowrap; }
 
-        /* ============ SESSION CARD ============ */
         .session-card-item {
             background: #0f1117;
             border-radius: 12px;
@@ -416,7 +406,6 @@
             font-family: monospace;
         }
 
-        /* ============ SUCCESS/ERROR MODAL ============ */
         .success-icon-box {
             width: 100px;
             height: 100px;
@@ -442,7 +431,6 @@
         }
         .error-icon-box i { font-size: 44px; color: #dc2626; }
 
-        /* ============ ORDER HISTORY CARD (admin view) ============ */
         .history-order-card {
             background: #0f1117;
             border-radius: 16px;
@@ -486,21 +474,9 @@
             padding-top: 10px;
             border-top: 1px solid rgba(212,175,55,0.1);
         }
-        .history-detail-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .history-detail-label {
-            font-size: 10px;
-            color: #9ca3af;
-            text-transform: uppercase;
-        }
-        .history-detail-value {
-            font-size: 13px;
-            font-weight: 700;
-            color: #e2e8f0;
-        }
+        .history-detail-item { display: flex; flex-direction: column; gap: 4px; }
+        .history-detail-label { font-size: 10px; color: #9ca3af; text-transform: uppercase; }
+        .history-detail-value { font-size: 13px; font-weight: 700; color: #e2e8f0; }
         .history-detail-value.profit { color: #10b981; }
         .history-detail-value.gold { color: #d4af37; }
         .history-order-ratings {
@@ -520,7 +496,7 @@
             border: 1px solid rgba(212,175,55,0.2);
         }
 
-        /* ============ VIP PACKAGE MANAGEMENT (NEW) ============ */
+        /* ============ VIP PACKAGE MANAGEMENT ============ */
         .package-editor-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -578,16 +554,13 @@
         .package-editor-name {
             font-size: 20px;
             font-weight: 800;
-            font-family: 'Inter', sans-serif;
         }
         .package-editor-card.bronze .package-editor-name { color: #cd7f32; }
         .package-editor-card.silver .package-editor-name { color: #c0c0c0; }
         .package-editor-card.gold-pkg .package-editor-name { color: #ffd700; }
         .package-editor-card.platinum .package-editor-name { color: #e5e4e2; }
         
-        .package-editor-field {
-            margin-bottom: 16px;
-        }
+        .package-editor-field { margin-bottom: 16px; }
         .package-editor-field label {
             display: block;
             font-size: 12px;
@@ -597,11 +570,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .package-editor-field input,
-        .package-editor-field textarea {
-            margin-bottom: 0;
-            font-size: 14px;
-        }
+        .package-editor-field input, .package-editor-field textarea { margin-bottom: 0; font-size: 14px; }
         .package-editor-actions {
             display: flex;
             gap: 10px;
@@ -609,9 +578,7 @@
             padding-top: 16px;
             border-top: 1px solid #2d3748;
         }
-        .package-editor-actions button {
-            flex: 1;
-        }
+        .package-editor-actions button { flex: 1; }
         
         .popular-toggle {
             display: flex;
@@ -622,22 +589,11 @@
             border-radius: 12px;
             cursor: pointer;
             border: 1px solid #2d3748;
-            transition: all 0.2s;
             margin-bottom: 16px;
         }
-        .popular-toggle:hover {
-            border-color: #d4af37;
-        }
-        .popular-toggle input {
-            width: auto;
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-        .popular-toggle-label {
-            font-size: 13px;
-            color: #e2e8f0;
-            font-weight: 600;
-        }
+        .popular-toggle:hover { border-color: #d4af37; }
+        .popular-toggle input { width: auto; margin-bottom: 0; cursor: pointer; }
+        .popular-toggle-label { font-size: 13px; color: #e2e8f0; font-weight: 600; }
         
         .package-stats-grid {
             display: grid;
@@ -652,17 +608,8 @@
             border: 1px solid #2d3748;
             text-align: center;
         }
-        .package-stat-value {
-            font-size: 24px;
-            font-weight: 800;
-            color: #d4af37;
-        }
-        .package-stat-label {
-            font-size: 11px;
-            color: #9ca3af;
-            margin-top: 4px;
-            text-transform: uppercase;
-        }
+        .package-stat-value { font-size: 24px; font-weight: 800; color: #d4af37; }
+        .package-stat-label { font-size: 11px; color: #9ca3af; margin-top: 4px; text-transform: uppercase; }
         
         @media (max-width: 992px) {
             .package-editor-grid { grid-template-columns: 1fr; }
@@ -673,7 +620,6 @@
             .sidebar { width: 100%; position: fixed; left: 0; top: 0; height: auto; max-height: 300px; z-index: 100; }
             .main-content { padding: 16px; margin-top: 60px; }
             .action-buttons-wrap .btn-sm { font-size: 10px; padding: 3px 6px; }
-            .admin-logo-box { width: 40px; height: 40px; }
             table { font-size: 12px; }
             th, td { padding: 8px; }
             .history-order-details { grid-template-columns: 1fr; }
@@ -747,17 +693,12 @@
         const APP_VERSION = '2.2.0';
         const storedVersion = localStorage.getItem('admin_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
-            localStorage.clear();
-            sessionStorage.clear();
             localStorage.setItem('admin_version', APP_VERSION);
             console.log('🔄 Admin version:', APP_VERSION);
-            if (storedVersion) setTimeout(() => location.reload(), 300);
         }
     })();
 
-    // ==================== DEBUG ====================
-    const DEBUG = false;
-    const log = DEBUG ? console.log.bind(console) : () => {};
+    const log = () => {};
     const logErr = console.error.bind(console);
 
     // ==================== FIREBASE ====================
@@ -778,8 +719,6 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    log('✅ Firebase initialized');
-
     // ==================== GLOBALS ====================
     let users = [];
     let customOrders = [];
@@ -790,7 +729,13 @@
     let loanRequests = [];
     let sessions = [];
     let packagePurchases = [];
-    let systemSettings = { customerName: "LUXCY", customerTagline: "Premium Task Ecosystem", homePageName: "Ubuy", usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf", minBalanceForOrder: 10 };
+    let systemSettings = { 
+        customerName: "LUXCY", 
+        customerTagline: "Premium Task Ecosystem", 
+        homePageName: "Ubuy", 
+        usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf", 
+        minBalanceForOrder: 10 
+    };
     let currentSection = 'dashboard';
     let selectedChatUser = null;
     let unsubscribeChat = null;
@@ -806,48 +751,12 @@
     let pendingUserData = null;
     let isProcessing = false;
 
-    // ✅ Default VIP Packages (syncs with customer.html)
+    // ✅ VIP Packages
     let vipPackages = {
-        bronze: {
-            id: 'bronze',
-            name: 'Bronze',
-            icon: 'fa-medal',
-            orderCount: 40,
-            commissionRate: 0.05,
-            price: 0,
-            description: 'Perfect starter package',
-            popular: false
-        },
-        silver: {
-            id: 'silver',
-            name: 'Silver',
-            icon: 'fa-award',
-            orderCount: 45,
-            commissionRate: 0.07,
-            price: 0,
-            description: 'Great for growing users',
-            popular: false
-        },
-        gold: {
-            id: 'gold',
-            name: 'Gold',
-            icon: 'fa-crown',
-            orderCount: 50,
-            commissionRate: 1.05,
-            price: 0,
-            description: 'Best value package',
-            popular: true
-        },
-        platinum: {
-            id: 'platinum',
-            name: 'Platinum',
-            icon: 'fa-gem',
-            orderCount: 70,
-            commissionRate: 2.50,
-            price: 0,
-            description: 'Elite experience',
-            popular: false
-        }
+        bronze: { id: 'bronze', name: 'Bronze', icon: 'fa-medal', orderCount: 40, commissionRate: 0.05, price: 0, description: 'Perfect starter package', popular: false },
+        silver: { id: 'silver', name: 'Silver', icon: 'fa-award', orderCount: 45, commissionRate: 0.07, price: 0, description: 'Great for growing users', popular: false },
+        gold: { id: 'gold', name: 'Gold', icon: 'fa-crown', orderCount: 50, commissionRate: 1.05, price: 0, description: 'Best value package', popular: true },
+        platinum: { id: 'platinum', name: 'Platinum', icon: 'fa-gem', orderCount: 70, commissionRate: 2.50, price: 0, description: 'Elite experience', popular: false }
     };
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
@@ -876,6 +785,7 @@
 
     window.togglePassword = function(inputId, iconElement) {
         const input = document.getElementById(inputId);
+        if (!input) return;
         if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
         else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
     };
@@ -906,7 +816,7 @@
         setTimeout(() => { el.style.transition = 'all 0.3s'; el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3000);
     }
 
-    // ==================== SUCCESS MODAL ====================
+    // ==================== MODALS ====================
     function showSuccessModal(title, message, onClose) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -922,7 +832,6 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
-    // ==================== ERROR MODAL ====================
     function showErrorModal(title, message) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -938,7 +847,6 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
-    // ==================== CONFIRM MODAL ====================
     function showConfirmModal(title, message, onConfirm, confirmText = 'Confirm') {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -993,8 +901,6 @@
             });
             if (currentSection === 'dashboard') updateDashboardTasks();
             if (['users', 'vip', 'injection', 'dashboard'].includes(currentSection)) renderSection(currentSection);
-            const indicator = document.getElementById("realTimeIndicator");
-            if (indicator) { indicator.style.display = "flex"; setTimeout(() => indicator.style.display = "none", 2000); }
         }, (error) => logErr("User subscription error:", error));
     }
 
@@ -1008,30 +914,26 @@
         });
     }
 
-    // ✅ NEW: Subscribe to VIP Packages
     function subscribeToVipPackages() {
         if (unsubscribePackages) unsubscribePackages();
         unsubscribePackages = onSnapshot(doc(db, "systemSettings", "vipPackages"), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 Object.keys(vipPackages).forEach(key => {
-                    if (data[key]) {
-                        vipPackages[key] = { ...vipPackages[key], ...data[key] };
-                    }
+                    if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
                 });
                 if (currentSection === 'packages') renderSection('packages');
-                log('✅ VIP Packages synced');
             }
         });
     }
 
-    // ✅ NEW: Subscribe to Package Purchases
     function subscribeToPackagePurchases() {
         if (unsubscribePackagePurchases) unsubscribePackagePurchases();
         unsubscribePackagePurchases = onSnapshot(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200)), (snapshot) => {
             packagePurchases = [];
             snapshot.forEach(doc => packagePurchases.push({ id: doc.id, ...doc.data() }));
             if (currentSection === 'packageHistory') renderSection('packageHistory');
+            if (currentSection === 'dashboard') renderSection('dashboard');
         }, (error) => logErr("Package purchases subscription error:", error));
     }
 
@@ -1090,11 +992,9 @@
             const sessSnap = await getDocs(query(collection(db, "sessions"), orderBy("loginTime", "desc"), limit(200)));
             sessions = []; sessSnap.forEach(doc => sessions.push({ id: doc.id, ...doc.data() }));
             
-            // ✅ Load package purchases
             const pkgPurchasesSnap = await getDocs(query(collection(db, "packagePurchases"), orderBy("purchasedAt", "desc"), limit(200)));
             packagePurchases = []; pkgPurchasesSnap.forEach(doc => packagePurchases.push({ id: doc.id, ...doc.data() }));
             
-            // ✅ Load VIP packages from settings
             const pkgDoc = await getDoc(doc(db, "systemSettings", "vipPackages"));
             if (pkgDoc.exists()) {
                 const data = pkgDoc.data();
@@ -1295,7 +1195,6 @@
             const pendingRecharge = rechargeRequests.filter(r => r.status === "pending").length;
             const pendingWithdraw = withdrawRequests.filter(w => w.status === "pending").length;
             const pendingLoan = loanRequests.filter(l => l.status === "pending").length;
-            const activeAgencies = agencies.filter(a => a.status === "active").length;
             const activeSessions = sessions.filter(s => s.status === "active").length;
             const totalPackageRevenue = packagePurchases.reduce((a, p) => a + (p.price || 0), 0);
             const vipCounts = { 1: 0, 2: 0, 3: 0, 4: 0 };
@@ -1390,7 +1289,7 @@
             
             main.innerHTML = `<div class="admin-card">
                 <div class="flex-between"><h2>👥 Member Management</h2><button class="btn-admin" id="addMemberBtn">+ Add Member</button></div>
-                <div style="color:#9ca3af; font-size:12px; margin-bottom:12px;">🟢 = Active order | ⚪ = No order | 💡 Use "Clear Order" if user sees wrong amount</div>
+                <div style="color:#9ca3af; font-size:12px; margin-bottom:12px;">🟢 = Active order | ⚪ = No order</div>
                 <div class="search-box"><input id="userSearch" placeholder="Search username, email, phone..."><button class="btn-admin" id="searchBtn">Search</button><button class="btn-warning" id="resetSearchBtn">Reset</button></div>
                 <div style="overflow-x: auto;"><table style="min-width:900px;"><thead><tr><th>ID</th><th>Account</th><th>Balance</th><th>VIP</th><th>Invite</th><th>Orders</th><th>Wallet</th><th>Actions</th></tr></thead><tbody id="userTableBody"></tbody></table></div>
             </div>`;
@@ -1460,13 +1359,13 @@
             main.innerHTML = html;
         }
 
-        // ✅ NEW: VIP PACKAGES MANAGEMENT
+        // ============ VIP PACKAGES MANAGEMENT ============
         else if (section === "packages") {
             if (!checkPermission('canManageVIP')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
             renderPackageManagement();
         }
 
-        // ✅ NEW: PACKAGE PURCHASE HISTORY
+        // ============ PACKAGE PURCHASE HISTORY ============
         else if (section === "packageHistory") {
             if (!checkPermission('canManageVIP')) { main.innerHTML = `<div class="admin-card"><h2>Access Denied</h2></div>`; return; }
             renderPackageHistory();
@@ -1575,7 +1474,7 @@
             
             main.innerHTML = `<div class="admin-card">
                 <h2>➕ Add New Order Template</h2>
-                <p style="color:#9ca3af;font-size:13px;margin-bottom:16px;">These templates are used for random order generation.</p>
+                <p style="color:#9ca3af;font-size:13px;margin-bottom:16px;">These templates are used for random order generation. Add 30+ templates to ensure variety.</p>
                 <input id="newOrderName" placeholder="Order Name (e.g., Premium Travel Package)">
                 <input type="number" id="newOrderPrice" placeholder="Price" step="0.01">
                 <input type="file" id="orderImage" accept="image/*">
@@ -1821,10 +1720,9 @@
         }
     }
 
-    // ✅ NEW: Package Management
+    // ==================== VIP PACKAGE MANAGEMENT ====================
     function renderPackageManagement() {
         const main = document.getElementById("mainContent");
-        
         const packageOrder = ['bronze', 'silver', 'gold', 'platinum'];
         
         main.innerHTML = `<div class="admin-card">
@@ -1918,24 +1816,15 @@
         if (commissionRate < 0) { toast('Commission rate cannot be negative', true); return; }
         if (price < 0) { toast('Price cannot be negative', true); return; }
         
-        // If this package is marked popular, unmark others
         if (popular) {
             Object.keys(vipPackages).forEach(k => {
                 if (k !== key) vipPackages[k].popular = false;
             });
         }
         
-        vipPackages[key] = {
-            ...pkg,
-            orderCount,
-            commissionRate,
-            price,
-            description,
-            popular
-        };
+        vipPackages[key] = { ...pkg, orderCount, commissionRate, price, description, popular };
         
         try {
-            // Save all packages
             await setDoc(doc(db, "systemSettings", "vipPackages"), vipPackages, { merge: true });
             toast(`${pkg.name} package saved!`);
             renderPackageManagement();
@@ -1944,7 +1833,7 @@
         }
     };
 
-    // ✅ NEW: Package Purchase History
+    // ==================== PACKAGE PURCHASE HISTORY ====================
     function renderPackageHistory() {
         const main = document.getElementById("mainContent");
         
@@ -2051,7 +1940,7 @@
         };
     }
 
-    // ============ LOAD CHAT ============
+    // ==================== LOAD CHAT ====================
     async function loadChatForUser(username) {
         if (!username) return;
         try {
@@ -2088,7 +1977,7 @@
         });
     }
 
-    // ============ USER ACTIONS ============
+    // ==================== USER ACTIONS ====================
     window.setupOrder = async (userId) => {
         const u = users.find(u => u.id === userId);
         if (!u) return;
@@ -2178,7 +2067,7 @@
         toast(u.disabled ? 'User disabled' : 'User enabled');
     };
 
-    // ============ VIEW USER SESSIONS ============
+    // ==================== VIEW USER SESSIONS ====================
     window.viewUserSessions = async (userId) => {
         const userSessions = sessions.filter(s => s.userId === userId);
         const u = users.find(x => x.id === userId);
@@ -2214,7 +2103,7 @@
         document.getElementById("closeUserSessionsModal").onclick = () => modal.remove();
     };
 
-    // ============ VIEW USER ORDERS ============
+    // ==================== VIEW USER ORDERS ====================
     window.viewUserOrders = async (userId) => {
         const u = users.find(x => x.id === userId);
         if (!u) return;
@@ -2287,7 +2176,7 @@
         }
     };
 
-    // ============ END SESSION ============
+    // ==================== END SESSION ====================
     window.endSession = async (sessionId) => {
         showConfirmModal('End Session?', 'This will log the user out of this device.', async () => {
             try {
@@ -2298,7 +2187,7 @@
         }, 'End Session');
     };
 
-    // ============ VIP MANUAL ============
+    // ==================== VIP MANUAL ====================
     window.applyManualVIP = async (userId) => {
         const u = users.find(u => u.id === userId);
         if (!u) return;
@@ -2319,7 +2208,7 @@
         renderSection('vip');
     };
 
-    // ============ APPROVE/REJECT ============
+    // ==================== APPROVE/REJECT ====================
     window.approveRecharge = async (reqId) => {
         if (isProcessing) return;
         isProcessing = true;
@@ -2465,7 +2354,7 @@
         }, 'Delete');
     };
 
-    // ============ INJECTION MODAL ============
+    // ==================== INJECTION MODAL ====================
     window.showInjectionModal = (userId) => {
         const user = users.find(u => u.id === userId);
         if (!user) return;
@@ -2491,7 +2380,7 @@
             <label style="color:#d4af37;font-size:13px;">💰 Fixed Commission ($)</label>
             <input type="number" id="injectCommission" step="0.01" value="0">
             
-            <label style="color:#d4af37;font-size:13px;">🖼️ Image (optional)</label>
+            <label style="color:#d4af37;font-size:13px;">🖼️ Image (optional - leave empty for random)</label>
             <input type="file" id="injectImage" accept="image/*">
             <div id="injectPreview" style="margin-top: 8px;"></div>
             
@@ -2585,7 +2474,7 @@
         document.getElementById("closeHistoryModal").onclick = () => modal.remove();
     };
 
-    // ============ AGENCY MANAGEMENT ============
+    // ==================== AGENCY MANAGEMENT ====================
     function renderAgencyManagement() {
         const main = document.getElementById("mainContent");
         
@@ -2760,7 +2649,7 @@
         }, 'Delete');
     };
 
-    // ============ WEBSITE SETTINGS ============
+    // ==================== WEBSITE SETTINGS ====================
     function renderWebsiteSettings() {
         return `
             <div class="admin-card">
@@ -2830,7 +2719,7 @@
         });
     }
 
-    // ============ ADD MEMBER ============
+    // ==================== ADD MEMBER ====================
     function showAddMemberModal() {
         const modal = document.createElement("div");
         modal.className = "modal";
@@ -2896,7 +2785,7 @@
         document.getElementById("closeAdd").onclick = () => modal.remove();
     }
 
-    // ============ NAVIGATION ============
+    // ==================== NAVIGATION ====================
     document.querySelectorAll(".nav-item").forEach(n => {
         n.onclick = function() {
             if (!this.dataset.section && this.id !== 'adminLogoutBtn') return;
@@ -2934,7 +2823,7 @@
         toast('Signed out');
     };
 
-    // ============ INITIALIZE ============
+    // ==================== INITIALIZE ====================
     if (checkAdminSession()) {
         (async () => {
             await loadAllData();

@@ -94,7 +94,6 @@
             background-clip: text;
             color: transparent;
             letter-spacing: 2px;
-            text-shadow: 0 0 30px rgba(212,175,55,0.15);
         }
         
         .refresh-btn {
@@ -138,7 +137,6 @@
         .card-lux:hover {
             transform: translateY(-4px);
             border-color: rgba(212, 175, 55, 0.5);
-            box-shadow: 0 12px 48px rgba(0,0,0,0.4), 0 0 30px rgba(212,175,55,0.05);
         }
         
         .btn-lux {
@@ -164,7 +162,7 @@
             font-weight: 700;
             box-shadow: none;
         }
-        .btn-outline-lux:hover { background: rgba(212,175,55,0.1); box-shadow: 0 0 30px rgba(212,175,55,0.15); }
+        .btn-outline-lux:hover { background: rgba(212,175,55,0.1); }
         .btn-google {
             background: rgba(255,255,255,0.05);
             backdrop-filter: blur(4px);
@@ -177,15 +175,13 @@
             transition: all 0.3s;
             font-size: 16px;
             width: 100%;
-            text-align: center;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             margin-top: 12px;
         }
-        .btn-google:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,175,55,0.1); background: rgba(255,255,255,0.1); }
+        .btn-google:hover { border-color: var(--gold); background: rgba(255,255,255,0.1); }
         .btn-google i { font-size: 20px; color: #EA4335; }
         
         .input-lux {
@@ -203,8 +199,7 @@
         }
         .input-lux:focus {
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212,175,55,0.15), 0 0 30px rgba(212,175,55,0.05);
-            background: rgba(0,0,0,0.7);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
         }
         .input-lux::placeholder { color: rgba(255,255,255,0.35); }
         
@@ -260,10 +255,8 @@
         .balance-badge-lux::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
+            top: -50%; right: -50%;
+            width: 100%; height: 100%;
             background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
             pointer-events: none;
         }
@@ -318,20 +311,8 @@
             border: 1px solid var(--border-gold);
             border-bottom-left-radius: 4px;
         }
-        .chat-message .chat-time {
-            font-size: 10px;
-            opacity: 0.5;
-            margin-top: 6px;
-            text-align: right;
-        }
-        .chat-message .chat-image {
-            max-width: 200px;
-            max-height: 150px;
-            border-radius: 12px;
-            margin-top: 8px;
-            cursor: pointer;
-            border: 1px solid var(--gold);
-        }
+        .chat-time { font-size: 10px; opacity: 0.5; margin-top: 6px; text-align: right; }
+        .chat-image { max-width: 200px; max-height: 150px; border-radius: 12px; margin-top: 8px; cursor: pointer; border: 1px solid var(--gold); }
         .chat-input-area {
             display: flex;
             gap: 12px;
@@ -358,11 +339,7 @@
             font-size: 20px;
             backdrop-filter: blur(4px);
         }
-        .chat-btn-icon:hover {
-            background: rgba(212,175,55,0.2);
-            border-color: var(--gold);
-            box-shadow: 0 0 25px rgba(212,175,55,0.15);
-        }
+        .chat-btn-icon:hover { background: rgba(212,175,55,0.2); border-color: var(--gold); }
         
         .modal {
             position: fixed;
@@ -425,8 +402,7 @@
         }
         .popup-close-btn {
             position: absolute;
-            top: 12px;
-            right: 16px;
+            top: 12px; right: 16px;
             background: rgba(255,255,255,0.05);
             border: none;
             color: #fff;
@@ -439,12 +415,8 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
-            backdrop-filter: blur(4px);
         }
-        .popup-close-btn:hover {
-            background: rgba(220,38,38,0.4);
-            transform: rotate(90deg);
-        }
+        .popup-close-btn:hover { background: rgba(220,38,38,0.4); transform: rotate(90deg); }
         .popup-title {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
@@ -467,25 +439,25 @@
             margin-bottom: 12px;
             color: rgba(255,255,255,0.6);
             transition: all 0.3s;
-            backdrop-filter: blur(4px);
         }
         .upload-area-sm:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); }
         
         .injection-badge {
             background: linear-gradient(135deg, #f59e0b, #ea580c);
             color: white;
-            padding: 4px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
             animation: pulse 1s infinite;
             display: inline-block;
+            margin-bottom: 12px;
         }
         .order-detail-card.injection-order { border: 2px solid #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.2); }
         .order-image {
             width: 100%;
-            height: 180px;
-            background: rgba(0,0,0,0.3);
+            height: 220px;
+            background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.05));
             border-radius: 24px;
             display: flex;
             align-items: center;
@@ -493,6 +465,16 @@
             margin-bottom: 20px;
             overflow: hidden;
             border: 1px solid var(--border-gold);
+            position: relative;
+        }
+        .order-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .order-image i {
+            font-size: 64px;
+            color: var(--gold);
         }
         .amount-big {
             font-size: 28px;
@@ -552,7 +534,7 @@
             font-weight: 700;
             transition: all 0.3s;
         }
-        .copy-btn:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(212,175,55,0.2); }
+        .copy-btn:hover { transform: scale(1.02); }
         .profile-photo-large {
             width: 120px;
             height: 120px;
@@ -563,7 +545,7 @@
             justify-content: center;
             border: 4px solid var(--gold);
             overflow: hidden;
-            box-shadow: 0 0 0 4px rgba(212,175,55,0.15), 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 0 0 4px rgba(212,175,55,0.15);
             transition: transform 0.3s;
             cursor: pointer;
         }
@@ -580,7 +562,6 @@
             justify-content: center;
             border: 3px solid var(--gold);
             overflow: hidden;
-            box-shadow: 0 0 40px rgba(212,175,55,0.15);
         }
         .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
         .photo-preview i { font-size: 80px; color: #0a120e; }
@@ -599,7 +580,7 @@
             border: 1px solid rgba(212,175,55,0.1);
             transition: all 0.3s;
         }
-        .stat-card:hover { border-color: var(--border-gold); box-shadow: 0 0 30px rgba(212,175,55,0.05); }
+        .stat-card:hover { border-color: var(--border-gold); }
         .stat-value {
             font-size: 24px;
             font-weight: 800;
@@ -641,7 +622,6 @@
             padding: 10px;
             border-bottom: 1px solid rgba(212,175,55,0.08);
             font-size: 12px;
-            color: var(--text-light);
         }
         .live-feed-item:last-child { border-bottom: none; }
         .progress-bar {
@@ -669,7 +649,6 @@
             z-index: 100;
             animation: pulse 1.5s infinite;
             display: none;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         @keyframes pulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
         .commission-info {
@@ -725,7 +704,7 @@
             overflow: hidden;
             transition: all 0.3s;
         }
-        .logo-item:hover { border-color: var(--gold); box-shadow: 0 0 30px rgba(212,175,55,0.1); transform: translateY(-4px); }
+        .logo-item:hover { border-color: var(--gold); transform: translateY(-4px); }
         .logo-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .logo-item i { font-size: 40px; background: var(--gradient-gold); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .company-description { color: var(--text-light); line-height: 1.8; }
@@ -746,7 +725,7 @@
             transition: all 0.4s;
             border: 1px solid var(--border-gold);
         }
-        .service-card:hover { transform: translateY(-8px); background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.6); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .service-card:hover { transform: translateY(-8px); background: rgba(212,175,55,0.06); border-color: rgba(212,175,55,0.6); }
         .service-icon {
             font-size: 48px;
             background: var(--gradient-gold);
@@ -778,7 +757,6 @@
             background-clip: text;
             color: transparent;
             margin-bottom: 20px;
-            text-shadow: 0 0 60px rgba(212,175,55,0.1);
         }
         .hero-subtitle { font-size: 18px; color: var(--text-light); margin-bottom: 40px; max-width: 550px; line-height: 1.6; }
         @media (max-width: 768px) { .hero-title { font-size: 36px; } .luxury-hero { padding: 32px 24px; } }
@@ -793,7 +771,6 @@
             overflow: hidden;
             white-space: nowrap;
             width: 100%;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
         }
         .icon-marquee-track {
             display: inline-block;
@@ -807,9 +784,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            opacity: 0.9;
-            transition: 0.3s;
-            filter: drop-shadow(0 0 8px rgba(212,175,55,0.2));
         }
         @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
         
@@ -837,7 +811,6 @@
             border-color: var(--gold);
             background: rgba(212,175,55,0.08);
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(212,175,55,0.05);
         }
         .lang-name { color: var(--text-light); font-size: 13px; }
         .info-row {
@@ -867,7 +840,6 @@
             min-width: 60px;
         }
         .amount-btn:hover { background: rgba(212,175,55,0.1); border-color: var(--gold); }
-        .amount-btn.active { background: rgba(212,175,55,0.15); border-color: var(--gold); }
         .stars { display: flex; gap: 10px; cursor: pointer; margin-top: 10px; flex-wrap: wrap; }
         .stars i { font-size: 28px; color: rgba(255,255,255,0.15); transition: all 0.3s; }
         .stars i.active-star { color: #F5B042; text-shadow: 0 0 30px rgba(245,176,66,0.3); }
@@ -904,11 +876,9 @@
             width: 100%;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(220,38,38,0.25);
-            letter-spacing: 0.5px;
             margin-top: 12px;
         }
-        .btn-delete-data:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 30px rgba(220,38,38,0.4); }
+        .btn-delete-data:hover { transform: scale(1.02); }
 
         .history-order-card {
             background: var(--bg-card);
@@ -922,7 +892,6 @@
         .history-order-card:hover {
             border-color: var(--gold);
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
         }
         .history-order-header {
             display: flex;
@@ -969,7 +938,6 @@
             font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         .history-detail-value {
             font-size: 14px;
@@ -1080,8 +1048,6 @@
             border: 2px solid transparent;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1000px;
         }
         .package-card::before {
             content: '';
@@ -1219,7 +1185,6 @@
             z-index: 3000;
             backdrop-filter: blur(20px);
             animation: modalFadeIn 0.4s ease;
-            perspective: 1200px;
         }
         @keyframes modalFadeIn {
             from { opacity: 0; }
@@ -1236,17 +1201,10 @@
             box-shadow: 0 30px 80px rgba(0,0,0,0.6);
             text-align: center;
             animation: cardFlipIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            transform-style: preserve-3d;
         }
         @keyframes cardFlipIn {
-            from { 
-                opacity: 0; 
-                transform: rotateY(90deg) scale(0.8); 
-            }
-            to { 
-                opacity: 1; 
-                transform: rotateY(0deg) scale(1); 
-            }
+            from { opacity: 0; transform: rotateY(90deg) scale(0.8); }
+            to { opacity: 1; transform: rotateY(0deg) scale(1); }
         }
         .confirm-package-icon {
             font-size: 64px;
@@ -1334,8 +1292,7 @@
 
         .purchase-success-anim {
             position: fixed;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             z-index: 5000;
             text-align: center;
@@ -1358,10 +1315,7 @@
             50% { transform: scale(1.2) rotate(0deg); opacity: 1; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
-        .purchase-success-icon i {
-            font-size: 64px;
-            color: #10b981;
-        }
+        .purchase-success-icon i { font-size: 64px; color: #10b981; }
         .purchase-success-text {
             font-family: 'Playfair Display', serif;
             font-size: 28px;
@@ -1428,7 +1382,6 @@
             .history-order-details { grid-template-columns: 1fr; }
             .package-confirm-box { padding: 24px 16px; }
             .confirm-details { padding: 16px; }
-            .packages-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
         }
         @media (max-width: 576px) {
             .packages-grid { grid-template-columns: 1fr; gap: 14px; }
@@ -1751,18 +1704,14 @@
 </div>
 
 <script type="module">
-    // ===== VERSION CHECK & CACHE CLEAR =====
+    // ===== VERSION CHECK =====
     (function() {
-        const APP_VERSION = '2.2.0';
+        const APP_VERSION = '2.3.0';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
-            localStorage.clear();
-            sessionStorage.clear();
+            localStorage.removeItem('app_version');
             localStorage.setItem('app_version', APP_VERSION);
-            console.log('🔄 App version:', APP_VERSION, 'Cache cleared');
-            if (storedVersion) {
-                setTimeout(() => location.reload(), 300);
-            }
+            console.log('🔄 App version updated to:', APP_VERSION);
         }
     })();
 
@@ -1771,7 +1720,6 @@
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    // ===== FIREBASE CONFIG =====
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
         authDomain: "tripnew-2026.firebaseapp.com",
@@ -1801,7 +1749,6 @@
     let unsubscribeInjections = null;
     let unsubscribePackages = null;
     let currentLang = localStorage.getItem('lang') || 'en';
-    let popupAdsCache = [];
     let isProcessingOrder = false;
     let isProcessingRecharge = false;
     let isProcessingWithdraw = false;
@@ -1809,49 +1756,17 @@
     let sessionId = null;
     let deviceInfo = null;
     let appInitialized = false;
+    
+    // ✅ Cache order templates for random image selection
+    let cachedOrderTemplates = [];
+    let templatesLoaded = false;
 
-    // ✅ Default VIP Packages
+    // Default VIP Packages
     let vipPackages = {
-        bronze: {
-            id: 'bronze',
-            name: 'Bronze',
-            icon: 'fa-medal',
-            orderCount: 40,
-            commissionRate: 0.05,
-            price: 0,
-            description: 'Perfect starter package',
-            popular: false
-        },
-        silver: {
-            id: 'silver',
-            name: 'Silver',
-            icon: 'fa-award',
-            orderCount: 45,
-            commissionRate: 0.07,
-            price: 0,
-            description: 'Great for growing users',
-            popular: false
-        },
-        gold: {
-            id: 'gold',
-            name: 'Gold',
-            icon: 'fa-crown',
-            orderCount: 50,
-            commissionRate: 1.05,
-            price: 0,
-            description: 'Best value package',
-            popular: true
-        },
-        platinum: {
-            id: 'platinum',
-            name: 'Platinum',
-            icon: 'fa-gem',
-            orderCount: 70,
-            commissionRate: 2.50,
-            price: 0,
-            description: 'Elite experience',
-            popular: false
-        }
+        bronze: { id: 'bronze', name: 'Bronze', icon: 'fa-medal', orderCount: 40, commissionRate: 0.05, price: 0, description: 'Perfect starter package', popular: false },
+        silver: { id: 'silver', name: 'Silver', icon: 'fa-award', orderCount: 45, commissionRate: 0.07, price: 0, description: 'Great for growing users', popular: false },
+        gold: { id: 'gold', name: 'Gold', icon: 'fa-crown', orderCount: 50, commissionRate: 1.05, price: 0, description: 'Best value package', popular: true },
+        platinum: { id: 'platinum', name: 'Platinum', icon: 'fa-gem', orderCount: 70, commissionRate: 2.50, price: 0, description: 'Elite experience', popular: false }
     };
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
@@ -1869,16 +1784,22 @@
     function escapeHtml(str) { if (!str) return ''; return String(str).replace(/[&<>"']/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; if (m === '"') return '&quot;'; if (m === "'") return '&#39;'; return m; }); }
     function formatMoney(amount) { return '$ ' + (parseFloat(amount) || 0).toFixed(2); }
 
+    window.togglePassword = function(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
+        else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
+    };
+
     // ==================== TOAST ====================
     function toast(msg, err = false) {
         const el = document.createElement('div');
-        el.className = `toast-msg ${err ? 'error' : ''}`;
         el.style.cssText = `
             position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
             background: ${err ? '#dc2626' : 'rgba(30,42,36,0.92)'};
             backdrop-filter: blur(12px); padding: 12px 28px; border-radius: 40px;
             font-size: 13px; z-index: 10000; font-weight: 700; color: white;
-            border-left: 3px solid var(--gold);
+            border-left: 3px solid #D4AF37;
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             max-width: 92%; text-align: center;
         `;
@@ -1892,7 +1813,7 @@
         }, 3000);
     }
 
-    // ==================== SUCCESS MODAL ====================
+    // ==================== MODALS ====================
     function showSuccessModal(title, message, onClose) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -1908,7 +1829,6 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
-    // ==================== ERROR MODAL ====================
     function showErrorModal(title, message) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -1924,7 +1844,6 @@
         modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
     }
 
-    // ==================== REAL-TIME STATUS ====================
     function updateRealtimeStatus(message = 'Connected') {
         const indicator = document.getElementById('realTimeIndicator');
         if (indicator) {
@@ -1938,7 +1857,66 @@
         }
     }
 
-    // ==================== DEVICE & SESSION ====================
+    function showLoader(msg = 'Loading...') {
+        let l = document.getElementById('tempLoader');
+        if (!l) {
+            l = document.createElement('div');
+            l.id = 'tempLoader';
+            l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px;color:#D4AF37;font-weight:700;';
+            document.body.appendChild(l);
+        }
+        l.innerHTML = `<div style="width:50px;height:50px;border:4px solid rgba(212,175,55,0.2);border-top-color:#D4AF37;border-radius:50%;animation:spin 1s linear infinite;"></div><div>${escapeHtml(msg)}</div>`;
+        l.style.display = 'flex';
+    }
+    function hideLoader() {
+        const l = document.getElementById('tempLoader');
+        if (l) l.remove();
+    }
+    
+    const spinStyle = document.createElement('style');
+    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(spinStyle);
+
+    // ==================== ✅ LOAD ORDER TEMPLATES ====================
+    async function loadOrderTemplates() {
+        try {
+            const snapshot = await getDocs(collection(db, "customOrders"));
+            cachedOrderTemplates = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                cachedOrderTemplates.push({ id: doc.id, ...data });
+            });
+            templatesLoaded = true;
+            console.log(`✅ Loaded ${cachedOrderTemplates.length} order templates`);
+            return cachedOrderTemplates;
+        } catch (e) {
+            console.error('❌ Load order templates error:', e);
+            templatesLoaded = true;
+            return [];
+        }
+    }
+
+    // ✅ Get a random order template (for image selection)
+    function getRandomTemplate() {
+        if (cachedOrderTemplates.length === 0) return null;
+        return cachedOrderTemplates[Math.floor(Math.random() * cachedOrderTemplates.length)];
+    }
+
+    // ✅ Get random image from templates
+    function getRandomOrderImage() {
+        const tpl = getRandomTemplate();
+        if (tpl && tpl.image) return tpl.image;
+        return null;
+    }
+
+    // ✅ Get random order name from templates
+    function getRandomOrderName() {
+        const tpl = getRandomTemplate();
+        if (tpl && tpl.name) return tpl.name;
+        return 'Premium Task Order';
+    }
+
+    // ==================== DEVICE INFO ====================
     function getDeviceInfo() {
         const ua = navigator.userAgent;
         let deviceType = 'Desktop', browser = 'Unknown', os = 'Unknown';
@@ -1962,10 +1940,7 @@
             const res = await fetch('https://api.ipify.org?format=json');
             const data = await res.json();
             return data.ip || 'Unknown';
-        } catch (e) { 
-            console.error('IP fetch failed:', e);
-            return 'Unknown'; 
-        }
+        } catch (e) { return 'Unknown'; }
     }
 
     async function registerSession() {
@@ -1983,7 +1958,6 @@
                 status: 'active'
             });
             sessionStorage.setItem('currentSessionId', sessionId);
-            console.log('✅ Session registered:', sessionId);
         } catch (e) { console.error('Session register failed:', e); }
     }
 
@@ -1991,7 +1965,7 @@
         if (!sessionId) return;
         try {
             await updateDoc(doc(db, 'sessions', sessionId), { lastActive: new Date().toISOString() });
-        } catch (e) { console.error('Session update failed:', e); }
+        } catch (e) {}
     }
 
     async function getUserSessions(userId) {
@@ -2002,7 +1976,7 @@
             snap.forEach(d => sessions.push({ id: d.id, ...d.data() }));
             sessions.sort((a, b) => new Date(b.loginTime) - new Date(a.loginTime));
             return sessions;
-        } catch (e) { console.error('Get sessions failed:', e); return []; }
+        } catch (e) { return []; }
     }
 
     async function showDeviceSessionModal() {
@@ -2060,13 +2034,7 @@
         }
     }
 
-    window.togglePassword = function(inputId, iconElement) {
-        const input = document.getElementById(inputId);
-        if (input.type === "password") { input.type = "text"; iconElement.classList.remove("fa-eye"); iconElement.classList.add("fa-eye-slash"); }
-        else { input.type = "password"; iconElement.classList.remove("fa-eye-slash"); iconElement.classList.add("fa-eye"); }
-    };
-
-    // ==================== REFERRAL COMMISSION ====================
+    // ==================== REFERRAL ====================
     async function processReferralCommission(userId, profitAmount) {
         if (profitAmount <= 0) return;
         try {
@@ -2094,139 +2062,132 @@
                 await saveCurrentUser();
                 updateUI();
             }
-            const dict = translations[currentLang] || translations.en;
-            toast(`🎁 ${dict.referralEarned} +${formatMoney(referralBonus)}`);
+            toast(`🎁 Referral Bonus +${formatMoney(referralBonus)}`);
         } catch (error) { console.error("Referral commission error:", error); }
     }
 
-    // ==================== POPUP ADS ====================
-    async function checkAndShowPopupAds() {
-        if (!currentUser) return;
+    // ==================== SAVE USER ====================
+    async function saveCurrentUser() {
+        if(!currentUser) return;
+        const cleanUser = { ...currentUser };
+        delete cleanUser.orders;
+        delete cleanUser.pendingInjections;
+        
+        if (cleanUser.currentOrderObj) {
+            const order = cleanUser.currentOrderObj;
+            cleanUser.currentOrderObj = {
+                id: order.id || Date.now(),
+                name: order.name || 'Default Order',
+                imageData: order.imageData || null,
+                amount: order.amount || 0,
+                netCommission: order.netCommission || 0,
+                rate: order.rate || 0,
+                orderNumber: order.orderNumber || 'ORD' + Math.floor(Math.random() * 1e9),
+                profit: order.profit || 0,
+                isInjection: order.isInjection || false,
+                isPackageOrder: order.isPackageOrder || false,
+                packageName: order.packageName || null,
+                injectionDetails: order.injectionDetails || null
+            };
+        }
+        
         try {
-            const snapshot = await getDocs(collection(db, "popupAds"));
-            const ads = [];
-            snapshot.forEach(doc => ads.push({ id: doc.id, ...doc.data() }));
-            popupAdsCache = ads;
-            const activeAds = ads.filter(a => a.isActive !== false);
-            const shownKey = `popup_shown_${currentUser.id}`;
-            const alreadyShown = sessionStorage.getItem(shownKey);
-            if (alreadyShown) return;
-            const ad = activeAds[0];
-            if (ad) {
-                sessionStorage.setItem(shownKey, 'true');
-                showPopupAd(ad);
-            }
-        } catch(e) { console.error("Popup ads error:", e); }
+            await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
+            localStorage.setItem("currentUserId", currentUser.id);
+        } catch (e) {
+            console.error('Save user error:', e);
+        }
+    }
+    
+    async function loadSystemSettings() { 
+        try {
+            const docRef = doc(db, "systemSettings", "main"); 
+            const docSnap = await getDoc(docRef); 
+            if (docSnap.exists()) return docSnap.data(); 
+        } catch (e) {}
+        return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; 
     }
 
-    function showPopupAd(ad) {
-        const overlay = document.createElement('div');
-        overlay.className = 'popup-overlay';
-        overlay.innerHTML = `
-            <div class="popup-card">
-                <button class="popup-close-btn" id="popupDismissBtn"><i class="fas fa-times"></i></button>
-                ${ad.imageData ? `<img src="${ad.imageData}" alt="Popup ad">` : ''}
-                <div class="popup-title">${escapeHtml(ad.title || 'Special Offer')}</div>
-                <div class="popup-subtitle">${escapeHtml(ad.subtitle || '')}</div>
-                <button class="btn-lux" id="popupActionBtn" style="width:auto;padding:12px 32px;margin-top:16px;">${escapeHtml(ad.buttonText || 'Close')}</button>
-            </div>
-        `;
-        document.body.appendChild(overlay);
-        const dismiss = () => { if (overlay.parentNode) document.body.removeChild(overlay); };
-        document.getElementById('popupDismissBtn').onclick = dismiss;
-        document.getElementById('popupActionBtn').onclick = dismiss;
-        overlay.addEventListener('click', (e) => { if (e.target === overlay) dismiss(); });
-    }
-
-    // ==================== PROFILE PHOTO ====================
-    function showUploadPhotoModal() {
-        const dict = translations[currentLang] || translations.en;
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content">
-            <h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.uploadPhoto}</h2>
-            <div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;">
-                <div class="photo-preview" id="uploadPreview">${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle"></i>'}</div>
-            </div>
-            <div class="upload-area-sm" id="selectPhotoArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}<input type="file" id="photoUploadInput" accept="image/*" style="display:none;"></div>
-            <div class="upload-btn-area" style="display:flex;gap:12px;margin-top:16px;">
-                <button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button>
-                <button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button>
-            </div>
-        </div>`;
-        document.body.appendChild(modal);
-        let selectedImageData = null;
-        modal.querySelector("#selectPhotoArea").onclick = () => modal.querySelector("#photoUploadInput").click();
-        modal.querySelector("#photoUploadInput").onchange = async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const compressed = await compressImage(file, 400, 400, 0.7);
-                selectedImageData = compressed;
-                const previewDiv = modal.querySelector("#uploadPreview");
-                previewDiv.innerHTML = `<img src="${compressed}">`;
-            }
-        };
-        modal.querySelector("#savePhotoBtn").onclick = async () => {
-            if (selectedImageData) { 
-                currentUser.profilePhoto = selectedImageData; 
-                await saveCurrentUser(); 
-                updateMineAvatar(); 
-                toast("Profile photo updated!"); 
-            }
-            document.body.removeChild(modal);
-        };
-        modal.querySelector("#cancelPhotoBtn").onclick = () => document.body.removeChild(modal);
+    function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.7) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    let width = img.width, height = img.height;
+                    if (width > maxWidth || height > maxHeight) { 
+                        if (width > height) { height = Math.round((height * maxWidth) / width); width = maxWidth; } 
+                        else { width = Math.round((width * maxHeight) / height); height = maxHeight; } 
+                    }
+                    const canvas = document.createElement('canvas'); 
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d'); 
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', quality));
+                };
+                img.onerror = reject; 
+                img.src = e.target.result;
+            };
+            reader.onerror = reject; 
+            reader.readAsDataURL(file);
+        });
     }
 
     // ==================== SUBSCRIPTIONS ====================
     function subscribeToLogos() {
         if (unsubscribeLogos) unsubscribeLogos();
-        const logosRef = doc(db, "systemSettings", "logos");
-        unsubscribeLogos = onSnapshot(logosRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const logos = docSnap.data();
-                const logoContainer = document.getElementById("logoContainer");
-                if (logoContainer) {
-                    let logosHtml = '';
-                    for (let i = 1; i <= 5; i++) {
-                        const logoUrl = logos[`logo${i}`];
-                        if (logoUrl && logoUrl !== '') logosHtml += `<div class="logo-item"><img src="${logoUrl}" alt="Logo ${i}"></div>`;
-                        else { 
-                            const defaultIcons = ['fa-crown', 'fa-plane', 'fa-hotel', 'fa-train', 'fa-globe']; 
-                            logosHtml += `<div class="logo-item"><i class="fas ${defaultIcons[i-1]}"></i></div>`; 
+        try {
+            const logosRef = doc(db, "systemSettings", "logos");
+            unsubscribeLogos = onSnapshot(logosRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const logos = docSnap.data();
+                    const logoContainer = document.getElementById("logoContainer");
+                    if (logoContainer) {
+                        let logosHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            const logoUrl = logos[`logo${i}`];
+                            if (logoUrl && logoUrl !== '') logosHtml += `<div class="logo-item"><img src="${logoUrl}" alt="Logo ${i}"></div>`;
+                            else { 
+                                const defaultIcons = ['fa-crown', 'fa-plane', 'fa-hotel', 'fa-train', 'fa-globe']; 
+                                logosHtml += `<div class="logo-item"><i class="fas ${defaultIcons[i-1]}"></i></div>`; 
+                            }
                         }
+                        logoContainer.innerHTML = logosHtml;
                     }
-                    logoContainer.innerHTML = logosHtml;
                 }
-            }
-        });
+            });
+        } catch (e) {}
     }
 
     function subscribeToCompanyInfo() {
         if (unsubscribeCompany) unsubscribeCompany();
-        const companyRef = doc(db, "systemSettings", "companyInfo");
-        unsubscribeCompany = onSnapshot(companyRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.companyName) document.getElementById("companyNameText").innerText = data.companyName;
-                if (data.companyTagline) document.getElementById("companyTaglineText").innerText = data.companyTagline;
-                if (data.companyDescription) document.getElementById("companyDescription").innerHTML = data.companyDescription;
-                if (data.companyLogo) { 
-                    const logoEl = document.getElementById("companyLogo"); 
-                    if (logoEl) logoEl.innerHTML = `<img src="${data.companyLogo}" style="width:60px;height:60px;object-fit:contain;">`; 
+        try {
+            const companyRef = doc(db, "systemSettings", "companyInfo");
+            unsubscribeCompany = onSnapshot(companyRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const setTxt = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerText = val; };
+                    const setHtml = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerHTML = val; };
+                    
+                    setTxt("companyNameText", data.companyName);
+                    setTxt("companyTaglineText", data.companyTagline);
+                    setHtml("companyDescription", data.companyDescription);
+                    setTxt("stat1Number", data.stat1Number);
+                    setTxt("stat2Number", data.stat2Number);
+                    setTxt("stat3Number", data.stat3Number);
+                    setTxt("stat1Label", data.stat1Label);
+                    setTxt("stat2Label", data.stat2Label);
+                    setTxt("stat3Label", data.stat3Label);
+                    
+                    if (data.companyLogo) { 
+                        const logoEl = document.getElementById("companyLogo"); 
+                        if (logoEl) logoEl.innerHTML = `<img src="${data.companyLogo}" style="width:60px;height:60px;object-fit:contain;">`; 
+                    }
                 }
-                if (data.stat1Number) document.getElementById("stat1Number").innerText = data.stat1Number;
-                if (data.stat2Number) document.getElementById("stat2Number").innerText = data.stat2Number;
-                if (data.stat3Number) document.getElementById("stat3Number").innerText = data.stat3Number;
-                if (data.stat1Label) document.getElementById("stat1Label").innerText = data.stat1Label;
-                if (data.stat2Label) document.getElementById("stat2Label").innerText = data.stat2Label;
-                if (data.stat3Label) document.getElementById("stat3Label").innerText = data.stat3Label;
-                updateRealtimeStatus('Company info updated ✅');
-            }
-        });
+            });
+        } catch (e) {}
     }
 
-    // ✅ SAFE: Subscribe to VIP Packages
     function subscribeToVipPackages() {
         if (unsubscribePackages) unsubscribePackages();
         try {
@@ -2235,30 +2196,101 @@
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     Object.keys(vipPackages).forEach(key => {
-                        if (data[key]) {
-                            vipPackages[key] = { ...vipPackages[key], ...data[key] };
-                        }
+                        if (data[key]) vipPackages[key] = { ...vipPackages[key], ...data[key] };
                     });
-                    console.log('✅ VIP Packages updated:', vipPackages);
                     renderVipPackages();
                     updateRealtimeStatus('VIP Packages updated ✅');
+                } else {
+                    renderVipPackages();
                 }
             }, (error) => {
-                console.log('⚠️ VIP packages subscription error (using defaults):', error.message);
+                console.log('⚠️ VIP packages subscribe error:', error.message);
+                renderVipPackages();
             });
         } catch (e) {
-            console.log('⚠️ VIP packages subscribe failed (using defaults):', e.message);
+            renderVipPackages();
         }
     }
 
-    // ✅ SAFE: Render VIP Packages
+    function subscribeToUser(userId) {
+        if (unsubscribeUser) unsubscribeUser();
+        try {
+            const userRef = doc(db, "users", userId);
+            unsubscribeUser = onSnapshot(userRef, async (docSnap) => {
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    currentUser = { id: docSnap.id, ...userData };
+                    if (!currentUser.orders) currentUser.orders = [];
+                    if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
+                    await checkAndApplyInjections();
+                    updateUI();
+                    updateRealtimeStatus('Account synced ✅');
+                }
+            });
+        } catch (e) {}
+    }
+
+    function subscribeToWithdrawals(userId) {
+        if (unsubscribeWithdrawals) unsubscribeWithdrawals();
+        try {
+            const q = query(collection(db, "withdrawRequests"), where("userId", "==", userId));
+            unsubscribeWithdrawals = onSnapshot(q, async (snapshot) => {
+                snapshot.docChanges().forEach(async (change) => {
+                    if (change.type === "modified") {
+                        const req = change.doc.data();
+                        if (req.status === "rejected" && req.amount) {
+                            const userRef = doc(db, "users", userId);
+                            const userSnap = await getDoc(userRef);
+                            if (userSnap.exists()) await updateDoc(userRef, { balance: (userSnap.data().balance || 0) + req.amount });
+                        }
+                    }
+                });
+            });
+        } catch (e) {}
+    }
+
+    function subscribeToInjections(userId) {
+        if (unsubscribeInjections) unsubscribeInjections();
+        try {
+            const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
+            unsubscribeInjections = onSnapshot(q, async (snapshot) => {
+                const pendingInjections = [];
+                snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+                if (pendingInjections.length > 0 && currentUser) {
+                    pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                    currentUser.pendingInjections = pendingInjections;
+                    await saveCurrentUser();
+                    toast(`✨ SPECIAL BONUS ORDER! ✨`);
+                    if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
+                }
+            });
+        } catch (e) {}
+    }
+
+    function startSettingsSubscription() {
+        if (unsubscribeSettings) unsubscribeSettings();
+        try {
+            const settingsRef = doc(db, "systemSettings", "main");
+            unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const s = docSnap.data();
+                    const setTxt = (id, val) => { const el = document.getElementById(id); if (el && val) el.innerText = val; };
+                    if(s.customerName) { 
+                        setTxt("loginWebsiteName", s.customerName);
+                        setTxt("homeWebsiteName", s.homePageName || s.customerName);
+                        setTxt("brandName", s.customerName || "LUXCY");
+                    }
+                    if(s.customerTagline) setTxt("loginWebsiteTagline", s.customerTagline);
+                }
+            });
+        } catch (e) {}
+    }
+
+    // ==================== ✅ RENDER VIP PACKAGES ====================
     function renderVipPackages() {
         try {
             const container = document.getElementById("vipPackagesContainer");
-            if (!container) {
-                console.log("⏳ vipPackagesContainer not found yet");
-                return;
-            }
+            if (!container) return;
             
             const packageOrder = ['bronze', 'silver', 'gold', 'platinum'];
             
@@ -2309,27 +2341,20 @@
             html += `</div>`;
             container.innerHTML = html;
             
-            // Attach click handlers
             container.querySelectorAll('.package-card').forEach(card => {
                 card.addEventListener('click', () => {
                     const key = card.getAttribute('data-package');
                     showPackageConfirmModal(key);
                 });
             });
-            
-            console.log('✅ VIP Packages rendered');
         } catch (e) {
             console.error('❌ Render VIP packages error:', e);
         }
     }
 
-    // ✅ Show Package Confirmation Modal
     function showPackageConfirmModal(packageKey) {
         if (isProcessingPurchase) return;
-        if (!currentUser) {
-            toast('Please login first', true);
-            return;
-        }
+        if (!currentUser) { toast('Please login first', true); return; }
         
         const pkg = vipPackages[packageKey];
         if (!pkg) return;
@@ -2376,7 +2401,6 @@
                 <div class="insufficient-warning">
                     <h4><i class="fas fa-exclamation-triangle"></i> Insufficient Balance</h4>
                     <p>You need <strong style="color:var(--gold);">${formatMoney(needed)}</strong> more to purchase this package.</p>
-                    <p style="font-size:12px;margin-top:8px;">Please recharge your account first.</p>
                 </div>
                 <div class="confirm-buttons">
                     <button class="confirm-no-btn" id="packageCancelBtn">Cancel</button>
@@ -2417,7 +2441,7 @@
         });
     }
 
-    // ✅ Process Package Purchase
+    // ✅ Process Package Purchase - FIXED with try/catch for permissions
     async function processPackagePurchase(packageKey) {
         if (isProcessingPurchase) return;
         const pkg = vipPackages[packageKey];
@@ -2433,39 +2457,53 @@
         showLoader('Processing purchase...');
         
         try {
+            // 1. Deduct balance
             currentUser.balance = userBalance - pkg.price;
             
+            // 2. Add order count to user's tasks
             if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
             currentUser.tasks.total = (currentUser.tasks.total || 0) + pkg.orderCount;
             
+            // 3. Set user's package info
             currentUser.vipPackage = packageKey;
             currentUser.vipPackageName = pkg.name;
             currentUser.vipPackageCommission = pkg.commissionRate;
             currentUser.vipPackageOrderCount = pkg.orderCount;
             currentUser.vipPackagePurchasedAt = new Date().toISOString();
             
+            // 4. Save to Firestore (users collection - always works)
             await saveCurrentUser();
             
-            await setDoc(doc(db, "packagePurchases", Date.now().toString()), {
-                id: Date.now().toString(),
-                userId: currentUser.id,
-                userName: currentUser.username,
-                packageKey: packageKey,
-                packageName: pkg.name,
-                price: pkg.price,
-                orderCount: pkg.orderCount,
-                commissionRate: pkg.commissionRate,
-                purchasedAt: new Date().toISOString(),
-                status: 'completed'
-            });
+            // 5. Log purchase (OPTIONAL - wrapped in try/catch)
+            try {
+                await setDoc(doc(db, "packagePurchases", Date.now().toString()), {
+                    id: Date.now().toString(),
+                    userId: currentUser.id,
+                    userName: currentUser.username,
+                    packageKey: packageKey,
+                    packageName: pkg.name,
+                    price: pkg.price,
+                    orderCount: pkg.orderCount,
+                    commissionRate: pkg.commissionRate,
+                    purchasedAt: new Date().toISOString(),
+                    status: 'completed'
+                });
+                console.log('✅ Purchase log saved');
+            } catch (logError) {
+                // Silent fail - purchase still succeeds
+                console.log('⚠️ Purchase log skipped (permission):', logError.message);
+            }
             
+            // 6. Create random order for the package
             await createRandomOrderForPackage(pkg);
             
             hideLoader();
+            
+            // 7. Show success animation
             showPurchaseSuccessAnimation(pkg);
             
+            // 8. Update UI
             updateUI();
-            
             updateRealtimeStatus('Package purchased ✅');
             
         } catch (error) {
@@ -2477,14 +2515,17 @@
         }
     }
 
-    // ✅ Create Random Order for Package
+    // ✅ Create Random Order for Package (with image from templates)
     async function createRandomOrderForPackage(pkg) {
         if (!currentUser) return;
         
-        const orderTemplates = await loadCustomOrders();
-        let tpl = orderTemplates.length > 0 
-            ? orderTemplates[Math.floor(Math.random() * orderTemplates.length)]
-            : { name: 'Premium Travel Package', image: null, price: 10 };
+        // Ensure templates are loaded
+        if (!templatesLoaded) await loadOrderTemplates();
+        
+        // Get random template
+        const tpl = getRandomTemplate();
+        const orderName = tpl?.name || 'Premium Travel Package';
+        const orderImage = tpl?.image || null;
         
         const balance = currentUser.balance || 0;
         const commissionRate = pkg.commissionRate / 100;
@@ -2495,8 +2536,8 @@
         
         const order = {
             id: Date.now(),
-            name: tpl.name || 'Premium Task Order',
-            imageData: tpl.image || null,
+            name: orderName,
+            imageData: orderImage,
             amount: amount,
             netCommission: netCommission,
             rate: pkg.commissionRate,
@@ -2511,18 +2552,15 @@
         currentUser.currentOrderObj = order;
         await saveCurrentUser();
         
-        console.log('✅ Package order created:', order);
+        console.log('✅ Package order created:', orderName, '| Image:', orderImage ? 'YES' : 'NO');
         return order;
     }
 
-    // ✅ Purchase Success Animation
     function showPurchaseSuccessAnimation(pkg) {
         const animDiv = document.createElement("div");
         animDiv.className = "purchase-success-anim";
         animDiv.innerHTML = `
-            <div class="purchase-success-icon">
-                <i class="fas fa-check"></i>
-            </div>
+            <div class="purchase-success-icon"><i class="fas fa-check"></i></div>
             <div class="purchase-success-text">Order Successful!</div>
             <div class="purchase-success-sub">${escapeHtml(pkg.name)} Package Activated</div>
         `;
@@ -2534,7 +2572,6 @@
                 coin.className = "coin";
                 coin.innerHTML = ['💰', '🪙', '⭐', '✨'][Math.floor(Math.random() * 4)];
                 coin.style.left = Math.random() * 100 + '%';
-                coin.style.animationDelay = '0s';
                 coin.style.animationDuration = (1 + Math.random()) + 's';
                 document.body.appendChild(coin);
                 setTimeout(() => coin.remove(), 2500);
@@ -2546,123 +2583,374 @@
             showSuccessModal(
                 'Purchase Successful! 🎉',
                 `<strong style="color:var(--gold);font-size:18px;">${escapeHtml(pkg.name)} Package</strong> activated!<br><br>
-                <i class="fas fa-shopping-bag"></i> <strong>${pkg.orderCount}</strong> orders added to your account<br>
+                <i class="fas fa-shopping-bag"></i> <strong>${pkg.orderCount}</strong> orders added<br>
                 <i class="fas fa-percentage"></i> Commission rate: <strong style="color:var(--gold);">${pkg.commissionRate}%</strong><br><br>
                 <span style="font-size:13px;color:var(--text-muted);">A random order has been generated. Go to Work page to start!</span>`,
-                () => {
-                    showPage("work");
-                }
+                () => { showPage("work"); }
             );
         }, 2000);
     }
 
-    // ==================== LOAD CUSTOM ORDERS ====================
-    async function loadCustomOrders() { 
-        try {
-            const snapshot = await getDocs(collection(db, "customOrders")); 
-            const orders = []; 
-            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); 
-            return orders; 
-        } catch (e) {
-            console.error('Load custom orders error:', e);
-            return [];
+    // ==================== ✅ GET NEXT ORDER (with random image from templates) ====================
+    async function getNextOrder() {
+        const balance = currentUser.balance || 0;
+        const commissionRate = getCommissionRate(currentUser);
+        const nextTaskNumber = (currentUser.tasks?.completed || 0) + 1;
+        
+        // Ensure templates loaded
+        if (!templatesLoaded) await loadOrderTemplates();
+        
+        let injection = null;
+        if (currentUser.pendingInjections && currentUser.pendingInjections.length > 0) {
+            injection = currentUser.pendingInjections.find(i => i.taskNumber === nextTaskNumber);
+            if (injection && !injection.used) {
+                await markInjectionAsUsed(injection.id);
+                currentUser.pendingInjections = currentUser.pendingInjections.filter(i => i.id !== injection.id);
+                await saveCurrentUser();
+            } else injection = null;
         }
+        
+        // ✅ Get random template for image
+        const randomTpl = getRandomTemplate();
+        
+        let amount, netCommission, isInjection = false;
+        if (injection) {
+            const injectionAmount = injection.extraAmount || 0;
+            amount = balance + injectionAmount;
+            if (injection.commission > 0) netCommission = injection.commission;
+            else if (injection.commissionRate > 0) netCommission = amount * (injection.commissionRate / 100);
+            else netCommission = amount * commissionRate;
+            isInjection = true;
+            toast(`🎉 SPECIAL BONUS ORDER!`);
+        } else {
+            let percent = 0.53 + (Math.random() * 0.26);
+            amount = parseFloat((balance * percent).toFixed(2));
+            let gross = balance * commissionRate;
+            let fee = gross * 0.01;
+            netCommission = gross - fee;
+        }
+        
+        // ✅ Priority: injection image > template image > null
+        let imageData = null;
+        if (injection?.imageData) {
+            imageData = injection.imageData;
+        } else if (randomTpl?.image) {
+            imageData = randomTpl.image;
+        } else if (cachedOrderTemplates.length > 0) {
+            // Try to find any template with an image
+            const templateWithImage = cachedOrderTemplates.find(t => t.image);
+            if (templateWithImage) imageData = templateWithImage.image;
+        }
+        
+        // ✅ Order name priority: injection name > template name > default
+        let orderName = 'Premium Task Order';
+        if (injection?.orderName) orderName = injection.orderName;
+        else if (randomTpl?.name) orderName = randomTpl.name;
+        
+        const order = {
+            id: Date.now(),
+            name: orderName,
+            imageData: imageData,
+            amount: amount,
+            netCommission: netCommission || 0,
+            rate: injection?.commissionRate || (commissionRate * 100),
+            orderNumber: "ORD" + Math.floor(Math.random() * 1e9),
+            profit: netCommission || 0,
+            isInjection: isInjection,
+            injectionDetails: isInjection ? { 
+                extraAmount: injection?.extraAmount || 0, 
+                customCommission: netCommission || 0, 
+                originalBalance: balance, 
+                injectionId: injection?.id 
+            } : null
+        };
+        
+        console.log('✅ Order created:', orderName, '| Image:', imageData ? 'YES' : 'NO');
+        return order;
     }
 
-    // ==================== SAVE USER ====================
-    async function saveCurrentUser() {
-        if(!currentUser) return;
-        const cleanUser = { ...currentUser };
-        delete cleanUser.orders;
-        delete cleanUser.pendingInjections;
-        
-        if (cleanUser.currentOrderObj) {
-            const order = cleanUser.currentOrderObj;
-            cleanUser.currentOrderObj = {
-                id: order.id || Date.now(),
-                name: order.name || 'Default Order',
-                imageData: order.imageData || null,
-                amount: order.amount || 0,
-                netCommission: order.netCommission || 0,
-                rate: order.rate || 0,
-                orderNumber: order.orderNumber || 'ORD' + Math.floor(Math.random() * 1e9),
-                profit: order.profit || 0,
-                isInjection: order.isInjection || false,
-                isPackageOrder: order.isPackageOrder || false,
-                packageName: order.packageName || null,
-                injectionDetails: order.injectionDetails || null
-            };
-        }
-        
+    async function markInjectionAsUsed(injectionId) {
         try {
-            await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
-            localStorage.setItem("currentUserId", currentUser.id);
-        } catch (e) {
-            console.error('Save user error:', e);
-        }
+            await updateDoc(doc(db, "injections", injectionId), { used: true, usedAt: new Date().toISOString() });
+        } catch (e) { console.error('Mark injection error:', e); }
     }
     
-    async function loadSystemSettings() { 
+    async function checkAndApplyInjections() {
+        if (!currentUser) return [];
         try {
-            const docRef = doc(db, "systemSettings", "main"); 
-            const docSnap = await getDoc(docRef); 
-            if (docSnap.exists()) return docSnap.data(); 
-        } catch (e) {
-            console.error('Load settings error:', e);
-        }
-        return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; 
+            const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
+            const snapshot = await getDocs(q);
+            const pendingInjections = [];
+            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+            if (pendingInjections.length > 0) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                currentUser.pendingInjections = pendingInjections;
+                await saveCurrentUser();
+            }
+            return pendingInjections;
+        } catch (e) { return []; }
     }
 
-    function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.7) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    let width = img.width, height = img.height;
-                    if (width > maxWidth || height > maxHeight) { 
-                        if (width > height) { 
-                            height = Math.round((height * maxWidth) / width); 
-                            width = maxWidth; 
-                        } else { 
-                            width = Math.round((width * maxHeight) / height); 
-                            height = maxHeight; 
-                        } 
+    // ==================== DISPLAY ORDER ====================
+    function displayOrder(order) {
+        const dict = translations[currentLang] || translations.en;
+        
+        // ✅ Show image if available, otherwise show default icon
+        let imgHtml;
+        if (order.imageData) {
+            imgHtml = `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'; this.parentNode.innerHTML='<i class=\\'fas fa-box\\' style=\\'font-size:64px;color:var(--gold);\\'></i>';">`;
+        } else {
+            imgHtml = '<i class="fas fa-box"></i>';
+        }
+        
+        let afterOrderBalance = currentUser.balance + order.netCommission;
+        const insufficient = currentUser.balance < order.amount;
+        const isInjection = order.isInjection || false;
+        const isPackageOrder = order.isPackageOrder || false;
+        const injectionClass = isInjection ? 'injection-order' : '';
+        const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
+        const packageBadge = isPackageOrder ? '<div class="injection-badge" style="background:linear-gradient(135deg,#d4af37,#b8941e);"><i class="fas fa-crown"></i> ' + escapeHtml(order.packageName || 'Package') + '</div>' : '';
+        
+        let injectionInfoHtml = '';
+        if (isInjection && order.injectionDetails) {
+            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;">
+                <div class="flex-between"><span class="text-light">💰 Original Balance:</span><span class="text-gold">${formatMoney(order.injectionDetails.originalBalance)}</span></div>
+                <div class="flex-between"><span class="text-light">➕ Injection Amount:</span><span class="text-gold">+ ${formatMoney(order.injectionDetails.extraAmount)}</span></div>
+                <div class="flex-between"><span class="text-light">💵 Total Amount:</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
+                <div class="flex-between"><span class="text-light">💎 Commission:</span><span class="text-gold" style="font-size:20px;">+ ${formatMoney(order.netCommission)}</span></div>
+            </div>`;
+        }
+        
+        document.getElementById("currentOrderDisplay").innerHTML = `
+            <div class="order-detail-card ${injectionClass}" style="background:rgba(0,0,0,0.3);border-radius:28px;padding:24px;margin-top:20px;border:1px solid var(--border-gold);">
+                ${injectionBadge}
+                ${packageBadge}
+                <div class="order-image">${imgHtml}</div>
+                <h2 style="color:var(--gold-light);">${escapeHtml(order.name)}</h2>
+                <div class="text-light">Order #: ${escapeHtml(order.orderNumber)}</div>
+                ${injectionInfoHtml}
+                ${!injectionInfoHtml ? `
+                    <div class="flex-between"><span class="text-light">${dict.orderAmount}</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
+                    <div class="flex-between"><span class="text-light">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ ${formatMoney(order.netCommission)}</span></div>
+                ` : ''}
+                <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gold);">
+                    <span class="text-light">${dict.afterCompletionBalance}</span>
+                    <strong style="color:var(--gold-light);font-size:20px;">${formatMoney(afterOrderBalance)}</strong>
+                </div>
+                ${!insufficient ? `
+                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
+                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
+                <button class="btn-lux" id="submitOrderFromCardBtn" style="margin-top:20px;">${dict.submitComplete}</button>
+                ` : `<div style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;">
+                    <strong style="color:#dc2626;">${dict.insufficientBalance}</strong>
+                    <div style="margin-top:8px;">
+                        <div>💰 ${dict.orderAmount}: ${formatMoney(order.amount)}</div>
+                        <div>💵 ${dict.yourBalance}: ${formatMoney(currentUser.balance)}</div>
+                        <div>🔴 ${dict.needAdditional}: ${formatMoney(order.amount - currentUser.balance)}</div>
+                    </div>
+                    <button class="btn-lux" id="rechargeFromOrderBtn" style="margin-top:12px;background:#10b981;color:white;">${dict.rechargeNow}</button>
+                </div>`}
+            </div>
+        `;
+        document.getElementById("currentOrderDisplay").style.display = "block";
+        currentOrder = order;
+        currentRatings = { service: 0, quality: 0, sales: 0 };
+
+        if (!insufficient) {
+            document.querySelectorAll('#currentOrderDisplay .stars').forEach(container => {
+                let cat = container.dataset.category;
+                let stars = container.querySelectorAll('i');
+                stars.forEach(star => { 
+                    star.onclick = () => { 
+                        let val = parseInt(star.dataset.value); 
+                        currentRatings[cat] = val; 
+                        stars.forEach((s, i) => { 
+                            s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; 
+                        }); 
+                    }; 
+                });
+            });
+            
+            let submitBtn = document.getElementById("submitOrderFromCardBtn");
+            if (submitBtn) {
+                submitBtn.onclick = async function() {
+                    if(submitBtn.disabled || isProcessingOrder) return;
+                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { 
+                        toast("Please provide all ratings", true);
+                        return; 
                     }
-                    const canvas = document.createElement('canvas'); 
-                    canvas.width = width; 
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d'); 
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', quality));
+                    isProcessingOrder = true;
+                    submitBtn.disabled = true; 
+                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
+                    try {
+                        const orderToComplete = currentOrder;
+                        if (!orderToComplete) throw new Error("No order to complete");
+                        
+                        const profitEarned = orderToComplete.netCommission || 0;
+                        
+                        if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
+                        currentUser.balance = (currentUser.balance || 0) + profitEarned;
+                        currentUser.todayEarnings = (currentUser.todayEarnings || 0) + profitEarned;
+                        currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
+                        currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
+                        
+                        const orderHistoryData = {
+                            ...orderToComplete,
+                            status: "completed",
+                            ratings: { ...currentRatings },
+                            date: new Date().toLocaleString(),
+                            profit: profitEarned,
+                            timestamp: new Date().toISOString()
+                        };
+                        await saveOrderToHistory(currentUser.id, orderHistoryData);
+                        
+                        currentUser.currentOrderObj = null;
+                        await saveCurrentUser();
+                        
+                        await processReferralCommission(currentUser.id, profitEarned);
+                        
+                        currentOrder = null;
+                        updateUI();
+                        
+                        showSuccessModal('Order Completed!', `You earned <strong style="color:var(--gold);font-size:20px;">${formatMoney(profitEarned)}</strong> commission.`, () => {
+                            loadNextOrderAutomatically();
+                        });
+                        
+                        let dailyLimit = currentUser.tasks.total || 0;
+                        let completedCount = currentUser.tasks.completed || 0;
+                        if(completedCount >= dailyLimit && dailyLimit > 0) {
+                            document.getElementById("currentOrderDisplay").style.display = "none";
+                        }
+                        
+                    } catch(err) { 
+                        console.error("Order completion error:", err); 
+                        showErrorModal('Order Failed', err.message);
+                    } finally {
+                        isProcessingOrder = false;
+                        submitBtn.disabled = false; 
+                        submitBtn.innerHTML = dict.submitComplete;
+                    }
                 };
-                img.onerror = reject; 
-                img.src = e.target.result;
-            };
-            reader.onerror = reject; 
-            reader.readAsDataURL(file);
-        });
+            }
+        } else {
+            let rechargeBtn = document.getElementById("rechargeFromOrderBtn");
+            if(rechargeBtn) rechargeBtn.onclick = () => { showRechargeModal(); };
+        }
     }
 
-    function showLoader(msg = 'Loading...') {
-        let l = document.getElementById('tempLoader');
-        if (!l) {
-            l = document.createElement('div');
-            l.id = 'tempLoader';
-            l.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px;color:var(--gold);font-weight:700;';
-            document.body.appendChild(l);
+    function showPendingOrderWarning() {
+        const modal = document.createElement("div");
+        modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content" style="text-align:center;">
+            <div style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2 style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ Warning</h2>
+            <p style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">Please complete your current pending order before starting a new one.</p>
+            <button class="btn-lux" id="warningOkayBtn" style="background:#dc2626;color:white;">Okay</button>
+        </div>`;
+        document.body.appendChild(modal);
+        document.getElementById("warningOkayBtn").onclick = () => { 
+            document.body.removeChild(modal); 
+            showPage("work"); 
+            if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj); 
+            else if (currentOrder) displayOrder(currentOrder); 
+        };
+    }
+
+    async function loadNextOrderAutomatically() {
+        try {
+            let dailyLimit = currentUser.tasks?.total || 0;
+            let completedCount = currentUser.tasks?.completed || 0;
+            if(completedCount >= dailyLimit && dailyLimit > 0) { 
+                document.getElementById("currentOrderDisplay").style.display = "none"; 
+                toast("🎉 All orders completed for today!");
+                return; 
+            }
+            let settings = await loadSystemSettings();
+            if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
+                document.getElementById("currentOrderDisplay").style.display = "none"; 
+                toast("Insufficient balance! Please recharge.", true); 
+                return; 
+            }
+            let newOrder = await getNextOrder();
+            
+            if (!newOrder || !newOrder.name) {
+                toast("Error: Could not generate valid order.", true);
+                document.getElementById("currentOrderDisplay").style.display = "none";
+                return;
+            }
+            
+            currentOrder = newOrder;
+            currentUser.currentOrderObj = newOrder;
+            await saveCurrentUser();
+            displayOrder(newOrder);
+        } catch (error) {
+            console.error("❌ Error loading next order:", error);
+            toast("Error loading next order: " + error.message, true);
+            document.getElementById("currentOrderDisplay").style.display = "none";
         }
-        l.innerHTML = `<div style="width:50px;height:50px;border:4px solid rgba(212,175,55,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;"></div><div>${escapeHtml(msg)}</div>`;
-        l.style.display = 'flex';
     }
-    function hideLoader() {
-        const l = document.getElementById('tempLoader');
-        if (l) l.remove();
+
+    function refreshWorkPageOrder() {
+        if(!currentUser) return;
+        let dailyLimit = currentUser.tasks?.total || 0;
+        let completedCount = currentUser.tasks?.completed || 0;
+        if(completedCount >= dailyLimit && dailyLimit > 0) { 
+            document.getElementById("currentOrderDisplay").style.display = "none"; 
+            return; 
+        }
+        if(currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj);
+        else if(currentOrder) displayOrder(currentOrder);
+        else { if(completedCount < dailyLimit && dailyLimit > 0) loadNextOrderAutomatically(); }
     }
-    
-    const spinStyle = document.createElement('style');
-    spinStyle.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
-    document.head.appendChild(spinStyle);
+
+    // ==================== SAVE ORDER TO HISTORY ====================
+    async function saveOrderToHistory(userId, orderData) {
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            if (orderData.id) {
+                const orderDocRef = doc(ordersRef, orderData.id.toString());
+                await setDoc(orderDocRef, {
+                    ...orderData,
+                    timestamp: orderData.timestamp || new Date().toISOString()
+                });
+            } else {
+                await addDoc(ordersRef, {
+                    ...orderData,
+                    timestamp: orderData.timestamp || new Date().toISOString()
+                });
+            }
+            await deleteOldOrdersIfNeeded(userId, 50);
+        } catch (error) {
+            console.error("❌ Error saving order:", error);
+            throw error;
+        }
+    }
+
+    async function getUserOrders(userId) {
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            const q = query(ordersRef, orderBy("timestamp", "desc"), limit(50));
+            const snapshot = await getDocs(q);
+            const orders = [];
+            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+            return orders;
+        } catch (e) { return []; }
+    }
+
+    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            const q = query(ordersRef, orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            if (snapshot.size > maxOrders) {
+                const toDelete = [];
+                let count = 0;
+                for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
+                for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
+            }
+        } catch (e) {}
+    }
 
     // ==================== UPDATE UI ====================
     async function updateUI() {
@@ -2749,7 +3037,7 @@
                                     </div>
                                     <div class="history-detail-item">
                                         <span class="history-detail-label">Type</span>
-                                        <span class="history-detail-value">${o.isInjection ? '🎁 Bonus Order' : (o.isPackageOrder ? '👑 Package Order' : 'Standard')}</span>
+                                        <span class="history-detail-value">${o.isInjection ? '🎁 Bonus' : (o.isPackageOrder ? '👑 Package' : 'Standard')}</span>
                                     </div>
                                 </div>
                                 <div class="history-order-ratings">
@@ -2782,329 +3070,6 @@
         }
     }
 
-    // ==================== ORDER SYSTEM ====================
-    async function getRandomOrderTemplate() {
-        let orders = await loadCustomOrders();
-        if(orders.length === 0) {
-            return { id: 0, name: "Premium Travel Package", image: null, price: 10 };
-        }
-        return orders[Math.floor(Math.random() * orders.length)];
-    }
-
-    async function getNextOrder() {
-        const balance = currentUser.balance || 0;
-        const commissionRate = getCommissionRate(currentUser);
-        const nextTaskNumber = (currentUser.tasks?.completed || 0) + 1;
-        let injection = null;
-        if (currentUser.pendingInjections && currentUser.pendingInjections.length > 0) {
-            injection = currentUser.pendingInjections.find(i => i.taskNumber === nextTaskNumber);
-            if (injection && !injection.used) {
-                await markInjectionAsUsed(injection.id);
-                currentUser.pendingInjections = currentUser.pendingInjections.filter(i => i.id !== injection.id);
-                await saveCurrentUser();
-            } else injection = null;
-        }
-        let tpl = await getRandomOrderTemplate();
-        let amount, netCommission, isInjection = false;
-        if (injection) {
-            const injectionAmount = injection.extraAmount || 0;
-            amount = balance + injectionAmount;
-            if (injection.commission > 0) netCommission = injection.commission;
-            else if (injection.commissionRate > 0) netCommission = amount * (injection.commissionRate / 100);
-            else netCommission = amount * commissionRate;
-            isInjection = true;
-            const dict = translations[currentLang] || translations.en;
-            toast(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'}`);
-        } else {
-            let percent = 0.53 + (Math.random() * 0.26);
-            amount = parseFloat((balance * percent).toFixed(2));
-            let gross = balance * commissionRate;
-            let fee = gross * 0.01;
-            netCommission = gross - fee;
-        }
-        
-        let orderName = injection ? (injection.orderName || tpl.name) : (tpl.name || 'Premium Task Order');
-        let imageData = injection?.imageData || tpl.image || null;
-        
-        const order = {
-            id: Date.now(),
-            name: orderName,
-            imageData: imageData,
-            amount: amount,
-            netCommission: netCommission || 0,
-            rate: injection?.commissionRate || (commissionRate * 100),
-            orderNumber: "ORD" + Math.floor(Math.random() * 1e9),
-            profit: netCommission || 0,
-            isInjection: isInjection,
-            injectionDetails: isInjection ? { 
-                extraAmount: injection?.extraAmount || 0, 
-                customCommission: netCommission || 0, 
-                originalBalance: balance, 
-                injectionId: injection?.id 
-            } : null
-        };
-        return order;
-    }
-
-    function showPendingOrderWarning() {
-        const dict = translations[currentLang] || translations.en;
-        const modal = document.createElement("div");
-        modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content" style="text-align:center;">
-            <div style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
-            <h2 style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2>
-            <p style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p>
-            <button class="btn-lux" id="warningOkayBtn" style="background:#dc2626;color:white;">${dict.okay || "Okay"}</button>
-        </div>`;
-        document.body.appendChild(modal);
-        document.getElementById("warningOkayBtn").onclick = () => { 
-            document.body.removeChild(modal); 
-            showPage("work"); 
-            if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj); 
-            else if (currentOrder) displayOrder(currentOrder); 
-        };
-    }
-
-    function displayOrder(order) {
-        const dict = translations[currentLang] || translations.en;
-        let imgHtml = order.imageData ? `<img src="${order.imageData}" style="width:100%;height:100%;object-fit:contain;">` : '<i class="fas fa-box" style="font-size:48px;color:var(--gold);"></i>';
-        let afterOrderBalance = currentUser.balance + order.netCommission;
-        const insufficient = currentUser.balance < order.amount;
-        const isInjection = order.isInjection || false;
-        const isPackageOrder = order.isPackageOrder || false;
-        const injectionClass = isInjection ? 'injection-order' : '';
-        const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
-        const packageBadge = isPackageOrder ? '<div class="injection-badge" style="background:linear-gradient(135deg,#d4af37,#b8941e);"><i class="fas fa-crown"></i> ' + escapeHtml(order.packageName || 'Package') + '</div>' : '';
-        
-        let injectionInfoHtml = '';
-        if (isInjection && order.injectionDetails) {
-            injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;">
-                <div class="flex-between"><span class="text-light">💰 Original Balance:</span><span class="text-gold">${formatMoney(order.injectionDetails.originalBalance)}</span></div>
-                <div class="flex-between"><span class="text-light">➕ Injection Amount:</span><span class="text-gold">+ ${formatMoney(order.injectionDetails.extraAmount)}</span></div>
-                <div class="flex-between"><span class="text-light">💵 Total Amount:</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
-                <div class="flex-between"><span class="text-light">💎 Commission:</span><span class="text-gold" style="font-size:20px;">+ ${formatMoney(order.netCommission)}</span></div>
-            </div>`;
-        }
-        
-        document.getElementById("currentOrderDisplay").innerHTML = `
-            <div class="order-detail-card ${injectionClass}" style="background:rgba(0,0,0,0.3);border-radius:28px;padding:24px;margin-top:20px;border:1px solid var(--border-gold);">
-                ${injectionBadge}
-                ${packageBadge}
-                <div class="order-image">${imgHtml}</div>
-                <h2 style="color:var(--gold-light);">${escapeHtml(order.name)}</h2>
-                <div class="text-light">Order #: ${escapeHtml(order.orderNumber)}</div>
-                ${injectionInfoHtml}
-                ${!injectionInfoHtml ? `
-                    <div class="flex-between"><span class="text-light">${dict.orderAmount}</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
-                    <div class="flex-between"><span class="text-light">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ ${formatMoney(order.netCommission)}</span></div>
-                ` : ''}
-                <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gold);">
-                    <span class="text-light">${dict.afterCompletionBalance}</span>
-                    <strong style="color:var(--gold-light);font-size:20px;">${formatMoney(afterOrderBalance)}</strong>
-                </div>
-                ${!insufficient ? `
-                <div style="margin-top:16px;"><div><span class="text-gold">${dict.serviceQuality}</span></div><div class="stars" data-category="service"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
-                <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
-                <button class="btn-lux" id="submitOrderFromCardBtn" style="margin-top:20px;">${dict.submitComplete}</button>
-                ` : `<div style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;">
-                    <strong style="color:#dc2626;">${dict.insufficientBalance}</strong>
-                    <div style="margin-top:8px;">
-                        <div>💰 ${dict.orderAmount}: ${formatMoney(order.amount)}</div>
-                        <div>💵 ${dict.yourBalance}: ${formatMoney(currentUser.balance)}</div>
-                        <div>🔴 ${dict.needAdditional}: ${formatMoney(order.amount - currentUser.balance)}</div>
-                    </div>
-                    <button class="btn-lux" id="rechargeFromOrderBtn" style="margin-top:12px;background:#10b981;color:white;">${dict.rechargeNow}</button>
-                </div>`}
-            </div>
-        `;
-        document.getElementById("currentOrderDisplay").style.display = "block";
-        currentOrder = order;
-        currentRatings = { service: 0, quality: 0, sales: 0 };
-
-        if (!insufficient) {
-            document.querySelectorAll('#currentOrderDisplay .stars').forEach(container => {
-                let cat = container.dataset.category;
-                let stars = container.querySelectorAll('i');
-                stars.forEach(star => { 
-                    star.onclick = () => { 
-                        let val = parseInt(star.dataset.value); 
-                        currentRatings[cat] = val; 
-                        stars.forEach((s, i) => { 
-                            s.className = i < val ? 'fas fa-star active-star' : 'far fa-star'; 
-                        }); 
-                    }; 
-                });
-            });
-            let submitBtn = document.getElementById("submitOrderFromCardBtn");
-            if (submitBtn) {
-                submitBtn.onclick = async function() {
-                    if(submitBtn.disabled || isProcessingOrder) return;
-                    if(currentRatings.service === 0 || currentRatings.quality === 0 || currentRatings.sales === 0) { 
-                        toast("Please provide all ratings", true);
-                        return; 
-                    }
-                    isProcessingOrder = true;
-                    submitBtn.disabled = true; 
-                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
-                    try {
-                        const orderToComplete = currentOrder;
-                        if (!orderToComplete) throw new Error("No order to complete");
-                        
-                        const profitEarned = orderToComplete.netCommission || 0;
-                        
-                        if(!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
-                        currentUser.balance = (currentUser.balance || 0) + profitEarned;
-                        currentUser.todayEarnings = (currentUser.todayEarnings || 0) + profitEarned;
-                        currentUser.totalCommission = (currentUser.totalCommission || 0) + profitEarned;
-                        currentUser.tasks.completed = (currentUser.tasks.completed || 0) + 1;
-                        
-                        const orderHistoryData = {
-                            ...orderToComplete,
-                            status: "completed",
-                            ratings: { ...currentRatings },
-                            date: new Date().toLocaleString(),
-                            profit: profitEarned,
-                            timestamp: new Date().toISOString()
-                        };
-                        await saveOrderToHistory(currentUser.id, orderHistoryData);
-                        
-                        currentUser.currentOrderObj = null;
-                        await saveCurrentUser();
-                        
-                        await processReferralCommission(currentUser.id, profitEarned);
-                        
-                        currentOrder = null;
-                        updateUI();
-                        
-                        showSuccessModal('Order Completed!', `You earned <strong style="color:var(--gold);font-size:20px;">${formatMoney(profitEarned)}</strong> commission.`, () => {
-                            loadNextOrderAutomatically();
-                        });
-                        
-                        let dailyLimit = currentUser.tasks.total || 0;
-                        let completedCount = currentUser.tasks.completed || 0;
-                        if(completedCount >= dailyLimit && dailyLimit > 0) {
-                            document.getElementById("currentOrderDisplay").style.display = "none";
-                        }
-                        
-                    } catch(err) { 
-                        console.error("Order completion error:", err); 
-                        showErrorModal('Order Failed', err.message);
-                    } finally {
-                        isProcessingOrder = false;
-                        submitBtn.disabled = false; 
-                        submitBtn.innerHTML = dict.submitComplete;
-                    }
-                };
-            }
-        } else {
-            let rechargeBtn = document.getElementById("rechargeFromOrderBtn");
-            if(rechargeBtn) rechargeBtn.onclick = () => { showRechargeModal(); };
-        }
-    }
-
-    async function loadNextOrderAutomatically() {
-        try {
-            let dailyLimit = currentUser.tasks?.total || 0;
-            let completedCount = currentUser.tasks?.completed || 0;
-            if(completedCount >= dailyLimit && dailyLimit > 0) { 
-                document.getElementById("currentOrderDisplay").style.display = "none"; 
-                toast("🎉 All orders completed for today!");
-                return; 
-            }
-            let settings = await loadSystemSettings();
-            if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
-                document.getElementById("currentOrderDisplay").style.display = "none"; 
-                toast("Insufficient balance! Please recharge.", true); 
-                return; 
-            }
-            let newOrder = await getNextOrder();
-            
-            if (!newOrder || !newOrder.name) {
-                console.error("❌ Invalid order generated:", newOrder);
-                toast("Error: Could not generate valid order.", true);
-                document.getElementById("currentOrderDisplay").style.display = "none";
-                return;
-            }
-            
-            currentOrder = newOrder;
-            currentUser.currentOrderObj = newOrder;
-            await saveCurrentUser();
-            displayOrder(newOrder);
-            updateRealtimeStatus('New order loaded ✅');
-        } catch (error) {
-            console.error("❌ Error loading next order:", error);
-            toast("Error loading next order: " + error.message, true);
-            document.getElementById("currentOrderDisplay").style.display = "none";
-        }
-    }
-
-    function refreshWorkPageOrder() {
-        if(!currentUser) return;
-        let dailyLimit = currentUser.tasks?.total || 0;
-        let completedCount = currentUser.tasks?.completed || 0;
-        if(completedCount >= dailyLimit && dailyLimit > 0) { 
-            document.getElementById("currentOrderDisplay").style.display = "none"; 
-            return; 
-        }
-        if(currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) displayOrder(currentUser.currentOrderObj);
-        else if(currentOrder) displayOrder(currentOrder);
-        else { if(completedCount < dailyLimit && dailyLimit > 0) loadNextOrderAutomatically(); }
-    }
-
-    // ==================== SAVE ORDER TO HISTORY ====================
-    async function saveOrderToHistory(userId, orderData) {
-        try {
-            const ordersRef = collection(db, "users", userId, "orders");
-            if (orderData.id) {
-                const orderDocRef = doc(ordersRef, orderData.id.toString());
-                await setDoc(orderDocRef, {
-                    ...orderData,
-                    timestamp: orderData.timestamp || new Date().toISOString()
-                });
-            } else {
-                await addDoc(ordersRef, {
-                    ...orderData,
-                    timestamp: orderData.timestamp || new Date().toISOString()
-                });
-            }
-            await deleteOldOrdersIfNeeded(userId, 50);
-        } catch (error) {
-            console.error("❌ Error saving order:", error);
-            throw error;
-        }
-    }
-
-    async function getUserOrders(userId) {
-        try {
-            const ordersRef = collection(db, "users", userId, "orders");
-            const q = query(ordersRef, orderBy("timestamp", "desc"), limit(50));
-            const snapshot = await getDocs(q);
-            const orders = [];
-            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-            return orders;
-        } catch (e) {
-            console.error('Get user orders error:', e);
-            return [];
-        }
-    }
-
-    async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
-        try {
-            const ordersRef = collection(db, "users", userId, "orders");
-            const q = query(ordersRef, orderBy("timestamp", "desc"));
-            const snapshot = await getDocs(q);
-            if (snapshot.size > maxOrders) {
-                const toDelete = [];
-                let count = 0;
-                for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
-                for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
-            }
-        } catch (e) {
-            console.error('Delete old orders error:', e);
-        }
-    }
-
     // ==================== RECHARGE MODAL ====================
     async function showRechargeModal() {
         if (isProcessingRecharge) return;
@@ -3116,7 +3081,7 @@
             <h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.recharge}</h2>
             <div class="wallet-address-box">
                 <div>
-                    <div class="text-muted" style="color:var(--text-muted);margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div>
+                    <div class="text-muted" style="margin-bottom:8px;">${dict.walletAddress || "USDT TRC20 Wallet Address"}</div>
                     <div class="wallet-address-text" id="walletAddressTextDisplay">${escapeHtml(walletAddr)}</div>
                 </div>
                 <button class="copy-btn" id="copyWalletBtn">${dict.copy || "Copy"}</button>
@@ -3151,8 +3116,8 @@
             if (isProcessingRecharge) return;
             const amount = parseFloat(modal.querySelector("#rechargeAmount").value);
             const file = modal.querySelector("#receiptInput").files[0];
-            if(isNaN(amount) || amount < 1) { toast(dict.enterValidAmount || "Enter valid amount", true); return; }
-            if(!file) { toast(dict.uploadReceipt || "Upload receipt", true); return; }
+            if(isNaN(amount) || amount < 1) { toast("Enter valid amount", true); return; }
+            if(!file) { toast("Upload receipt", true); return; }
             const imgData = modal.querySelector("#receiptInput").compressedData;
             
             isProcessingRecharge = true;
@@ -3299,7 +3264,7 @@
                     container.scrollTop = container.scrollHeight;
                 }
             });
-        } catch (e) { console.error('Chat subscribe error:', e); }
+        } catch (e) {}
     }
     
     async function sendChatMessage(text, imageData = null) { 
@@ -3313,50 +3278,7 @@
                 image: imageData, 
                 time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) 
             }); 
-        } catch (e) { console.error('Send message error:', e); }
-    }
-
-    // ==================== INJECTION SYSTEM ====================
-    function subscribeToInjections(userId) {
-        if (unsubscribeInjections) unsubscribeInjections();
-        try {
-            const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
-            unsubscribeInjections = onSnapshot(q, async (snapshot) => {
-                const pendingInjections = [];
-                snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-                if (pendingInjections.length > 0 && currentUser) {
-                    pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                    currentUser.pendingInjections = pendingInjections;
-                    await saveCurrentUser();
-                    const dict = translations[currentLang] || translations.en;
-                    toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
-                    if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
-                }
-            });
-        } catch (e) { console.error('Injections subscribe error:', e); }
-    }
-    
-    async function markInjectionAsUsed(injectionId) {
-        try {
-            const injectionRef = doc(db, "injections", injectionId);
-            await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
-        } catch (e) { console.error('Mark injection error:', e); }
-    }
-    
-    async function checkAndApplyInjections() {
-        if (!currentUser) return [];
-        try {
-            const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
-            const snapshot = await getDocs(q);
-            const pendingInjections = [];
-            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-            if (pendingInjections.length > 0) {
-                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                currentUser.pendingInjections = pendingInjections;
-                await saveCurrentUser();
-            }
-            return pendingInjections;
-        } catch (e) { console.error('Check injections error:', e); return []; }
+        } catch (e) {}
     }
 
     // ==================== MODALS ====================
@@ -3397,6 +3319,45 @@
         document.body.appendChild(modal);
         document.getElementById("uploadPhotoBtn").onclick = () => { document.body.removeChild(modal); showUploadPhotoModal(); };
         document.getElementById("closePersonalModal").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showUploadPhotoModal() {
+        const dict = translations[currentLang] || translations.en;
+        const modal = document.createElement("div");
+        modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content">
+            <h2 class="text-gold" style="text-align:center;margin-bottom:20px;">${dict.uploadPhoto}</h2>
+            <div style="display:flex;justify-content:center;margin-bottom:20px;">
+                <div class="photo-preview" id="uploadPreview">${currentUser?.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user-circle"></i>'}</div>
+            </div>
+            <div class="upload-area-sm" id="selectPhotoArea"><i class="fas fa-cloud-upload-alt"></i> ${dict.uploadPhoto}<input type="file" id="photoUploadInput" accept="image/*" style="display:none;"></div>
+            <div style="display:flex;gap:12px;margin-top:16px;">
+                <button class="btn-lux" id="savePhotoBtn" style="flex:1;">${dict.save}</button>
+                <button class="btn-outline-lux btn-lux" id="cancelPhotoBtn" style="flex:1;">${dict.cancel}</button>
+            </div>
+        </div>`;
+        document.body.appendChild(modal);
+        let selectedImageData = null;
+        modal.querySelector("#selectPhotoArea").onclick = () => modal.querySelector("#photoUploadInput").click();
+        modal.querySelector("#photoUploadInput").onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const compressed = await compressImage(file, 400, 400, 0.7);
+                selectedImageData = compressed;
+                const previewDiv = modal.querySelector("#uploadPreview");
+                previewDiv.innerHTML = `<img src="${compressed}">`;
+            }
+        };
+        modal.querySelector("#savePhotoBtn").onclick = async () => {
+            if (selectedImageData) { 
+                currentUser.profilePhoto = selectedImageData; 
+                await saveCurrentUser(); 
+                updateMineAvatar(); 
+                toast("Profile photo updated!"); 
+            }
+            document.body.removeChild(modal);
+        };
+        modal.querySelector("#cancelPhotoBtn").onclick = () => document.body.removeChild(modal);
     }
 
     async function showLoanServiceModal() {
@@ -3505,33 +3466,21 @@
                 toast(`Welcome back, ${currentUser.username}`);
             } else {
                 const newUser = {
-                    id: gUser.uid,
-                    username: username,
-                    email: email,
-                    phone: '',
-                    password: '',
-                    withdrawPassword: '',
+                    id: gUser.uid, username: username, email: email,
+                    phone: '', password: '', withdrawPassword: '',
                     balance: 0,
                     invitationCode: 'GGL' + Math.random().toString(36).substring(2,8).toUpperCase(),
-                    superior: null,
-                    referralEarnings: 0,
+                    superior: null, referralEarnings: 0,
                     regTime: new Date().toISOString(),
-                    tasks: { completed: 0, total: 0 },
-                    orders: [],
-                    todayOrders: 0,
-                    todayEarnings: 0,
-                    totalCommission: 0,
-                    creditScore: 100,
-                    disabled: false,
-                    walletAddress: null,
-                    currentOrderObj: null,
-                    role: 'customer',
-                    lastSeen: Date.now(),
-                    authProvider: 'google'
+                    tasks: { completed: 0, total: 0 }, orders: [],
+                    todayOrders: 0, todayEarnings: 0, totalCommission: 0,
+                    creditScore: 100, disabled: false,
+                    walletAddress: null, currentOrderObj: null, role: 'customer',
+                    lastSeen: Date.now(), authProvider: 'google'
                 };
                 await setDoc(userRef, newUser);
                 currentUser = { id: gUser.uid, ...newUser };
-                toast(`Welcome, ${username}! Account created with Google.`);
+                toast(`Welcome, ${username}!`);
             }
             
             localStorage.setItem('currentUserId', currentUser.id);
@@ -3545,8 +3494,6 @@
             hideLoader();
             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
             startChatSubscription();
-            await checkAndShowPopupAds();
-            updateRealtimeStatus('Google Login ✅');
         } catch (error) {
             hideLoader();
             console.error("Google Login Error:", error);
@@ -3558,13 +3505,11 @@
     function deleteBrowsingData() {
         const confirmDelete = confirm(
             "⚠️ WARNING: This will delete all local data including:\n\n" +
-            "• Login session\n• Cached files\n• Local storage data\n• Session storage data\n• Cookies\n\n" +
-            "✅ Your account data on the server will NOT be deleted.\n\n" +
-            "Click OK to continue or Cancel to stop."
+            "• Login session\n• Cached files\n• Local storage\n• Session storage\n• Cookies\n\n" +
+            "✅ Your account data on server will NOT be deleted.\n\n" +
+            "Click OK to continue."
         );
-        
         if (!confirmDelete) return;
-        
         try {
             localStorage.clear();
             sessionStorage.clear();
@@ -3574,10 +3519,9 @@
             if ('caches' in window) {
                 caches.keys().then(function(names) { for (let name of names) caches.delete(name); });
             }
-            toast("✅ All local data cleared! Refreshing page...");
+            toast("✅ All local data cleared! Refreshing...");
             setTimeout(function() { window.location.reload(true); }, 1500);
         } catch (error) {
-            console.error("❌ Error clearing data:", error);
             toast("Error clearing data: " + error.message, true);
         }
     }
@@ -3616,10 +3560,10 @@
             yourBalance: "Your Balance", needAdditional: "Need Additional", rechargeNow: "Recharge Now",
             close: "Close", submit: "Submit", cancel: "Cancel", uploadReceipt: "Upload receipt",
             enterValidAmount: "Enter valid amount", noRecords: "No records.",
-            pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order before starting a new one.",
+            pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order.",
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save",
-            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order!",
+            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "Special bonus order received!",
             referralEarned: "Referral Bonus Earned!",
             deleteDataText: "Clear Local Data",
             deleteDataBtnText: "Delete Browsing Data & Refresh",
@@ -3646,9 +3590,9 @@
             totalCommissionTextMine: "ค่าคอมมิชชั่นทั้งหมด", depositText: "ฝากเงิน", withdrawTextMine: "ถอนเงิน",
             bindWalletText: "ผูกกระเป๋าเงินคริปโต", personalDetailsText: "ข้อมูลส่วนตัว", loanServiceText: "บริการสินเชื่อ",
             rechargeHistoryText: "ประวัติเติมเงิน", withdrawHistoryText: "ประวัติถอนเงิน", walletAddressText: "ที่อยู่กระเป๋าเงิน",
-            howCommissionsText: "วิธีการทำงานของคอมมิชชั่น", commDesc1: "งานที่ทำสำเร็จแต่ละงานได้รับคอมมิชชั่นตามระดับ VIP",
-            commDesc2: "โบนัสแนะนำ: 10% ของรายได้จากผู้แนะนำ", commDesc3: "ขีดจำกัดงานรายวันขึ้นอยู่กับออเดอร์ที่ได้รับ",
-            secureText: "ธุรกรรมทั้งหมดปลอดภัยและทันที", selectLanguageText: "เลือกภาษา",
+            howCommissionsText: "วิธีการทำงานของคอมมิชชั่น", commDesc1: "งานที่ทำสำเร็จแต่ละงานได้รับคอมมิชชั่น",
+            commDesc2: "โบนัสแนะนำ: 10%", commDesc3: "ขีดจำกัดงานรายวัน",
+            secureText: "ธุรกรรมทั้งหมดปลอดภัย", selectLanguageText: "เลือกภาษา",
             signOutText: "ออกจากระบบ", customerServiceText: "บริการลูกค้า", sendText: "ส่ง",
             navHome: "หน้าหลัก", navWork: "งาน", navOrder: "คำสั่งซื้อ", navMine: "ของฉัน", navService: "บริการ",
             orderAmount: "จำนวนเงินสั่งซื้อ", profitEarned: "กำไร", afterCompletionBalance: "ยอดคงเหลือหลังทำเสร็จ",
@@ -3657,10 +3601,10 @@
             yourBalance: "ยอดเงินของคุณ", needAdditional: "ต้องการเพิ่ม", rechargeNow: "เติมเงินตอนนี้",
             close: "ปิด", submit: "ส่ง", cancel: "ยกเลิก", uploadReceipt: "อัปโหลดหลักฐาน",
             enterValidAmount: "ใส่จำนวนเงินที่ถูกต้อง", noRecords: "ไม่มีประวัติ",
-            pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้นก่อนเริ่มใหม่",
+            pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้น",
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก",
-            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษ!",
+            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "ได้รับออเดอร์คอมมิชชั่นพิเศษ!",
             referralEarned: "ได้รับโบนัสแนะนำ!",
             deleteDataText: "ล้างข้อมูลในเครื่อง",
             deleteDataBtnText: "ล้างข้อมูลทั้งหมด & รีเฟรช",
@@ -3687,8 +3631,8 @@
             totalCommissionTextMine: "Comisión Total", depositText: "Depositar", withdrawTextMine: "Retirar",
             bindWalletText: "Vincular Billetera", personalDetailsText: "Detalles Personales", loanServiceText: "Servicio de Préstamos",
             rechargeHistoryText: "Historial de Recargas", withdrawHistoryText: "Historial de Retiros", walletAddressText: "Dirección de Billetera",
-            howCommissionsText: "Cómo Funcionan las Comisiones", commDesc1: "Cada tarea completada gana comisión según el nivel VIP",
-            commDesc2: "Bono por referido: 10% de las ganancias", commDesc3: "Límite diario de tareas",
+            howCommissionsText: "Cómo Funcionan las Comisiones", commDesc1: "Cada tarea completada gana comisión",
+            commDesc2: "Bono por referido: 10%", commDesc3: "Límite diario de tareas",
             secureText: "Todas las transacciones son seguras", selectLanguageText: "Seleccionar Idioma",
             signOutText: "Cerrar Sesión", customerServiceText: "Servicio al Cliente", sendText: "Enviar",
             navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio",
@@ -3698,7 +3642,7 @@
             yourBalance: "Tu Saldo", needAdditional: "Necesitas", rechargeNow: "Recargar Ahora",
             close: "Cerrar", submit: "Enviar", cancel: "Cancelar", uploadReceipt: "Subir comprobante",
             enterValidAmount: "Ingresa un monto válido", noRecords: "Sin registros.",
-            pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual antes de iniciar una nueva.",
+            pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual.",
             okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar",
             bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden especial!",
@@ -3728,7 +3672,7 @@
             totalCommissionTextMine: "Загальна комісія", depositText: "Депозит", withdrawTextMine: "Вивести",
             bindWalletText: "Прив'язати криптогаманець", personalDetailsText: "Особисті дані", loanServiceText: "Служба кредитування",
             rechargeHistoryText: "Історія поповнень", withdrawHistoryText: "Історія виведень", walletAddressText: "Адреса гаманця",
-            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне виконане завдання приносить комісію",
+            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне завдання приносить комісію",
             commDesc2: "Реферальний бонус: 10%", commDesc3: "Денний ліміт завдань",
             secureText: "Всі транзакції безпечні", selectLanguageText: "Виберіть мову",
             signOutText: "Вийти", customerServiceText: "Служба підтримки", sendText: "Надіслати",
@@ -3836,106 +3780,6 @@
         if (currentUser) updateUI();
     }
 
-    // ==================== SUBSCRIBE TO USER ====================
-    function subscribeToUser(userId) {
-        if (unsubscribeUser) unsubscribeUser();
-        try {
-            const userRef = doc(db, "users", userId);
-            unsubscribeUser = onSnapshot(userRef, async (docSnap) => {
-                if (docSnap.exists()) {
-                    const userData = docSnap.data();
-                    currentUser = { id: docSnap.id, ...userData };
-                    if (!currentUser.orders) currentUser.orders = [];
-                    if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
-                    await checkAndApplyInjections();
-                    updateUI();
-                    updateRealtimeStatus('Account synced ✅');
-                }
-            });
-        } catch (e) { console.error('User subscribe error:', e); }
-    }
-
-    function subscribeToWithdrawals(userId) {
-        if (unsubscribeWithdrawals) unsubscribeWithdrawals();
-        try {
-            const q = query(collection(db, "withdrawRequests"), where("userId", "==", userId));
-            unsubscribeWithdrawals = onSnapshot(q, async (snapshot) => {
-                snapshot.docChanges().forEach(async (change) => {
-                    if (change.type === "modified") {
-                        const req = change.doc.data();
-                        if (req.status === "rejected" && req.amount) {
-                            const userRef = doc(db, "users", userId);
-                            const userSnap = await getDoc(userRef);
-                            if (userSnap.exists()) await updateDoc(userRef, { balance: (userSnap.data().balance || 0) + req.amount });
-                        }
-                    }
-                });
-            });
-        } catch (e) { console.error('Withdrawals subscribe error:', e); }
-    }
-
-    // ==================== LIVE FEED ====================
-    const allNames = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
-    function randName() { return allNames[Math.floor(Math.random()*allNames.length)]; }
-    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
-    function startLiveFeed() {
-        if(liveFeedInterval) clearInterval(liveFeedInterval);
-        const container = document.getElementById("liveFeedList");
-        if(!container) return;
-        function add() { 
-            const item = document.createElement("div"); 
-            item.className = "live-feed-item"; 
-            item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+$ ${randComm().toLocaleString()}</span> commission!`; 
-            container.prepend(item); 
-            if(container.children.length>8) container.removeChild(container.lastChild); 
-        }
-        for(let i=0; i<3; i++) add();
-        liveFeedInterval = setInterval(add, 5000);
-    }
-
-    // ==================== SETTINGS ====================
-    function startSettingsSubscription() {
-        if (unsubscribeSettings) unsubscribeSettings();
-        try {
-            const settingsRef = doc(db, "systemSettings", "main");
-            unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const s = docSnap.data();
-                    if(s.customerName) { 
-                        const el1 = document.getElementById("loginWebsiteName");
-                        const el2 = document.getElementById("homeWebsiteName");
-                        const el3 = document.getElementById("brandName");
-                        if (el1) el1.innerText = s.customerName; 
-                        if (el2) el2.innerText = s.homePageName || s.customerName; 
-                        if (el3) el3.innerText = s.customerName || "LUXCY"; 
-                    }
-                    if(s.customerTagline) {
-                        const el = document.getElementById("loginWebsiteTagline");
-                        if (el) el.innerText = s.customerTagline;
-                    }
-                    updateRealtimeStatus('Settings updated ✅');
-                }
-            });
-        } catch (e) { console.error('Settings subscribe error:', e); }
-    }
-
-    function loadBackgrounds() {
-        try {
-            let loginBg = localStorage.getItem("loginBg");
-            let mainBg = localStorage.getItem("mainBg");
-            let activePageId = document.querySelector(".page.active-page")?.id;
-            const defaultBg = "radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 50%), linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%)";
-            const appContainer = document.getElementById("appContainer");
-            if (!appContainer) return;
-            if(activePageId === "loginPage" || activePageId === "registerPage") 
-                appContainer.style.background = loginBg ? `url('${loginBg}') center/cover` : defaultBg;
-            else if(currentUser) 
-                appContainer.style.background = mainBg ? `url('${mainBg}') center/cover` : defaultBg;
-            else 
-                appContainer.style.background = defaultBg;
-        } catch (e) { console.error('Load backgrounds error:', e); }
-    }
-
     // ==================== LOGIN / REGISTER ====================
     async function doLogin() {
         const btn = document.getElementById("doLoginBtn");
@@ -3964,8 +3808,6 @@
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 toast(`Welcome back, ${username}`);
                 startChatSubscription();
-                await checkAndShowPopupAds();
-                updateRealtimeStatus('Login successful ✅');
             } else toast("Invalid credentials", true);
         } catch(e) { toast("Login failed: " + e.message, true); }
         btn.disabled = false;
@@ -4023,8 +3865,6 @@
             showPage("home");
             showSuccessModal('Welcome!', `Account created successfully. Your invite code: <strong style="color:var(--gold);">${currentUser.invitationCode}</strong>`);
             startChatSubscription();
-            await checkAndShowPopupAds();
-            updateRealtimeStatus('Registration successful ✅');
         } catch(e) { toast("Registration failed: " + e.message, true); }
         btn.disabled = false;
         btn.innerHTML = 'Register Now';
@@ -4036,14 +3876,12 @@
             if (unsubscribeWithdrawals) unsubscribeWithdrawals();
             if (unsubscribeChat) unsubscribeChat();
             if (unsubscribeInjections) unsubscribeInjections();
-            const userId = currentUser?.id;
             currentUser = null;
             localStorage.removeItem("currentUserId");
-            if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
             firebaseSignOut(auth).catch(console.error);
             showPage("landing");
             toast("Signed out");
-        } catch (e) { console.error('SignOut error:', e); }
+        } catch (e) {}
     }
 
     // ==================== NAVIGATION ====================
@@ -4082,160 +3920,164 @@
         } catch (e) { console.error('ShowPage error:', e); }
     }
 
-    // ==================== INITIALIZATION ====================
+    function loadBackgrounds() {
+        try {
+            let loginBg = localStorage.getItem("loginBg");
+            let mainBg = localStorage.getItem("mainBg");
+            let activePageId = document.querySelector(".page.active-page")?.id;
+            const defaultBg = "radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 50%), linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%)";
+            const appContainer = document.getElementById("appContainer");
+            if (!appContainer) return;
+            if(activePageId === "loginPage" || activePageId === "registerPage") 
+                appContainer.style.background = loginBg ? `url('${loginBg}') center/cover` : defaultBg;
+            else if(currentUser) 
+                appContainer.style.background = mainBg ? `url('${mainBg}') center/cover` : defaultBg;
+            else 
+                appContainer.style.background = defaultBg;
+        } catch (e) {}
+    }
+
+    // ==================== LIVE FEED ====================
+    const allNames = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
+    function randName() { return allNames[Math.floor(Math.random()*allNames.length)]; }
+    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
+    function startLiveFeed() {
+        if(liveFeedInterval) clearInterval(liveFeedInterval);
+        const container = document.getElementById("liveFeedList");
+        if(!container) return;
+        function add() { 
+            const item = document.createElement("div"); 
+            item.className = "live-feed-item"; 
+            item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+$ ${randComm().toLocaleString()}</span> commission!`; 
+            container.prepend(item); 
+            if(container.children.length>8) container.removeChild(container.lastChild); 
+        }
+        for(let i=0; i<3; i++) add();
+        liveFeedInterval = setInterval(add, 5000);
+    }
+
+    // ==================== INITIALIZE EVENT LISTENERS ====================
     function initializeEventListeners() {
         try {
-            // Google login buttons
-            const lgBtn = document.getElementById('landingGoogleBtn');
-            const lgnBtn = document.getElementById('loginGoogleBtn');
-            const rgBtn = document.getElementById('registerGoogleBtn');
-            if (lgBtn) lgBtn.onclick = handleGoogleLogin;
-            if (lgnBtn) lgnBtn.onclick = handleGoogleLogin;
-            if (rgBtn) rgBtn.onclick = handleGoogleLogin;
+            const bind = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
             
-            // Language selector
+            // Google login
+            bind('landingGoogleBtn', handleGoogleLogin);
+            bind('loginGoogleBtn', handleGoogleLogin);
+            bind('registerGoogleBtn', handleGoogleLogin);
+            
+            // Language
             document.querySelectorAll('.lang-option').forEach(opt => opt.onclick = () => applyLanguage(opt.dataset.lang));
             
-            // Mine page buttons
-            const bindWalletBtn = document.getElementById("bindWalletBtn");
-            const personalDetailsBtn = document.getElementById("personalDetailsBtn");
-            const deviceSessionBtn = document.getElementById("deviceSessionBtn");
-            const loanServiceBtn = document.getElementById("loanServiceBtn");
-            if (bindWalletBtn) bindWalletBtn.onclick = showBindWalletModal;
-            if (personalDetailsBtn) personalDetailsBtn.onclick = showPersonalDetailsModal;
-            if (deviceSessionBtn) deviceSessionBtn.onclick = showDeviceSessionModal;
-            if (loanServiceBtn) loanServiceBtn.onclick = showLoanServiceModal;
+            // Mine page
+            bind("bindWalletBtn", showBindWalletModal);
+            bind("personalDetailsBtn", showPersonalDetailsModal);
+            bind("deviceSessionBtn", showDeviceSessionModal);
+            bind("loanServiceBtn", showLoanServiceModal);
             
             // Sign out
-            const signOutHome = document.getElementById("signOutBtnHome");
-            const signOutMine = document.getElementById("signOutBtnMine");
-            if (signOutHome) signOutHome.onclick = signOut;
-            if (signOutMine) signOutMine.onclick = signOut;
+            bind("signOutBtnHome", signOut);
+            bind("signOutBtnMine", signOut);
             
             // Refresh buttons
-            document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); updateRealtimeStatus('Manual refresh ✅'); });
+            document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); });
             
             // Recharge/Withdraw
-            const rechargeHomeBtn = document.getElementById("rechargeHomeBtn");
-            const withdrawHomeBtn = document.getElementById("withdrawHomeBtn");
-            const depositBtn = document.getElementById("depositBtn");
-            const withdrawBtn = document.getElementById("withdrawBtn");
-            const rechargeHistoryBtn = document.getElementById("rechargeHistoryBtn");
-            const withdrawHistoryBtn = document.getElementById("withdrawHistoryBtn");
-            if (rechargeHomeBtn) rechargeHomeBtn.onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
-            if (withdrawHomeBtn) withdrawHomeBtn.onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
-            if (depositBtn) depositBtn.onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
-            if (withdrawBtn) withdrawBtn.onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
-            if (rechargeHistoryBtn) rechargeHistoryBtn.onclick = () => currentUser ? showRechargeHistory() : toast("Please login first", true);
-            if (withdrawHistoryBtn) withdrawHistoryBtn.onclick = () => currentUser ? showWithdrawHistory() : toast("Please login first", true);
+            bind("rechargeHomeBtn", () => currentUser ? showRechargeModal() : toast("Please login first", true));
+            bind("withdrawHomeBtn", () => currentUser ? showWithdrawModal() : toast("Please login first", true));
+            bind("depositBtn", () => currentUser ? showRechargeModal() : toast("Please login first", true));
+            bind("withdrawBtn", () => currentUser ? showWithdrawModal() : toast("Please login first", true));
+            bind("rechargeHistoryBtn", () => currentUser ? showRechargeHistory() : toast("Please login first", true));
+            bind("withdrawHistoryBtn", () => currentUser ? showWithdrawHistory() : toast("Please login first", true));
             
             // Start Working
-            const startWorkingBtn = document.getElementById("startWorkingBtn");
-            if (startWorkingBtn) {
-                startWorkingBtn.onclick = async () => {
-                    if(!currentUser) { toast("Please login first", true); return; }
-                    let dailyLimit = currentUser.tasks?.total || 0;
-                    let completedCount = currentUser.tasks?.completed || 0;
-                    if(dailyLimit === 0) { toast("No orders assigned. Please purchase a package first!", true); return; }
-                    if(completedCount >= dailyLimit) { toast("All orders completed!", true); return; }
-                    if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
-                    let settings = await loadSystemSettings();
-                    if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
-                        toast(`Minimum balance ${formatMoney(settings.minBalanceForOrder)} required.`, true); 
-                        return; 
-                    }
-                    await loadNextOrderAutomatically();
-                };
-            }
+            bind("startWorkingBtn", async () => {
+                if(!currentUser) { toast("Please login first", true); return; }
+                let dailyLimit = currentUser.tasks?.total || 0;
+                let completedCount = currentUser.tasks?.completed || 0;
+                if(dailyLimit === 0) { toast("No orders assigned. Please purchase a package first!", true); return; }
+                if(completedCount >= dailyLimit) { toast("All orders completed!", true); return; }
+                if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
+                let settings = await loadSystemSettings();
+                if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
+                    toast(`Minimum balance ${formatMoney(settings.minBalanceForOrder)} required.`, true); 
+                    return; 
+                }
+                await loadNextOrderAutomatically();
+            });
             
-            // Login/Register buttons
-            const doLoginBtn = document.getElementById("doLoginBtn");
-            const doRegisterBtn = document.getElementById("doRegisterBtn");
-            if (doLoginBtn) doLoginBtn.onclick = doLogin;
-            if (doRegisterBtn) doRegisterBtn.onclick = doRegister;
+            // Login/Register
+            bind("doLoginBtn", doLogin);
+            bind("doRegisterBtn", doRegister);
             
-            // Navigation between pages
-            const goToRegisterBtn = document.getElementById("goToRegisterBtn");
-            const goToLoginFromRegBtn = document.getElementById("goToLoginFromRegBtn");
-            const landingLoginBtn = document.getElementById("landingLoginBtn");
-            const landingRegisterBtn = document.getElementById("landingRegisterBtn");
-            const companyInfoBtn = document.getElementById("companyInfoBtn");
-            const backLogin = document.getElementById("backToLandingFromLogin");
-            const backRegister = document.getElementById("backToLandingFromRegister");
-            if (goToRegisterBtn) goToRegisterBtn.onclick = () => showPage("register");
-            if (goToLoginFromRegBtn) goToLoginFromRegBtn.onclick = () => showPage("login");
-            if (landingLoginBtn) landingLoginBtn.onclick = () => showPage("login");
-            if (landingRegisterBtn) landingRegisterBtn.onclick = () => showPage("register");
-            if (companyInfoBtn) companyInfoBtn.onclick = showCompanyInfoModal;
-            if (backLogin) backLogin.onclick = () => showPage("landing");
-            if (backRegister) backRegister.onclick = () => showPage("landing");
+            // Navigation
+            bind("goToRegisterBtn", () => showPage("register"));
+            bind("goToLoginFromRegBtn", () => showPage("login"));
+            bind("landingLoginBtn", () => showPage("login"));
+            bind("landingRegisterBtn", () => showPage("register"));
+            bind("companyInfoBtn", showCompanyInfoModal);
+            bind("backToLandingFromLogin", () => showPage("landing"));
+            bind("backToLandingFromRegister", () => showPage("landing"));
             
-            // Bottom navigation
+            // Bottom nav
             document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
             
             // Chat
-            const customerSendBtn = document.getElementById("customerSendBtn");
-            const customerChatInput = document.getElementById("customerChatInput");
-            if (customerSendBtn) {
-                customerSendBtn.onclick = async () => {
-                    const input = document.getElementById("customerChatInput");
-                    const text = input.value.trim();
-                    if(text) {
-                        await sendChatMessage(text);
-                        input.value = '';
-                        input.focus();
-                    }
-                };
-            }
-            if (customerChatInput) {
-                customerChatInput.addEventListener('keypress', async (e) => {
+            bind("customerSendBtn", async () => {
+                const input = document.getElementById("customerChatInput");
+                const text = input.value.trim();
+                if(text) {
+                    await sendChatMessage(text);
+                    input.value = '';
+                    input.focus();
+                }
+            });
+            
+            const chatInput = document.getElementById("customerChatInput");
+            if (chatInput) {
+                chatInput.addEventListener('keypress', async (e) => {
                     if(e.key === 'Enter') {
                         e.preventDefault();
-                        const input = document.getElementById("customerChatInput");
-                        const text = input.value.trim();
+                        const text = chatInput.value.trim();
                         if(text) {
                             await sendChatMessage(text);
-                            input.value = '';
-                            input.focus();
+                            chatInput.value = '';
+                            chatInput.focus();
                         }
                     }
                 });
             }
             
-            // Emoji picker
-            const customerEmojiBtn = document.getElementById("customerEmojiBtn");
-            if (customerEmojiBtn) {
-                customerEmojiBtn.onclick = () => {
-                    const input = document.getElementById("customerChatInput");
-                    const picker = document.createElement('div');
-                    picker.style.cssText = 'position:fixed;bottom:100px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
-                    const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
-                    emojis.forEach(e => {
-                        const s = document.createElement('span');
-                        s.style.cssText = 'cursor:pointer;font-size:28px;padding:6px;border-radius:8px;';
-                        s.innerText = e;
-                        s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
-                        picker.appendChild(s);
-                    });
-                    document.body.appendChild(picker);
-                    setTimeout(() => {
-                        const closePicker = (e) => {
-                            if (!picker.contains(e.target) && e.target.id !== 'customerEmojiBtn') {
-                                picker.remove();
-                                document.removeEventListener('click', closePicker);
-                            }
-                        };
-                        document.addEventListener('click', closePicker);
-                    }, 100);
-                };
-            }
+            // Emoji
+            bind("customerEmojiBtn", () => {
+                const input = document.getElementById("customerChatInput");
+                const picker = document.createElement('div');
+                picker.style.cssText = 'position:fixed;bottom:100px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid #D4AF37;display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
+                const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
+                emojis.forEach(e => {
+                    const s = document.createElement('span');
+                    s.style.cssText = 'cursor:pointer;font-size:28px;padding:6px;border-radius:8px;';
+                    s.innerText = e;
+                    s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
+                    picker.appendChild(s);
+                });
+                document.body.appendChild(picker);
+                setTimeout(() => {
+                    const closePicker = (e) => {
+                        if (!picker.contains(e.target) && e.target.id !== 'customerEmojiBtn') {
+                            picker.remove();
+                            document.removeEventListener('click', closePicker);
+                        }
+                    };
+                    document.addEventListener('click', closePicker);
+                }, 100);
+            });
             
             // Chat image upload
-            const customerUploadBtn = document.getElementById("customerUploadBtn");
-            const customerChatImageInput = document.getElementById("customerChatImageInput");
-            if (customerUploadBtn && customerChatImageInput) {
-                customerUploadBtn.onclick = () => customerChatImageInput.click();
-                customerChatImageInput.onchange = async (e) => {
+            bind("customerUploadBtn", () => document.getElementById("customerChatImageInput").click());
+            const chatImgInput = document.getElementById("customerChatImageInput");
+            if (chatImgInput) {
+                chatImgInput.onchange = async (e) => {
                     const file = e.target.files[0];
                     if(file) {
                         try {
@@ -4251,13 +4093,11 @@
                 };
             }
             
-            // Profile photo upload
-            const mineProfilePhoto = document.getElementById("mineProfilePhoto");
-            if (mineProfilePhoto) mineProfilePhoto.onclick = () => { if(currentUser) showUploadPhotoModal(); };
+            // Profile photo
+            bind("mineProfilePhoto", () => { if(currentUser) showUploadPhotoModal(); });
             
             // Delete browsing data
-            const deleteBtn = document.getElementById('deleteBrowsingDataBtn');
-            if (deleteBtn) deleteBtn.onclick = deleteBrowsingData;
+            bind('deleteBrowsingDataBtn', deleteBrowsingData);
             
             console.log('✅ Event listeners initialized');
         } catch (e) { console.error('Init event listeners error:', e); }
@@ -4269,22 +4109,25 @@
         appInitialized = true;
         
         try {
-            console.log('🚀 Starting LUXCY App v2.2.0');
+            console.log('🚀 Starting LUXCY App v2.3.0');
             
-            // Initialize event listeners FIRST
+            // Initialize event listeners
             initializeEventListeners();
             
             // Apply language
             applyLanguage(currentLang);
             
-            // Start subscriptions (these are safe even if DOM not fully ready)
+            // ✅ Load order templates FIRST (for random image selection)
+            await loadOrderTemplates();
+            
+            // Start subscriptions
             subscribeToLogos();
             subscribeToCompanyInfo();
             subscribeToVipPackages();
             startSettingsSubscription();
             loadBackgrounds();
             
-            // Check for saved user
+            // Check saved user
             let savedUserId = localStorage.getItem("currentUserId");
             if(savedUserId) {
                 try {
@@ -4305,21 +4148,19 @@
                             const lastPage = localStorage.getItem("customerLastPage");
                             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                             startChatSubscription();
-                            await checkAndShowPopupAds();
-                            updateRealtimeStatus('Welcome back! ✅');
                         } else showPage("landing");
                     } else showPage("landing");
-                } catch (e) { console.error('Init user error:', e); showPage("landing"); }
+                } catch (e) { showPage("landing"); }
             } else {
                 showPage("landing");
             }
             
             startLiveFeed();
             
-            // Session activity update
+            // Session update
             setInterval(() => { if (currentUser && sessionId) updateSessionActivity(); }, 60000);
             
-            // Auth state change
+            // Auth state
             onAuthStateChanged(auth, async (user) => {
                 if (user && !currentUser) {
                     try {
@@ -4337,10 +4178,8 @@
                             const lastPage = localStorage.getItem("customerLastPage");
                             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                             startChatSubscription();
-                            await checkAndShowPopupAds();
-                            updateRealtimeStatus('Google Auth ✅');
                         }
-                    } catch (e) { console.error('Auth error:', e); }
+                    } catch (e) {}
                 } else if (!user && currentUser) {
                     signOut();
                 }
@@ -4352,7 +4191,6 @@
         }
     }
 
-    // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', startApp);
     } else {
