@@ -24,6 +24,16 @@
             --glass-blur: blur(16px);
             --gradient-gold: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
             --gradient-dark: linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
+            
+            /* Package Colors */
+            --bronze-1: #cd7f32;
+            --bronze-2: #8b5a2b;
+            --silver-1: #c0c0c0;
+            --silver-2: #808080;
+            --gold-pkg-1: #ffd700;
+            --gold-pkg-2: #b8860b;
+            --platinum-1: #e5e4e2;
+            --platinum-2: #a8a8a8;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -1056,7 +1066,370 @@
             color: var(--text-light);
             font-family: monospace;
         }
-        
+
+        /* ============ VIP PACKAGE CARDS (NEW SYSTEM) ============ */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 24px 0;
+        }
+        .package-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 28px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .package-card:hover::before { opacity: 1; }
+        .package-card:hover {
+            transform: translateY(-12px) scale(1.03);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.1);
+        }
+        .package-card.bronze { border-color: var(--bronze-1); }
+        .package-card.bronze:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(205,127,50,0.3); }
+        .package-card.silver { border-color: var(--silver-1); }
+        .package-card.silver:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(192,192,192,0.3); }
+        .package-card.gold-pkg { border-color: var(--gold-pkg-1); }
+        .package-card.gold-pkg:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,215,0,0.3); }
+        .package-card.platinum { border-color: var(--platinum-1); }
+        .package-card.platinum:hover { box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(229,228,226,0.3); }
+
+        .package-icon {
+            font-size: 52px;
+            margin-bottom: 16px;
+            display: block;
+            transition: transform 0.4s;
+        }
+        .package-card:hover .package-icon { transform: scale(1.15) rotate(5deg); }
+        .package-card.bronze .package-icon { color: var(--bronze-1); }
+        .package-card.silver .package-icon { color: var(--silver-1); }
+        .package-card.gold-pkg .package-icon { color: var(--gold-pkg-1); }
+        .package-card.platinum .package-icon { color: var(--platinum-1); }
+
+        .package-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .package-card.bronze .package-name { 
+            background: linear-gradient(135deg, var(--bronze-1), var(--bronze-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .package-card.silver .package-name { 
+            background: linear-gradient(135deg, var(--silver-1), var(--silver-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .package-card.gold-pkg .package-name { 
+            background: linear-gradient(135deg, var(--gold-pkg-1), var(--gold-pkg-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .package-card.platinum .package-name { 
+            background: linear-gradient(135deg, var(--platinum-1), var(--platinum-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+
+        .package-features {
+            text-align: left;
+            margin: 16px 0;
+        }
+        .package-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--text-light);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .package-feature:last-child { border-bottom: none; }
+        .package-feature i { font-size: 16px; width: 20px; text-align: center; }
+        .package-card.bronze .package-feature i { color: var(--bronze-1); }
+        .package-card.silver .package-feature i { color: var(--silver-1); }
+        .package-card.gold-pkg .package-feature i { color: var(--gold-pkg-1); }
+        .package-card.platinum .package-feature i { color: var(--platinum-1); }
+
+        .package-price {
+            font-size: 28px;
+            font-weight: 800;
+            margin: 16px 0 8px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .package-price-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        .package-btn {
+            background: var(--gradient-gold);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #0a120e;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .package-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
+        .package-card.bronze .package-btn { background: linear-gradient(135deg, var(--bronze-1), var(--bronze-2)); color: white; }
+        .package-card.silver .package-btn { background: linear-gradient(135deg, var(--silver-1), var(--silver-2)); color: #1a1a1a; }
+        .package-card.gold-pkg .package-btn { background: linear-gradient(135deg, var(--gold-pkg-1), var(--gold-pkg-2)); color: #1a1a1a; }
+        .package-card.platinum .package-btn { background: linear-gradient(135deg, var(--platinum-1), var(--platinum-2)); color: #1a1a1a; }
+
+        .package-popular-badge {
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            background: var(--gradient-gold);
+            color: #0a120e;
+            padding: 4px 40px;
+            font-size: 10px;
+            font-weight: 800;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        /* Package Confirmation Modal */
+        .package-confirm-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            backdrop-filter: blur(20px);
+            animation: modalFadeIn 0.4s ease;
+            perspective: 1200px;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .package-confirm-box {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 40px;
+            padding: 40px 32px;
+            max-width: 480px;
+            width: 92%;
+            border: 2px solid var(--gold);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            text-align: center;
+            animation: cardFlipIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform-style: preserve-3d;
+        }
+        @keyframes cardFlipIn {
+            from { 
+                opacity: 0; 
+                transform: rotateY(90deg) scale(0.8); 
+            }
+            to { 
+                opacity: 1; 
+                transform: rotateY(0deg) scale(1); 
+            }
+        }
+        .confirm-package-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            display: block;
+            animation: iconBounce 0.8s ease;
+        }
+        @keyframes iconBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .confirm-package-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .confirm-package-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .confirm-details {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        .confirm-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        .confirm-detail-row span:last-child {
+            font-weight: 700;
+            color: var(--gold);
+        }
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .confirm-buttons button {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .confirm-yes-btn {
+            background: var(--gradient-gold);
+            color: #0a120e;
+        }
+        .confirm-yes-btn:hover { transform: scale(1.03); box-shadow: 0 8px 25px rgba(212,175,55,0.4); }
+        .confirm-no-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-gold) !important;
+            color: var(--text-light);
+        }
+        .confirm-no-btn:hover { background: rgba(255,255,255,0.1); }
+
+        /* Insufficient balance warning */
+        .insufficient-warning {
+            background: rgba(220,38,38,0.15);
+            border: 1px solid #dc2626;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .insufficient-warning h4 {
+            color: #dc2626;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        .insufficient-warning p {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        /* Success animation for package purchase */
+        .purchase-success-anim {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5000;
+            text-align: center;
+            pointer-events: none;
+        }
+        .purchase-success-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(16,185,129,0.2);
+            border: 4px solid #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: successPop 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        @keyframes successPop {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .purchase-success-icon i {
+            font-size: 64px;
+            color: #10b981;
+        }
+        .purchase-success-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 12px;
+            animation: textFadeIn 0.6s ease 0.3s both;
+        }
+        .purchase-success-sub {
+            color: var(--text-light);
+            font-size: 15px;
+            animation: textFadeIn 0.6s ease 0.5s both;
+        }
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Coin animation */
+        .coin {
+            position: fixed;
+            font-size: 32px;
+            z-index: 4000;
+            pointer-events: none;
+            animation: coinFall 1.5s ease-in forwards;
+        }
+        @keyframes coinFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Order page package badge */
+        .package-order-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .packages-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .company-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .packages-grid { grid-template-columns: 1fr; gap: 14px; }
+            .package-card { padding: 22px 18px; }
+            .package-icon { font-size: 40px; }
+            .package-name { font-size: 20px; }
+            .package-price { font-size: 24px; }
+            .package-confirm-box { padding: 28px 20px; }
+            .confirm-package-title { font-size: 22px; }
+            .confirm-package-icon { font-size: 48px; }
+            .company-stats { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 768px) {
             .page { padding: 16px 12px 100px; }
             .luxury-header { padding: 10px 16px; border-radius: 40px; }
@@ -1075,6 +1448,8 @@
             .chat-input-area .chat-btn-icon { min-height: 44px; padding: 8px 12px; font-size: 18px; }
             .balance-badge-lux .amount { font-size: 32px; }
             .history-order-details { grid-template-columns: 1fr; }
+            .package-confirm-box { padding: 24px 16px; }
+            .confirm-details { padding: 16px; }
         }
         @media (max-width: 480px) {
             .luxury-brand { font-size: 18px; }
@@ -1085,6 +1460,11 @@
             .popup-card { padding: 18px; }
             .nav-item-lux { padding: 2px 8px; font-size: 9px; }
             .nav-item-lux i { font-size: 18px; }
+            .package-card { padding: 18px 14px; }
+            .package-icon { font-size: 36px; }
+            .package-name { font-size: 18px; }
+            .package-price { font-size: 22px; }
+            .package-feature { font-size: 12px; padding: 6px 0; }
         }
     </style>
 </head>
@@ -1379,7 +1759,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.0.6';
+        const APP_VERSION = '2.1.0';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -1425,13 +1805,63 @@
     let unsubscribeLogos = null;
     let unsubscribeCompany = null;
     let unsubscribeInjections = null;
+    let unsubscribePackages = null;
     let currentLang = localStorage.getItem('lang') || 'en';
     let popupAdsCache = [];
     let isProcessingOrder = false;
     let isProcessingRecharge = false;
     let isProcessingWithdraw = false;
+    let isProcessingPurchase = false;
     let sessionId = null;
     let deviceInfo = null;
+
+    // ✅ Default VIP Packages (will be overridden by admin settings from Firestore)
+    let vipPackages = {
+        bronze: {
+            id: 'bronze',
+            name: 'Bronze',
+            icon: 'fa-medal',
+            color: '#cd7f32',
+            orderCount: 40,
+            commissionRate: 0.05,
+            price: 0,
+            description: 'Perfect starter package',
+            popular: false
+        },
+        silver: {
+            id: 'silver',
+            name: 'Silver',
+            icon: 'fa-award',
+            color: '#c0c0c0',
+            orderCount: 45,
+            commissionRate: 0.07,
+            price: 0,
+            description: 'Great for growing users',
+            popular: false
+        },
+        gold: {
+            id: 'gold',
+            name: 'Gold',
+            icon: 'fa-crown',
+            color: '#ffd700',
+            orderCount: 50,
+            commissionRate: 1.05,
+            price: 0,
+            description: 'Best value package',
+            popular: true
+        },
+        platinum: {
+            id: 'platinum',
+            name: 'Platinum',
+            icon: 'fa-gem',
+            color: '#e5e4e2',
+            orderCount: 70,
+            commissionRate: 2.50,
+            price: 0,
+            description: 'Elite experience',
+            popular: false
+        }
+    };
 
     const VIP_RATES = { 1: 0.005, 2: 0.007, 3: 0.008, 4: 0.010 };
     
@@ -1456,7 +1886,7 @@
             position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
             background: ${err ? '#dc2626' : 'rgba(30,42,36,0.92)'};
             backdrop-filter: blur(12px); padding: 12px 28px; border-radius: 40px;
-            font-size: 13px; z-index: 100; font-weight: 700; color: white;
+            font-size: 13px; z-index: 10000; font-weight: 700; color: white;
             border-left: 3px solid var(--gold);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             max-width: 92%; text-align: center;
@@ -1711,7 +2141,7 @@
                 ${ad.imageData ? `<img src="${ad.imageData}" alt="Popup ad">` : ''}
                 <div class="popup-title">${escapeHtml(ad.title || 'Special Offer')}</div>
                 <div class="popup-subtitle">${escapeHtml(ad.subtitle || '')}</div>
-                <button class="btn-lux mt-3" id="popupActionBtn" style="width:auto;padding:12px 32px;">${escapeHtml(ad.buttonText || 'Close')}</button>
+                <button class="btn-lux mt-3" id="popupActionBtn" style="width:auto;padding:12px 32px;margin-top:16px;">${escapeHtml(ad.buttonText || 'Close')}</button>
             </div>
         `;
         document.body.appendChild(overlay);
@@ -1809,131 +2239,345 @@
         });
     }
 
-    function showCompanyInfoModal() {
-        const dict = translations[currentLang] || translations.en;
-        const modal = document.createElement("div"); modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content">
-            <h2 style="color:var(--gold);margin-bottom:20px;">${dict.companyModalTitle || "About LUXCY"}</h2>
-            <div style="display:flex;justify-content:center;margin-bottom:20px;">
-                <div id="modalCompanyLogo" style="width:100px;height:100px;background:rgba(212,175,55,0.1);border-radius:20px;display:flex;align-items:center;justify-content:center;">
-                    <i class="fas fa-globe-asia" style="font-size:60px;color:var(--gold);"></i>
-                </div>
-            </div>
-            <div id="modalCompanyDesc" style="color:var(--text-light);line-height:1.6;margin-bottom:20px;">LUXCY is a premier luxury travel and task platform.</div>
-            <div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:16px;">
-                <h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-bullseye"></i> ${dict.companyModalMission || "Our Mission"}</h3>
-                <p style="color:var(--text-light);">To provide seamless travel experiences and financial freedom.</p>
-            </div>
-            <div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:20px;">
-                <h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-eye"></i> ${dict.companyModalVision || "Our Vision"}</h3>
-                <p style="color:var(--text-light);">To become the world's leading integrated travel and earning platform.</p>
-            </div>
-            <button class="btn-lux" id="closeCompanyModal" style="width:100%;">${dict.close || "Close"}</button>
-        </div>`;
-        document.body.appendChild(modal);
-        document.getElementById("closeCompanyModal").onclick = () => document.body.removeChild(modal);
-    }
-
-    function subscribeToUser(userId) {
-        if (unsubscribeUser) unsubscribeUser();
-        const userRef = doc(db, "users", userId);
-        unsubscribeUser = onSnapshot(userRef, async (docSnap) => {
+    // ✅ NEW: Subscribe to VIP Packages from Firestore
+    function subscribeToVipPackages() {
+        if (unsubscribePackages) unsubscribePackages();
+        const packagesRef = doc(db, "systemSettings", "vipPackages");
+        unsubscribePackages = onSnapshot(packagesRef, (docSnap) => {
             if (docSnap.exists()) {
-                const userData = docSnap.data();
-                currentUser = { id: docSnap.id, ...userData };
-                if (!currentUser.orders) currentUser.orders = [];
-                if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
-                await checkAndApplyInjections();
-                updateUI();
-                updateRealtimeStatus('Account synced ✅');
-                const indicator = document.getElementById("realTimeIndicator");
-                indicator.style.display = "flex";
-                setTimeout(() => { indicator.style.display = "none"; }, 2000);
-            }
-        });
-    }
-
-    function subscribeToWithdrawals(userId) {
-        if (unsubscribeWithdrawals) unsubscribeWithdrawals();
-        const q = query(collection(db, "withdrawRequests"), where("userId", "==", userId));
-        unsubscribeWithdrawals = onSnapshot(q, async (snapshot) => {
-            snapshot.docChanges().forEach(async (change) => {
-                if (change.type === "modified") {
-                    const req = change.doc.data();
-                    if (req.status === "rejected" && req.amount) {
-                        const userRef = doc(db, "users", userId);
-                        const userSnap = await getDoc(userRef);
-                        if (userSnap.exists()) await updateDoc(userRef, { balance: (userSnap.data().balance || 0) + req.amount });
+                const data = docSnap.data();
+                Object.keys(vipPackages).forEach(key => {
+                    if (data[key]) {
+                        vipPackages[key] = { ...vipPackages[key], ...data[key] };
                     }
+                });
+                console.log('✅ VIP Packages updated from admin:', vipPackages);
+                // Re-render if home page is active
+                if (document.getElementById("homePage").classList.contains("active-page")) {
+                    renderVipPackages();
                 }
-            });
-        });
-    }
-
-    // ==================== LIVE FEED ====================
-    const allNames = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
-    function randName() { return allNames[Math.floor(Math.random()*allNames.length)]; }
-    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
-    function startLiveFeed() {
-        if(liveFeedInterval) clearInterval(liveFeedInterval);
-        const container = document.getElementById("liveFeedList");
-        if(!container) return;
-        function add() { 
-            const item = document.createElement("div"); 
-            item.className = "live-feed-item"; 
-            item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+$ ${randComm().toLocaleString()}</span> commission!`; 
-            container.prepend(item); 
-            if(container.children.length>8) container.removeChild(container.lastChild); 
-        }
-        for(let i=0; i<3; i++) add();
-        liveFeedInterval = setInterval(add, 5000);
-    }
-
-    // ==================== SETTINGS ====================
-    function startSettingsSubscription() {
-        if (unsubscribeSettings) unsubscribeSettings();
-        const settingsRef = doc(db, "systemSettings", "main");
-        unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const s = docSnap.data();
-                if(s.customerName) { 
-                    document.getElementById("loginWebsiteName").innerText = s.customerName; 
-                    document.getElementById("homeWebsiteName").innerText = s.homePageName || s.customerName; 
-                    document.getElementById("brandName").innerText = s.customerName || "LUXCY"; 
-                }
-                if(s.customerTagline) document.getElementById("loginWebsiteTagline").innerText = s.customerTagline;
-                updateRealtimeStatus('Settings updated ✅');
+                updateRealtimeStatus('VIP Packages updated ✅');
             }
         });
     }
 
-    function loadBackgrounds() {
-        let loginBg = localStorage.getItem("loginBg");
-        let mainBg = localStorage.getItem("mainBg");
-        let activePageId = document.querySelector(".page.active-page")?.id;
-        const defaultBg = "radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 50%), linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%)";
-        if(activePageId === "loginPage" || activePageId === "registerPage") 
-            document.getElementById("appContainer").style.background = loginBg ? `url('${loginBg}') center/cover` : defaultBg;
-        else if(currentUser) 
-            document.getElementById("appContainer").style.background = mainBg ? `url('${mainBg}') center/cover` : defaultBg;
-        else 
-            document.getElementById("appContainer").style.background = defaultBg;
+    // ✅ NEW: Render VIP Packages on Home Page
+    function renderVipPackages() {
+        const homePage = document.getElementById("homePage");
+        if (!homePage) return;
+        
+        // Remove existing packages section if any
+        const existing = document.getElementById("vipPackagesSection");
+        if (existing) existing.remove();
+        
+        // Find where to insert - after the VIP1-4 info card and before live feed
+        const vipInfoCard = homePage.querySelector('.card-lux[style*="padding:16px"]');
+        const liveFeed = homePage.querySelector('.live-feed-container');
+        
+        const packagesSection = document.createElement("div");
+        packagesSection.id = "vipPackagesSection";
+        packagesSection.innerHTML = `
+            <div style="text-align:center;margin:32px 0 20px;">
+                <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;">
+                    <i class="fas fa-crown" style="font-size:24px;"></i> VIP Packages
+                </h2>
+                <p style="color:var(--text-muted);font-size:14px;margin-top:8px;">Choose your package and start earning more</p>
+            </div>
+            <div class="packages-grid" id="packagesGrid"></div>
+        `;
+        
+        if (liveFeed) {
+            liveFeed.parentNode.insertBefore(packagesSection, liveFeed);
+        } else {
+            homePage.appendChild(packagesSection);
+        }
+        
+        const grid = document.getElementById("packagesGrid");
+        const packageOrder = ['bronze', 'silver', 'gold', 'platinum'];
+        
+        packageOrder.forEach(key => {
+            const pkg = vipPackages[key];
+            const card = document.createElement("div");
+            card.className = `package-card ${key}`;
+            card.innerHTML = `
+                ${pkg.popular ? '<div class="package-popular-badge">POPULAR</div>' : ''}
+                <i class="fas ${pkg.icon} package-icon"></i>
+                <div class="package-name">${escapeHtml(pkg.name)}</div>
+                <div class="package-features">
+                    <div class="package-feature">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span><strong>${pkg.orderCount}</strong> Orders</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-percentage"></i>
+                        <span><strong>${pkg.commissionRate}%</strong> Commission</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-clock"></i>
+                        <span>Daily Tasks</span>
+                    </div>
+                    <div class="package-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Instant Activation</span>
+                    </div>
+                </div>
+                <div class="package-price">${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</div>
+                <div class="package-price-label">${pkg.price > 0 ? 'One-time payment' : 'No payment required'}</div>
+                <button class="package-btn">Select Package</button>
+            `;
+            
+            card.onclick = () => showPackageConfirmModal(key);
+            grid.appendChild(card);
+        });
     }
 
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'loginBg' || e.key === 'mainBg') { 
-            loadBackgrounds(); 
-            const indicator = document.getElementById("realTimeIndicator"); 
-            indicator.style.display = "flex"; 
-            indicator.innerHTML = '<i class="fas fa-sync-alt fa-fw"></i> Theme Updated!'; 
-            setTimeout(() => { 
-                indicator.style.display = "none"; 
-                indicator.innerHTML = '<i class="fas fa-sync-alt fa-fw"></i> Live'; 
-            }, 3000); 
+    // ✅ NEW: Show Package Confirmation Modal with Animation
+    function showPackageConfirmModal(packageKey) {
+        if (isProcessingPurchase) return;
+        const pkg = vipPackages[packageKey];
+        if (!pkg) return;
+        
+        const userBalance = currentUser?.balance || 0;
+        const hasEnough = userBalance >= pkg.price;
+        
+        const modal = document.createElement("div");
+        modal.className = "package-confirm-modal";
+        modal.id = "packageConfirmModal";
+        
+        const iconColor = packageKey === 'bronze' ? '#cd7f32' :
+                         packageKey === 'silver' ? '#c0c0c0' :
+                         packageKey === 'gold' ? '#ffd700' : '#e5e4e2';
+        
+        let contentHtml = `
+            <div class="package-confirm-box">
+                <i class="fas ${pkg.icon} confirm-package-icon" style="color:${iconColor};"></i>
+                <div class="confirm-package-title" style="color:${iconColor};">${escapeHtml(pkg.name)} Package</div>
+                <div class="confirm-package-subtitle">${escapeHtml(pkg.description)}</div>
+                <div class="confirm-details">
+                    <div class="confirm-detail-row">
+                        <span><i class="fas fa-shopping-bag"></i> Orders</span>
+                        <span>${pkg.orderCount}</span>
+                    </div>
+                    <div class="confirm-detail-row">
+                        <span><i class="fas fa-percentage"></i> Commission Rate</span>
+                        <span>${pkg.commissionRate}%</span>
+                    </div>
+                    <div class="confirm-detail-row">
+                        <span><i class="fas fa-tag"></i> Package Price</span>
+                        <span>${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</span>
+                    </div>
+                    <div class="confirm-detail-row" style="border-top:1px solid rgba(212,175,55,0.2);padding-top:12px;margin-top:8px;">
+                        <span><i class="fas fa-wallet"></i> Your Balance</span>
+                        <span style="color:${hasEnough ? '#10b981' : '#dc2626'};">${formatMoney(userBalance)}</span>
+                    </div>
+                </div>
+        `;
+        
+        if (!hasEnough) {
+            const needed = pkg.price - userBalance;
+            contentHtml += `
+                <div class="insufficient-warning">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Insufficient Balance</h4>
+                    <p>You need <strong style="color:var(--gold);">${formatMoney(needed)}</strong> more to purchase this package.</p>
+                    <p style="font-size:12px;margin-top:8px;">Please recharge your account first.</p>
+                </div>
+                <div class="confirm-buttons">
+                    <button class="confirm-no-btn" onclick="document.getElementById('packageConfirmModal').remove();">Cancel</button>
+                    <button class="confirm-yes-btn" onclick="document.getElementById('packageConfirmModal').remove(); showRechargeModal();">Recharge Now</button>
+                </div>
+            `;
+        } else {
+            contentHtml += `
+                <div class="confirm-buttons">
+                    <button class="confirm-no-btn" id="packageCancelBtn">Cancel</button>
+                    <button class="confirm-yes-btn" id="packageConfirmBtn">
+                        <i class="fas fa-check"></i> Confirm Purchase
+                    </button>
+                </div>
+            `;
         }
-    });
+        
+        contentHtml += `</div>`;
+        modal.innerHTML = contentHtml;
+        document.body.appendChild(modal);
+        
+        if (hasEnough) {
+            document.getElementById("packageCancelBtn").onclick = () => modal.remove();
+            document.getElementById("packageConfirmBtn").onclick = () => {
+                modal.remove();
+                processPackagePurchase(packageKey);
+            };
+        }
+        
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+    }
 
-    // ==================== DATA HELPERS ====================
+    // ✅ NEW: Process Package Purchase with Animation
+    async function processPackagePurchase(packageKey) {
+        if (isProcessingPurchase) return;
+        const pkg = vipPackages[packageKey];
+        if (!pkg || !currentUser) return;
+        
+        const userBalance = currentUser.balance || 0;
+        if (userBalance < pkg.price) {
+            showErrorModal('Insufficient Balance', `You need ${formatMoney(pkg.price - userBalance)} more.`);
+            return;
+        }
+        
+        isProcessingPurchase = true;
+        showLoader('Processing purchase...');
+        
+        try {
+            // Deduct balance
+            currentUser.balance = userBalance - pkg.price;
+            
+            // Add order count to user's tasks
+            if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
+            currentUser.tasks.total = (currentUser.tasks.total || 0) + pkg.orderCount;
+            
+            // Set user's package info
+            currentUser.vipPackage = packageKey;
+            currentUser.vipPackageName = pkg.name;
+            currentUser.vipPackageCommission = pkg.commissionRate;
+            currentUser.vipPackageOrderCount = pkg.orderCount;
+            currentUser.vipPackagePurchasedAt = new Date().toISOString();
+            
+            // Save to Firestore
+            await saveCurrentUser();
+            
+            // Log purchase in Firestore
+            await setDoc(doc(db, "packagePurchases", Date.now().toString()), {
+                id: Date.now().toString(),
+                userId: currentUser.id,
+                userName: currentUser.username,
+                packageKey: packageKey,
+                packageName: pkg.name,
+                price: pkg.price,
+                orderCount: pkg.orderCount,
+                commissionRate: pkg.commissionRate,
+                purchasedAt: new Date().toISOString(),
+                status: 'completed'
+            });
+            
+            // ✅ Create random order for the package
+            await createRandomOrderForPackage(pkg);
+            
+            hideLoader();
+            
+            // Show success animation
+            showPurchaseSuccessAnimation(pkg);
+            
+            // Update UI
+            updateUI();
+            renderVipPackages();
+            
+            updateRealtimeStatus('Package purchased ✅');
+            
+        } catch (error) {
+            hideLoader();
+            console.error('Package purchase error:', error);
+            showErrorModal('Purchase Failed', error.message);
+        } finally {
+            isProcessingPurchase = false;
+        }
+    }
+
+    // ✅ NEW: Create Random Order for Package
+    async function createRandomOrderForPackage(pkg) {
+        if (!currentUser) return;
+        
+        // Generate a random order based on the package
+        const orderTemplates = await loadCustomOrders();
+        let tpl = orderTemplates.length > 0 
+            ? orderTemplates[Math.floor(Math.random() * orderTemplates.length)]
+            : { name: 'Premium Travel Package', image: null, price: 10 };
+        
+        const balance = currentUser.balance || 0;
+        const commissionRate = pkg.commissionRate / 100;
+        
+        // Random amount between 30% and 80% of balance (or min $10)
+        const baseAmount = Math.max(balance * (0.3 + Math.random() * 0.5), 10);
+        const amount = parseFloat(baseAmount.toFixed(2));
+        const netCommission = parseFloat((amount * commissionRate).toFixed(2));
+        
+        const order = {
+            id: Date.now(),
+            name: tpl.name || 'Premium Task Order',
+            imageData: tpl.image || null,
+            amount: amount,
+            netCommission: netCommission,
+            rate: pkg.commissionRate,
+            orderNumber: "PKG" + Math.floor(Math.random() * 1e9),
+            profit: netCommission,
+            isInjection: false,
+            isPackageOrder: true,
+            packageName: pkg.name,
+            injectionDetails: null
+        };
+        
+        currentUser.currentOrderObj = order;
+        await saveCurrentUser();
+        
+        console.log('✅ Package order created:', order);
+        return order;
+    }
+
+    // ✅ NEW: Show Purchase Success Animation
+    function showPurchaseSuccessAnimation(pkg) {
+        // Create success animation overlay
+        const animDiv = document.createElement("div");
+        animDiv.className = "purchase-success-anim";
+        animDiv.innerHTML = `
+            <div class="purchase-success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <div class="purchase-success-text">Order Successful!</div>
+            <div class="purchase-success-sub">${escapeHtml(pkg.name)} Package Activated</div>
+        `;
+        document.body.appendChild(animDiv);
+        
+        // Create falling coins animation
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const coin = document.createElement("div");
+                coin.className = "coin";
+                coin.innerHTML = ['💰', '🪙', '⭐', '✨'][Math.floor(Math.random() * 4)];
+                coin.style.left = Math.random() * 100 + '%';
+                coin.style.animationDelay = '0s';
+                coin.style.animationDuration = (1 + Math.random()) + 's';
+                document.body.appendChild(coin);
+                setTimeout(() => coin.remove(), 2500);
+            }, i * 80);
+        }
+        
+        // Remove animation and show success modal
+        setTimeout(() => {
+            animDiv.remove();
+            showSuccessModal(
+                'Purchase Successful! 🎉',
+                `<strong style="color:var(--gold);font-size:18px;">${escapeHtml(pkg.name)} Package</strong> activated!<br><br>
+                <i class="fas fa-shopping-bag"></i> <strong>${pkg.orderCount}</strong> orders added to your account<br>
+                <i class="fas fa-percentage"></i> Commission rate: <strong style="color:var(--gold);">${pkg.commissionRate}%</strong><br><br>
+                <span style="font-size:13px;color:var(--text-muted);">A random order has been generated. Go to Work page to start!</span>`,
+                () => {
+                    showPage("work");
+                }
+            );
+        }, 2000);
+    }
+
+    // ==================== LOAD CUSTOM ORDERS ====================
+    async function loadCustomOrders() { 
+        const snapshot = await getDocs(collection(db, "customOrders")); 
+        const orders = []; 
+        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); 
+        return orders; 
+    }
+
+    // ==================== SAVE USER ====================
     async function saveCurrentUser() {
         if(!currentUser) return;
         const cleanUser = { ...currentUser };
@@ -1952,6 +2596,8 @@
                 orderNumber: order.orderNumber || 'ORD' + Math.floor(Math.random() * 1e9),
                 profit: order.profit || 0,
                 isInjection: order.isInjection || false,
+                isPackageOrder: order.isPackageOrder || false,
+                packageName: order.packageName || null,
                 injectionDetails: order.injectionDetails || null
             };
         }
@@ -1965,13 +2611,6 @@
         const docSnap = await getDoc(docRef); 
         if (docSnap.exists()) return docSnap.data(); 
         return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; 
-    }
-    
-    async function loadCustomOrders() { 
-        const snapshot = await getDocs(collection(db, "customOrders")); 
-        const orders = []; 
-        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); 
-        return orders; 
     }
 
     function compressImage(file, maxWidth = 400, maxHeight = 400, quality = 0.7) {
@@ -2005,7 +2644,6 @@
         });
     }
 
-    // Show loader during long operations
     function showLoader(msg = 'Loading...') {
         let l = document.getElementById('tempLoader');
         if (!l) {
@@ -2059,7 +2697,7 @@
         let pct = dailyLimit ? (completedCount / dailyLimit) * 100 : 0;
         document.getElementById("taskProgressFill").style.width = pct + "%";
         
-        // ✅ Order History - NEW CARD LAYOUT
+        // Order History - Card Layout
         const completedOrders = userOrders.filter(o => o.status === "completed");
         const container = document.getElementById("completedOrdersList");
         if (container) {
@@ -2080,7 +2718,10 @@
                         <div class="history-order-card">
                             <div class="history-order-header">
                                 <div>
-                                    <div class="history-order-title"><i class="fas fa-box" style="color:var(--gold);"></i> ${escapeHtml(o.name || 'Order')}</div>
+                                    <div class="history-order-title">
+                                        <i class="fas fa-box" style="color:var(--gold);"></i> ${escapeHtml(o.name || 'Order')}
+                                        ${o.isPackageOrder ? `<span class="package-order-badge"><i class="fas fa-crown"></i> ${escapeHtml(o.packageName || 'Package')}</span>` : ''}
+                                    </div>
                                     <div class="history-order-id">${escapeHtml(o.orderNumber || o.id)}</div>
                                 </div>
                                 <span class="history-order-badge"><i class="fas fa-check-circle"></i> COMPLETED</span>
@@ -2100,7 +2741,7 @@
                                 </div>
                                 <div class="history-detail-item">
                                     <span class="history-detail-label">Type</span>
-                                    <span class="history-detail-value">${o.isInjection ? '🎁 Bonus Order' : 'Standard'}</span>
+                                    <span class="history-detail-value">${o.isInjection ? '🎁 Bonus Order' : (o.isPackageOrder ? '👑 Package Order' : 'Standard')}</span>
                                 </div>
                             </div>
                             <div class="history-order-ratings">
@@ -2117,6 +2758,9 @@
                 container.innerHTML = html;
             }
         }
+        
+        // Re-render VIP packages
+        renderVipPackages();
         
         updateMineAvatar();
         updateRealtimeStatus('UI updated ✅');
@@ -2229,8 +2873,11 @@
         let afterOrderBalance = currentUser.balance + order.netCommission;
         const insufficient = currentUser.balance < order.amount;
         const isInjection = order.isInjection || false;
+        const isPackageOrder = order.isPackageOrder || false;
         const injectionClass = isInjection ? 'injection-order' : '';
         const injectionBadge = isInjection ? '<div class="injection-badge"><i class="fas fa-gift"></i> ' + dict.bonusOrder + '</div>' : '';
+        const packageBadge = isPackageOrder ? '<div class="injection-badge" style="background:linear-gradient(135deg,#d4af37,#b8941e);"><i class="fas fa-crown"></i> ' + escapeHtml(order.packageName || 'Package') + '</div>' : '';
+        
         let injectionInfoHtml = '';
         if (isInjection && order.injectionDetails) {
             injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;">
@@ -2240,9 +2887,11 @@
                 <div class="flex-between"><span class="text-light" style="color:var(--text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ ${formatMoney(order.netCommission)}</span></div>
             </div>`;
         }
+        
         document.getElementById("currentOrderDisplay").innerHTML = `
             <div class="order-detail-card ${injectionClass}" style="background:rgba(0,0,0,0.3);border-radius:28px;padding:24px;margin-top:20px;border:1px solid var(--border-gold);">
                 ${injectionBadge}
+                ${packageBadge}
                 <div class="order-image">${imgHtml}</div>
                 <h2 style="color:var(--gold-light);">${escapeHtml(order.name)}</h2>
                 <div class="text-light" style="color:var(--text-light);">Order #: ${escapeHtml(order.orderNumber)}</div>
@@ -2417,7 +3066,7 @@
         if(!currentUser) { toast("Please login first", true); return; }
         let dailyLimit = currentUser.tasks?.total || 0;
         let completedCount = currentUser.tasks?.completed || 0;
-        if(dailyLimit === 0) { toast("No orders assigned by admin", true); return; }
+        if(dailyLimit === 0) { toast("No orders assigned. Please purchase a package first!", true); return; }
         if(completedCount >= dailyLimit) { toast("All orders completed for today!", true); return; }
         if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
         let settings = await loadSystemSettings();
@@ -2473,7 +3122,7 @@
         }
     }
 
-    // ==================== RECHARGE MODAL (with double-click prevention) ====================
+    // ==================== RECHARGE MODAL ====================
     async function showRechargeModal() {
         if (isProcessingRecharge) return;
         const dict = translations[currentLang] || translations.en;
@@ -2515,7 +3164,6 @@
             } 
         };
         
-        // ✅ Double-click prevention
         modal.querySelector("#submitRechargeBtn").onclick = async () => {
             if (isProcessingRecharge) return;
             const amount = parseFloat(modal.querySelector("#rechargeAmount").value);
@@ -2552,7 +3200,7 @@
         modal.querySelector("#closeRechargeModal").onclick = () => document.body.removeChild(modal);
     }
 
-    // ==================== WITHDRAW MODAL (with double-click prevention) ====================
+    // ==================== WITHDRAW MODAL ====================
     async function showWithdrawModal() {
         if (isProcessingWithdraw) return;
         const dict = translations[currentLang] || translations.en;
@@ -2569,7 +3217,6 @@
         </div>`;
         document.body.appendChild(modal);
         
-        // ✅ Double-click prevention
         document.getElementById("confirmWithdrawBtn").onclick = async () => {
             if (isProcessingWithdraw) return;
             let wallet = document.getElementById("withdrawWallet").value.trim(); 
@@ -3336,6 +3983,7 @@
         if (unsubscribeWithdrawals) unsubscribeWithdrawals();
         if (unsubscribeChat) unsubscribeChat();
         if (unsubscribeInjections) unsubscribeInjections();
+        if (unsubscribePackages) unsubscribePackages();
         const userId = currentUser?.id;
         currentUser = null;
         localStorage.removeItem("currentUserId");
@@ -3354,6 +4002,7 @@
         applyLanguage(currentLang);
         subscribeToLogos();
         subscribeToCompanyInfo();
+        subscribeToVipPackages(); // ✅ Subscribe to VIP packages
         document.querySelectorAll('.lang-option').forEach(opt => opt.onclick = () => applyLanguage(opt.dataset.lang));
         document.getElementById("bindWalletBtn").onclick = showBindWalletModal;
         document.getElementById("personalDetailsBtn").onclick = showPersonalDetailsModal;
@@ -3440,6 +4089,7 @@
 
     // ==================== INITIALIZE ====================
     startSettingsSubscription();
+    subscribeToVipPackages(); // ✅ Initialize VIP packages
     loadBackgrounds();
     let savedUserId = localStorage.getItem("currentUserId");
     if(savedUserId) {
@@ -3500,7 +4150,7 @@
         }
     });
 
-    console.log('✅ LUXCY App initialized v2.0.6');
+    console.log('✅ LUXCY App initialized v2.1.0 - VIP Package System Added');
 </script>
 </body>
 </html>
