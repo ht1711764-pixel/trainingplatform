@@ -24,8 +24,6 @@
             --glass-blur: blur(16px);
             --gradient-gold: linear-gradient(135deg, #D4AF37, #F5E7B2, #C9A03D);
             --gradient-dark: linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%);
-            
-            /* Package Colors */
             --bronze-1: #cd7f32;
             --bronze-2: #8b5a2b;
             --silver-1: #c0c0c0;
@@ -912,7 +910,6 @@
         }
         .btn-delete-data:hover { transform: scale(1.02) translateY(-2px); box-shadow: 0 8px 30px rgba(220,38,38,0.4); }
 
-        /* ============ ORDER HISTORY CARD ============ */
         .history-order-card {
             background: var(--bg-card);
             border-radius: 24px;
@@ -1006,7 +1003,6 @@
             gap: 6px;
         }
 
-        /* ============ SUCCESS MODAL ============ */
         .success-icon-box {
             width: 100px;
             height: 100px;
@@ -1032,7 +1028,6 @@
         }
         .error-icon-box i { font-size: 44px; color: #dc2626; }
 
-        /* ============ SESSION CARD ============ */
         .session-card-item {
             background: rgba(0,0,0,0.3);
             border-radius: 16px;
@@ -1067,7 +1062,7 @@
             font-family: monospace;
         }
 
-        /* ============ VIP PACKAGE CARDS (NEW SYSTEM) ============ */
+        /* ============ VIP PACKAGE CARDS ============ */
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1213,7 +1208,6 @@
             letter-spacing: 1px;
         }
 
-        /* Package Confirmation Modal */
         .package-confirm-modal {
             position: fixed;
             top: 0; left: 0;
@@ -1320,7 +1314,6 @@
         }
         .confirm-no-btn:hover { background: rgba(255,255,255,0.1); }
 
-        /* Insufficient balance warning */
         .insufficient-warning {
             background: rgba(220,38,38,0.15);
             border: 1px solid #dc2626;
@@ -1339,7 +1332,6 @@
             margin-bottom: 6px;
         }
 
-        /* Success animation for package purchase */
         .purchase-success-anim {
             position: fixed;
             top: 50%;
@@ -1388,7 +1380,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Coin animation */
         .coin {
             position: fixed;
             font-size: 32px;
@@ -1401,7 +1392,6 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Order page package badge */
         .package-order-badge {
             background: linear-gradient(135deg, #10b981, #059669);
             color: white;
@@ -1413,23 +1403,11 @@
             margin-left: 8px;
         }
 
-        /* Responsive */
+        /* ============ RESPONSIVE ============ */
         @media (max-width: 992px) {
             .packages-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
             .company-stats { grid-template-columns: repeat(2, 1fr); }
         }
-        @media (max-width: 576px) {
-            .packages-grid { grid-template-columns: 1fr; gap: 14px; }
-            .package-card { padding: 22px 18px; }
-            .package-icon { font-size: 40px; }
-            .package-name { font-size: 20px; }
-            .package-price { font-size: 24px; }
-            .package-confirm-box { padding: 28px 20px; }
-            .confirm-package-title { font-size: 22px; }
-            .confirm-package-icon { font-size: 48px; }
-            .company-stats { grid-template-columns: 1fr; }
-        }
-
         @media (max-width: 768px) {
             .page { padding: 16px 12px 100px; }
             .luxury-header { padding: 10px 16px; border-radius: 40px; }
@@ -1450,6 +1428,18 @@
             .history-order-details { grid-template-columns: 1fr; }
             .package-confirm-box { padding: 24px 16px; }
             .confirm-details { padding: 16px; }
+            .packages-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        }
+        @media (max-width: 576px) {
+            .packages-grid { grid-template-columns: 1fr; gap: 14px; }
+            .package-card { padding: 22px 18px; }
+            .package-icon { font-size: 40px; }
+            .package-name { font-size: 20px; }
+            .package-price { font-size: 24px; }
+            .package-confirm-box { padding: 28px 20px; }
+            .confirm-package-title { font-size: 22px; }
+            .confirm-package-icon { font-size: 48px; }
+            .company-stats { grid-template-columns: 1fr; }
         }
         @media (max-width: 480px) {
             .luxury-brand { font-size: 18px; }
@@ -1628,6 +1618,10 @@
                 <span>Min: $1500</span>
             </div>
         </div>
+        
+        <!-- ✅ VIP PACKAGES CONTAINER (filled dynamically) -->
+        <div id="vipPackagesContainer"></div>
+        
         <div class="live-feed-container">
             <div class="text-gold" style="margin-bottom:12px;"><i class="fas fa-fire"></i> <span id="liveUpdatesText">Live Commission Updates</span></div>
             <div id="liveFeedList"></div>
@@ -1759,7 +1753,7 @@
 <script type="module">
     // ===== VERSION CHECK & CACHE CLEAR =====
     (function() {
-        const APP_VERSION = '2.1.0';
+        const APP_VERSION = '2.2.0';
         const storedVersion = localStorage.getItem('app_version');
         if (!storedVersion || storedVersion !== APP_VERSION) {
             localStorage.clear();
@@ -1777,7 +1771,7 @@
     import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, where, updateDoc, onSnapshot, addDoc, orderBy, deleteDoc, increment, limit } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut as firebaseSignOut } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-    // ===== FIREBASE CONFIG - tripnew-2026 =====
+    // ===== FIREBASE CONFIG =====
     const firebaseConfig = {
         apiKey: "AIzaSyAw5wT1ULT656psFPoYJNijEYof7WEHauw",
         authDomain: "tripnew-2026.firebaseapp.com",
@@ -1814,14 +1808,14 @@
     let isProcessingPurchase = false;
     let sessionId = null;
     let deviceInfo = null;
+    let appInitialized = false;
 
-    // ✅ Default VIP Packages (will be overridden by admin settings from Firestore)
+    // ✅ Default VIP Packages
     let vipPackages = {
         bronze: {
             id: 'bronze',
             name: 'Bronze',
             icon: 'fa-medal',
-            color: '#cd7f32',
             orderCount: 40,
             commissionRate: 0.05,
             price: 0,
@@ -1832,7 +1826,6 @@
             id: 'silver',
             name: 'Silver',
             icon: 'fa-award',
-            color: '#c0c0c0',
             orderCount: 45,
             commissionRate: 0.07,
             price: 0,
@@ -1843,7 +1836,6 @@
             id: 'gold',
             name: 'Gold',
             icon: 'fa-crown',
-            color: '#ffd700',
             orderCount: 50,
             commissionRate: 1.05,
             price: 0,
@@ -1854,7 +1846,6 @@
             id: 'platinum',
             name: 'Platinum',
             icon: 'fa-gem',
-            color: '#e5e4e2',
             orderCount: 70,
             commissionRate: 2.50,
             price: 0,
@@ -1890,7 +1881,6 @@
             border-left: 3px solid var(--gold);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             max-width: 92%; text-align: center;
-            animation: toastIn 0.3s ease;
         `;
         el.innerHTML = `<i class="fas ${err ? 'fa-exclamation-triangle' : 'fa-circle-check'}"></i> ${msg}`;
         document.body.appendChild(el);
@@ -1901,10 +1891,6 @@
             setTimeout(() => el.remove(), 300);
         }, 3000);
     }
-
-    const styleSheet = document.createElement("style");
-    styleSheet.textContent = `@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.95); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }`;
-    document.head.appendChild(styleSheet);
 
     // ==================== SUCCESS MODAL ====================
     function showSuccessModal(title, message, onClose) {
@@ -1952,7 +1938,7 @@
         }
     }
 
-    // ==================== DEVICE & SESSION TRACKER ====================
+    // ==================== DEVICE & SESSION ====================
     function getDeviceInfo() {
         const ua = navigator.userAgent;
         let deviceType = 'Desktop', browser = 'Unknown', os = 'Unknown';
@@ -1983,6 +1969,7 @@
     }
 
     async function registerSession() {
+        if (!currentUser) return;
         sessionId = Date.now().toString() + Math.random().toString(36).substring(2, 8);
         deviceInfo = getDeviceInfo();
         const ip = await getClientIP();
@@ -2141,7 +2128,7 @@
                 ${ad.imageData ? `<img src="${ad.imageData}" alt="Popup ad">` : ''}
                 <div class="popup-title">${escapeHtml(ad.title || 'Special Offer')}</div>
                 <div class="popup-subtitle">${escapeHtml(ad.subtitle || '')}</div>
-                <button class="btn-lux mt-3" id="popupActionBtn" style="width:auto;padding:12px 32px;margin-top:16px;">${escapeHtml(ad.buttonText || 'Close')}</button>
+                <button class="btn-lux" id="popupActionBtn" style="width:auto;padding:12px 32px;margin-top:16px;">${escapeHtml(ad.buttonText || 'Close')}</button>
             </div>
         `;
         document.body.appendChild(overlay);
@@ -2239,101 +2226,111 @@
         });
     }
 
-    // ✅ NEW: Subscribe to VIP Packages from Firestore
+    // ✅ SAFE: Subscribe to VIP Packages
     function subscribeToVipPackages() {
         if (unsubscribePackages) unsubscribePackages();
-        const packagesRef = doc(db, "systemSettings", "vipPackages");
-        unsubscribePackages = onSnapshot(packagesRef, (docSnap) => {
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                Object.keys(vipPackages).forEach(key => {
-                    if (data[key]) {
-                        vipPackages[key] = { ...vipPackages[key], ...data[key] };
-                    }
-                });
-                console.log('✅ VIP Packages updated from admin:', vipPackages);
-                // Re-render if home page is active
-                if (document.getElementById("homePage").classList.contains("active-page")) {
+        try {
+            const packagesRef = doc(db, "systemSettings", "vipPackages");
+            unsubscribePackages = onSnapshot(packagesRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    Object.keys(vipPackages).forEach(key => {
+                        if (data[key]) {
+                            vipPackages[key] = { ...vipPackages[key], ...data[key] };
+                        }
+                    });
+                    console.log('✅ VIP Packages updated:', vipPackages);
                     renderVipPackages();
+                    updateRealtimeStatus('VIP Packages updated ✅');
                 }
-                updateRealtimeStatus('VIP Packages updated ✅');
-            }
-        });
+            }, (error) => {
+                console.log('⚠️ VIP packages subscription error (using defaults):', error.message);
+            });
+        } catch (e) {
+            console.log('⚠️ VIP packages subscribe failed (using defaults):', e.message);
+        }
     }
 
-    // ✅ NEW: Render VIP Packages on Home Page
+    // ✅ SAFE: Render VIP Packages
     function renderVipPackages() {
-        const homePage = document.getElementById("homePage");
-        if (!homePage) return;
-        
-        // Remove existing packages section if any
-        const existing = document.getElementById("vipPackagesSection");
-        if (existing) existing.remove();
-        
-        // Find where to insert - after the VIP1-4 info card and before live feed
-        const vipInfoCard = homePage.querySelector('.card-lux[style*="padding:16px"]');
-        const liveFeed = homePage.querySelector('.live-feed-container');
-        
-        const packagesSection = document.createElement("div");
-        packagesSection.id = "vipPackagesSection";
-        packagesSection.innerHTML = `
-            <div style="text-align:center;margin:32px 0 20px;">
-                <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;">
-                    <i class="fas fa-crown" style="font-size:24px;"></i> VIP Packages
-                </h2>
-                <p style="color:var(--text-muted);font-size:14px;margin-top:8px;">Choose your package and start earning more</p>
-            </div>
-            <div class="packages-grid" id="packagesGrid"></div>
-        `;
-        
-        if (liveFeed) {
-            liveFeed.parentNode.insertBefore(packagesSection, liveFeed);
-        } else {
-            homePage.appendChild(packagesSection);
-        }
-        
-        const grid = document.getElementById("packagesGrid");
-        const packageOrder = ['bronze', 'silver', 'gold', 'platinum'];
-        
-        packageOrder.forEach(key => {
-            const pkg = vipPackages[key];
-            const card = document.createElement("div");
-            card.className = `package-card ${key}`;
-            card.innerHTML = `
-                ${pkg.popular ? '<div class="package-popular-badge">POPULAR</div>' : ''}
-                <i class="fas ${pkg.icon} package-icon"></i>
-                <div class="package-name">${escapeHtml(pkg.name)}</div>
-                <div class="package-features">
-                    <div class="package-feature">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span><strong>${pkg.orderCount}</strong> Orders</span>
-                    </div>
-                    <div class="package-feature">
-                        <i class="fas fa-percentage"></i>
-                        <span><strong>${pkg.commissionRate}%</strong> Commission</span>
-                    </div>
-                    <div class="package-feature">
-                        <i class="fas fa-clock"></i>
-                        <span>Daily Tasks</span>
-                    </div>
-                    <div class="package-feature">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Instant Activation</span>
-                    </div>
+        try {
+            const container = document.getElementById("vipPackagesContainer");
+            if (!container) {
+                console.log("⏳ vipPackagesContainer not found yet");
+                return;
+            }
+            
+            const packageOrder = ['bronze', 'silver', 'gold', 'platinum'];
+            
+            let html = `
+                <div style="text-align:center;margin:32px 0 20px;">
+                    <h2 style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;background:var(--gradient-gold);-webkit-background-clip:text;background-clip:text;color:transparent;">
+                        <i class="fas fa-crown" style="font-size:24px;"></i> VIP Packages
+                    </h2>
+                    <p style="color:var(--text-muted);font-size:14px;margin-top:8px;">Choose your package and start earning more</p>
                 </div>
-                <div class="package-price">${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</div>
-                <div class="package-price-label">${pkg.price > 0 ? 'One-time payment' : 'No payment required'}</div>
-                <button class="package-btn">Select Package</button>
+                <div class="packages-grid">
             `;
             
-            card.onclick = () => showPackageConfirmModal(key);
-            grid.appendChild(card);
-        });
+            packageOrder.forEach(key => {
+                const pkg = vipPackages[key];
+                if (!pkg) return;
+                
+                html += `
+                    <div class="package-card ${key}" data-package="${key}">
+                        ${pkg.popular ? '<div class="package-popular-badge">POPULAR</div>' : ''}
+                        <i class="fas ${pkg.icon} package-icon"></i>
+                        <div class="package-name">${escapeHtml(pkg.name)}</div>
+                        <div class="package-features">
+                            <div class="package-feature">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span><strong>${pkg.orderCount}</strong> Orders</span>
+                            </div>
+                            <div class="package-feature">
+                                <i class="fas fa-percentage"></i>
+                                <span><strong>${pkg.commissionRate}%</strong> Commission</span>
+                            </div>
+                            <div class="package-feature">
+                                <i class="fas fa-clock"></i>
+                                <span>Daily Tasks</span>
+                            </div>
+                            <div class="package-feature">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Instant Activation</span>
+                            </div>
+                        </div>
+                        <div class="package-price">${pkg.price > 0 ? formatMoney(pkg.price) : 'FREE'}</div>
+                        <div class="package-price-label">${pkg.price > 0 ? 'One-time payment' : 'No payment required'}</div>
+                        <button class="package-btn" type="button">Select Package</button>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+            container.innerHTML = html;
+            
+            // Attach click handlers
+            container.querySelectorAll('.package-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const key = card.getAttribute('data-package');
+                    showPackageConfirmModal(key);
+                });
+            });
+            
+            console.log('✅ VIP Packages rendered');
+        } catch (e) {
+            console.error('❌ Render VIP packages error:', e);
+        }
     }
 
-    // ✅ NEW: Show Package Confirmation Modal with Animation
+    // ✅ Show Package Confirmation Modal
     function showPackageConfirmModal(packageKey) {
         if (isProcessingPurchase) return;
+        if (!currentUser) {
+            toast('Please login first', true);
+            return;
+        }
+        
         const pkg = vipPackages[packageKey];
         if (!pkg) return;
         
@@ -2382,8 +2379,8 @@
                     <p style="font-size:12px;margin-top:8px;">Please recharge your account first.</p>
                 </div>
                 <div class="confirm-buttons">
-                    <button class="confirm-no-btn" onclick="document.getElementById('packageConfirmModal').remove();">Cancel</button>
-                    <button class="confirm-yes-btn" onclick="document.getElementById('packageConfirmModal').remove(); showRechargeModal();">Recharge Now</button>
+                    <button class="confirm-no-btn" id="packageCancelBtn">Cancel</button>
+                    <button class="confirm-yes-btn" id="packageRechargeBtn">Recharge Now</button>
                 </div>
             `;
         } else {
@@ -2401,21 +2398,26 @@
         modal.innerHTML = contentHtml;
         document.body.appendChild(modal);
         
+        document.getElementById("packageCancelBtn").onclick = () => modal.remove();
+        
         if (hasEnough) {
-            document.getElementById("packageCancelBtn").onclick = () => modal.remove();
             document.getElementById("packageConfirmBtn").onclick = () => {
                 modal.remove();
                 processPackagePurchase(packageKey);
             };
+        } else {
+            document.getElementById("packageRechargeBtn").onclick = () => {
+                modal.remove();
+                showRechargeModal();
+            };
         }
         
-        // Close on backdrop click
         modal.addEventListener('click', (e) => {
             if (e.target === modal) modal.remove();
         });
     }
 
-    // ✅ NEW: Process Package Purchase with Animation
+    // ✅ Process Package Purchase
     async function processPackagePurchase(packageKey) {
         if (isProcessingPurchase) return;
         const pkg = vipPackages[packageKey];
@@ -2431,24 +2433,19 @@
         showLoader('Processing purchase...');
         
         try {
-            // Deduct balance
             currentUser.balance = userBalance - pkg.price;
             
-            // Add order count to user's tasks
             if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
             currentUser.tasks.total = (currentUser.tasks.total || 0) + pkg.orderCount;
             
-            // Set user's package info
             currentUser.vipPackage = packageKey;
             currentUser.vipPackageName = pkg.name;
             currentUser.vipPackageCommission = pkg.commissionRate;
             currentUser.vipPackageOrderCount = pkg.orderCount;
             currentUser.vipPackagePurchasedAt = new Date().toISOString();
             
-            // Save to Firestore
             await saveCurrentUser();
             
-            // Log purchase in Firestore
             await setDoc(doc(db, "packagePurchases", Date.now().toString()), {
                 id: Date.now().toString(),
                 userId: currentUser.id,
@@ -2462,17 +2459,12 @@
                 status: 'completed'
             });
             
-            // ✅ Create random order for the package
             await createRandomOrderForPackage(pkg);
             
             hideLoader();
-            
-            // Show success animation
             showPurchaseSuccessAnimation(pkg);
             
-            // Update UI
             updateUI();
-            renderVipPackages();
             
             updateRealtimeStatus('Package purchased ✅');
             
@@ -2485,11 +2477,10 @@
         }
     }
 
-    // ✅ NEW: Create Random Order for Package
+    // ✅ Create Random Order for Package
     async function createRandomOrderForPackage(pkg) {
         if (!currentUser) return;
         
-        // Generate a random order based on the package
         const orderTemplates = await loadCustomOrders();
         let tpl = orderTemplates.length > 0 
             ? orderTemplates[Math.floor(Math.random() * orderTemplates.length)]
@@ -2498,7 +2489,6 @@
         const balance = currentUser.balance || 0;
         const commissionRate = pkg.commissionRate / 100;
         
-        // Random amount between 30% and 80% of balance (or min $10)
         const baseAmount = Math.max(balance * (0.3 + Math.random() * 0.5), 10);
         const amount = parseFloat(baseAmount.toFixed(2));
         const netCommission = parseFloat((amount * commissionRate).toFixed(2));
@@ -2525,9 +2515,8 @@
         return order;
     }
 
-    // ✅ NEW: Show Purchase Success Animation
+    // ✅ Purchase Success Animation
     function showPurchaseSuccessAnimation(pkg) {
-        // Create success animation overlay
         const animDiv = document.createElement("div");
         animDiv.className = "purchase-success-anim";
         animDiv.innerHTML = `
@@ -2539,7 +2528,6 @@
         `;
         document.body.appendChild(animDiv);
         
-        // Create falling coins animation
         for (let i = 0; i < 20; i++) {
             setTimeout(() => {
                 const coin = document.createElement("div");
@@ -2553,7 +2541,6 @@
             }, i * 80);
         }
         
-        // Remove animation and show success modal
         setTimeout(() => {
             animDiv.remove();
             showSuccessModal(
@@ -2571,10 +2558,15 @@
 
     // ==================== LOAD CUSTOM ORDERS ====================
     async function loadCustomOrders() { 
-        const snapshot = await getDocs(collection(db, "customOrders")); 
-        const orders = []; 
-        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); 
-        return orders; 
+        try {
+            const snapshot = await getDocs(collection(db, "customOrders")); 
+            const orders = []; 
+            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() })); 
+            return orders; 
+        } catch (e) {
+            console.error('Load custom orders error:', e);
+            return [];
+        }
     }
 
     // ==================== SAVE USER ====================
@@ -2602,14 +2594,22 @@
             };
         }
         
-        await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
-        localStorage.setItem("currentUserId", currentUser.id);
+        try {
+            await setDoc(doc(db, "users", currentUser.id.toString()), cleanUser, { merge: true });
+            localStorage.setItem("currentUserId", currentUser.id);
+        } catch (e) {
+            console.error('Save user error:', e);
+        }
     }
     
     async function loadSystemSettings() { 
-        const docRef = doc(db, "systemSettings", "main"); 
-        const docSnap = await getDoc(docRef); 
-        if (docSnap.exists()) return docSnap.data(); 
+        try {
+            const docRef = doc(db, "systemSettings", "main"); 
+            const docSnap = await getDoc(docRef); 
+            if (docSnap.exists()) return docSnap.data(); 
+        } catch (e) {
+            console.error('Load settings error:', e);
+        }
         return { minBalanceForOrder: 10, usdtWalletAddress: "TCfRPvLHWkRCpaqyVkF2xaHTzqsrVr9oMf" }; 
     }
 
@@ -2667,103 +2667,112 @@
     // ==================== UPDATE UI ====================
     async function updateUI() {
         if(!currentUser) return;
-        const dict = translations[currentLang] || translations.en;
-        const userOrders = await getUserOrders(currentUser.id);
-        let dailyLimit = currentUser.tasks?.total || 0;
-        let completedCount = currentUser.tasks?.completed || 0;
-        let balance = currentUser.balance || 0;
-        let vipLevel = getVIPLevel(currentUser);
-        let commissionRate = getCommissionRate(currentUser);
-        let vipBadgeClass = getVIPBadgeClass(vipLevel);
         
-        document.getElementById("homeFullName").innerText = currentUser.username;
-        document.getElementById("balanceAmount").innerText = formatMoney(balance);
-        document.getElementById("todayOrdersCount").innerText = completedCount;
-        document.getElementById("dailyOrderMax").innerText = dailyLimit;
-        document.getElementById("todayEarningsHome").innerText = formatMoney(currentUser.todayEarnings || 0);
-        document.getElementById("totalCommissionHome").innerText = formatMoney(currentUser.totalCommission || 0);
-        document.getElementById("commissionRate").innerText = `${(commissionRate * 100).toFixed(1)}%`;
-        document.getElementById("homeVipLevel").innerHTML = `<span class="${vipBadgeClass}">VIP ${vipLevel}</span>`;
-        document.getElementById("referralCodeDisplay").innerText = currentUser.invitationCode || "------";
-        document.getElementById("mineFullName").innerText = currentUser.username;
-        document.getElementById("mineVipLevel").innerHTML = `<span class="${vipBadgeClass}">VIP ${vipLevel}</span>`;
-        document.getElementById("mineTotalAssets").innerText = formatMoney(balance);
-        document.getElementById("mineTodayOrders").innerText = completedCount;
-        document.getElementById("mineTodayEarn").innerText = formatMoney(currentUser.todayEarnings || 0);
-        document.getElementById("mineTotalComm").innerText = formatMoney(currentUser.totalCommission || 0);
-        document.getElementById("creditScore").innerText = currentUser.creditScore || 100;
-        document.getElementById("walletAddressDisplay").innerText = currentUser.walletAddress || "Not set";
-        document.getElementById("taskCounterWork").innerText = `${completedCount}/${dailyLimit}`;
-        let pct = dailyLimit ? (completedCount / dailyLimit) * 100 : 0;
-        document.getElementById("taskProgressFill").style.width = pct + "%";
-        
-        // Order History - Card Layout
-        const completedOrders = userOrders.filter(o => o.status === "completed");
-        const container = document.getElementById("completedOrdersList");
-        if (container) {
-            if (completedOrders.length === 0) {
-                container.innerHTML = `<div class="card-lux" style="text-align:center;padding:60px 20px;">
-                    <i class="fas fa-inbox" style="font-size:60px;color:var(--text-muted);margin-bottom:20px;"></i>
-                    <h3 style="color:var(--text-light);margin-bottom:8px;">No Order History</h3>
-                    <p style="color:var(--text-muted);font-size:14px;">${dict.noRecords || "Complete your first order to see it here."}</p>
-                </div>`;
-            } else {
-                let html = '';
-                completedOrders.slice(0, 20).forEach(o => {
-                    const ratings = o.ratings || { service: 0, quality: 0, sales: 0 };
-                    const date = o.date || (o.timestamp ? new Date(o.timestamp).toLocaleString() : 'Unknown');
-                    const starsHtml = (rating) => '★'.repeat(rating) + '☆'.repeat(5 - rating);
-                    
-                    html += `
-                        <div class="history-order-card">
-                            <div class="history-order-header">
-                                <div>
-                                    <div class="history-order-title">
-                                        <i class="fas fa-box" style="color:var(--gold);"></i> ${escapeHtml(o.name || 'Order')}
-                                        ${o.isPackageOrder ? `<span class="package-order-badge"><i class="fas fa-crown"></i> ${escapeHtml(o.packageName || 'Package')}</span>` : ''}
-                                    </div>
-                                    <div class="history-order-id">${escapeHtml(o.orderNumber || o.id)}</div>
-                                </div>
-                                <span class="history-order-badge"><i class="fas fa-check-circle"></i> COMPLETED</span>
-                            </div>
-                            <div class="history-order-details">
-                                <div class="history-detail-item">
-                                    <span class="history-detail-label">Order Amount</span>
-                                    <span class="history-detail-value">${formatMoney(o.amount || 0)}</span>
-                                </div>
-                                <div class="history-detail-item">
-                                    <span class="history-detail-label">Commission Earned</span>
-                                    <span class="history-detail-value profit">+ ${formatMoney(o.profit || 0)}</span>
-                                </div>
-                                <div class="history-detail-item">
-                                    <span class="history-detail-label">Rate</span>
-                                    <span class="history-detail-value gold">${(o.rate || 0).toFixed(2)}%</span>
-                                </div>
-                                <div class="history-detail-item">
-                                    <span class="history-detail-label">Type</span>
-                                    <span class="history-detail-value">${o.isInjection ? '🎁 Bonus Order' : (o.isPackageOrder ? '👑 Package Order' : 'Standard')}</span>
-                                </div>
-                            </div>
-                            <div class="history-order-ratings">
-                                <span class="rating-chip">Service: <strong>${starsHtml(ratings.service || 0)}</strong></span>
-                                <span class="rating-chip">Product: <strong>${starsHtml(ratings.quality || 0)}</strong></span>
-                                <span class="rating-chip">Sales: <strong>${starsHtml(ratings.sales || 0)}</strong></span>
-                            </div>
-                            <div class="history-order-date">
-                                <i class="fas fa-clock"></i> ${date}
-                            </div>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
+        try {
+            const userOrders = await getUserOrders(currentUser.id);
+            let dailyLimit = currentUser.tasks?.total || 0;
+            let completedCount = currentUser.tasks?.completed || 0;
+            let balance = currentUser.balance || 0;
+            let vipLevel = getVIPLevel(currentUser);
+            let commissionRate = getCommissionRate(currentUser);
+            let vipBadgeClass = getVIPBadgeClass(vipLevel);
+            
+            const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+            const setHtml = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+            
+            setEl("homeFullName", currentUser.username);
+            setEl("balanceAmount", formatMoney(balance));
+            setEl("todayOrdersCount", completedCount);
+            setEl("dailyOrderMax", dailyLimit);
+            setEl("todayEarningsHome", formatMoney(currentUser.todayEarnings || 0));
+            setEl("totalCommissionHome", formatMoney(currentUser.totalCommission || 0));
+            setEl("commissionRate", `${(commissionRate * 100).toFixed(1)}%`);
+            setHtml("homeVipLevel", `<span class="${vipBadgeClass}">VIP ${vipLevel}</span>`);
+            setEl("referralCodeDisplay", currentUser.invitationCode || "------");
+            setEl("mineFullName", currentUser.username);
+            setHtml("mineVipLevel", `<span class="${vipBadgeClass}">VIP ${vipLevel}</span>`);
+            setEl("mineTotalAssets", formatMoney(balance));
+            setEl("mineTodayOrders", completedCount);
+            setEl("mineTodayEarn", formatMoney(currentUser.todayEarnings || 0));
+            setEl("mineTotalComm", formatMoney(currentUser.totalCommission || 0));
+            setEl("creditScore", currentUser.creditScore || 100);
+            setEl("walletAddressDisplay", currentUser.walletAddress || "Not set");
+            setEl("taskCounterWork", `${completedCount}/${dailyLimit}`);
+            
+            const progressFill = document.getElementById("taskProgressFill");
+            if (progressFill) {
+                let pct = dailyLimit ? (completedCount / dailyLimit) * 100 : 0;
+                progressFill.style.width = pct + "%";
             }
+            
+            // Order History
+            const completedOrders = userOrders.filter(o => o.status === "completed");
+            const container = document.getElementById("completedOrdersList");
+            if (container) {
+                if (completedOrders.length === 0) {
+                    container.innerHTML = `<div class="card-lux" style="text-align:center;padding:60px 20px;">
+                        <i class="fas fa-inbox" style="font-size:60px;color:var(--text-muted);margin-bottom:20px;"></i>
+                        <h3 style="color:var(--text-light);margin-bottom:8px;">No Order History</h3>
+                        <p style="color:var(--text-muted);font-size:14px;">Complete your first order to see it here.</p>
+                    </div>`;
+                } else {
+                    let html = '';
+                    completedOrders.slice(0, 20).forEach(o => {
+                        const ratings = o.ratings || { service: 0, quality: 0, sales: 0 };
+                        const date = o.date || (o.timestamp ? new Date(o.timestamp).toLocaleString() : 'Unknown');
+                        const starsHtml = (rating) => '★'.repeat(rating) + '☆'.repeat(5 - rating);
+                        
+                        html += `
+                            <div class="history-order-card">
+                                <div class="history-order-header">
+                                    <div>
+                                        <div class="history-order-title">
+                                            <i class="fas fa-box" style="color:var(--gold);"></i> ${escapeHtml(o.name || 'Order')}
+                                            ${o.isPackageOrder ? `<span class="package-order-badge"><i class="fas fa-crown"></i> ${escapeHtml(o.packageName || 'Package')}</span>` : ''}
+                                        </div>
+                                        <div class="history-order-id">${escapeHtml(o.orderNumber || o.id)}</div>
+                                    </div>
+                                    <span class="history-order-badge"><i class="fas fa-check-circle"></i> COMPLETED</span>
+                                </div>
+                                <div class="history-order-details">
+                                    <div class="history-detail-item">
+                                        <span class="history-detail-label">Order Amount</span>
+                                        <span class="history-detail-value">${formatMoney(o.amount || 0)}</span>
+                                    </div>
+                                    <div class="history-detail-item">
+                                        <span class="history-detail-label">Commission Earned</span>
+                                        <span class="history-detail-value profit">+ ${formatMoney(o.profit || 0)}</span>
+                                    </div>
+                                    <div class="history-detail-item">
+                                        <span class="history-detail-label">Rate</span>
+                                        <span class="history-detail-value gold">${(o.rate || 0).toFixed(2)}%</span>
+                                    </div>
+                                    <div class="history-detail-item">
+                                        <span class="history-detail-label">Type</span>
+                                        <span class="history-detail-value">${o.isInjection ? '🎁 Bonus Order' : (o.isPackageOrder ? '👑 Package Order' : 'Standard')}</span>
+                                    </div>
+                                </div>
+                                <div class="history-order-ratings">
+                                    <span class="rating-chip">Service: <strong>${starsHtml(ratings.service || 0)}</strong></span>
+                                    <span class="rating-chip">Product: <strong>${starsHtml(ratings.quality || 0)}</strong></span>
+                                    <span class="rating-chip">Sales: <strong>${starsHtml(ratings.sales || 0)}</strong></span>
+                                </div>
+                                <div class="history-order-date">
+                                    <i class="fas fa-clock"></i> ${date}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                }
+            }
+            
+            updateMineAvatar();
+            renderVipPackages();
+            updateRealtimeStatus('UI updated ✅');
+        } catch (e) {
+            console.error('UpdateUI error:', e);
         }
-        
-        // Re-render VIP packages
-        renderVipPackages();
-        
-        updateMineAvatar();
-        updateRealtimeStatus('UI updated ✅');
     }
 
     function updateMineAvatar() {
@@ -2805,7 +2814,7 @@
             else netCommission = amount * commissionRate;
             isInjection = true;
             const dict = translations[currentLang] || translations.en;
-            toast(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'} ${dict.injectionMessage || 'Special order from admin!'} Amount: ${formatMoney(amount)} | Commission: ${formatMoney(netCommission)}`);
+            toast(`🎉 ${dict.bonusOrder || 'BONUS ORDER!'}`);
         } else {
             let percent = 0.53 + (Math.random() * 0.26);
             amount = parseFloat((balance * percent).toFixed(2));
@@ -2814,19 +2823,8 @@
             netCommission = gross - fee;
         }
         
-        let orderName = 'Default Order';
-        if (injection) {
-            orderName = injection.orderName || tpl.name || 'Premium Task Order';
-        } else {
-            orderName = tpl.name || 'Premium Task Order';
-        }
-        
-        let imageData = null;
-        if (injection?.imageData) {
-            imageData = injection.imageData;
-        } else if (tpl.image) {
-            imageData = tpl.image;
-        }
+        let orderName = injection ? (injection.orderName || tpl.name) : (tpl.name || 'Premium Task Order');
+        let imageData = injection?.imageData || tpl.image || null;
         
         const order = {
             id: Date.now(),
@@ -2852,11 +2850,11 @@
         const dict = translations[currentLang] || translations.en;
         const modal = document.createElement("div");
         modal.className = "modal";
-        modal.innerHTML = `<div class="modal-content warning-modal" style="text-align:center;">
-            <div class="warning-icon" style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
-            <h2 class="warning-title" style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2>
-            <p class="warning-message" style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p>
-            <button class="btn-warning-modal" id="warningOkayBtn" style="background:#dc2626;color:white;border:none;padding:12px 28px;border-radius:40px;font-weight:700;cursor:pointer;width:100%;transition:all 0.2s;">${dict.okay || "Okay"}</button>
+        modal.innerHTML = `<div class="modal-content" style="text-align:center;">
+            <div style="font-size:60px;color:#dc2626;margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2 style="color:#dc2626;font-size:24px;margin-bottom:16px;">⚠️ ${dict.warning}</h2>
+            <p style="color:var(--text-light);margin-bottom:24px;line-height:1.6;">${dict.pendingOrderMessage || "Please complete your current pending order before starting a new one."}</p>
+            <button class="btn-lux" id="warningOkayBtn" style="background:#dc2626;color:white;">${dict.okay || "Okay"}</button>
         </div>`;
         document.body.appendChild(modal);
         document.getElementById("warningOkayBtn").onclick = () => { 
@@ -2881,10 +2879,10 @@
         let injectionInfoHtml = '';
         if (isInjection && order.injectionDetails) {
             injectionInfoHtml = `<div style="background:rgba(245,158,11,0.1);border-radius:16px;padding:12px;margin:12px 0;">
-                <div class="flex-between"><span class="text-light" style="color:var(--text-light);">💰 Original Balance:</span><span class="text-gold">${formatMoney(order.injectionDetails.originalBalance)}</span></div>
-                <div class="flex-between"><span class="text-light" style="color:var(--text-light);">➕ Injection Amount Added:</span><span class="text-gold">+ ${formatMoney(order.injectionDetails.extraAmount)}</span></div>
-                <div class="flex-between"><span class="text-light" style="color:var(--text-light);">💵 Total Order Amount:</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
-                <div class="flex-between"><span class="text-light" style="color:var(--text-light);">💎 Special Commission:</span><span class="text-gold" style="font-size:20px;">+ ${formatMoney(order.netCommission)}</span></div>
+                <div class="flex-between"><span class="text-light">💰 Original Balance:</span><span class="text-gold">${formatMoney(order.injectionDetails.originalBalance)}</span></div>
+                <div class="flex-between"><span class="text-light">➕ Injection Amount:</span><span class="text-gold">+ ${formatMoney(order.injectionDetails.extraAmount)}</span></div>
+                <div class="flex-between"><span class="text-light">💵 Total Amount:</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
+                <div class="flex-between"><span class="text-light">💎 Commission:</span><span class="text-gold" style="font-size:20px;">+ ${formatMoney(order.netCommission)}</span></div>
             </div>`;
         }
         
@@ -2894,14 +2892,14 @@
                 ${packageBadge}
                 <div class="order-image">${imgHtml}</div>
                 <h2 style="color:var(--gold-light);">${escapeHtml(order.name)}</h2>
-                <div class="text-light" style="color:var(--text-light);">Order #: ${escapeHtml(order.orderNumber)}</div>
+                <div class="text-light">Order #: ${escapeHtml(order.orderNumber)}</div>
                 ${injectionInfoHtml}
                 ${!injectionInfoHtml ? `
-                    <div class="flex-between"><span class="text-light" style="color:var(--text-light);">${dict.orderAmount}</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
-                    <div class="flex-between"><span class="text-light" style="color:var(--text-light);">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ ${formatMoney(order.netCommission)}</span></div>
+                    <div class="flex-between"><span class="text-light">${dict.orderAmount}</span><span class="amount-big">${formatMoney(order.amount)}</span></div>
+                    <div class="flex-between"><span class="text-light">Commission (${order.rate.toFixed(2)}%)</span><span class="text-gold">+ ${formatMoney(order.netCommission)}</span></div>
                 ` : ''}
                 <div class="flex-between" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--gold);">
-                    <span class="text-light" style="color:var(--text-light);">${dict.afterCompletionBalance}</span>
+                    <span class="text-light">${dict.afterCompletionBalance}</span>
                     <strong style="color:var(--gold-light);font-size:20px;">${formatMoney(afterOrderBalance)}</strong>
                 </div>
                 ${!insufficient ? `
@@ -2909,9 +2907,9 @@
                 <div style="margin-top:12px;"><div><span class="text-gold">${dict.productQuality}</span></div><div class="stars" data-category="quality"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
                 <div style="margin-top:12px;"><div><span class="text-gold">${dict.salesExperience}</span></div><div class="stars" data-category="sales"><i class="far fa-star" data-value="1"></i><i class="far fa-star" data-value="2"></i><i class="far fa-star" data-value="3"></i><i class="far fa-star" data-value="4"></i><i class="far fa-star" data-value="5"></i></div></div>
                 <button class="btn-lux" id="submitOrderFromCardBtn" style="margin-top:20px;">${dict.submitComplete}</button>
-                ` : `<div class="alert-danger" style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;">
+                ` : `<div style="margin-top:16px;background:rgba(220,38,38,0.2);border-radius:20px;padding:16px;">
                     <strong style="color:#dc2626;">${dict.insufficientBalance}</strong>
-                    <div class="insufficient-details" style="margin-top:8px;">
+                    <div style="margin-top:8px;">
                         <div>💰 ${dict.orderAmount}: ${formatMoney(order.amount)}</div>
                         <div>💵 ${dict.yourBalance}: ${formatMoney(currentUser.balance)}</div>
                         <div>🔴 ${dict.needAdditional}: ${formatMoney(order.amount - currentUser.balance)}</div>
@@ -2951,9 +2949,7 @@
                     submitBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${dict.processing}`;
                     try {
                         const orderToComplete = currentOrder;
-                        if (!orderToComplete) {
-                            throw new Error("No order to complete");
-                        }
+                        if (!orderToComplete) throw new Error("No order to complete");
                         
                         const profitEarned = orderToComplete.netCommission || 0;
                         
@@ -2981,15 +2977,9 @@
                         currentOrder = null;
                         updateUI();
                         
-                        if (orderToComplete.isInjection) {
-                            showSuccessModal('Special Bonus Order!', `You earned <strong style="color:var(--gold);font-size:20px;">${formatMoney(profitEarned)}</strong> from a special bonus order! 🎉`, () => {
-                                loadNextOrderAutomatically();
-                            });
-                        } else {
-                            showSuccessModal('Order Completed!', `You earned <strong style="color:var(--gold);font-size:20px;">${formatMoney(profitEarned)}</strong> commission.`, () => {
-                                loadNextOrderAutomatically();
-                            });
-                        }
+                        showSuccessModal('Order Completed!', `You earned <strong style="color:var(--gold);font-size:20px;">${formatMoney(profitEarned)}</strong> commission.`, () => {
+                            loadNextOrderAutomatically();
+                        });
                         
                         let dailyLimit = currentUser.tasks.total || 0;
                         let completedCount = currentUser.tasks.completed || 0;
@@ -3032,7 +3022,7 @@
             
             if (!newOrder || !newOrder.name) {
                 console.error("❌ Invalid order generated:", newOrder);
-                toast("Error: Could not generate valid order. Please try again.", true);
+                toast("Error: Could not generate valid order.", true);
                 document.getElementById("currentOrderDisplay").style.display = "none";
                 return;
             }
@@ -3062,21 +3052,6 @@
         else { if(completedCount < dailyLimit && dailyLimit > 0) loadNextOrderAutomatically(); }
     }
 
-    document.getElementById("startWorkingBtn").onclick = async () => {
-        if(!currentUser) { toast("Please login first", true); return; }
-        let dailyLimit = currentUser.tasks?.total || 0;
-        let completedCount = currentUser.tasks?.completed || 0;
-        if(dailyLimit === 0) { toast("No orders assigned. Please purchase a package first!", true); return; }
-        if(completedCount >= dailyLimit) { toast("All orders completed for today!", true); return; }
-        if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
-        let settings = await loadSystemSettings();
-        if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
-            toast(`Minimum balance ${formatMoney(settings.minBalanceForOrder)} required to start an order.`, true); 
-            return; 
-        }
-        await loadNextOrderAutomatically();
-    };
-
     // ==================== SAVE ORDER TO HISTORY ====================
     async function saveOrderToHistory(userId, orderData) {
         try {
@@ -3094,7 +3069,6 @@
                 });
             }
             await deleteOldOrdersIfNeeded(userId, 50);
-            console.log("✅ Order saved successfully:", orderData.id);
         } catch (error) {
             console.error("❌ Error saving order:", error);
             throw error;
@@ -3102,23 +3076,32 @@
     }
 
     async function getUserOrders(userId) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"), limit(50));
-        const snapshot = await getDocs(q);
-        const orders = [];
-        snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
-        return orders;
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            const q = query(ordersRef, orderBy("timestamp", "desc"), limit(50));
+            const snapshot = await getDocs(q);
+            const orders = [];
+            snapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+            return orders;
+        } catch (e) {
+            console.error('Get user orders error:', e);
+            return [];
+        }
     }
 
     async function deleteOldOrdersIfNeeded(userId, maxOrders = 50) {
-        const ordersRef = collection(db, "users", userId, "orders");
-        const q = query(ordersRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        if (snapshot.size > maxOrders) {
-            const toDelete = [];
-            let count = 0;
-            for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
-            for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
+        try {
+            const ordersRef = collection(db, "users", userId, "orders");
+            const q = query(ordersRef, orderBy("timestamp", "desc"));
+            const snapshot = await getDocs(q);
+            if (snapshot.size > maxOrders) {
+                const toDelete = [];
+                let count = 0;
+                for (const doc of snapshot.docs) { count++; if (count > maxOrders) toDelete.push(doc.id); }
+                for (const id of toDelete) await deleteDoc(doc(db, "users", userId, "orders", id));
+            }
+        } catch (e) {
+            console.error('Delete old orders error:', e);
         }
     }
 
@@ -3275,14 +3258,14 @@
         const dict = translations[currentLang] || translations.en;
         let modal = document.createElement("div"); modal.className = "modal";
         let html = `<div class="modal-content"><h2 class="text-gold" style="margin-bottom:20px;">${escapeHtml(title)}</h2>`;
-        if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;color:var(--text-light);">${dict.noRecords}</p>`;
+        if(items.length === 0) html += `<p class="text-light" style="text-align:center;padding:20px;">${dict.noRecords}</p>`;
         else items.sort((a,b)=> new Date(b.timestamp) - new Date(a.timestamp)).forEach(item => { 
             html += `<div class="history-item">
-                <div class="flex-between"><strong style="color:var(--text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span class="status-badge" style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div>
+                <div class="flex-between"><strong style="color:var(--text-light);">${type==='recharge'?'Recharge':'Withdraw'}</strong><span style="color: ${item.status === 'pending' ? '#f59e0b' : (item.status === 'approved' ? '#10b981' : '#dc2626')};">${item.status.toUpperCase()}</span></div>
                 <div style="color:var(--text-light);">Amount: ${formatMoney(item.amount)}</div>
-                <div class="text-muted" style="color:var(--text-muted);">${new Date(item.timestamp).toLocaleString()}</div>
+                <div class="text-muted">${new Date(item.timestamp).toLocaleString()}</div>
                 ${item.receiptImage?`<img src="${item.receiptImage}" class="receipt-img">`:''}
-                ${item.adminNote?`<div class="text-muted" style="color:var(--text-muted);">Note: ${escapeHtml(item.adminNote)}</div>`:''}
+                ${item.adminNote?`<div class="text-muted">Note: ${escapeHtml(item.adminNote)}</div>`:''}
             </div>`; 
         });
         html += `<button class="btn-lux" id="closeHistoryModal" style="margin-top:16px;">${dict.close}</button></div>`;
@@ -3293,79 +3276,87 @@
     // ==================== CHAT ====================
     async function startChatSubscription() {
         if (unsubscribeChat) unsubscribeChat();
-        const q = query(collection(db, "chatMessages"));
-        unsubscribeChat = onSnapshot(q, (snapshot) => {
-            if (document.getElementById("servicePage").classList.contains("active-page")) {
-                const container = document.getElementById("customerChatMessages");
-                if (!container || !currentUser) return;
-                const relevant = [];
-                snapshot.forEach(doc => { 
-                    const msg = doc.data(); 
-                    if ((msg.to === 'admin' && msg.from === currentUser.username) || (msg.from === 'admin' && msg.to === currentUser.username)) relevant.push(msg); 
-                });
-                relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
-                container.innerHTML = '';
-                relevant.forEach(msg => { 
-                    const isSent = msg.from === currentUser.username; 
-                    const div = document.createElement('div'); 
-                    div.className = `chat-message ${isSent ? 'sent' : 'received'}`; 
-                    div.innerHTML = `<div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)">` : ''}<div class="chat-time">${escapeHtml(msg.time || '')}</div>`; 
-                    container.appendChild(div); 
-                });
-                container.scrollTop = container.scrollHeight;
-                updateRealtimeStatus('Chat updated ✅');
-            }
-        });
+        try {
+            const q = query(collection(db, "chatMessages"));
+            unsubscribeChat = onSnapshot(q, (snapshot) => {
+                if (document.getElementById("servicePage").classList.contains("active-page")) {
+                    const container = document.getElementById("customerChatMessages");
+                    if (!container || !currentUser) return;
+                    const relevant = [];
+                    snapshot.forEach(doc => { 
+                        const msg = doc.data(); 
+                        if ((msg.to === 'admin' && msg.from === currentUser.username) || (msg.from === 'admin' && msg.to === currentUser.username)) relevant.push(msg); 
+                    });
+                    relevant.sort((a,b) => (a.id || 0) - (b.id || 0));
+                    container.innerHTML = '';
+                    relevant.forEach(msg => { 
+                        const isSent = msg.from === currentUser.username; 
+                        const div = document.createElement('div'); 
+                        div.className = `chat-message ${isSent ? 'sent' : 'received'}`; 
+                        div.innerHTML = `<div>${escapeHtml(msg.text || '')}</div>${msg.image ? `<img src="${msg.image}" class="chat-image" onclick="window.open(this.src)">` : ''}<div class="chat-time">${escapeHtml(msg.time || '')}</div>`; 
+                        container.appendChild(div); 
+                    });
+                    container.scrollTop = container.scrollHeight;
+                }
+            });
+        } catch (e) { console.error('Chat subscribe error:', e); }
     }
     
     async function sendChatMessage(text, imageData = null) { 
         if (!currentUser) return; 
-        await setDoc(doc(db, "chatMessages", (Date.now() + Math.random()).toString()), { 
-            id: Date.now() + Math.random(), 
-            from: currentUser.username, 
-            to: 'admin', 
-            text: text, 
-            image: imageData, 
-            time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) 
-        }); 
+        try {
+            await setDoc(doc(db, "chatMessages", (Date.now() + Math.random()).toString()), { 
+                id: Date.now() + Math.random(), 
+                from: currentUser.username, 
+                to: 'admin', 
+                text: text, 
+                image: imageData, 
+                time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok', hour12: false }) 
+            }); 
+        } catch (e) { console.error('Send message error:', e); }
     }
 
     // ==================== INJECTION SYSTEM ====================
     function subscribeToInjections(userId) {
         if (unsubscribeInjections) unsubscribeInjections();
-        const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
-        unsubscribeInjections = onSnapshot(q, async (snapshot) => {
-            const pendingInjections = [];
-            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-            if (pendingInjections.length > 0 && currentUser) {
-                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-                currentUser.pendingInjections = pendingInjections;
-                await saveCurrentUser();
-                const dict = translations[currentLang] || translations.en;
-                toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
-                if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
-                updateRealtimeStatus('New injection received ✅');
-            }
-        });
+        try {
+            const q = query(collection(db, "injections"), where("userId", "==", userId), where("used", "==", false));
+            unsubscribeInjections = onSnapshot(q, async (snapshot) => {
+                const pendingInjections = [];
+                snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+                if (pendingInjections.length > 0 && currentUser) {
+                    pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                    currentUser.pendingInjections = pendingInjections;
+                    await saveCurrentUser();
+                    const dict = translations[currentLang] || translations.en;
+                    toast(`✨ ${dict.bonusOrder || 'NEW SPECIAL ORDER!'} ✨`);
+                    if (document.getElementById("workPage").classList.contains("active-page")) refreshWorkPageOrder();
+                }
+            });
+        } catch (e) { console.error('Injections subscribe error:', e); }
     }
     
     async function markInjectionAsUsed(injectionId) {
-        const injectionRef = doc(db, "injections", injectionId);
-        await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
+        try {
+            const injectionRef = doc(db, "injections", injectionId);
+            await updateDoc(injectionRef, { used: true, usedAt: new Date().toISOString() });
+        } catch (e) { console.error('Mark injection error:', e); }
     }
     
     async function checkAndApplyInjections() {
         if (!currentUser) return [];
-        const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
-        const snapshot = await getDocs(q);
-        const pendingInjections = [];
-        snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
-        if (pendingInjections.length > 0) {
-            pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
-            currentUser.pendingInjections = pendingInjections;
-            await saveCurrentUser();
-        }
-        return pendingInjections;
+        try {
+            const q = query(collection(db, "injections"), where("userId", "==", currentUser.id), where("used", "==", false));
+            const snapshot = await getDocs(q);
+            const pendingInjections = [];
+            snapshot.forEach(doc => pendingInjections.push({ id: doc.id, ...doc.data() }));
+            if (pendingInjections.length > 0) {
+                pendingInjections.sort((a,b) => a.taskNumber - b.taskNumber);
+                currentUser.pendingInjections = pendingInjections;
+                await saveCurrentUser();
+            }
+            return pendingInjections;
+        } catch (e) { console.error('Check injections error:', e); return []; }
     }
 
     // ==================== MODALS ====================
@@ -3394,13 +3385,13 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content">
             <h2 class="text-gold">Personal Details</h2>
-            <div class="photo-preview-area" style="display:flex;justify-content:center;margin-bottom:20px;">
-                <div class="photo-preview" id="profilePreview">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;"></i>'}</div>
+            <div style="display:flex;justify-content:center;margin-bottom:20px;">
+                <div class="photo-preview">${currentUser.profilePhoto ? `<img src="${currentUser.profilePhoto}">` : '<i class="fas fa-user" style="font-size:80px;"></i>'}</div>
             </div>
             <button class="btn-outline-lux btn-lux" id="uploadPhotoBtn">${dict.uploadPhoto}</button>
-            <div class="info-row"><span class="info-label" style="color:var(--text-muted);">Credit Score:</span><span class="info-value" style="color:var(--text-light);">${currentUser.creditScore || 100}</span></div>
-            <div class="info-row"><span class="info-label" style="color:var(--text-muted);">Balance:</span><span class="info-value" style="color:var(--text-light);">${formatMoney(currentUser.balance || 0)}</span></div>
-            <div class="info-row"><span class="info-label" style="color:var(--text-muted);">Invitation Code:</span><span class="info-value" style="color:var(--text-light);">${escapeHtml(currentUser.invitationCode || 'N/A')}</span></div>
+            <div class="info-row"><span style="color:var(--text-muted);">Credit Score:</span><span style="color:var(--text-light);">${currentUser.creditScore || 100}</span></div>
+            <div class="info-row"><span style="color:var(--text-muted);">Balance:</span><span style="color:var(--text-light);">${formatMoney(currentUser.balance || 0)}</span></div>
+            <div class="info-row"><span style="color:var(--text-muted);">Invitation Code:</span><span style="color:var(--text-light);">${escapeHtml(currentUser.invitationCode || 'N/A')}</span></div>
             <button class="btn-lux" id="closePersonalModal" style="margin-top:16px;">${dict.close}</button>
         </div>`;
         document.body.appendChild(modal);
@@ -3413,9 +3404,9 @@
         let modal = document.createElement("div"); modal.className = "modal";
         modal.innerHTML = `<div class="modal-content">
             <h2 class="text-gold">${dict.loanService}</h2>
-            <p class="text-light" style="color:var(--text-light);margin-bottom:16px;">Apply for a loan</p>
+            <p class="text-light" style="margin-bottom:16px;">Apply for a loan</p>
             <div class="upload-area-sm" id="uploadBankArea"><i class="fas fa-upload"></i> Upload Bank Profile<input type="file" id="bankInput" accept="image/*" style="display:none;"></div>
-            <div class="doc-type-selector" style="display:flex;gap:12px;margin:12px 0;">
+            <div style="display:flex;gap:12px;margin:12px 0;">
                 <div class="doc-option active" data-type="nrc" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(212,175,55,0.2);border:1px solid var(--gold);color:var(--gold-light);">NRC</div>
                 <div class="doc-option" data-type="driver" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--border-gold);color:var(--text-muted);">Driver License</div>
                 <div class="doc-option" data-type="passport" style="cursor:pointer;padding:8px 16px;border-radius:30px;background:rgba(0,0,0,0.3);border:1px solid var(--border-gold);color:var(--text-muted);">Passport</div>
@@ -3449,7 +3440,7 @@
             const frontFile = modal.querySelector("#frontInput").files[0]; 
             const backFile = modal.querySelector("#backInput").files[0]; 
             if(!amount || amount <= 0) { toast("Enter valid amount", true); return; } 
-            if(!bankFile || !frontFile || !backFile) { toast("Please upload all required documents", true); return; } 
+            if(!bankFile || !frontFile || !backFile) { toast("Please upload all documents", true); return; } 
             const readFile = (f) => new Promise((resolve) => { 
                 const r = new FileReader(); 
                 r.onload = e => resolve(e.target.result); 
@@ -3471,6 +3462,30 @@
             showSuccessModal('Loan Request Submitted!', `Your loan request for <strong style="color:var(--gold);">${formatMoney(amount)}</strong> is pending admin review.`);
         }; 
         modal.querySelector("#closeLoanModal").onclick = () => document.body.removeChild(modal);
+    }
+
+    function showCompanyInfoModal() {
+        const modal = document.createElement("div"); modal.className = "modal";
+        modal.innerHTML = `<div class="modal-content">
+            <h2 style="color:var(--gold);margin-bottom:20px;">About LUXCY</h2>
+            <div style="display:flex;justify-content:center;margin-bottom:20px;">
+                <div style="width:100px;height:100px;background:rgba(212,175,55,0.1);border-radius:20px;display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-globe-asia" style="font-size:60px;color:var(--gold);"></i>
+                </div>
+            </div>
+            <div style="color:var(--text-light);line-height:1.6;margin-bottom:20px;">LUXCY is a premier luxury travel and task platform.</div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:16px;">
+                <h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-bullseye"></i> Our Mission</h3>
+                <p style="color:var(--text-light);">To provide seamless travel experiences and financial freedom.</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border-radius:16px;padding:16px;margin-bottom:20px;">
+                <h3 style="color:var(--gold);margin-bottom:10px;"><i class="fas fa-eye"></i> Our Vision</h3>
+                <p style="color:var(--text-light);">To become the world's leading integrated travel and earning platform.</p>
+            </div>
+            <button class="btn-lux" id="closeCompanyModal" style="width:100%;">Close</button>
+        </div>`;
+        document.body.appendChild(modal);
+        document.getElementById("closeCompanyModal").onclick = () => document.body.removeChild(modal);
     }
 
     // ==================== GOOGLE LOGIN ====================
@@ -3526,7 +3541,6 @@
             subscribeToInjections(currentUser.id);
             updateUI();
             loadBackgrounds();
-            startSettingsSubscription();
             const lastPage = localStorage.getItem("customerLastPage");
             hideLoader();
             showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
@@ -3540,19 +3554,11 @@
         }
     }
 
-    document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-    document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
-
     // ==================== DELETE BROWSING DATA ====================
     function deleteBrowsingData() {
         const confirmDelete = confirm(
             "⚠️ WARNING: This will delete all local data including:\n\n" +
-            "• Login session\n" +
-            "• Cached files\n" +
-            "• Local storage data\n" +
-            "• Session storage data\n" +
-            "• Cookies\n\n" +
+            "• Login session\n• Cached files\n• Local storage data\n• Session storage data\n• Cookies\n\n" +
             "✅ Your account data on the server will NOT be deleted.\n\n" +
             "Click OK to continue or Cancel to stop."
         );
@@ -3568,16 +3574,6 @@
             if ('caches' in window) {
                 caches.keys().then(function(names) { for (let name of names) caches.delete(name); });
             }
-            if ('indexedDB' in window) {
-                indexedDB.databases().then(function(dbs) {
-                    dbs.forEach(function(db) { indexedDB.deleteDatabase(db.name); });
-                }).catch(function() {});
-            }
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    registrations.forEach(function(registration) { registration.unregister(); });
-                });
-            }
             toast("✅ All local data cleared! Refreshing page...");
             setTimeout(function() { window.location.reload(true); }, 1500);
         } catch (error) {
@@ -3585,8 +3581,6 @@
             toast("Error clearing data: " + error.message, true);
         }
     }
-
-    document.getElementById('deleteBrowsingDataBtn').onclick = deleteBrowsingData;
 
     // ==================== TRANSLATIONS ====================
     const translations = {
@@ -3622,11 +3616,10 @@
             yourBalance: "Your Balance", needAdditional: "Need Additional", rechargeNow: "Recharge Now",
             close: "Close", submit: "Submit", cancel: "Cancel", uploadReceipt: "Upload receipt",
             enterValidAmount: "Enter valid amount", noRecords: "No records.",
-            companyModalTitle: "About LUXCY", companyModalMission: "Our Mission", companyModalVision: "Our Vision",
             pendingOrderWarning: "You have a pending order!", pendingOrderMessage: "Please complete your current pending order before starting a new one.",
             okay: "Okay", warning: "Warning", completed: "Completed", walletAddress: "USDT TRC20 Wallet Address", copy: "Copy",
             uploadPhoto: "Upload Photo", save: "Save",
-            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order from admin!",
+            bonusOrder: "SPECIAL BONUS ORDER!", injectionMessage: "You have received a special boosted commission order!",
             referralEarned: "Referral Bonus Earned!",
             deleteDataText: "Clear Local Data",
             deleteDataBtnText: "Delete Browsing Data & Refresh",
@@ -3664,11 +3657,10 @@
             yourBalance: "ยอดเงินของคุณ", needAdditional: "ต้องการเพิ่ม", rechargeNow: "เติมเงินตอนนี้",
             close: "ปิด", submit: "ส่ง", cancel: "ยกเลิก", uploadReceipt: "อัปโหลดหลักฐาน",
             enterValidAmount: "ใส่จำนวนเงินที่ถูกต้อง", noRecords: "ไม่มีประวัติ",
-            companyModalTitle: "เกี่ยวกับ LUXCY", companyModalMission: "พันธกิจของเรา", companyModalVision: "วิสัยทัศน์ของเรา",
             pendingOrderWarning: "คุณมีคำสั่งซื้อที่ยังไม่เสร็จสิ้น!", pendingOrderMessage: "กรุณาทำคำสั่งซื้อที่ค้างอยู่ให้เสร็จสิ้นก่อนเริ่มใหม่",
             okay: "ตกลง", warning: "คำเตือน", completed: "เสร็จสิ้น", walletAddress: "ที่อยู่กระเป๋า USDT TRC20", copy: "คัดลอก",
             uploadPhoto: "อัปโหลดรูป", save: "บันทึก",
-            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษจากผู้ดูแลระบบ!",
+            bonusOrder: "ออเดอร์พิเศษ!", injectionMessage: "คุณได้รับออเดอร์คอมมิชชั่นพิเศษ!",
             referralEarned: "ได้รับโบนัสแนะนำ!",
             deleteDataText: "ล้างข้อมูลในเครื่อง",
             deleteDataBtnText: "ล้างข้อมูลทั้งหมด & รีเฟรช",
@@ -3688,33 +3680,32 @@
             rateText: "Tasa", todayText: "Hoy", todayEarningsText: "Ganancias de Hoy",
             yesterdayText: "Ayer", totalCommissionText: "Comisión Total",
             rechargeText: "Recargar", withdrawText: "Retirar", referralCodeText: "Tu Código de Referido",
-            liveUpdatesText: "Actualizaciones en Vivo de Comisiones", exitText: "Salir",
-            shoppingTasksText: "Tareas de Compras", taskProgressText: "Progreso de Tareas", startOrderText: "Iniciar Orden",
+            liveUpdatesText: "Actualizaciones en Vivo", exitText: "Salir",
+            shoppingTasksText: "Tareas de Compras", taskProgressText: "Progreso", startOrderText: "Iniciar Orden",
             orderHistoryText: "Historial de Órdenes", myProfileText: "Mi Perfil", creditText: "Crédito",
             totalAssetsText: "Activos Totales", todayOrdersText: "Órdenes de Hoy", todayEarningsTextMine: "Ganancias de Hoy",
             totalCommissionTextMine: "Comisión Total", depositText: "Depositar", withdrawTextMine: "Retirar",
-            bindWalletText: "Vincular Billetera Crypto", personalDetailsText: "Detalles Personales", loanServiceText: "Servicio de Préstamos",
+            bindWalletText: "Vincular Billetera", personalDetailsText: "Detalles Personales", loanServiceText: "Servicio de Préstamos",
             rechargeHistoryText: "Historial de Recargas", withdrawHistoryText: "Historial de Retiros", walletAddressText: "Dirección de Billetera",
             howCommissionsText: "Cómo Funcionan las Comisiones", commDesc1: "Cada tarea completada gana comisión según el nivel VIP",
-            commDesc2: "Bono por referido: 10% de las ganancias del referido", commDesc3: "Límite diario de tareas basado en órdenes asignadas",
-            secureText: "Todas las transacciones son seguras e instantáneas", selectLanguageText: "Seleccionar Idioma",
+            commDesc2: "Bono por referido: 10% de las ganancias", commDesc3: "Límite diario de tareas",
+            secureText: "Todas las transacciones son seguras", selectLanguageText: "Seleccionar Idioma",
             signOutText: "Cerrar Sesión", customerServiceText: "Servicio al Cliente", sendText: "Enviar",
             navHome: "Inicio", navWork: "Trabajo", navOrder: "Órdenes", navMine: "Mi Perfil", navService: "Servicio",
-            orderAmount: "Monto de la Orden", profitEarned: "Ganancia", afterCompletionBalance: "Saldo Después de Completar",
-            serviceQuality: "Calidad del Servicio", productQuality: "Calidad del Producto", salesExperience: "Experiencia de Venta",
+            orderAmount: "Monto", profitEarned: "Ganancia", afterCompletionBalance: "Saldo Después",
+            serviceQuality: "Calidad del Servicio", productQuality: "Calidad del Producto", salesExperience: "Experiencia",
             submitComplete: "Enviar y Completar", processing: "Procesando...", insufficientBalance: "¡Saldo Insuficiente!",
-            yourBalance: "Tu Saldo", needAdditional: "Necesitas Adicional", rechargeNow: "Recargar Ahora",
+            yourBalance: "Tu Saldo", needAdditional: "Necesitas", rechargeNow: "Recargar Ahora",
             close: "Cerrar", submit: "Enviar", cancel: "Cancelar", uploadReceipt: "Subir comprobante",
             enterValidAmount: "Ingresa un monto válido", noRecords: "Sin registros.",
-            companyModalTitle: "Acerca de LUXCY", companyModalMission: "Nuestra Misión", companyModalVision: "Nuestra Visión",
             pendingOrderWarning: "¡Tienes una orden pendiente!", pendingOrderMessage: "Completa tu orden pendiente actual antes de iniciar una nueva.",
             okay: "Okay", warning: "Advertencia", completed: "Completado", walletAddress: "Dirección USDT TRC20", copy: "Copiar",
             uploadPhoto: "Subir Foto", save: "Guardar",
-            bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden de comisión especial del administrador!",
-            referralEarned: "¡Bono por Referido Ganado!",
+            bonusOrder: "¡ORDEN ESPECIAL!", injectionMessage: "¡Has recibido una orden especial!",
+            referralEarned: "¡Bono por Referido!",
             deleteDataText: "Borrar Datos Locales",
             deleteDataBtnText: "Borrar Datos & Refrescar",
-            deviceSessionText: "Info de Dispositivo y Sesión"
+            deviceSessionText: "Info de Dispositivo"
         },
         uk: {
             heroTitle: "LUXCY", heroSubtitle: "Насолоджуйтесь розкішними подорожами та заробляйте щоденні комісії.",
@@ -3730,33 +3721,32 @@
             rateText: "Ставка", todayText: "Сьогодні", todayEarningsText: "Заробіток сьогодні",
             yesterdayText: "Вчора", totalCommissionText: "Загальна комісія",
             rechargeText: "Поповнити", withdrawText: "Вивести", referralCodeText: "Ваш реферальний код",
-            liveUpdatesText: "Оновлення комісій у реальному часі", exitText: "Вихід",
-            shoppingTasksText: "Завдання з покупок", taskProgressText: "Прогрес завдань", startOrderText: "Почати замовлення",
+            liveUpdatesText: "Оновлення комісій", exitText: "Вихід",
+            shoppingTasksText: "Завдання з покупок", taskProgressText: "Прогрес", startOrderText: "Почати замовлення",
             orderHistoryText: "Історія замовлень", myProfileText: "Мій профіль", creditText: "Кредит",
             totalAssetsText: "Загальні активи", todayOrdersText: "Замовлення сьогодні", todayEarningsTextMine: "Заробіток сьогодні",
             totalCommissionTextMine: "Загальна комісія", depositText: "Депозит", withdrawTextMine: "Вивести",
             bindWalletText: "Прив'язати криптогаманець", personalDetailsText: "Особисті дані", loanServiceText: "Служба кредитування",
             rechargeHistoryText: "Історія поповнень", withdrawHistoryText: "Історія виведень", walletAddressText: "Адреса гаманця",
-            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне виконане завдання приносить комісію залежно від рівня VIP",
-            commDesc2: "Реферальний бонус: 10% від заробітку реферала", commDesc3: "Денний ліміт завдань на основі призначених замовлень",
-            secureText: "Всі транзакції безпечні та миттєві", selectLanguageText: "Виберіть мову",
+            howCommissionsText: "Як працюють комісії", commDesc1: "Кожне виконане завдання приносить комісію",
+            commDesc2: "Реферальний бонус: 10%", commDesc3: "Денний ліміт завдань",
+            secureText: "Всі транзакції безпечні", selectLanguageText: "Виберіть мову",
             signOutText: "Вийти", customerServiceText: "Служба підтримки", sendText: "Надіслати",
             navHome: "Головна", navWork: "Робота", navOrder: "Замовлення", navMine: "Мій профіль", navService: "Підтримка",
-            orderAmount: "Сума замовлення", profitEarned: "Прибуток", afterCompletionBalance: "Баланс після виконання",
-            serviceQuality: "Якість обслуговування", productQuality: "Якість продукту", salesExperience: "Досвід продажів",
+            orderAmount: "Сума", profitEarned: "Прибуток", afterCompletionBalance: "Баланс після",
+            serviceQuality: "Якість обслуговування", productQuality: "Якість продукту", salesExperience: "Досвід",
             submitComplete: "Відправити та завершити", processing: "Обробка...", insufficientBalance: "Недостатньо коштів!",
-            yourBalance: "Ваш баланс", needAdditional: "Потрібно додатково", rechargeNow: "Поповнити зараз",
+            yourBalance: "Ваш баланс", needAdditional: "Потрібно", rechargeNow: "Поповнити зараз",
             close: "Закрити", submit: "Відправити", cancel: "Скасувати", uploadReceipt: "Завантажити квитанцію",
             enterValidAmount: "Введіть дійсну суму", noRecords: "Немає записів.",
-            companyModalTitle: "Про LUXCY", companyModalMission: "Наша місія", companyModalVision: "Наша візія",
-            pendingOrderWarning: "У вас є незавершене замовлення!", pendingOrderMessage: "Будь ласка, завершіть поточне замовлення перед початком нового.",
-            okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса гаманця USDT TRC20", copy: "Копіювати",
+            pendingOrderWarning: "У вас є незавершене замовлення!", pendingOrderMessage: "Завершіть поточне замовлення.",
+            okay: "Добре", warning: "Попередження", completed: "Завершено", walletAddress: "Адреса USDT TRC20", copy: "Копіювати",
             uploadPhoto: "Завантажити фото", save: "Зберегти",
-            bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення з підвищеною комісією від адміністратора!",
-            referralEarned: "Реферальний бонус отримано!",
+            bonusOrder: "СПЕЦІАЛЬНЕ ЗАМОВЛЕННЯ!", injectionMessage: "Ви отримали спеціальне замовлення!",
+            referralEarned: "Реферальний бонус!",
             deleteDataText: "Очистити локальні дані",
             deleteDataBtnText: "Видалити дані & оновити",
-            deviceSessionText: "Інформація про пристрій та сесію"
+            deviceSessionText: "Інформація про пристрій"
         },
         ru: {
             heroTitle: "LUXCY", heroSubtitle: "Наслаждайтесь роскошными путешествиями и зарабатывайте ежедневные комиссии.",
@@ -3772,33 +3762,32 @@
             rateText: "Ставка", todayText: "Сегодня", todayEarningsText: "Заработок сегодня",
             yesterdayText: "Вчера", totalCommissionText: "Общая комиссия",
             rechargeText: "Пополнить", withdrawText: "Вывести", referralCodeText: "Ваш реферальный код",
-            liveUpdatesText: "Обновления комиссий в реальном времени", exitText: "Выход",
-            shoppingTasksText: "Задания по покупкам", taskProgressText: "Прогресс заданий", startOrderText: "Начать заказ",
+            liveUpdatesText: "Обновления комиссий", exitText: "Выход",
+            shoppingTasksText: "Задания по покупкам", taskProgressText: "Прогресс", startOrderText: "Начать заказ",
             orderHistoryText: "История заказов", myProfileText: "Мой профиль", creditText: "Кредит",
             totalAssetsText: "Общие активы", todayOrdersText: "Заказы сегодня", todayEarningsTextMine: "Заработок сегодня",
             totalCommissionTextMine: "Общая комиссия", depositText: "Депозит", withdrawTextMine: "Вывести",
             bindWalletText: "Привязать криптокошелек", personalDetailsText: "Личные данные", loanServiceText: "Кредитная служба",
             rechargeHistoryText: "История пополнений", withdrawHistoryText: "История выводов", walletAddressText: "Адрес кошелька",
-            howCommissionsText: "Как работают комиссии", commDesc1: "Каждое выполненное задание приносит комиссию в зависимости от уровня VIP",
-            commDesc2: "Реферальный бонус: 10% от заработка реферала", commDesc3: "Дневной лимит заданий на основе назначенных заказов",
-            secureText: "Все транзакции безопасны и мгновенны", selectLanguageText: "Выберите язык",
+            howCommissionsText: "Как работают комиссии", commDesc1: "Каждое задание приносит комиссию",
+            commDesc2: "Реферальный бонус: 10%", commDesc3: "Дневной лимит заданий",
+            secureText: "Все транзакции безопасны", selectLanguageText: "Выберите язык",
             signOutText: "Выйти", customerServiceText: "Служба поддержки", sendText: "Отправить",
             navHome: "Главная", navWork: "Работа", navOrder: "Заказы", navMine: "Мой профиль", navService: "Поддержка",
-            orderAmount: "Сумма заказа", profitEarned: "Прибыль", afterCompletionBalance: "Баланс после завершения",
-            serviceQuality: "Качество обслуживания", productQuality: "Качество продукта", salesExperience: "Опыт продаж",
+            orderAmount: "Сумма", profitEarned: "Прибыль", afterCompletionBalance: "Баланс после",
+            serviceQuality: "Качество обслуживания", productQuality: "Качество продукта", salesExperience: "Опыт",
             submitComplete: "Отправить и завершить", processing: "Обработка...", insufficientBalance: "Недостаточно средств!",
-            yourBalance: "Ваш баланс", needAdditional: "Требуется дополнительно", rechargeNow: "Пополнить сейчас",
+            yourBalance: "Ваш баланс", needAdditional: "Требуется", rechargeNow: "Пополнить сейчас",
             close: "Закрыть", submit: "Отправить", cancel: "Отмена", uploadReceipt: "Загрузить квитанцию",
-            enterValidAmount: "Введите действительную сумму", noRecords: "Нет записей.",
-            companyModalTitle: "О LUXCY", companyModalMission: "Наша миссия", companyModalVision: "Наше видение",
-            pendingOrderWarning: "У вас есть незавершенный заказ!", pendingOrderMessage: "Пожалуйста, завершите текущий заказ перед началом нового.",
-            okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес кошелька USDT TRC20", copy: "Копировать",
+            enterValidAmount: "Введите сумму", noRecords: "Нет записей.",
+            pendingOrderWarning: "У вас есть незавершенный заказ!", pendingOrderMessage: "Завершите текущий заказ.",
+            okay: "Хорошо", warning: "Предупреждение", completed: "Завершено", walletAddress: "Адрес USDT TRC20", copy: "Копировать",
             uploadPhoto: "Загрузить фото", save: "Сохранить",
-            bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ с повышенной комиссией от администратора!",
-            referralEarned: "Реферальный бонус получен!",
+            bonusOrder: "СПЕЦИАЛЬНЫЙ ЗАКАЗ!", injectionMessage: "Вы получили специальный заказ!",
+            referralEarned: "Реферальный бонус!",
             deleteDataText: "Очистить локальные данные",
             deleteDataBtnText: "Удалить данные & обновить",
-            deviceSessionText: "Информация об устройстве и сессии"
+            deviceSessionText: "Информация об устройстве"
         }
     };
 
@@ -3845,12 +3834,111 @@
             if (el) el.innerText = text; 
         }
         if (currentUser) updateUI();
-        toast(`Language changed to ${lang.toUpperCase()}`);
+    }
+
+    // ==================== SUBSCRIBE TO USER ====================
+    function subscribeToUser(userId) {
+        if (unsubscribeUser) unsubscribeUser();
+        try {
+            const userRef = doc(db, "users", userId);
+            unsubscribeUser = onSnapshot(userRef, async (docSnap) => {
+                if (docSnap.exists()) {
+                    const userData = docSnap.data();
+                    currentUser = { id: docSnap.id, ...userData };
+                    if (!currentUser.orders) currentUser.orders = [];
+                    if (!currentUser.tasks) currentUser.tasks = { completed: 0, total: 0 };
+                    await checkAndApplyInjections();
+                    updateUI();
+                    updateRealtimeStatus('Account synced ✅');
+                }
+            });
+        } catch (e) { console.error('User subscribe error:', e); }
+    }
+
+    function subscribeToWithdrawals(userId) {
+        if (unsubscribeWithdrawals) unsubscribeWithdrawals();
+        try {
+            const q = query(collection(db, "withdrawRequests"), where("userId", "==", userId));
+            unsubscribeWithdrawals = onSnapshot(q, async (snapshot) => {
+                snapshot.docChanges().forEach(async (change) => {
+                    if (change.type === "modified") {
+                        const req = change.doc.data();
+                        if (req.status === "rejected" && req.amount) {
+                            const userRef = doc(db, "users", userId);
+                            const userSnap = await getDoc(userRef);
+                            if (userSnap.exists()) await updateDoc(userRef, { balance: (userSnap.data().balance || 0) + req.amount });
+                        }
+                    }
+                });
+            });
+        } catch (e) { console.error('Withdrawals subscribe error:', e); }
+    }
+
+    // ==================== LIVE FEED ====================
+    const allNames = ["James","Emma","Liam","Olivia","Noah","Ava","William","Sophia","Somchai","Somying","Wichai","Napa","Carlos","Maria","Olga","Dmitri"];
+    function randName() { return allNames[Math.floor(Math.random()*allNames.length)]; }
+    function randComm() { return Math.floor(Math.random()*(23513-800+1)+800); }
+    function startLiveFeed() {
+        if(liveFeedInterval) clearInterval(liveFeedInterval);
+        const container = document.getElementById("liveFeedList");
+        if(!container) return;
+        function add() { 
+            const item = document.createElement("div"); 
+            item.className = "live-feed-item"; 
+            item.innerHTML = `<i class="fas fa-trophy text-gold"></i> Congratulations! <strong>${randName()}</strong> earned <span class="text-gold">+$ ${randComm().toLocaleString()}</span> commission!`; 
+            container.prepend(item); 
+            if(container.children.length>8) container.removeChild(container.lastChild); 
+        }
+        for(let i=0; i<3; i++) add();
+        liveFeedInterval = setInterval(add, 5000);
+    }
+
+    // ==================== SETTINGS ====================
+    function startSettingsSubscription() {
+        if (unsubscribeSettings) unsubscribeSettings();
+        try {
+            const settingsRef = doc(db, "systemSettings", "main");
+            unsubscribeSettings = onSnapshot(settingsRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const s = docSnap.data();
+                    if(s.customerName) { 
+                        const el1 = document.getElementById("loginWebsiteName");
+                        const el2 = document.getElementById("homeWebsiteName");
+                        const el3 = document.getElementById("brandName");
+                        if (el1) el1.innerText = s.customerName; 
+                        if (el2) el2.innerText = s.homePageName || s.customerName; 
+                        if (el3) el3.innerText = s.customerName || "LUXCY"; 
+                    }
+                    if(s.customerTagline) {
+                        const el = document.getElementById("loginWebsiteTagline");
+                        if (el) el.innerText = s.customerTagline;
+                    }
+                    updateRealtimeStatus('Settings updated ✅');
+                }
+            });
+        } catch (e) { console.error('Settings subscribe error:', e); }
+    }
+
+    function loadBackgrounds() {
+        try {
+            let loginBg = localStorage.getItem("loginBg");
+            let mainBg = localStorage.getItem("mainBg");
+            let activePageId = document.querySelector(".page.active-page")?.id;
+            const defaultBg = "radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(212,175,55,0.08) 0%, transparent 50%), linear-gradient(135deg, #0a0c10 0%, #0f1117 50%, #0a0c10 100%)";
+            const appContainer = document.getElementById("appContainer");
+            if (!appContainer) return;
+            if(activePageId === "loginPage" || activePageId === "registerPage") 
+                appContainer.style.background = loginBg ? `url('${loginBg}') center/cover` : defaultBg;
+            else if(currentUser) 
+                appContainer.style.background = mainBg ? `url('${mainBg}') center/cover` : defaultBg;
+            else 
+                appContainer.style.background = defaultBg;
+        } catch (e) { console.error('Load backgrounds error:', e); }
     }
 
     // ==================== LOGIN / REGISTER ====================
-    document.getElementById("doLoginBtn").onclick = async function() {
-        const btn = this;
+    async function doLogin() {
+        const btn = document.getElementById("doLoginBtn");
         const username = document.getElementById("loginUsername").value.trim();
         const password = document.getElementById("loginPass").value;
         if(!username || !password) { toast("Enter username and password", true); return; }
@@ -3872,7 +3960,6 @@
                 subscribeToInjections(currentUser.id);
                 updateUI();
                 loadBackgrounds();
-                startSettingsSubscription();
                 const lastPage = localStorage.getItem("customerLastPage");
                 showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
                 toast(`Welcome back, ${username}`);
@@ -3883,18 +3970,10 @@
         } catch(e) { toast("Login failed: " + e.message, true); }
         btn.disabled = false;
         btn.innerHTML = 'Login';
-    };
+    }
 
-    document.getElementById("goToRegisterBtn").onclick = () => showPage("register");
-    document.getElementById("goToLoginFromRegBtn").onclick = () => showPage("login");
-    document.getElementById("landingLoginBtn").onclick = () => showPage("login");
-    document.getElementById("landingRegisterBtn").onclick = () => showPage("register");
-    document.getElementById("companyInfoBtn").onclick = showCompanyInfoModal;
-    document.getElementById("backToLandingFromLogin").onclick = () => showPage("landing");
-    document.getElementById("backToLandingFromRegister").onclick = () => showPage("landing");
-
-    document.getElementById("doRegisterBtn").onclick = async function() {
-        const btn = this;
+    async function doRegister() {
+        const btn = document.getElementById("doRegisterBtn");
         const username = document.getElementById("regUsername").value.trim();
         const email = document.getElementById("regEmail").value.trim();
         const phone = document.getElementById("regPhone").value.trim();
@@ -3949,208 +4028,336 @@
         } catch(e) { toast("Registration failed: " + e.message, true); }
         btn.disabled = false;
         btn.innerHTML = 'Register Now';
-    };
-
-    // ==================== NAVIGATION ====================
-    const pages = { 
-        landing: document.getElementById("landingPage"), 
-        login: document.getElementById("loginPage"), 
-        register: document.getElementById("registerPage"), 
-        home: document.getElementById("homePage"), 
-        work: document.getElementById("workPage"), 
-        order: document.getElementById("orderPage"), 
-        mine: document.getElementById("minePage"), 
-        service: document.getElementById("servicePage")
-    };
-    const bottomNav = document.getElementById("bottomNav");
-
-    function showPage(name) {
-        if(!currentUser && name !== "login" && name !== "register" && name !== "landing") name = "landing";
-        for(let k in pages) pages[k].classList.remove("active-page");
-        if (pages[name]) pages[name].classList.add("active-page");
-        if(name === "login" || name === "register" || name === "landing") bottomNav.classList.add("hidden-nav");
-        else bottomNav.classList.remove("hidden-nav");
-        if(name !== "login" && name !== "register" && name !== "landing") localStorage.setItem("customerLastPage", name);
-        if(name === "home" || name === "mine") updateUI();
-        if(name === "work") { updateUI(); refreshWorkPageOrder(); }
-        if(name === "order") updateUI();
-        loadBackgrounds();
-        startLiveFeed();
     }
 
     function signOut() {
-        if (unsubscribeUser) unsubscribeUser();
-        if (unsubscribeWithdrawals) unsubscribeWithdrawals();
-        if (unsubscribeChat) unsubscribeChat();
-        if (unsubscribeInjections) unsubscribeInjections();
-        if (unsubscribePackages) unsubscribePackages();
-        const userId = currentUser?.id;
-        currentUser = null;
-        localStorage.removeItem("currentUserId");
-        if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
-        firebaseSignOut(auth).catch(console.error);
-        showPage("landing");
-        toast("Signed out");
+        try {
+            if (unsubscribeUser) unsubscribeUser();
+            if (unsubscribeWithdrawals) unsubscribeWithdrawals();
+            if (unsubscribeChat) unsubscribeChat();
+            if (unsubscribeInjections) unsubscribeInjections();
+            const userId = currentUser?.id;
+            currentUser = null;
+            localStorage.removeItem("currentUserId");
+            if (userId) sessionStorage.removeItem(`popup_shown_${userId}`);
+            firebaseSignOut(auth).catch(console.error);
+            showPage("landing");
+            toast("Signed out");
+        } catch (e) { console.error('SignOut error:', e); }
     }
 
-    // ==================== EVENT LISTENERS ====================
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('landingGoogleBtn').onclick = handleGoogleLogin;
-        document.getElementById('loginGoogleBtn').onclick = handleGoogleLogin;
-        document.getElementById('registerGoogleBtn').onclick = handleGoogleLogin;
-        
-        applyLanguage(currentLang);
-        subscribeToLogos();
-        subscribeToCompanyInfo();
-        subscribeToVipPackages(); // ✅ Subscribe to VIP packages
-        document.querySelectorAll('.lang-option').forEach(opt => opt.onclick = () => applyLanguage(opt.dataset.lang));
-        document.getElementById("bindWalletBtn").onclick = showBindWalletModal;
-        document.getElementById("personalDetailsBtn").onclick = showPersonalDetailsModal;
-        document.getElementById("deviceSessionBtn").onclick = showDeviceSessionModal;
-        document.getElementById("loanServiceBtn").onclick = showLoanServiceModal;
-        document.getElementById("signOutBtnHome").onclick = signOut;
-        document.getElementById("signOutBtnMine").onclick = signOut;
-        document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); updateRealtimeStatus('Manual refresh ✅'); });
-        document.getElementById("rechargeHomeBtn").onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
-        document.getElementById("withdrawHomeBtn").onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
-        document.getElementById("depositBtn").onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
-        document.getElementById("withdrawBtn").onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
-        document.getElementById("rechargeHistoryBtn").onclick = () => currentUser ? showRechargeHistory() : toast("Please login first", true);
-        document.getElementById("withdrawHistoryBtn").onclick = () => currentUser ? showWithdrawHistory() : toast("Please login first", true);
-        document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
+    // ==================== NAVIGATION ====================
+    function showPage(name) {
+        try {
+            const pages = { 
+                landing: document.getElementById("landingPage"), 
+                login: document.getElementById("loginPage"), 
+                register: document.getElementById("registerPage"), 
+                home: document.getElementById("homePage"), 
+                work: document.getElementById("workPage"), 
+                order: document.getElementById("orderPage"), 
+                mine: document.getElementById("minePage"), 
+                service: document.getElementById("servicePage")
+            };
+            const bottomNav = document.getElementById("bottomNav");
+            
+            if(!currentUser && name !== "login" && name !== "register" && name !== "landing") name = "landing";
+            for(let k in pages) if (pages[k]) pages[k].classList.remove("active-page");
+            if (pages[name]) pages[name].classList.add("active-page");
+            if (bottomNav) {
+                if(name === "login" || name === "register" || name === "landing") bottomNav.classList.add("hidden-nav");
+                else bottomNav.classList.remove("hidden-nav");
+            }
+            if(name !== "login" && name !== "register" && name !== "landing") localStorage.setItem("customerLastPage", name);
+            
+            document.querySelectorAll('.nav-item-lux').forEach(n => n.classList.remove('active'));
+            const activeNav = document.querySelector(`.nav-item-lux[data-nav="${name}"]`);
+            if (activeNav) activeNav.classList.add('active');
+            
+            if(name === "home" || name === "mine") updateUI();
+            if(name === "work") { updateUI(); refreshWorkPageOrder(); }
+            if(name === "order") updateUI();
+            loadBackgrounds();
+            startLiveFeed();
+        } catch (e) { console.error('ShowPage error:', e); }
+    }
 
-        document.getElementById("customerSendBtn").onclick = async () => {
-            const input = document.getElementById("customerChatInput");
-            const text = input.value.trim();
-            if(text) {
-                await sendChatMessage(text);
-                input.value = '';
-                input.focus();
+    // ==================== INITIALIZATION ====================
+    function initializeEventListeners() {
+        try {
+            // Google login buttons
+            const lgBtn = document.getElementById('landingGoogleBtn');
+            const lgnBtn = document.getElementById('loginGoogleBtn');
+            const rgBtn = document.getElementById('registerGoogleBtn');
+            if (lgBtn) lgBtn.onclick = handleGoogleLogin;
+            if (lgnBtn) lgnBtn.onclick = handleGoogleLogin;
+            if (rgBtn) rgBtn.onclick = handleGoogleLogin;
+            
+            // Language selector
+            document.querySelectorAll('.lang-option').forEach(opt => opt.onclick = () => applyLanguage(opt.dataset.lang));
+            
+            // Mine page buttons
+            const bindWalletBtn = document.getElementById("bindWalletBtn");
+            const personalDetailsBtn = document.getElementById("personalDetailsBtn");
+            const deviceSessionBtn = document.getElementById("deviceSessionBtn");
+            const loanServiceBtn = document.getElementById("loanServiceBtn");
+            if (bindWalletBtn) bindWalletBtn.onclick = showBindWalletModal;
+            if (personalDetailsBtn) personalDetailsBtn.onclick = showPersonalDetailsModal;
+            if (deviceSessionBtn) deviceSessionBtn.onclick = showDeviceSessionModal;
+            if (loanServiceBtn) loanServiceBtn.onclick = showLoanServiceModal;
+            
+            // Sign out
+            const signOutHome = document.getElementById("signOutBtnHome");
+            const signOutMine = document.getElementById("signOutBtnMine");
+            if (signOutHome) signOutHome.onclick = signOut;
+            if (signOutMine) signOutMine.onclick = signOut;
+            
+            // Refresh buttons
+            document.querySelectorAll(".refresh-btn").forEach(btn => btn.onclick = () => { updateUI(); toast("Refreshed!"); updateRealtimeStatus('Manual refresh ✅'); });
+            
+            // Recharge/Withdraw
+            const rechargeHomeBtn = document.getElementById("rechargeHomeBtn");
+            const withdrawHomeBtn = document.getElementById("withdrawHomeBtn");
+            const depositBtn = document.getElementById("depositBtn");
+            const withdrawBtn = document.getElementById("withdrawBtn");
+            const rechargeHistoryBtn = document.getElementById("rechargeHistoryBtn");
+            const withdrawHistoryBtn = document.getElementById("withdrawHistoryBtn");
+            if (rechargeHomeBtn) rechargeHomeBtn.onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
+            if (withdrawHomeBtn) withdrawHomeBtn.onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
+            if (depositBtn) depositBtn.onclick = () => currentUser ? showRechargeModal() : toast("Please login first", true);
+            if (withdrawBtn) withdrawBtn.onclick = () => currentUser ? showWithdrawModal() : toast("Please login first", true);
+            if (rechargeHistoryBtn) rechargeHistoryBtn.onclick = () => currentUser ? showRechargeHistory() : toast("Please login first", true);
+            if (withdrawHistoryBtn) withdrawHistoryBtn.onclick = () => currentUser ? showWithdrawHistory() : toast("Please login first", true);
+            
+            // Start Working
+            const startWorkingBtn = document.getElementById("startWorkingBtn");
+            if (startWorkingBtn) {
+                startWorkingBtn.onclick = async () => {
+                    if(!currentUser) { toast("Please login first", true); return; }
+                    let dailyLimit = currentUser.tasks?.total || 0;
+                    let completedCount = currentUser.tasks?.completed || 0;
+                    if(dailyLimit === 0) { toast("No orders assigned. Please purchase a package first!", true); return; }
+                    if(completedCount >= dailyLimit) { toast("All orders completed!", true); return; }
+                    if (currentUser.currentOrderObj && !currentUser.currentOrderObj.completed) { showPendingOrderWarning(); return; }
+                    let settings = await loadSystemSettings();
+                    if(currentUser.balance < (settings.minBalanceForOrder || 10)) { 
+                        toast(`Minimum balance ${formatMoney(settings.minBalanceForOrder)} required.`, true); 
+                        return; 
+                    }
+                    await loadNextOrderAutomatically();
+                };
             }
-        };
-        document.getElementById("customerChatInput").addEventListener('keypress', async (e) => {
-            if(e.key === 'Enter') {
-                e.preventDefault();
-                const input = document.getElementById("customerChatInput");
-                const text = input.value.trim();
-                if(text) {
-                    await sendChatMessage(text);
-                    input.value = '';
-                    input.focus();
-                }
-            }
-        });
-        document.getElementById("customerEmojiBtn").onclick = () => {
-            const input = document.getElementById("customerChatInput");
-            const picker = document.createElement('div');
-            picker.style.cssText = 'position:absolute;bottom:80px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
-            const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
-            emojis.forEach(e => {
-                const s = document.createElement('span');
-                s.style.cssText = 'cursor:pointer;font-size:28px;padding:6px;border-radius:8px;transition:0.2s;';
-                s.innerText = e;
-                s.onmouseenter = () => s.style.background = 'rgba(212,175,55,0.2)';
-                s.onmouseleave = () => s.style.background = 'transparent';
-                s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
-                picker.appendChild(s);
-            });
-            const rect = document.getElementById("customerEmojiBtn").getBoundingClientRect();
-            picker.style.bottom = (window.innerHeight - rect.top + 10) + 'px';
-            picker.style.left = (rect.left - 20) + 'px';
-            document.body.appendChild(picker);
-            setTimeout(() => {
-                const closePicker = (e) => {
-                    if (!picker.contains(e.target) && e.target.id !== 'customerEmojiBtn') {
-                        picker.remove();
-                        document.removeEventListener('click', closePicker);
+            
+            // Login/Register buttons
+            const doLoginBtn = document.getElementById("doLoginBtn");
+            const doRegisterBtn = document.getElementById("doRegisterBtn");
+            if (doLoginBtn) doLoginBtn.onclick = doLogin;
+            if (doRegisterBtn) doRegisterBtn.onclick = doRegister;
+            
+            // Navigation between pages
+            const goToRegisterBtn = document.getElementById("goToRegisterBtn");
+            const goToLoginFromRegBtn = document.getElementById("goToLoginFromRegBtn");
+            const landingLoginBtn = document.getElementById("landingLoginBtn");
+            const landingRegisterBtn = document.getElementById("landingRegisterBtn");
+            const companyInfoBtn = document.getElementById("companyInfoBtn");
+            const backLogin = document.getElementById("backToLandingFromLogin");
+            const backRegister = document.getElementById("backToLandingFromRegister");
+            if (goToRegisterBtn) goToRegisterBtn.onclick = () => showPage("register");
+            if (goToLoginFromRegBtn) goToLoginFromRegBtn.onclick = () => showPage("login");
+            if (landingLoginBtn) landingLoginBtn.onclick = () => showPage("login");
+            if (landingRegisterBtn) landingRegisterBtn.onclick = () => showPage("register");
+            if (companyInfoBtn) companyInfoBtn.onclick = showCompanyInfoModal;
+            if (backLogin) backLogin.onclick = () => showPage("landing");
+            if (backRegister) backRegister.onclick = () => showPage("landing");
+            
+            // Bottom navigation
+            document.querySelectorAll(".nav-item-lux").forEach(nav => nav.onclick = () => { if(currentUser) showPage(nav.dataset.nav); else showPage("landing"); });
+            
+            // Chat
+            const customerSendBtn = document.getElementById("customerSendBtn");
+            const customerChatInput = document.getElementById("customerChatInput");
+            if (customerSendBtn) {
+                customerSendBtn.onclick = async () => {
+                    const input = document.getElementById("customerChatInput");
+                    const text = input.value.trim();
+                    if(text) {
+                        await sendChatMessage(text);
+                        input.value = '';
+                        input.focus();
                     }
                 };
-                document.addEventListener('click', closePicker);
-            }, 100);
-        };
-        document.getElementById("customerUploadBtn").onclick = () => document.getElementById("customerChatImageInput").click();
-        document.getElementById("customerChatImageInput").onchange = async (e) => {
-            const file = e.target.files[0];
-            if(file) {
-                try {
-                    const compressed = await compressImage(file, 400, 400, 0.6);
-                    await sendChatMessage('', compressed);
-                } catch {
-                    const reader = new FileReader();
-                    reader.onload = async ev => { await sendChatMessage('', ev.target.result); };
-                    reader.readAsDataURL(file);
-                }
-                e.target.value = '';
             }
-        };
+            if (customerChatInput) {
+                customerChatInput.addEventListener('keypress', async (e) => {
+                    if(e.key === 'Enter') {
+                        e.preventDefault();
+                        const input = document.getElementById("customerChatInput");
+                        const text = input.value.trim();
+                        if(text) {
+                            await sendChatMessage(text);
+                            input.value = '';
+                            input.focus();
+                        }
+                    }
+                });
+            }
+            
+            // Emoji picker
+            const customerEmojiBtn = document.getElementById("customerEmojiBtn");
+            if (customerEmojiBtn) {
+                customerEmojiBtn.onclick = () => {
+                    const input = document.getElementById("customerChatInput");
+                    const picker = document.createElement('div');
+                    picker.style.cssText = 'position:fixed;bottom:100px;left:20px;background:#1a1e26;padding:10px;border-radius:16px;z-index:10000;border:1px solid var(--gold);display:flex;flex-wrap:wrap;max-width:280px;gap:4px;';
+                    const emojis = ['😀','😂','😍','😎','👍','🙏','💪','🔥','💰','⭐','❤️','🎉','✨','💎','🎁'];
+                    emojis.forEach(e => {
+                        const s = document.createElement('span');
+                        s.style.cssText = 'cursor:pointer;font-size:28px;padding:6px;border-radius:8px;';
+                        s.innerText = e;
+                        s.onclick = () => { input.value += e; input.focus(); picker.remove(); };
+                        picker.appendChild(s);
+                    });
+                    document.body.appendChild(picker);
+                    setTimeout(() => {
+                        const closePicker = (e) => {
+                            if (!picker.contains(e.target) && e.target.id !== 'customerEmojiBtn') {
+                                picker.remove();
+                                document.removeEventListener('click', closePicker);
+                            }
+                        };
+                        document.addEventListener('click', closePicker);
+                    }, 100);
+                };
+            }
+            
+            // Chat image upload
+            const customerUploadBtn = document.getElementById("customerUploadBtn");
+            const customerChatImageInput = document.getElementById("customerChatImageInput");
+            if (customerUploadBtn && customerChatImageInput) {
+                customerUploadBtn.onclick = () => customerChatImageInput.click();
+                customerChatImageInput.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if(file) {
+                        try {
+                            const compressed = await compressImage(file, 400, 400, 0.6);
+                            await sendChatMessage('', compressed);
+                        } catch {
+                            const reader = new FileReader();
+                            reader.onload = async ev => { await sendChatMessage('', ev.target.result); };
+                            reader.readAsDataURL(file);
+                        }
+                        e.target.value = '';
+                    }
+                };
+            }
+            
+            // Profile photo upload
+            const mineProfilePhoto = document.getElementById("mineProfilePhoto");
+            if (mineProfilePhoto) mineProfilePhoto.onclick = () => { if(currentUser) showUploadPhotoModal(); };
+            
+            // Delete browsing data
+            const deleteBtn = document.getElementById('deleteBrowsingDataBtn');
+            if (deleteBtn) deleteBtn.onclick = deleteBrowsingData;
+            
+            console.log('✅ Event listeners initialized');
+        } catch (e) { console.error('Init event listeners error:', e); }
+    }
 
-        document.getElementById("mineProfilePhoto").onclick = () => { if(currentUser) showUploadPhotoModal(); };
-    });
-
-    // ==================== INITIALIZE ====================
-    startSettingsSubscription();
-    subscribeToVipPackages(); // ✅ Initialize VIP packages
-    loadBackgrounds();
-    let savedUserId = localStorage.getItem("currentUserId");
-    if(savedUserId) {
-        (async () => {
-            try {
-                const userRef = doc(db, "users", savedUserId);
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists()) {
-                    currentUser = { id: userSnap.id, ...userSnap.data() };
-                    if (!currentUser.disabled) {
-                        if(!currentUser.orders) currentUser.orders = [];
-                        if(!currentUser.tasks) currentUser.tasks = { completed:0, total:0 };
-                        await checkAndApplyInjections();
-                        await registerSession();
-                        subscribeToUser(currentUser.id);
-                        subscribeToWithdrawals(currentUser.id);
-                        subscribeToInjections(currentUser.id);
-                        updateUI();
-                        loadBackgrounds();
-                        const lastPage = localStorage.getItem("customerLastPage");
-                        showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
-                        startChatSubscription();
-                        await checkAndShowPopupAds();
-                        updateRealtimeStatus('Welcome back! ✅');
+    // ==================== START APP ====================
+    async function startApp() {
+        if (appInitialized) return;
+        appInitialized = true;
+        
+        try {
+            console.log('🚀 Starting LUXCY App v2.2.0');
+            
+            // Initialize event listeners FIRST
+            initializeEventListeners();
+            
+            // Apply language
+            applyLanguage(currentLang);
+            
+            // Start subscriptions (these are safe even if DOM not fully ready)
+            subscribeToLogos();
+            subscribeToCompanyInfo();
+            subscribeToVipPackages();
+            startSettingsSubscription();
+            loadBackgrounds();
+            
+            // Check for saved user
+            let savedUserId = localStorage.getItem("currentUserId");
+            if(savedUserId) {
+                try {
+                    const userRef = doc(db, "users", savedUserId);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        currentUser = { id: userSnap.id, ...userSnap.data() };
+                        if (!currentUser.disabled) {
+                            if(!currentUser.orders) currentUser.orders = [];
+                            if(!currentUser.tasks) currentUser.tasks = { completed:0, total:0 };
+                            await checkAndApplyInjections();
+                            await registerSession();
+                            subscribeToUser(currentUser.id);
+                            subscribeToWithdrawals(currentUser.id);
+                            subscribeToInjections(currentUser.id);
+                            updateUI();
+                            loadBackgrounds();
+                            const lastPage = localStorage.getItem("customerLastPage");
+                            showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
+                            startChatSubscription();
+                            await checkAndShowPopupAds();
+                            updateRealtimeStatus('Welcome back! ✅');
+                        } else showPage("landing");
                     } else showPage("landing");
-                } else showPage("landing");
-            } catch (e) { console.error('Init error:', e); showPage("landing"); }
-        })();
-    } else showPage("landing");
-    startLiveFeed();
-
-    // Session activity update every 60 seconds
-    setInterval(() => { if (currentUser && sessionId) updateSessionActivity(); }, 60000);
-
-    onAuthStateChanged(auth, async (user) => {
-        if (user && !currentUser) {
-            try {
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-                if (userSnap.exists()) {
-                    currentUser = { id: user.uid, ...userSnap.data() };
-                    localStorage.setItem('currentUserId', currentUser.id);
-                    await registerSession();
-                    subscribeToUser(currentUser.id);
-                    subscribeToWithdrawals(currentUser.id);
-                    subscribeToInjections(currentUser.id);
-                    updateUI();
-                    loadBackgrounds();
-                    const lastPage = localStorage.getItem("customerLastPage");
-                    showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
-                    startChatSubscription();
-                    await checkAndShowPopupAds();
-                    updateRealtimeStatus('Google Auth ✅');
+                } catch (e) { console.error('Init user error:', e); showPage("landing"); }
+            } else {
+                showPage("landing");
+            }
+            
+            startLiveFeed();
+            
+            // Session activity update
+            setInterval(() => { if (currentUser && sessionId) updateSessionActivity(); }, 60000);
+            
+            // Auth state change
+            onAuthStateChanged(auth, async (user) => {
+                if (user && !currentUser) {
+                    try {
+                        const userRef = doc(db, "users", user.uid);
+                        const userSnap = await getDoc(userRef);
+                        if (userSnap.exists()) {
+                            currentUser = { id: user.uid, ...userSnap.data() };
+                            localStorage.setItem('currentUserId', currentUser.id);
+                            await registerSession();
+                            subscribeToUser(currentUser.id);
+                            subscribeToWithdrawals(currentUser.id);
+                            subscribeToInjections(currentUser.id);
+                            updateUI();
+                            loadBackgrounds();
+                            const lastPage = localStorage.getItem("customerLastPage");
+                            showPage(lastPage && lastPage !== "landing" && lastPage !== "login" && lastPage !== "register" ? lastPage : "home");
+                            startChatSubscription();
+                            await checkAndShowPopupAds();
+                            updateRealtimeStatus('Google Auth ✅');
+                        }
+                    } catch (e) { console.error('Auth error:', e); }
+                } else if (!user && currentUser) {
+                    signOut();
                 }
-            } catch (e) { console.error('Auth error:', e); }
-        } else if (!user && currentUser) {
-            signOut();
+            });
+            
+            console.log('✅ LUXCY App initialized successfully');
+        } catch (e) {
+            console.error('❌ App start error:', e);
         }
-    });
+    }
 
-    console.log('✅ LUXCY App initialized v2.1.0 - VIP Package System Added');
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', startApp);
+    } else {
+        startApp();
+    }
 </script>
 </body>
 </html>
